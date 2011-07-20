@@ -1,98 +1,110 @@
 require 'f5-icontrol'
+require 'util/network_device/f5.rb'
 
 Puppet::Type.type(:f5_pool).provide(:f5_pool) do
   @doc = "Manages f5 pool"
 
-  # This is to mask the default provider which allows glance installation and management in a single puppet run.
   confine :feature => :posix
   defaultfor :feature => :posix
 
-  @pool
+  F5_WSDL = 'LocalLB.Pool'
 
-  ip       = '172.16.182.250'
-  username = 'admin'
-  password = 'admin'
-  @@bigip  = F5::IControl.new(ip, username, password, ["LocalLB.Pool"]).get_interfaces
+  extend Puppet::Util::NetworkDevice::F5
+  include Puppet::Util::NetworkDevice::F5
 
   def self.instances
-    #unless @virtual_server
-    #  self.cache
-    #end
-
-    # we only need to implement parameters since puppet will check properties
-    @@bigip["LocalLB.Pool"].get_list.collect do |pool|
-      new(:name => pool)
+    bigip[F5_WSDL].get_list.collect do |name|
+      new(:name => name)
     end
   end
 
-  def self.cache()
-    @pool ||= {}
+  methods = [ 'action_on_service_down',
+    'allow_nat_state',
+    'allow_snat_state',
+    'client_ip_tos',
+    'client_link_qos',
+    'description',
+    'gateway_failsafe_device',
+    'gateway_failsafe_unit_id',
+    'lb_method',
+    'minimum_active_member',
+    'minimum_up_member',
+    'minimum_up_member_action',
+    'minimum_up_member_enabled_state',
+    'server_ip_tos',
+    'server_link_qos',
+    'simple_timeout',
+    'slow_ramp_time']
 
-    # retreive list of image ids with glance index.
-    #if lookup == []
-    #  Puppet.debug "Puppet::Provider::Glance: creating cache of all vm instances."
-    #  image_ids = glance('index').split("\n").collect { |line|
-    #    $1 if line =~ %r(^(\d+)\s+\S+)
-    #  }.compact!
-    #else
-    #  Puppet.debug "Puppet::Provider::Glance: reloading cache of vm instances #{lookup}."
-    #  image_ids = lookup
-    #end
-
-    ## retrieve detail information for each image id
-    #Puppet.debug "Puppet::Provider::F5_VirtualServer: \n"+@glance.inspect
-  end
-
-
-  def self.vm(lookup)
-    # This results in two lookups if a resource does not exists but it's necessary
-    unless @glance and @glance[lookup]
-      self.cache
+  methods.each do |method|
+    define_method(method.to_sym) do
+      if bigip[F5_WSDL].respond_to?("get_#{method}".to_sym)
+        bigip[F5_WSDL].send("get_#{method}", resource[:name]).first
+      end
     end
-
-    @glance[lookup]
   end
 
-  # not sure if this is necessary since everything should call self.class.vm
-  def vm(lookup)
-    self.class.vm(lookup)
+  methods.each do |method|
+    define_method("#{method}=") do |value|
+      if bigip[F5_WSDL].respond_to?("set_#{method}".to_sym)
+        bigip[F5_WSDL].send("set_#{method}", resource[:name], resource[method.to_sym])
+      end
+    end
   end
 
   def member
-    status = @@bigip["LocalLB.Pool"].get_member(resource[:name])
+    members = bigip[F5_WSDL].get_member(resource[:name])
 
-    status[0].collect { |system|
+    members[0].collect { |system|
       "#{system.address}:#{system.port}"
     }
   end
 
-  def minimum_active_member
-    (@@bigip["LocalLB.Pool"].get_minimum_active_member(resource[:name]))[0]
+  def member=(value)
+    members = bigip[F5_WSDL].get_member(resource[:name])
+
+    members = status[0].collect { |system|
+      "#{system.address}:#{system.port}"
+    }
+
+    # Should add first to avoid clearing all members of the pool.
+    (resource[:member]-members).each do |node|
+      Puppet.debug "Puppet::Provider::F5_Pool: adding member #{node}"
+      #bigip["LocalLB.Pool"].add_member(resource[:member],
+      #                         [[{:address => node.split(':')[0],
+      #                           :port    => node.split(':')[1]}]])
+    end
+
+    (members-resource[:member]).each do |node|
+      Puppet.debug "Puppet::Provider::F5_Pool: removing member #{node}"
+      bigip[F5_WSDL].remove_member(resource[:member],
+                               [[{:address => node.split(':')[0],
+                                 :port    => node.split(':')[1]}]])
+    end
+    value
   end
 
-  def minimum_up_member
-    (@@bigip["LocalLB.Pool"].get_minimum_up_member(resource[:name]))[0]
+  def monitor_association
+    value = bigip[F5_WSDL].get_monitor_association(resource[:name])
+
+    [ value.first.monitor_rule.type, value.first.monitor_rule.quorum, value.first.monitor_rule.monitor_templates ]
   end
 
-  def minimum_up_member_action
-    (@@bigip["LocalLB.Pool"].get_minimum_up_member_action(resource[:name]))[0]
+  def monitor_association=(value)
+    bigip[F5_WSDL].set_monitor_association(resource[:name], resource[:monitor_association])
   end
 
-  def minimum_up_member_enabled_state
-    (@@bigip["LocalLB.Pool"].get_minimum_up_member_enabled_state(resource[:name]))[0]
-  end
-
-  def version
-    @@bigip["LocalLB.Pool"].get_version()
+  def create
+    Puppet.debug("Puppet::Provider::F5_Pool: creating F5 pool #{resource[:name]}")
+    bigip[F5_WSDL].create(resource[:name])
   end
 
   def destroy
-    Puppet.debug("Puppet::Provider::F5_Pool: destroying resource #{resource[:name]}")
-    @@bigip["LocalLB.Pool"].delete_pool(resource[:name])
+    Puppet.debug("Puppet::Provider::F5_Pool: destroying F5 pool #{resource[:name]}")
+    bigip[F5_WSDL].delete_pool(resource[:name])
   end
 
   def exists?
-    #vm(resource[:name])
-    true
+    bigip[F5_WSDL].get_list.include?(resource[:name])
   end
 end
