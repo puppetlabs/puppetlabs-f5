@@ -1,7 +1,38 @@
 # puppetlabs-f5 module
-## Overview
-Currently the testing against BigIP 10.1.0.3341. Mostly completed the get methods, haven't tested the set methods throughly yet. A list of providers:
+Warning: this is currently work in progress. document section * are planned features and not completed yet.
 
+## Overview
+The F5 module was written against F5 VE version 10.1.0.3341. F5 have released version 11 with several API changes but currently no hardware or software to test against.
+
+## Installation and Usage
+Requires:
+Puppet 2.7+ (*2.7.3 for nodesearch)
+F5 iControl gem installed on proxy system.
+
+*The following puppet manifest will deploy f5 gem on the f5_proxy system:
+    node f5_proxy {
+      include f5
+    }
+
+Configure F5 Device $confdir/device.conf
+[certname]
+type f5
+url https://username:password@dns/
+
+Execute the following command:
+$ puppet device
+
+Currently to assist testing we allow puppet resource against f5.puppetlabs.lan (this is expected to change):
+$ puppet resource f5_rule
+
+See: http://www.puppetlabs.com/blog/puppet-network-device-management/
+
+## F5 Facts
+
+Similar to Puppet 2.7 cisco devices, the F5 facts are not collected via facter, so please review $vardir/yaml/facts for F5 system information.
+
+## F5 Provider
+Sample F5 configuration output gather by puppet resource:
     f5_certificate { 'ca-bundle':
       ensure => 'present',
     }
