@@ -1,4 +1,4 @@
-# puppetlabs-f5 module
+# Puppet Labs F5 module
 Warning: this is currently work in progress. document section * are planned features and not completed yet.
 
 ## Overview
@@ -6,10 +6,10 @@ The F5 module was written against F5 VE version 10.1.0.3341. F5 have released ve
 
 ## Installation and Usage
 Requires:
-Puppet 2.7+ (*2.7.3 for nodesearch)
-F5 iControl gem installed on proxy system.
+* Puppet 2.7+ (*2.7.3 for nodesearch)
+* F5 iControl gem installed on proxy system.
+* *The following puppet manifest will deploy f5 gem on the f5_proxy system:
 
-*The following puppet manifest will deploy f5 gem on the f5_proxy system:
     node f5_proxy {
       include f5
     }
@@ -20,19 +20,21 @@ type f5
 url https://username:password@dns/
 
 Execute the following command:
-$ puppet device
+
+    $ puppet device
 
 Currently to assist testing we allow puppet resource against f5.puppetlabs.lan (this is expected to change):
-$ puppet resource f5_rule
+
+    $ puppet resource f5_rule
 
 See: http://www.puppetlabs.com/blog/puppet-network-device-management/
 
 ## F5 Facts
-
 Similar to Puppet 2.7 cisco devices, the F5 facts are not collected via facter, so please review $vardir/yaml/facts for F5 system information.
 
 ## F5 Provider
 Sample F5 configuration output gather by puppet resource:
+
     f5_certificate { 'ca-bundle':
       ensure => 'present',
     }
@@ -91,7 +93,7 @@ Sample F5 configuration output gather by puppet resource:
       definition => 'when HTTP_REQUEST {}',
     }
 
-    f5_snat { 'nat_me':
+    f5_snat { 'nat':
       ensure                  => 'present',
       connection_mirror_state => 'STATE_DISABLED',
       original_address        => ['0.0.0.0', '0.0.0.0'],
