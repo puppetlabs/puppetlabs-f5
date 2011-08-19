@@ -15,22 +15,21 @@ Puppet::Type.type(:f5_snatpool).provide(:f5_snatpool, :parent => Puppet::Provide
   end
 
   def member
-    result = transport[F5_WSDL].get_member(resource[:name]).first.join(',')
-    puts "'#{result.inspect}'"
-    puts "'#{resource[:member].inspect}'"
+    result = transport[F5_WSDL].get_member(resource[:name]).first.sort.join(',')
   end
 
   def member=(value)
     raise Puppet::Error 'SNAT Pool not found' if ! transport[F5_WSDL].get_list.include?(resource[:name])
-    members = transport[F5_WSDL].get_member(resource[:name]).first
+    current_members = transport[F5_WSDL].get_member(resource[:name]).first
+    members = resource[:member].split(',')
 
     # Should add first to avoid clearing all members of the snatpool.
-    (resource[:member] - members).each do |node|
+    (members - current_members).each do |node|
       Puppet.debug "Puppet::Provider::F5_SNATPool: adding member #{node}"
       transport[F5_WSDL].add_member(resource[:name], node)
     end
-
-    (members - resource[:member]).each do |node|
+   
+    (current_members - members).each do |node|
       Puppet.debug "Puppet::Provider::F5_SNATPool: removing member #{node}"
       transport[F5_WSDL].remove_member(resource[:name], node)
     end

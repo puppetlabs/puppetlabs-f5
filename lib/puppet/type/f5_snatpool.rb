@@ -1,3 +1,4 @@
+require 'puppet/property/list'
 Puppet::Type.newtype(:f5_snatpool) do
   @doc = "Manage F5 snatpool."
 
@@ -18,12 +19,20 @@ Puppet::Type.newtype(:f5_snatpool) do
   newparam(:name, :namevar=>true) do
     desc "The snatpool name."
   end
+  
+  newparam(:membership) do
+    defaultto :inclusive
+  end
 
-  newproperty(:member, :array_matching => :all) do
+  newproperty(:member, :parent => Puppet::Property::List) do
     desc "The snatpool member."
 
-    #munge do |value|
-    #  Array(value)
-    #end
+    munge do |value|
+      if value =~ /^([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])$/ then
+        return value
+      else
+        raise "A valid IP address is required for the member property."
+      end
+    end
   end
 end
