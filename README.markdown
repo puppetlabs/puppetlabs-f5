@@ -10,12 +10,12 @@ Since we can not directly install a puppet agent on F5, it is managed through an
 * Puppet 2.7.+
 * F5 iControl gem
 
-*pending* The following puppet manifest will deploy f5 gem on the f5_proxy system and deploy the appropriate config:
+The following puppet manifest will deploy f5 gem on the f5_proxy system and deploy the appropriate config:
 
     node f5_proxy_system {
       include f5
 
-      f5_config { "bigip":
+      f5::config { "bigip":
         username => 'admin',
         password => 'admin',
         url      => 'f5.puppetlabs.lan',
@@ -30,33 +30,34 @@ Since we can not directly install a puppet agent on F5, it is managed through an
 
 1. Create F5 Device configuration file in $confdir/device.conf (typically /etc/puppet/device.conf or /etc/puppetlabs/puppet/device.conf)
 
-    [certname]
-    type f5
-    url https://username:password@address/
+        [certname]
+          type f5
+          url https://username:password@address/
 
 2. Create the corresponding node configuration on the puppet master site.pp:
 
-    node f5 {
-      f5_rule { 'demo':
-        ensure     => 'present',
-        definition => 'when HTTP_REQUEST {}',
-      }
-    }
+        node f5 {
+          f5_rule { 'demo':
+            ensure     => 'present',
+            definition => 'when HTTP_REQUEST {}',
+          }
+        }
 
 3. Execute puppet device command*:
 
-    $ puppet device
+        $ puppet device
 
 4. Currently to simplify testing we allow usage of custom puppet fact to query/configure f5 resources against a specific system*:
 
-    $ FACTER_url=https://admin:admin@f5.puppetlabs.lan/ puppet resource f5_rule
+        $ FACTER_url=https://admin:admin@f5.puppetlabs.lan/ puppet resource f5_rule
 
 Known issues:
+
 * puppet agent on the proxy system will only enforce the system catalog, and it will not enforce the network device catalog. Network devices should be scheduled via cron to run puppet device command with the appropriate flags.
 * puppet device will run against all device specified in device.conf. If they should not be applied simultanously, maintain seperate conf files for f5 device and specify --deviceconfig.
 * Because pluginsync only support custom facts/functions [#7316](http://projects.puppetlabs.com/issues/7316), all puppet commands needs the appropriate RUBYLIB path (including puppet master):
 
-    export RUBYLIB=/etc/puppet/modules/puppetlabs-f5/lib/
+        export RUBYLIB=/etc/puppet/modules/puppetlabs-f5/lib/
 
 For more information see: http://www.puppetlabs.com/blog/puppet-network-device-management/
 
