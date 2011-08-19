@@ -1,6 +1,8 @@
 Puppet::Type.newtype(:f5_certificate) do
   @doc = "Manage F5 certificate."
 
+	apply_to_device
+
   ensurable do
     desc "Add or delete key."
 

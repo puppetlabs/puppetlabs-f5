@@ -1,6 +1,8 @@
 Puppet::Type.newtype(:f5_rule) do
   @doc = "Manage F5 rule."
 
+	apply_to_device
+
   ensurable do
     desc "Add or delete pool."
 
