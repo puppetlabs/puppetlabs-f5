@@ -1,3 +1,4 @@
+require 'puppet/property/list'
 Puppet::Type.newtype(:f5_pool) do
   @doc = "Manage F5 pool."
 
@@ -63,11 +64,15 @@ Puppet::Type.newtype(:f5_pool) do
     newvalues(/^LB_METHOD_(ROUND_ROBIN|RATIO_MEMBER|LEAST_CONNECTION_MEMBER|OBSERVED_MEMBER|PREDICTIVE_MEMBER|RATIO_NODE_ADDRESS|LEAST_CONNECTION_NODE_ADDRESS|FASTEST_NODE_ADDRESS|OBSERVED_NODE_ADDRESS|PREDICTIVE_NODE_ADDESS|DYNAMIC_RATIO|FASTEST_APP_RESPONSE|LEAST_SESSIONS|DYNAMIC_RATIO_MEMBER|L3_ADDR|UNKNOWN|WEIGHTED_LEAST_CONNECTION_MEMBER|WEIGHTED_LEAST_CONNECTION_NODE_ADDRESS|RATIO_SESSION|RATIO_LEAST_CONNECTION_MEMBER|RATIO_LEAST_CONNECTION_NODE_ADDRESS)$/)
   end
 
-  newproperty(:member, :array_matching => :all) do
+  newproperty(:member, :parent => Puppet::Property::List) do
     desc "The pool member."
     #munge do |value|
     #  Array(value)
     #end
+  end
+
+  newparam(:membership) do
+    defaultto :inclusive
   end
 
   newproperty(:minimum_active_member) do
@@ -88,7 +93,7 @@ Puppet::Type.newtype(:f5_pool) do
     desc "The pool minimum up member enabed state."
   end
 
-  newproperty(:monitor_association) do
+  newproperty(:monitor_association, :array_matching => :all) do
     desc "The pool monitor association."
   end
 
