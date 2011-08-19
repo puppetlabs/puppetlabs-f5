@@ -1,10 +1,10 @@
-Puppet::Type.newtype(:f5_rule) do
-  @doc = "Manage F5 rule."
+Puppet::Type.newtype(:f5_key) do
+  @doc = "Manage F5 key."
 
 	apply_to_device
 
   ensurable do
-    desc "Add or delete pool."
+    desc "Add or delete key."
 
     defaultto(:present)
 
@@ -18,10 +18,6 @@ Puppet::Type.newtype(:f5_rule) do
   end
 
   newparam(:name, :namevar=>true) do
-    desc "The rule name."
-  end
-
-  newproperty(:definition) do
-    desc "The rule definition."
+    desc "The key name."
   end
 end

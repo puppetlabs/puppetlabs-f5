@@ -1,6 +1,8 @@
 Puppet::Type.newtype(:f5_node) do
   @doc = "Manage F5 node."
 
+	apply_to_device
+
   ensurable do
     desc "Add or delete node."
 

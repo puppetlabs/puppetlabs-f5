@@ -42,10 +42,10 @@ class Puppet::Util::NetworkDevice::F5::Facts
         @facts[fact_key.to_sym] = hardware[key]
       end
     end
-    
+
     # f5 stores 64 bit integer as two 32 bit, so this won't handle > 32 bit.
     disk_info = @transport[F5_WSDL].get_disk_usage_information
-    disk_info.usages.each do |disk|   
+    disk_info.usages.each do |disk|
       @facts["disk_size_#{disk.partition_name}".to_sym] = "#{(disk.total_blocks.low * disk.block_size.low)/1024/1024} MB"
       @facts["disk_free_#{disk.partition_name}".to_sym] = "#{(disk.free_blocks.low * disk.block_size.low)/1024/1024} MB"
     end
@@ -59,7 +59,9 @@ class Puppet::Util::NetworkDevice::F5::Facts
     @facts = Hash[@facts.map {|k, v| [map[k] || k, v] }]\
 
     if @facts[:fqdn] then
-      @facts[:hostname] = @facts[:fqdn].split('.').first
+      fqdn = @facts[:fqdn].split('.')
+      @facts[:hostname] = fqdn.shift
+      @facts[:domain] = fqdn
     end
     if @facts[:uptime_seconds] then
       @facts[:uptime] = "#{String(@facts[:uptime_seconds]/86400)} days" # String

@@ -1,6 +1,8 @@
 Puppet::Type.newtype(:f5_snattranslationaddress) do
   @doc = "Manage F5 snat translation address."
 
+	apply_to_device
+
   ensurable do
     desc "Add or delete snat translation address."
 
