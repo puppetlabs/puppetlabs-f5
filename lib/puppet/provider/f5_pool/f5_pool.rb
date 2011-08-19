@@ -17,14 +17,14 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
   methods = [ 'action_on_service_down',
     'allow_nat_state',
     'allow_snat_state',
-    'client_ip_tos',
-    'client_link_qos',
+    'client_ip_tos',                      # Array
+    'client_link_qos',                    # Array
     'description',
     'gateway_failsafe_device',
-    'gateway_failsafe_unit_id',
+    'gateway_failsafe_unit_id',           # Array
     'lb_method',
-    'minimum_active_member',
-    'minimum_up_member',
+    'minimum_active_member',              # Array
+    'minimum_up_member',                  # Array
     'minimum_up_member_action',
     'minimum_up_member_enabled_state',
     'server_ip_tos',
