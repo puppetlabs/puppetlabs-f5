@@ -1,58 +1,132 @@
 # Puppet Labs F5 module
-Warning: this is currently work in progress. document section * are planned features and not completed yet.
+Warning: this project is currently work in progress, *pending* sections are planned features.
 
 ## Overview
-The F5 module was written against F5 VE version 10.1.0.3341. F5 have released version 11 with several API changes but currently no hardware or software to test against.
+The F5 module was written against F5 VE version 10.1.0.3341. F5 have released version 11 with several API changes but currently they have not released any hardware or software running version 11. This provider uses several version 10 API, so it is not expected to work with older F5 devices.
 
 ## Installation and Usage
-Requires:
+Since we can not directly install a puppet agent on F5, it is managed through an intermediate proxy system running puppet agent similar to cisco devices. The requirement for the proxy system:
 
-* Puppet 2.7+ (*2.7.3 for nodesearch)
-* F5 iControl gem installed on proxy system.
-* *The following puppet manifest will deploy f5 gem on the f5_proxy system:
+* Puppet 2.7.+
+* F5 iControl gem
 
-    node f5_proxy {
+*pending* The following puppet manifest will deploy f5 gem on the f5_proxy system and deploy the appropriate config:
+
+    node f5_proxy_system {
       include f5
+
+      f5_config { "bigip":
+        username => 'admin',
+        password => 'admin',
+        url      => 'f5.puppetlabs.lan',
+        target   => '/etc/puppetlabs/puppet/device/bigip.conf'
+      }
+
+      cron { "bigip":
+        command => 'puppet device --deviceconf /etc/puppetlabs/puppet/bigip.conf',
+        min     => fqdn_rand(60),
+      }
     }
 
-Configure F5 Device $confdir/device.conf
-[certname]
-type f5
-url https://username:password@dns/
+1. Create F5 Device configuration file in $confdir/device.conf (typically /etc/puppet/device.conf or /etc/puppetlabs/puppet/device.conf)
 
-Execute the following command:
+    [certname]
+    type f5
+    url https://username:password@address/
+
+2. Create the corresponding node configuration on the puppet master site.pp:
+
+    node f5 {
+      f5_rule { 'demo':
+        ensure     => 'present',
+        definition => 'when HTTP_REQUEST {}',
+      }
+    }
+
+3. Execute puppet device command*:
 
     $ puppet device
 
-Currently to assist testing we allow puppet resource against f5.puppetlabs.lan (this is expected to change):
+4. Currently to simplify testing we allow usage of custom puppet fact to query/configure f5 resources against a specific system*:
 
-    $ puppet resource f5_rule
+    $ FACTER_url=https://admin:admin@f5.puppetlabs.lan/ puppet resource f5_rule
 
-See: http://www.puppetlabs.com/blog/puppet-network-device-management/
+Known issues:
+* puppet agent on the proxy system will only enforce the system catalog, and it will not enforce the network device catalog. Network devices should be scheduled via cron to run puppet device command with the appropriate flags.
+* puppet device will run against all device specified in device.conf. If they should not be applied simultanously, maintain seperate conf files for f5 device and specify --deviceconfig.
+* Because pluginsync only support custom facts/functions [#7316](http://projects.puppetlabs.com/issues/7316), all puppet commands needs the appropriate RUBYLIB path (including puppet master):
+
+    export RUBYLIB=/etc/puppet/modules/puppetlabs-f5/lib/
+
+For more information see: http://www.puppetlabs.com/blog/puppet-network-device-management/
 
 ## F5 Facts
 Similar to Puppet 2.7 cisco devices, the F5 facts are not collected via facter, so please review $vardir/yaml/facts for F5 system information.
 
-## F5 Provider
+    --- !ruby/object:Puppet::Node::Facts
+      expiration: 2011-08-19 10:26:54.779410 -07:00
+      name: bigip
+      values:
+        clientversion: 2.7.2
+        environment: production
+        clientcert: bigip
+        !ruby/sym _timestamp: 2011-08-19 09:56:55.077534 -07:00
+        !ruby/sym annunciator_board_part_revision: ""
+        !ruby/sym annunciator_board_serial: ""
+        !ruby/sym chassis_serial: b500b9b79397
+        !ruby/sym disk_free_/: 82 MB
+        !ruby/sym disk_free_/config: 369 MB
+        !ruby/sym disk_free_/shared: 1835 MB
+        !ruby/sym disk_free_/usr: 301 MB
+        !ruby/sym disk_free_/var/log: 1829 MB
+        !ruby/sym disk_free_/var: 2219 MB
+        !ruby/sym disk_size_/: 201 MB
+        !ruby/sym disk_size_/config: 398 MB
+        !ruby/sym disk_size_/shared: 2015 MB
+        !ruby/sym disk_size_/usr: 1007 MB
+        !ruby/sym disk_size_/var/log: 2015 MB
+        !ruby/sym disk_size_/var: 2421 MB
+        !ruby/sym domain: puppetlabslan
+        !ruby/sym fqdn: f5.puppetlabs.lan
+        !ruby/sym group_id: DefaultGroup
+        !ruby/sym hardware_cache_size: 3072 KB
+        !ruby/sym hardware_cores: "1"
+        !ruby/sym hardware_cpu_mhz: "2654.616"
+        !ruby/sym hardware_cpus: &id002 cpus
+        !ruby/sym hardware_cpus_model: *id001
+        !ruby/sym hardware_cpus_slot: "0"
+        !ruby/sym hardwaremodel: i686
+        !ruby/sym host_board_part_revision: ""
+        !ruby/sym host_board_serial: ""
+        !ruby/sym hostname: f5
+        !ruby/sym macaddress: 00:0C:29:B7:93:97
+        !ruby/sym marketing_name: Z99
+        !ruby/sym model: &id001 Intel(R) Core(TM)2 Duo CPU     P8800  @ 2.66GHz
+        !ruby/sym name: *id002
+        !ruby/sym os_release: 2.6.18-164.2.1.el5.1.0.f5app
+        !ruby/sym os_version: "#1 SMP Sat Feb 6 00:16:40 PST 2010"
+        !ruby/sym platform: Z99
+        !ruby/sym product_category: Z99
+        !ruby/sym pva_version: ""
+        !ruby/sym slot: "0"
+        !ruby/sym switch_board_part_revision: ""
+        !ruby/sym switch_board_serial: ""
+        !ruby/sym system_id: 568E1D2F-1974-0D1B-F952-4691FBEAE92D
+        !ruby/sym system_name: Linux
+        !ruby/sym timezone: PDT
+        !ruby/sym uptime: 1 days
+        !ruby/sym uptime_days: "1"
+        !ruby/sym uptime_hours: "30"
+        !ruby/sym uptime_seconds: "108141"
+        !ruby/sym version: BIG-IP_v10.1.0
+
+## Appendix
 Sample F5 configuration output gather by puppet resource:
 
     f5_certificate { 'ca-bundle':
       ensure => 'present',
     }
-    f5_certificate { 'default':
-      ensure => 'present',
-    }
-    f5_certificate { 'raiden':
-      ensure => 'present',
-    }
 
-    f5_node { '172.16.182.153':
-      ensure                => 'present',
-      connection_limit      => ['0', '0'],
-      dynamic_ratio         => '1',
-      ratio                 => '1',
-      session_enabled_state => 'STATE_ENABLED',
-    }
     f5_node { '192.168.1.1':
       ensure                => 'present',
       connection_limit      => ['0', '10'],
@@ -82,13 +156,6 @@ Sample F5 configuration output gather by puppet resource:
       slow_ramp_time                  => '10',
     }
 
-    f5_rule { '_sys_https_redirect':
-      ensure     => 'present',
-      definition => '    when HTTP_REQUEST {
-           set host [HTTP::host]
-           HTTP::respond 302 Location "https://$host/"
-        }',
-    }
     f5_rule { 'demo':
       ensure     => 'present',
       definition => 'when HTTP_REQUEST {}',
@@ -117,21 +184,7 @@ Sample F5 configuration output gather by puppet resource:
       udp_timeout      => '4294967295',
       unit_id          => '1',
     }
-    f5_snattranslationaddress { '1.1.1.2':
-      ensure           => 'present',
-      arp_state        => 'STATE_ENABLED',
-      connection_limit => ['0', '0'],
-      ip_timeout       => '4294967295',
-      tcp_timeout      => '4294967295',
-      udp_timeout      => '4294967295',
-      unit_id          => '1',
-    }
 
-    f5_virtualserver { 'db':
-      ensure              => 'present',
-      availability_status => 'AVAILABILITY_STATUS_BLUE',
-      enabled_status      => 'ENABLED_STATUS_ENABLED',
-    }
     f5_virtualserver { 'www':
       ensure              => 'present',
       availability_status => 'AVAILABILITY_STATUS_BLUE',

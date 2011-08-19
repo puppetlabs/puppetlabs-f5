@@ -2,6 +2,8 @@ require 'puppet/property/list'
 Puppet::Type.newtype(:f5_snatpool) do
   @doc = "Manage F5 snatpool."
 
+	apply_to_device
+
   ensurable do
     desc "Add or delete snatpool."
 

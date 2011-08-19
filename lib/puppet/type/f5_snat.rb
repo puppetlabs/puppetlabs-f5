@@ -1,6 +1,8 @@
 Puppet::Type.newtype(:f5_snat) do
   @doc = "Manage F5 snat."
 
+	apply_to_device
+
   ensurable do
     desc "Add or delete snat."
 

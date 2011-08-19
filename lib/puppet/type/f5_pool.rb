@@ -1,7 +1,9 @@
 Puppet::Type.newtype(:f5_pool) do
   @doc = "Manage F5 pool."
 
-  ensurable do
+	apply_to_device
+
+	ensurable do
     desc "Add or delete pool."
 
     defaultto(:present)
