@@ -59,7 +59,7 @@ class Puppet::Util::NetworkDevice::F5::Facts
     @facts = Hash[@facts.map {|k, v| [map[k] || k, v] }]\
 
     if @facts[:fqdn] then
-      fqdn = @facts[:fqdn].split('.')
+      fqdn = @facts[:fqdn].split('.', 2)
       @facts[:hostname] = fqdn.shift
       @facts[:domain] = fqdn
     end
