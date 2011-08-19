@@ -15,15 +15,15 @@ The following puppet manifest will deploy f5 gem on the f5_proxy system and depl
     node f5_proxy_system {
       include f5
 
-      f5::config { "bigip":
+      f5::config { "f5.puppetlabs.lan":
         username => 'admin',
         password => 'admin',
         url      => 'f5.puppetlabs.lan',
-        target   => '/etc/puppetlabs/puppet/device/bigip.conf'
+        target   => '/etc/puppetlabs/puppet/device/f5.puppetlabs.lan.conf'
       }
 
       cron { "bigip":
-        command => 'puppet device --deviceconf /etc/puppetlabs/puppet/bigip.conf',
+        command => 'puppet device --deviceconf /etc/puppetlabs/puppet/f5.puppetlabs.lan.conf',
         min     => fqdn_rand(60),
       }
     }
@@ -36,22 +36,22 @@ The following puppet manifest will deploy f5 gem on the f5_proxy system and depl
 
 2. Create the corresponding node configuration on the puppet master site.pp:
 
-        node f5 {
+        node f5.puppetlabs.lan {
           f5_rule { 'demo':
             ensure     => 'present',
             definition => 'when HTTP_REQUEST {}',
           }
         }
 
-3. Execute puppet device command*:
+3. Execute puppet device command *:
 
         $ puppet device
 
-4. Currently to simplify testing we allow usage of custom puppet fact to query/configure f5 resources against a specific system*:
+4. Currently to simplify testing we allow usage of custom puppet fact to query/configure f5 resources against a specific system *:
 
         $ FACTER_url=https://admin:admin@f5.puppetlabs.lan/ puppet resource f5_rule
 
-Known issues:
+## Known Limitations
 
 * puppet agent on the proxy system will only enforce the system catalog, and it will not enforce the network device catalog. Network devices should be scheduled via cron to run puppet device command with the appropriate flags.
 * puppet device will run against all device specified in device.conf. If they should not be applied simultanously, maintain seperate conf files for f5 device and specify --deviceconfig.
@@ -87,7 +87,7 @@ Similar to Puppet 2.7 cisco devices, the F5 facts are not collected via facter, 
         !ruby/sym disk_size_/usr: 1007 MB
         !ruby/sym disk_size_/var/log: 2015 MB
         !ruby/sym disk_size_/var: 2421 MB
-        !ruby/sym domain: puppetlabslan
+        !ruby/sym domain: puppetlabs.lan
         !ruby/sym fqdn: f5.puppetlabs.lan
         !ruby/sym group_id: DefaultGroup
         !ruby/sym hardware_cache_size: 3072 KB
