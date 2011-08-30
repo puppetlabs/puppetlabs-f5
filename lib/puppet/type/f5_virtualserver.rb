@@ -17,6 +17,24 @@ Puppet::Type.newtype(:f5_virtualserver) do
     end
   end
 
+  newproperty(:port) do
+    desc "The virtual server port."
+    newvalues(/^\d+$/)
+  end
+
+  newproperty(:address) do
+    desc "The virtual server ip address."
+  end
+
+  newproperty(:wildmask) do
+    desc "The virtual server wildmask."
+  end
+
+  newproperty(:protocol) do
+    desc "The virtual server protocol."
+    newvalues(/^PROTOCOL_(ANY|IPV6|ROUTING|NONE|FRAGMENT|DSTOPTS|TCP|UDP|ICMP|ICMPV6|OSPF|SCTP)$/)
+  end
+
   newparam(:name, :namevar=>true) do
     desc "The virtual server name."
   end

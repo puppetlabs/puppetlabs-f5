@@ -32,7 +32,16 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
 
   def create
     Puppet.debug("Puppet::Provider::F5_VirtualServer: destroying F5 virtual server #{resource[:name]}")
-    transport[wsdl].create(resource[:name])
+
+    vs_definition = [{"name" => resource[:name], 
+                      "address" => resource[:address],
+                      "port" => resource[:port].to_i,
+                      "protocol" => resource[:protocol]}]
+    vs_wildmask = resource[:wildmask]
+    vs_resources = [{"type" => "RESOURCE_TYPE_POOL"}]
+    vs_profiles = [[]]
+
+    transport[wsdl].create(vs_definition, vs_wildmask, vs_resources, vs_profiles)
   end
 
   def destroy
