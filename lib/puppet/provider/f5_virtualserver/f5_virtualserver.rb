@@ -1,4 +1,5 @@
 require 'f5-icontrol'
+require 'puppet/provider/f5'
 require 'util/network_device/f5.rb'
 
 Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppet::Provider::F5) do
@@ -27,7 +28,16 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
 
   def create
     Puppet.debug("Puppet::Provider::F5_VirtualServer: destroying F5 virtual server #{resource[:name]}")
-    transport[F5_WSDL].create(resource[:name])
+
+    vs_definition = [{"name" => resource[:name], 
+                      "address" => resource[:address],
+                      "port" => resource[:port].to_i,
+                      "protocol" => resource[:protocol]}]
+    vs_wildmask = resource[:wildmask]
+    vs_resources = [{"type" => "RESOURCE_TYPE_POOL"}]
+    vs_profiles = [[]]
+
+    transport[F5_WSDL].create(vs_definition, vs_wildmask, vs_resources, vs_profiles)
   end
 
   def destroy

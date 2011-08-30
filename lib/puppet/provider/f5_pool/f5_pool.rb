@@ -100,7 +100,7 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
 
   def create
     Puppet.debug("Puppet::Provider::F5_Pool: creating F5 pool #{resource[:name]}")
-    transport[F5_WSDL].create(resource[:name])
+    transport[F5_WSDL].create(resource[:name], resource[:lb_method], [[]])
   end
 
   def destroy
