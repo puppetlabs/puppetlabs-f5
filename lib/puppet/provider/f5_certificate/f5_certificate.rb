@@ -6,7 +6,13 @@ Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::P
   confine :feature => :posix
   defaultfor :feature => :posix
 
-  F5_WSDL = 'Management.KeyCertificate'
+  def self.wsdl
+    'Management.KeyCertificate'
+  end
+
+  def wsdl
+    self.class.wsdl
+  end
 
   @f5certs
 
@@ -23,7 +29,7 @@ Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::P
     pp @f5certs
     modes.each do |mode|
       begin
-      certs += transport['Management.KeyCertificate'].get_certificate_list(mode).collect do |cert|
+      certs += transport[wsdl].get_certificate_list(mode).collect do |cert|
         new(:name => cert.certificate.cert_info.id, :is_bundled => cert.is_bundled, :file_name => cert.file_name, :mode => mode)
       end
       rescue Exception => e
@@ -45,7 +51,7 @@ Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::P
     certs = []
     modes.each do |mode|
       begin
-      transport['Management.KeyCertificate'].get_certificate_list(mode).collect do |cert|
+      transport[wsdl].get_certificate_list(mode).collect do |cert|
         @f5certs[cert.certificate.cert_info.id] = cert
                                                   # { :is_bundled => cert.is_bundled,
                                                   #  :file_name => cert.file_name,
@@ -65,13 +71,12 @@ Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::P
   end
 
 
-  # need to implement caching for this.
+  # TODO: need to implement caching for this.
   def cert_info
-   'hi hi hi'
   end
 
   def exists?
-    # transport[F5_WSDL].get_list.include?(resource[:name])
+    # transport[wsdl].get_list.include?(resource[:name])
     true
   end
 end
