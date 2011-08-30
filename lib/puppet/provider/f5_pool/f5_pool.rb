@@ -81,7 +81,7 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
 
   def monitor_association
     monitor = transport[F5_WSDL].get_monitor_association(resource[:name]).first.monitor_rule
-    [ monitor.type, monitor.quorum, [monitor.monitor_templates] ]
+    [ monitor.type, monitor.quorum.to_s, *monitor.monitor_templates ]
   end
 
   def monitor_association=(value)
