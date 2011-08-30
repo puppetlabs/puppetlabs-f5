@@ -1,7 +1,7 @@
 # Defined Resource Type: f5::config
 #
 #   This defined resource type will create an f5 device configuration file
-#     to be used with Puppet. 
+#     to be used with Puppet.
 #
 # Parameters:
 #
@@ -37,5 +37,5 @@ define f5::config(
     mode   => '0644',
     content => template('f5/config.erb'),
   }
-    
+
 }
