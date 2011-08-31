@@ -20,19 +20,89 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
     end
   end
 
-  def availability_status
-    status = transport[wsdl].get_object_status(resource[:name])
-    status[0].availability_status
+  methods = [ 'actual_hardware_acceleration',
+    'cmp_enable_mode',
+    'cmp_enabled_state',
+    # 'connection_limit',
+    'connection_mirror_state',
+    'default_pool_name',
+    'enabled_state',
+    'fallback_persistence_profile',
+    # 'gtm_score',
+    'last_hop_pool',
+    'nat64_state',
+    'protocol',
+    'rate_class',
+    'snat_automap',
+    'snat_none',
+    'snat_pool',
+    'source_port_behavior',
+    'translate_address_state',
+    'translate_port_state',
+    'type',
+    'vlan',
+    'wildmask']
+
+  methods.each do |method|
+    define_method(method.to_sym) do
+      if transport[wsdl].respond_to?("get_#{method}".to_sym)
+        transport[wsdl].send("get_#{method}", resource[:name]).first.to_s
+      end
+    end
   end
 
-  def enabled_status
-    status = transport[wsdl].get_object_status(resource[:name])
-    status[0].enabled_status
+  methods.each do |method|
+    define_method("#{method}=") do |value|
+      if transport[wsdl].respond_to?("set_#{method}".to_sym)
+        transport[wsdl].send("set_#{method}", resource[:name], resource[method.to_sym])
+      end
+    end
+  end
+
+  def connection_limit
+    val = transport[wsdl].get_connection_limit(resource[:name]).first
+    [val.high, val.low]
+  end
+
+  def connection_limit=(value)
+    transport[wsdl].set_connection_limit(resource[:name], resource[:connection_limit])
+  end
+
+  def gtm_score
+    val = transport[wsdl].get_gtm_score(resource[:name]).first
+    [val.high, val.low]
+  end
+
+  def gtm_score=(value)
+    transport[wsdl].set_gtm_score(resource[:name], resource[:gtm_score])
+  end
+
+  def destination
+    destination = transport[wsdl].get_destination(resource[:name])
+
+    destination = destination.collect { |system|
+      "#{system.address}:#{system.port}"
+    }.sort.join(',')
+  end
+
+  def destination=
+    transport[wsdl].set_destination(resource[:name],
+      [[{:address => resource[:destination].split(':')[0],
+         :port    => resource[:destination].split(':')[1]}]])
   end
 
   def create
-    Puppet.debug("Puppet::Provider::F5_VirtualServer: destroying F5 virtual server #{resource[:name]}")
-    transport[wsdl].create(resource[:name])
+    Puppet.debug("Puppet::Provider::F5_VirtualServer: creating F5 virtual server #{resource[:name]}")
+
+    vs_definition = [{"name" => resource[:name],
+                      "address" => resource[:address],
+                      "port" => resource[:port].to_i,
+                      "protocol" => resource[:protocol]}]
+    vs_wildmask = resource[:wildmask]
+    vs_resources = [{"type" => "RESOURCE_TYPE_POOL"}]
+    vs_profiles = [[]]
+
+    transport[wsdl].create(vs_definition, vs_wildmask, vs_resources, vs_profiles)
   end
 
   def destroy
