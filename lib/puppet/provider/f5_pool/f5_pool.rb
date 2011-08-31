@@ -89,7 +89,7 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
     monitor = transport[wsdl].get_monitor_association(resource[:name]).first.monitor_rule
 
     # Puppet still flattens this to [ , , ] instead of nesting the array.
-    [ monitor.type, monitor.quorum, [monitor.monitor_templates] ]
+    [ monitor.type, monitor.quorum.to_s, *monitor.monitor_templates ]
   end
 
   def monitor_association=(value)
@@ -108,7 +108,7 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
 
   def create
     Puppet.debug("Puppet::Provider::F5_Pool: creating F5 pool #{resource[:name]}")
-    transport[wsdl].create(resource[:name])
+    transport[wsdl].create(resource[:name], [[]])
   end
 
   def destroy
