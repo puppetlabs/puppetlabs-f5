@@ -87,22 +87,34 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
 
   def destination=
     transport[wsdl].set_destination(resource[:name],
-      [[{:address => resource[:destination].split(':')[0],
-         :port    => resource[:destination].split(':')[1]}]])
+      [[{:address => fetch_address(resource[:destination]),
+         :port    => fetch_port(resource[:destination])}]])
+  end
+
+  def fetch_address(dest)
+    dest.split(':')[0]
+  end
+
+  def fetch_port(dest)
+    dest.split(':')[1]
   end
 
   def create
     Puppet.debug("Puppet::Provider::F5_VirtualServer: creating F5 virtual server #{resource[:name]}")
 
     vs_definition = [{"name" => resource[:name],
-                      "address" => resource[:address],
-                      "port" => resource[:port].to_i,
+                      "address" => fetch_address(resource[:destination]),
+                      "port" => fetch_port(resource[:destination]).to_i,
                       "protocol" => resource[:protocol]}]
     vs_wildmask = resource[:wildmask]
-    vs_resources = [{"type" => "RESOURCE_TYPE_POOL"}]
+    vs_resources = [{"type" => resource[:type]}]
     vs_profiles = [[]]
 
     transport[wsdl].create(vs_definition, vs_wildmask, vs_resources, vs_profiles)
+
+    if resource[:default_pool_name]
+      self.default_pool_name = resource[:default_pool_name]
+    end
   end
 
   def destroy
