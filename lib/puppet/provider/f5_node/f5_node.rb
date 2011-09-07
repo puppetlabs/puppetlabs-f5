@@ -44,11 +44,11 @@ Puppet::Type.type(:f5_node).provide(:f5_node, :parent => Puppet::Provider::F5) d
 
   def connection_limit
     val = transport[wsdl].get_connection_limit(resource[:name]).first
-    [val.high, val.low]
+    to_64s(val)
   end
 
   def connection_limit=(value)
-    transport[wsdl].set_connection_limit(resource[:name], resource[:connection_limit])
+    transport[wsdl].set_connection_limit(resource[:name], [ to_32h(resource[:connection_limit]) ])
   end
 
   def monitor_association

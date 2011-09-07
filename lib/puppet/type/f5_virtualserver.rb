@@ -27,22 +27,22 @@ Puppet::Type.newtype(:f5_virtualserver) do
   end
 
   newproperty(:cmp_enable_mode) do
-    desc "The virtula server cmp enable mode."
+    desc "The virtual server cmp enable mode."
     newvalues(/^RESOURCE_TYPE_CMP_ENABLE_(ALL|SINGLE|GROUP|UNKNOWN)$/)
   end
 
   newproperty(:cmp_enabled_state) do
-    desc "The virtula server cmp enable state."
+    desc "The virtual server cmp enable state."
     newvalues(/^STATE_(DISABLED|ENABLED)$/)
   end
 
   newproperty(:connection_limit) do
-    desc "The virtula server connection limit."
+    desc "The virtual server connection limit."
     newvalues(/^\d+$/)
   end
 
   newproperty(:connection_mirror_state) do
-    desc "The virtula server connection limit."
+    desc "The virtual server connection limit."
     newvalues(/^STATE_(DISABLED|ENABLED)$/)
   end
 
@@ -51,7 +51,7 @@ Puppet::Type.newtype(:f5_virtualserver) do
   end
 
   newproperty(:destination) do
-    desc "The virtual server destination virtual addrss adn port."
+    desc "The virtual server destination virtual address and port."
   end
 
   newproperty(:enabled_state) do
