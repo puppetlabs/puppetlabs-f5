@@ -23,12 +23,10 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
   methods = [ 'actual_hardware_acceleration',
     'cmp_enable_mode',
     'cmp_enabled_state',
-    # 'connection_limit',
     'connection_mirror_state',
     'default_pool_name',
     'enabled_state',
     'fallback_persistence_profile',
-    # 'gtm_score',
     'last_hop_pool',
     'nat64_state',
     'protocol',
@@ -61,20 +59,20 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
 
   def connection_limit
     val = transport[wsdl].get_connection_limit(resource[:name]).first
-    [val.high, val.low]
+    to_64s(val)
   end
 
   def connection_limit=(value)
-    transport[wsdl].set_connection_limit(resource[:name], resource[:connection_limit])
+    transport[wsdl].set_connection_limit(resource[:name], [ to_32h(resource[:connection_limit]) ] )
   end
 
   def gtm_score
     val = transport[wsdl].get_gtm_score(resource[:name]).first
-    [val.high, val.low]
+    to_64s(val)
   end
 
   def gtm_score=(value)
-    transport[wsdl].set_gtm_score(resource[:name], resource[:gtm_score])
+    transport[wsdl].set_gtm_score(resource[:name], [ to_32h(resource[:gtm_score]) ] )
   end
 
   def destination
@@ -85,30 +83,24 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
     }.sort.join(',')
   end
 
-  def destination=
-    transport[wsdl].set_destination(resource[:name],
-      [[{:address => fetch_address(resource[:destination]),
-         :port    => fetch_port(resource[:destination])}]])
-  end
+  def destination=(value)
+    destination = { :address => network_address(resource[:destination]),
+                    :port    => network_port(resource[:destination])}
 
-  def fetch_address(dest)
-    dest.split(':')[0]
-  end
-
-  def fetch_port(dest)
-    dest.split(':')[1]
+    transport[wsdl].set_destination(resource[:name], [ destination ])
   end
 
   def create
     Puppet.debug("Puppet::Provider::F5_VirtualServer: creating F5 virtual server #{resource[:name]}")
 
-    vs_definition = [{"name" => resource[:name],
-                      "address" => fetch_address(resource[:destination]),
-                      "port" => fetch_port(resource[:destination]).to_i,
-                      "protocol" => resource[:protocol]}]
-    vs_wildmask = resource[:wildmask]
+    vs_definition = [ {"name"     => resource[:name],
+                       "address"  => network_address(resource[:destination]),
+                       "port"     => network_port(resource[:destination]),
+                       "protocol" => resource[:protocol]
+                      } ]
+    vs_wildmask  = resource[:wildmask]
     vs_resources = [{"type" => resource[:type]}]
-    vs_profiles = [[]]
+    vs_profiles  = [[]]
 
     transport[wsdl].create(vs_definition, vs_wildmask, vs_resources, vs_profiles)
 
