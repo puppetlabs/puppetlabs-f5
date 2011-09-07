@@ -67,7 +67,7 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
       "#{system.address}:#{system.port}"
     }
 
-    members = resource[:member].split(',')
+    members = value.split(',')
 
     # Should add first to avoid clearing all members of the pool.
     (members - current_members).each do |node|
@@ -93,7 +93,7 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
   end
 
   def monitor_association=(value)
-    monitor = resource[:monitor_association]
+    monitor = value
     newval = [
       :pool_name    => resource[:name],
       :monitor_rule => {
@@ -109,6 +109,14 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
   def create
     Puppet.debug("Puppet::Provider::F5_Pool: creating F5 pool #{resource[:name]}")
     transport[wsdl].create(resource[:name], resource[:lb_method], [[]])
+
+    if resource[:member]
+      self.member = resource[:member]
+    end
+
+    if resource[:monitor_association]
+      self.monitor_association = resource[:monitor_association]
+    end
   end
 
   def destroy

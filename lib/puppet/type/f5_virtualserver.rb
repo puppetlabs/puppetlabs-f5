@@ -84,6 +84,14 @@ Puppet::Type.newtype(:f5_virtualserver) do
     desc "The virtual server rate class."
   end
 
+  newproperty(:profile, :array_matching => :all) do
+    desc "Adds/associates profiles to the specified virtual servers."
+  end
+
+  newproperty(:rule,  :array_matching => :all) do
+    desc "Adds/associates rules to the specified virtual servers."
+  end
+
   newproperty(:snat_pool) do
   end
 
