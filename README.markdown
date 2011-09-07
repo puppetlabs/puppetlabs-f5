@@ -23,7 +23,7 @@ The following puppet manifest will deploy f5 gem on the f5_proxy system and depl
       }
 
       cron { "bigip":
-        command => 'puppet device --deviceconf /etc/puppetlabs/puppet/f5.puppetlabs.lan.conf',
+        command => 'puppet device --deviceconf /etc/puppetlabs/puppet/device/f5.puppetlabs.lan.conf',
         min     => fqdn_rand(60),
       }
     }
@@ -57,7 +57,7 @@ The following puppet manifest will deploy f5 gem on the f5_proxy system and depl
 * puppet device will run against all device specified in device.conf. If they should not be applied simultanously, maintain seperate conf files for f5 device and specify --deviceconfig.
 * Because pluginsync only support custom facts/functions [#7316](http://projects.puppetlabs.com/issues/7316), all puppet commands needs the appropriate RUBYLIB path (including puppet master):
 
-        export RUBYLIB=/etc/puppet/modules/puppetlabs-f5/lib/
+        export RUBYLIB=/etc/puppet/modules/f5/lib/:$RUBYLIB
 
 For more information see: http://www.puppetlabs.com/blog/puppet-network-device-management/
 
