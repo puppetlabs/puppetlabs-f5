@@ -1,3 +1,6 @@
+require 'openssl'
+require 'digest/md5'
+
 Puppet::Type.newtype(:f5_certificate) do
   @doc = "Manage F5 certificate."
 
@@ -21,16 +24,26 @@ Puppet::Type.newtype(:f5_certificate) do
     desc "The key name."
   end
 
-  #newparam(:file) do
-  #  desc "The cerficate file (content)."
-  #end
-  #
+  newparam(:real_content) do
+    desc "Store actual PEM file content."
+  end
+
+  newproperty(:content) do
+    desc "The cerficate file PEM content (fingerprint compared)."
+
+    munge do |value|
+      resource[:real_content] = value
+      Puppet.debug(value)
+      Puppet.debug("sha1(#{Digest::MD5.hexdigest(OpenSSL::X509::Certificate.new(value).to_der)}")
+      "sha1(#{Digest::SHA1.hexdigest(OpenSSL::X509::Certificate.new(value).to_der)}"
+    end
+  end
+
   newparam(:mode) do
     desc "The certificate management mode type."
 
-  end
+    defaultto("MANAGEMENT_MODE_DEFAULT")
 
-  #newproperty(:cert_info) do
-  #  desc "some demo."
-  #end
+    newvalues(/^MANAGEMENT_MODE_(DEFAULT|WEBSERVER|EM|IQUERY|IQUERY_BIG3D)$/)
+  end
 end

@@ -6,7 +6,7 @@ Puppet::Type.type(:f5_key).provide(:f5_key, :parent => Puppet::Provider::F5) do
   confine :feature => :posix
   defaultfor :feature => :posix
 
-  @f5key
+  @f5keys
 
   def self.wsdl
     'Management.KeyCertificate'
@@ -17,17 +17,17 @@ Puppet::Type.type(:f5_key).provide(:f5_key, :parent => Puppet::Provider::F5) do
   end
 
   def self.instances
-    unless @f5key
+    unless @f5keys
       self.cache
     end
 
-    @f5key.collect{ |name, value|
+    @f5keys.collect{ |name, value|
       new(:name => name)
     }
   end
 
   def self.cache
-    @f5key ||= {}
+    @f5keys ||= {}
 
     modes = [ "MANAGEMENT_MODE_DEFAULT",
               "MANAGEMENT_MODE_WEBSERVER",
@@ -38,7 +38,7 @@ Puppet::Type.type(:f5_key).provide(:f5_key, :parent => Puppet::Provider::F5) do
     modes.each do |mode|
       begin
         transport[wsdl].get_key_list(mode).collect do |key|
-          @f5key[key.key_info.id] = { :info => key.key_info,
+          @f5keys[key.key_info.id] = { :info => key.key_info,
                                       :mode => mode }
         end
       rescue Exception => e
@@ -49,11 +49,11 @@ Puppet::Type.type(:f5_key).provide(:f5_key, :parent => Puppet::Provider::F5) do
       end
     end
 
-    @f5key
+    @f5keys
   end
 
   def self.cache_delete(key)
-    @f5key.delete(key)
+    @f5keys.delete(key)
   end
 
   def cache
@@ -65,11 +65,11 @@ Puppet::Type.type(:f5_key).provide(:f5_key, :parent => Puppet::Provider::F5) do
   end
 
   def self.lookup(key)
-    unless @f5key and @f5key[key]
+    unless @f5keys and @f5keys[key]
       self.cache
     end
 
-    @f5key[key]
+    @f5keys[key]
   end
 
   def lookup(key)
