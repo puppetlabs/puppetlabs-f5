@@ -57,6 +57,51 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
     end
   end
 
+  def rule
+    transport[wsdl].get_rule(resource[:name]).first.map {|r| {"rule_name" => r.rule_name, "priority" => r.priority.to_s}}
+  end
+
+  def rule=(rules)
+    # TODO
+    #
+    # Unfortunately iControl doesn't support modifying existing rule
+    # priorities.  This means if we had a our rules set to {"ruleA" => 0, "ruleB"
+    # => 1} and we wanted to swap the priorities we have to remove all rules then
+    # add our new ones with a second call.  This is _really_ bad because it means
+    # that there will be an brief outage while the rules are removed.
+    #
+    # What we will likely have to do is create dup the current rules into
+    # temporary names, remove the old ones, then add the correct ones and delete
+    # the dups. Yay.
+    Puppet.debug("Puppet::Provider::F5_VirtualServer: Deleting all current rules for #{resource[:name]}")
+    transport[wsdl].remove_all_rules(resource[:name])
+    transport[wsdl].add_rule(resource[:name], [rules])
+  end
+
+  def profile
+    profiles = transport[wsdl].get_profile(resource[:name]).first.map {|p| {"profile_name" => p.profile_name}}
+    # We get TCP by default.  Trying to create it will cause problems.
+    return profiles - [{"profile_name"=>"tcp"}]
+  end
+
+  def profile=(profiles)
+    # TODO: For the same reason as with rules, this is far from production
+    # ready.
+
+    Puppet.debug("Puppet::Provider::F5_VirtualServer: Deleting all current profiles for #{resource[:name]}")
+    transport[wsdl].remove_all_rules(resource[:name])
+    transport[wsdl].remove_all_profiles(resource[:name])
+
+    # Now create the array of hashes that iControl expects
+    new_profiles = profiles.map do |p|
+      # We're hard-coding the profile_context because that's the only one I've
+      # seen used
+      {:profile_name => p["profile_name"], :profile_context => "PROFILE_CONTEXT_TYPE_ALL"}
+    end
+
+    transport[wsdl].add_profile(resource[:name], [new_profiles])
+  end
+
   def connection_limit
     val = transport[wsdl].get_connection_limit(resource[:name]).first
     to_64s(val)
@@ -106,6 +151,14 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
 
     if resource[:default_pool_name]
       self.default_pool_name = resource[:default_pool_name]
+    end
+
+    if resource[:profile]
+      self.profile = resource[:profile]
+    end
+
+    if resource[:rule]
+      self.rule = resource[:rule]
     end
   end
 
