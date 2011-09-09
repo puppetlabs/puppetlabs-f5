@@ -1,5 +1,5 @@
 require 'openssl'
-require 'digest/md5'
+require 'digest/sha1'
 require 'puppet/provider/f5'
 
 Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::Provider::F5 ) do
@@ -20,19 +20,20 @@ Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::P
 
   def self.instances
     f5certs = Array.new
-    cert = Hash.new
+
     modes = [ "MANAGEMENT_MODE_DEFAULT",
               "MANAGEMENT_MODE_WEBSERVER",
               "MANAGEMENT_MODE_EM",
               "MANAGEMENT_MODE_IQUERY",
               "MANAGEMENT_MODE_IQUERY_BIG3D" ]
+
     modes.each do |mode|
       begin
         transport[wsdl].get_certificate_list(mode).each do |cert|
           # F5 certificate bundles have a single cert id so we can't manage
           # them individually, only as a single bundle.
           cert = {
-            :name => cert.certificate.cert_info.id,
+            :name   => cert.certificate.cert_info.id,
             :ensure => 'present',
             :mode   => mode
           }
@@ -45,6 +46,7 @@ Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::P
         Puppet.debug("Puppet::Provider::F5_Certificate: ignoring get_certificate_list exception \n #{e.message}")
       end
     end
+
     f5certs
   end
 
