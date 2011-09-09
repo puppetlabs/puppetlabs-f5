@@ -130,7 +130,7 @@ Sample F5 configuration output gather by puppet resource:
 
     f5_node { '192.168.1.1':
       ensure                => 'present',
-      connection_limit      => ['0', '10'],
+      connection_limit      => '10',
       dynamic_ratio         => '1',
       ratio                 => '1',
       session_enabled_state => 'STATE_ENABLED',
