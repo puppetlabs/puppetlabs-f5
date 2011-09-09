@@ -122,11 +122,28 @@ Similar to Puppet 2.7 cisco devices, the F5 facts are not collected via facter, 
         !ruby/sym version: BIG-IP_v10.1.0
 
 ## Appendix
-Sample F5 configuration output gather by puppet resource:
+Sample Puppet F5 configuration manifests and usage notes.
+
+    f5_key { 'ca-key':
+      ensure  => 'present',
+      content => file('/etc/puppet/ssl/ca_key.pem'),
+    }
 
     f5_certificate { 'ca-bundle':
-      ensure => 'present',
+      ensure  => 'present',
+      content => file('/etc/puppet/ssl/ca_bundle.pem'),
     }
+
+f5_certificate content attribute accepts the certificate in PEM format:
+
+    ----BEGIN CERTIFICATE-----
+    MIICbDCCAdWgAwIBAgIBATANBgkqhkiG9w0BAQUFADAVMRMwEQYDVQQDDApyYWlk
+    ...
+    -----END CERTIFICATE-----
+
+Certificates sha1 fingerprint is compared and will be used instead of the certificate content for auditing purposes:
+
+    notice: /Stage[main]//F5_certificate[ca-bundle]/content: content changed 'sha1(0197e53f31798d43eac830b8561887dae22fd5c2)' to 'sha1(39c2e7fa576e98431bbab66ca0cb14e01cb8bfe4'
 
     f5_node { '192.168.1.1':
       ensure                => 'present',
@@ -150,7 +167,7 @@ Sample F5 configuration output gather by puppet resource:
       minimum_up_member               => '0',
       minimum_up_member_action        => 'HA_ACTION_FAILOVER',
       minimum_up_member_enabled_state => 'STATE_DISABLED',
-      monitor_association             => '#<SOAP::Mapping::Object:0x10443c470>',
+      monitor_association             => ['MONITOR_RULE_TYPE_AND_LIST', '0', 'http', 'Demo'],
       server_ip_tos                   => '65535',
       server_link_qos                 => '65535',
       simple_timeout                  => '0',
@@ -179,7 +196,8 @@ Sample F5 configuration output gather by puppet resource:
     f5_snattranslationaddress { '1.1.1.1':
       ensure           => 'present',
       arp_state        => 'STATE_ENABLED',
-      connection_limit => ['0', '0'],
+      connection_limit => '0',
+      enabled_state    => 'STATE_ENABLED',
       ip_timeout       => '4294967295',
       tcp_timeout      => '4294967295',
       udp_timeout      => '4294967295',
@@ -187,7 +205,20 @@ Sample F5 configuration output gather by puppet resource:
     }
 
     f5_virtualserver { 'www':
-      ensure              => 'present',
-      availability_status => 'AVAILABILITY_STATUS_BLUE',
-      enabled_status      => 'ENABLED_STATUS_DISABLED',
+      ensure                       => 'present',
+      actual_hardware_acceleration => 'HW_ACCELERATION_MODE_NONE',
+      cmp_enable_mode              => 'RESOURCE_TYPE_CMP_ENABLE_ALL',
+      cmp_enabled_state            => 'STATE_ENABLED',
+      connection_limit             => '5000000',
+      connection_mirror_state      => 'STATE_DISABLED',
+      destination                  => '192.168.1.1:90',
+      enabled_state                => 'STATE_DISABLED',
+      gtm_score                    => '0',
+      protocol                     => 'PROTOCOL_TCP',
+      source_port_behavior         => 'SOURCE_PORT_PRESERVE',
+      translate_address_state      => 'STATE_DISABLED',
+      translate_port_state         => 'STATE_ENABLED',
+      type                         => 'RESOURCE_TYPE_POOL',
+      vlan                         => '#<SOAP::Mapping::Object:0x104292408>',
+      wildmask                     => '255.255.255.255',
     }
