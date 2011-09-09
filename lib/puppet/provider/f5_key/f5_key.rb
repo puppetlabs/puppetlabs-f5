@@ -79,7 +79,7 @@ Puppet::Type.type(:f5_key).provide(:f5_key, :parent => Puppet::Provider::F5) do
   end
 
   def exists?
-    Puppet.debug("Puppet::Provider::F5_key::Ensure: #{@property_hash[:ensure]}")
+    Puppet.debug("Puppet::Provider::F5_key::Ensure for #{@property_hash[:name]}: #{@property_hash[:ensure]}")
     @property_hash[:ensure] != :absent
   end
 end
