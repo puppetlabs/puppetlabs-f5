@@ -21,9 +21,8 @@ Puppet::Type.newtype(:f5_node) do
     desc "The node name."
   end
 
-  newproperty(:connection_limit, :array_matching => :all) do
+  newproperty(:connection_limit) do
     desc "The node connection limit."
-    defaultto([0, 0])
   end
 
   newproperty(:dynamic_ratio) do
