@@ -25,7 +25,6 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
     'allow_snat_state',
     'client_ip_tos',                      # Array
     'client_link_qos',                    # Array
-    'description',
     'gateway_failsafe_device',
     'gateway_failsafe_unit_id',           # Array
     'lb_method',
@@ -108,7 +107,29 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
 
   def create
     Puppet.debug("Puppet::Provider::F5_Pool: creating F5 pool #{resource[:name]}")
+    # [[]] because we will add members later using member=...
     transport[wsdl].create(resource[:name], resource[:lb_method], [[]])
+
+    methods = [ 'action_on_service_down',
+    'allow_nat_state',
+    'allow_snat_state',
+    'client_ip_tos',                      # Array
+    'client_link_qos',                    # Array
+    'gateway_failsafe_device',
+    'gateway_failsafe_unit_id',           # Array
+    'lb_method',
+    'minimum_active_member',              # Array
+    'minimum_up_member',                  # Array
+    'minimum_up_member_action',
+    'minimum_up_member_enabled_state',
+    'server_ip_tos',
+    'server_link_qos',
+    'simple_timeout',
+    'slow_ramp_time']
+    methods << "monitor_association" << "member"
+    methods.each do |method|
+      self.send("#{method}=", "a") if resource[method.to_sym]
+    end
   end
 
   def destroy
