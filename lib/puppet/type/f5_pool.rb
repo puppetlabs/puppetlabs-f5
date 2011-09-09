@@ -47,11 +47,6 @@ Puppet::Type.newtype(:f5_pool) do
     newvalues(/^\d+$/)
   end
 
-  newproperty(:description) do
-    desc "The pool description."
-    # Only available in 11.0
-  end
-
   newproperty(:gateway_failsafe_device) do
     desc "The pool gateway failsafe device."
   end
@@ -68,9 +63,6 @@ Puppet::Type.newtype(:f5_pool) do
 
   newproperty(:member, :parent => Puppet::Property::List) do
     desc "The pool member."
-    #munge do |value|
-    #  Array(value)
-    #end
   end
 
   newparam(:membership) do
