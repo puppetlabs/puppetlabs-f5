@@ -29,7 +29,7 @@ Puppet::Type.type(:f5_node).provide(:f5_node, :parent => Puppet::Provider::F5) d
   methods.each do |method|
     define_method(method.to_sym) do
       if transport[wsdl].respond_to?("get_#{method}".to_sym)
-        transport[wsdl].send("get_#{method}", resource[:name]).first
+        transport[wsdl].send("get_#{method}", resource[:name]).first.to_s
       end
     end
   end
