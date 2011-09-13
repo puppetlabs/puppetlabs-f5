@@ -1,5 +1,4 @@
-require 'openssl'
-require 'digest/sha1'
+require 'puppet/util/network_device/f5'
 
 Puppet::Type.newtype(:f5_certificate) do
   @doc = "Manage F5 certificate."
@@ -33,7 +32,7 @@ Puppet::Type.newtype(:f5_certificate) do
 
     munge do |value|
       resource[:real_content] = value
-      "sha1(#{Digest::SHA1.hexdigest(OpenSSL::X509::Certificate.new(value).to_der)}"
+      "sha1(#{Puppet::Util::NetworkDevice::F5.fingerprint(value)})"
     end
   end
 
