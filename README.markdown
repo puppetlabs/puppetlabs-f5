@@ -2,7 +2,7 @@
 Warning: this project is currently work in progress, *pending* sections are planned features.
 
 ## Overview
-The F5 module was written against F5 VE version 10.1.0.3341. F5 have released version 11 with several API changes but currently they have not released any hardware or software running version 11. This provider uses several version 10 API, so it is not expected to work with older F5 devices.
+The F5 module was written against F5 VE version 10.1.0.3341. F5 have released version 11 with several API changes but currently they have not released any hardware or software running version 11. This provider uses several version 10.1 API, so it is not expected to work with older F5 devices.
 
 ## Installation and Usage
 Since we can not directly install a puppet agent on F5, it is managed through an intermediate proxy system running puppet agent similar to cisco devices. The requirement for the proxy system:
@@ -55,6 +55,12 @@ The following puppet manifest will deploy f5 gem on the f5_proxy system and depl
 
 * puppet agent on the proxy system will only enforce the system catalog, and it will not enforce the network device catalog. Network devices should be scheduled via cron to run puppet device command with the appropriate flags.
 * puppet device will run against all device specified in device.conf. If they should not be applied simultanously, maintain seperate conf files for f5 device and specify --deviceconfig.
+* F5 partitions should be configure via accounts that have those partitions configured as defaults. For example admin have access to common patition, while the limited account have access to business partition.
+
+        https://admin:admin@f5.rh.lan/
+
+        https://limited:limited@f5.rh.lan/
+
 * Because pluginsync only support custom facts/functions [#7316](http://projects.puppetlabs.com/issues/7316), all puppet commands needs the appropriate RUBYLIB path (including puppet master):
 
         export RUBYLIB=/etc/puppet/modules/f5/lib/:$RUBYLIB
@@ -122,36 +128,44 @@ Similar to Puppet 2.7 cisco devices, the F5 facts are not collected via facter, 
         !ruby/sym version: BIG-IP_v10.1.0
 
 ## Appendix
-Sample Puppet F5 configuration manifests and usage notes.
+Sample Puppet F5 manifests and usage notes where applicable. F5 API documentation:
+http://devcentral.f5.com/wiki/iControl.APIReference.ashx
 
-    f5_key { 'ca-key':
-      ensure  => 'present',
-      content => file('/etc/puppet/ssl/ca_key.pem'),
-    }
-
-    f5_certificate { 'ca-bundle':
-      ensure  => 'present',
-      content => file('/etc/puppet/ssl/ca_bundle.pem'),
-    }
-
-f5_certificate content attribute accepts the certificate in PEM format:
+f5_(key|certificate) content attribute accepts the certificate in PEM format:
 
     ----BEGIN CERTIFICATE-----
     MIICbDCCAdWgAwIBAgIBATANBgkqhkiG9w0BAQUFADAVMRMwEQYDVQQDDApyYWlk
     ...
     -----END CERTIFICATE-----
 
-Certificates sha1 fingerprint is compared and will be used instead of the certificate content for auditing purposes:
+The certificate content can be embedded via file or template function:
 
-    notice: /Stage[main]//F5_certificate[ca-bundle]/content: content changed 'sha1(0197e53f31798d43eac830b8561887dae22fd5c2)' to 'sha1(39c2e7fa576e98431bbab66ca0cb14e01cb8bfe4'
+    f5_key { 'ca-key':
+      ensure  => 'present',
+      content => file('/etc/puppet/ssl/ca_key.pem'),
+      mode    => 'MANAGEMENT_MODE_DEFAULT',
+    }
+
+    f5_certificate { 'ca-bundle':
+      ensure  => 'present',
+      content => file('/etc/puppet/ssl/ca_bundle.pem'),
+      mode    => 'MANAGEMENT_MODE_DEFAULT',
+    }
+
+Certificates comparison is completed via sha1 fingerprint which is also used during logging instead of the actual certificate content.
+
+    notice: /Stage[main]//F5_certificate[ca-bundle]/content: content changed 'sha1(0197e53f31798d43eac830b8561887dae22fd5c2)' to 'sha1(39c2e7fa576e98431bbab66ca0cb14e01cb8bfe4)'
 
     f5_node { '192.168.1.1':
       ensure                => 'present',
       connection_limit      => '10',
       dynamic_ratio         => '1',
       ratio                 => '1',
+      screen_name           => 'demo_node',
       session_enabled_state => 'STATE_ENABLED',
     }
+
+The member attribute is not order dependent, the monitor_associate is order dependent:
 
     f5_pool { 'webserver':
       ensure                          => 'present',

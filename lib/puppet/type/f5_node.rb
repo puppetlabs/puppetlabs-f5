@@ -23,6 +23,7 @@ Puppet::Type.newtype(:f5_node) do
 
   newproperty(:connection_limit) do
     desc "The node connection limit."
+    newvalues(/^\d+$/)
   end
 
   newproperty(:dynamic_ratio) do
@@ -32,12 +33,7 @@ Puppet::Type.newtype(:f5_node) do
 
   #newproperty(:monitor_association) do
   #  desc "The node monitor association."
-  #  #newvalues(/^STATE_(DISABLED|ENABLED)$/)
-  #end
-
-  #newproperty(:monitor_state) do
-  #  desc "The node monitor state."
-    #newvalues(/^\d+$/)
+  #  newvalues(/^STATE_(DISABLED|ENABLED)$/)
   #end
 
   newproperty(:ratio) do
