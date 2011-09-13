@@ -159,6 +159,7 @@ Certificates comparison is completed via sha1 fingerprint which is also used dur
       connection_limit      => '10',
       dynamic_ratio         => '1',
       ratio                 => '1',
+      screen_name           => 'demo_node',
       session_enabled_state => 'STATE_ENABLED',
     }
 
