@@ -38,9 +38,7 @@ Puppet::Type.newtype(:f5_certificate) do
 
   newparam(:mode) do
     desc "The certificate management mode type."
-
     defaultto("MANAGEMENT_MODE_DEFAULT")
-
     newvalues(/^MANAGEMENT_MODE_(DEFAULT|WEBSERVER|EM|IQUERY|IQUERY_BIG3D)$/)
   end
 end

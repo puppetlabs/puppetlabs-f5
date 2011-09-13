@@ -143,11 +143,13 @@ The certificate content can be embedded via file or template function:
     f5_key { 'ca-key':
       ensure  => 'present',
       content => file('/etc/puppet/ssl/ca_key.pem'),
+      mode    => 'MANAGEMENT_MODE_DEFAULT',
     }
 
     f5_certificate { 'ca-bundle':
       ensure  => 'present',
       content => file('/etc/puppet/ssl/ca_bundle.pem'),
+      mode    => 'MANAGEMENT_MODE_DEFAULT',
     }
 
 Certificates comparison is completed via sha1 fingerprint which is also used during logging instead of the actual certificate content.

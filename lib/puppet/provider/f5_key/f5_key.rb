@@ -1,3 +1,4 @@
+require 'digest/sha1'
 require 'puppet/provider/f5'
 
 Puppet::Type.type(:f5_key).provide(:f5_key, :parent => Puppet::Provider::F5) do
@@ -16,10 +17,6 @@ Puppet::Type.type(:f5_key).provide(:f5_key, :parent => Puppet::Provider::F5) do
     self.class.wsdl
   end
 
-  # Our instances method grabs the current target f5 state of all keys. This
-  # instances method is called by the parent Puppet::Provider::F5 class's
-  # prefetch method (not yet written, currently in this class). Prefetch is what
-  # populates @property_hash for use when checking the keys' installation state.
   def self.instances
     f5keys = Array.new
     key = Hash.new
@@ -32,11 +29,9 @@ Puppet::Type.type(:f5_key).provide(:f5_key, :parent => Puppet::Provider::F5) do
       begin
         transport[wsdl].get_key_list(mode).collect do |key|
           key = {
-            :name           => key.key_info.id,
-            :ensure         => 'present',
-            :key_type       => key.key_info.key_type,
-            :security       => key.key_info.security,
-            :managementmode => mode
+            :name   => key.key_info.id,
+            :ensure => 'present',
+            :mode   => mode
           }
           f5keys << new(key)
         end
@@ -63,6 +58,16 @@ Puppet::Type.type(:f5_key).provide(:f5_key, :parent => Puppet::Provider::F5) do
     @property_hash.clear
   end
 
+  def content
+    key = transport[wsdl].key_export_to_pem(@property_hash[:mode], @property_hash[:name]).first
+    "sha1(#{Digest::SHA1.hexdigest(key)})"
+  end
+
+  def content=(value)
+    Puppet.debug("Puppet::Provider::F5_key: replacing key #{resource[:name]}")
+    transport[wsdl].key_import_from_pem(resource[:mode], [resource[:name]], [ resource[:real_content] ], true)
+  end
+
   def create
     @property_hash[:ensure] = :present
     self.class.resource_type.validproperties.each do |property|
@@ -70,12 +75,12 @@ Puppet::Type.type(:f5_key).provide(:f5_key, :parent => Puppet::Provider::F5) do
         @property_hash[property] = val
       end
     end
-    transport[wsdl].key_import_from_pem(resource[:managementmode], [resource[:name]], [resource[:content]], true)
+    transport[wsdl].key_import_from_pem(resource[:mode], [resource[:name]], [resource[:real_content]], true)
   end
 
   def destroy
     @property_hash[:ensure] = :absent
-    transport[wsdl].key_delete(@property_hash[:managementmode], [@property_hash[:name]])
+    transport[wsdl].key_delete(@property_hash[:mode], [@property_hash[:name]])
   end
 
   def exists?
