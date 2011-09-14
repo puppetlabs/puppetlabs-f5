@@ -1,6 +1,5 @@
-require 'openssl'
-require 'digest/sha1'
 require 'puppet/provider/f5'
+require 'puppet/util/network_device/f5'
 
 Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::Provider::F5 ) do
   @doc = "Manages f5 certificates"
@@ -63,33 +62,10 @@ Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::P
     @property_hash.clear
   end
 
-  # This is intended to decode certificate (subject, serial, issuer, expiration) for comparison.
-  def decode(content)
-    cert = case content.split("\n").first
-           when /BEGIN X509 CRL/
-             OpenSSL::X509::CRL
-           when /BEGIN CERTIFICATE REQUEST/
-             OpenSSL::X509::Request
-           when /BEGIN CERTIFICATE/
-             OpenSSL::X509::Certificate
-           when /BEGIN RSA (PRIVATE|PUBLIC) KEY/
-             OpenSSL::PKey::RSA
-           else return nil
-           end
-    cert.new(content)
-  rescue Exception => e
-    Puppet.debug("Puppet::Provider::F5_Cert: failed to decode certificate #{resource[:name]} content. Error: #{e.message}")
-  end
-
-  # Calculate cert fingerprint
-  def fingerprint(content)
-    cert = decode(content)
-    Digest::SHA1.hexdigest(cert.to_der)
-  end
 
   def content
     cert = transport[wsdl].certificate_export_to_pem(@property_hash[:mode], @property_hash[:name]).first
-    "sha1(#{fingerprint(cert)})"
+    "sha1(#{Puppet::Util::NetworkDevice::F5.fingerprint(cert)})"
   end
 
   def content=(value)

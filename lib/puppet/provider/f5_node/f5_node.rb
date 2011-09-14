@@ -21,7 +21,6 @@ Puppet::Type.type(:f5_node).provide(:f5_node, :parent => Puppet::Provider::F5) d
   end
 
   methods = [ 'dynamic_ratio',
-    'monitor_state',
     'ratio',
     'screen_name',
     'session_enabled_state']
@@ -57,9 +56,18 @@ Puppet::Type.type(:f5_node).provide(:f5_node, :parent => Puppet::Provider::F5) d
 
   def create
     Puppet.debug("Puppet::Provider::F5_Node: creating F5 node #{resource[:name]}")
-    transport[wsdl].create(resource[:name], resource[:connection_limit])
+    # The F5 API isn't consistent, it accepts long instead of ULong64 so we set connection limits later.
+    transport[wsdl].create(resource[:name], [0])
 
-    # need to sync all attributes afterwards
+    methods = [ 'connection_limit',
+      'dynamic_ratio',
+      'ratio',
+      'screen_name',
+      'session_enabled_state' ]
+
+    methods.each do |method|
+      self.send("#{method}=", resource[method.to_sym]) if resource[method.to_sym]
+    end
   end
 
   def destroy

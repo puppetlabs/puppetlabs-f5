@@ -10,6 +10,10 @@ class Puppet::Util::NetworkDevice::F5::Facts
     @transport = transport
   end
 
+  def to_64i(value)
+    (value.high.to_i << 32) + value.low.to_i
+  end
+
   def retreive
     @facts = {}
     [ 'base_mac_address',
@@ -29,11 +33,11 @@ class Puppet::Util::NetworkDevice::F5::Facts
     soap = SOAP::Mapping::Object.new
 
     system_info = @transport[F5_WSDL].get_system_information
-    attributes = system_info.methods.reject{|k| k =~ /=$/} - soap.methods
+    attributes  = system_info.methods.reject{|k| k =~ /=$/} - soap.methods
     attributes.each { |key| @facts[key.to_sym] = system_info[key] }
 
     hardware_info = @transport[F5_WSDL].get_hardware_information
-    attributes = hardware_info.first.methods.reject{|k| k =~ /=$/} - soap.methods
+    attributes    = hardware_info.first.methods.reject{|k| k =~ /=$/} - soap.methods
     attributes.each { |key| @facts[key.to_sym] = hardware_info.first[key] }
     hardware_info.each do |hardware|
       attributes = hardware.methods.reject{|k| k =~ /=$/} - soap.methods
@@ -43,30 +47,29 @@ class Puppet::Util::NetworkDevice::F5::Facts
       end
     end
 
-    # f5 stores 64 bit integer as two 32 bit, so this won't handle > 32 bit.
     disk_info = @transport[F5_WSDL].get_disk_usage_information
     disk_info.usages.each do |disk|
-      @facts["disk_size_#{disk.partition_name}".to_sym] = "#{(disk.total_blocks.low * disk.block_size.low)/1024/1024} MB"
-      @facts["disk_free_#{disk.partition_name}".to_sym] = "#{(disk.free_blocks.low * disk.block_size.low)/1024/1024} MB"
+      @facts["disk_size_#{disk.partition_name}".to_sym] = "#{(to_64i(disk.total_blocks) * to_64i(disk.block_size))/1024/1024} MB"
+      @facts["disk_free_#{disk.partition_name}".to_sym] = "#{(to_64i(disk.free_blocks) * to_64i(disk.block_size))/1024/1024} MB"
     end
 
     # cleanup of f5 output to match existing facter key values.
-    map = { :host_name => :fqdn,
-            :base_mac_address => :macaddress,
-            :os_machine => :hardwaremodel,
-            :uptime => :uptime_seconds,
+    map = { :host_name         => :fqdn,
+            :base_mac_address  => :macaddress,
+            :os_machine        => :hardwaremodel,
+            :uptime            => :uptime_seconds,
     }
     @facts = Hash[@facts.map {|k, v| [map[k] || k, v] }]\
 
     if @facts[:fqdn] then
       fqdn = @facts[:fqdn].split('.', 2)
       @facts[:hostname] = fqdn.shift
-      @facts[:domain] = fqdn
+      @facts[:domain]   = fqdn
     end
     if @facts[:uptime_seconds] then
-      @facts[:uptime] = "#{String(@facts[:uptime_seconds]/86400)} days" # String
-      @facts[:uptime_hours] = @facts[:uptime_seconds] / (60 * 60)       # Integer
-      @facts[:uptime_days] = @facts[:uptime_hours] / 24                 # Integer
+      @facts[:uptime]       = "#{String(@facts[:uptime_seconds]/86400)} days" # String
+      @facts[:uptime_hours] = @facts[:uptime_seconds] / (60 * 60)             # Integer
+      @facts[:uptime_days]  = @facts[:uptime_hours] / 24                      # Integer
     end
     if @facts[:hardware_cpus_versions]
       @facts[:hardware_cpus_versions].each { |key| @facts["hardware_#{key.name.downcase.gsub(/\s/,'_')}".to_sym] = key.value }

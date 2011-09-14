@@ -1,3 +1,5 @@
+require 'digest/sha1'
+
 Puppet::Type.newtype(:f5_key) do
   @doc = "Manage F5 key."
 
@@ -21,25 +23,23 @@ Puppet::Type.newtype(:f5_key) do
     desc "The key name."
   end
 
-  newproperty(:key_type) do
-    desc "The key type."
-    newvalues(/^KTYPE_(RSA|DSA)_(PRIVATE|PUBLIC)$/)
+  newproperty(:content) do
+    desc "The key content in PEM format."
+
+    # Since we won't be able to decode private key, calculating sha1 of the content instead.
+    munge do |value|
+      resource[:real_content] = value
+      "sha1(#{Digest::SHA1.hexdigest(value)})"
+    end
   end
 
-  newproperty(:security) do
-    desc "The key security purpose."
-    newvalues(/^STYPE_(NORMAL|FIPS|PASSWORD)/)
+  newparam(:real_content) do
+    desc "The actual key content."
   end
 
-  newparam(:managementmode) do
+  newparam(:mode) do
     desc "They key management mode."
-
     defaultto("MANAGEMENT_MODE_DEFAULT")
-
     newvalues(/^MANAGEMENT_MODE_(DEFAULT|WEBSERVER|EM|IQUERY|IQUERY_BIG3D)$/)
-  end
-
-  newparam(:content) do
-    desc "They key content in PEM format."
   end
 end
