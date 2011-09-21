@@ -92,6 +92,11 @@ Puppet::Type.newtype(:f5_virtualserver) do
     desc "Adds/associates rules to the specified virtual servers."
   end
 
+  newproperty(:snat_type) do
+    desc "Configure the type of SNAT used with this virtual server"
+    newvalues(/^SNAT_TYPE_(NONE|TRANSLATION_ADDRESS|SNATPOOL|AUTOMAP)$/)
+  end
+
   newproperty(:snat_pool) do
   end
 
