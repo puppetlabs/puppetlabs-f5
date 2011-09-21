@@ -31,10 +31,13 @@ The following puppet manifest will deploy f5 gem on the f5_proxy system and depl
 1. Create F5 Device configuration file in $confdir/device.conf (typically /etc/puppet/device.conf or /etc/puppetlabs/puppet/device.conf)
 
         [certname]
-          type f5
-          url https://username:password@address/
+        type f5
+        url https://username:password@address/
 
-2. Create the corresponding node configuration on the puppet master site.pp:
+2. F5 Partition support is added as part of device.conf (url.path of "" or "/" is interpretted as Common partition):
+        url https://username:password@address/partition
+
+3. Create the corresponding node configuration on the puppet master site.pp:
 
         node f5.puppetlabs.lan {
           f5_rule { 'demo':
@@ -43,11 +46,11 @@ The following puppet manifest will deploy f5 gem on the f5_proxy system and depl
           }
         }
 
-3. Execute puppet device command *:
+4. Execute puppet device command *:
 
         $ puppet device
 
-4. Currently to simplify testing we allow usage of custom puppet fact to query/configure f5 resources against a specific system *:
+5. Currently to simplify testing we allow usage of custom puppet fact to query/configure f5 resources against a specific system *:
 
         $ FACTER_url=https://admin:admin@f5.puppetlabs.lan/ puppet resource f5_rule
 
@@ -55,12 +58,6 @@ The following puppet manifest will deploy f5 gem on the f5_proxy system and depl
 
 * puppet agent on the proxy system will only enforce the system catalog, and it will not enforce the network device catalog. Network devices should be scheduled via cron to run puppet device command with the appropriate flags.
 * puppet device will run against all device specified in device.conf. If they should not be applied simultanously, maintain seperate conf files for f5 device and specify --deviceconfig.
-* F5 partitions should be configure via accounts that have those partitions configured as defaults. For example admin have access to common patition, while the limited account have access to business partition.
-
-        https://admin:admin@f5.rh.lan/
-
-        https://limited:limited@f5.rh.lan/
-
 * Because pluginsync only support custom facts/functions [#7316](http://projects.puppetlabs.com/issues/7316), all puppet commands needs the appropriate RUBYLIB path (including puppet master):
 
         export RUBYLIB=/etc/puppet/modules/f5/lib/:$RUBYLIB
