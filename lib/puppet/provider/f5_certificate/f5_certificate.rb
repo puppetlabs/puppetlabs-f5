@@ -33,7 +33,7 @@ Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::P
           # them individually, only as a single bundle.
           cert = {
             :name   => cert.certificate.cert_info.id,
-            :ensure => 'present',
+            :ensure => :present,
             :mode   => mode
           }
           f5certs << new(cert)
@@ -90,6 +90,6 @@ Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::P
 
   def exists?
     Puppet.debug("Puppet::Provider::F5_certificate::Ensure for #{@property_hash[:name]}: #{@property_hash[:ensure]}")
-    @property_hash[:ensure] != :absent
+    @property_hash[:ensure] == :present
   end
 end
