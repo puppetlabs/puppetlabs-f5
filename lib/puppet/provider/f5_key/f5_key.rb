@@ -30,7 +30,7 @@ Puppet::Type.type(:f5_key).provide(:f5_key, :parent => Puppet::Provider::F5) do
         transport[wsdl].get_key_list(mode).collect do |key|
           key = {
             :name   => key.key_info.id,
-            :ensure => 'present',
+            :ensure => :present,
             :mode   => mode
           }
           f5keys << new(key)
@@ -85,6 +85,6 @@ Puppet::Type.type(:f5_key).provide(:f5_key, :parent => Puppet::Provider::F5) do
 
   def exists?
     Puppet.debug("Puppet::Provider::F5_key::Ensure for #{@property_hash[:name]}: #{@property_hash[:ensure]}")
-    @property_hash[:ensure] != :absent
+    @property_hash[:ensure] == :present
   end
 end
