@@ -165,7 +165,12 @@ Certificates comparison is completed via sha1 fingerprint which is also used dur
       session_enabled_state => 'STATE_ENABLED',
     }
 
-The member attribute is not order dependent, the monitor_associate is order dependent:
+F5_pool resource notes:
+
+* The member attribute is not order dependent, the monitor_associate is order dependent.
+* The member attribute may contain addresses A.B.C.D%ID such as: 192.168.1.1.%0, ID indicates route domain (0 is common).
+
+See F5 documentation: http://support.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos_management_guide_10_1/tmos_route_domains.html
 
     f5_pool { 'webserver':
       ensure                          => 'present',
@@ -217,6 +222,8 @@ The member attribute is not order dependent, the monitor_associate is order depe
       udp_timeout      => '4294967295',
       unit_id          => '1',
     }
+
+F5_virtualserver does not atomically change rules (F5 API limitation), so to reorder rule priority please use irule priority which can be modified in f5_rule. See: http://devcentral.f5.com/wiki/iRules.priority.ashx
 
     f5_virtualserver { 'www':
       ensure                       => 'present',
