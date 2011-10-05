@@ -31,9 +31,6 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
     'nat64_state',
     'protocol',
     'rate_class',
-    'snat_automap',
-    'snat_none',
-    'snat_pool',
     'source_port_behavior',
     'translate_address_state',
     'translate_port_state',
@@ -54,6 +51,26 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
       if transport[wsdl].respond_to?("set_#{method}".to_sym)
         transport[wsdl].send("set_#{method}", resource[:name], resource[method.to_sym])
       end
+    end
+  end
+
+  def snat_type
+    transport[wsdl].get_snat_type(resource[:name]).first.to_s
+  end
+
+  def snat_type=(type)
+    case type
+    when "SNAT_TYPE_NONE"
+      transport[wsdl].set_snat_none(resource[:name])
+    # TODO: I haven't tested these yet so I don't even want to enable them yet.
+    #when "SNAT_TYPE_TRANSLATION_ADDRESS"
+    #  transport[wsdl].set_snat_none(resource[:name])
+    #when "SNAT_TYPE_SNATPOOL"
+    #  transport[wsdl].set_snat_none(resource[:name])
+    when "SNAT_TYPE_AUTOMAP"
+      transport[wsdl].set_snat_automap(resource[:name])
+    else
+      Puppet.error("Puppet::Provider::F5_VirtualServer: Unsupported SNAT type")
     end
   end
 
@@ -159,6 +176,10 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
 
     if resource[:rule]
       self.rule = resource[:rule]
+    end
+
+    if resource[:snat_type]
+      self.snat_type = resource[:snat_type]
     end
   end
 
