@@ -6,6 +6,8 @@ Puppet::Type.type(:f5_monitor).provide(:f5_monitor, :parent => Puppet::Provider:
   confine :feature => :posix
   defaultfor :feature => :posix
 
+  mk_resource_methods
+
   def self.wsdl
     'LocalLB.Monitor'
   end
@@ -15,11 +17,16 @@ Puppet::Type.type(:f5_monitor).provide(:f5_monitor, :parent => Puppet::Provider:
   end
 
   def self.instances
+    f5monitors = Array.new
+    monitor = Hash.new
+
     transport[wsdl].get_template_list.collect do |monitor_template|
-      new(:name => monitor_template.template_name,
-          :ensure => :present,
-          :type => monitor_template.template_type)
+      monitor = { :name => monitor_template.template_name,
+                  :ensure => :present,
+                  :type => monitor_template.template_type }
+      f5monitors << new(monitor)
     end
+    f5monitors
   end
 
   def self.prefetch(resources)
@@ -31,7 +38,7 @@ Puppet::Type.type(:f5_monitor).provide(:f5_monitor, :parent => Puppet::Provider:
   end
 
   def flush
-    @property_hash.clear
+    @property_hash[:name] ||= resource[:name]
   end
 
   methods = [ 'manual_resume_state',
@@ -43,7 +50,7 @@ Puppet::Type.type(:f5_monitor).provide(:f5_monitor, :parent => Puppet::Provider:
   methods.each do |method|
     define_method(method.to_sym) do
       if transport[wsdl].respond_to?("get_#{method}".to_sym)
-        transport[wsdl].send("get_#{method}", resource[:name]).first.to_s
+        transport[wsdl].send("get_#{method}", @property_hash[:name]).first.to_s
       end
     end
   end
@@ -51,31 +58,46 @@ Puppet::Type.type(:f5_monitor).provide(:f5_monitor, :parent => Puppet::Provider:
   methods.each do |method|
     define_method("#{method}=") do |value|
       if transport[wsdl].respond_to?("set_#{method}".to_sym)
-        transport[wsdl].send("set_#{method}", resource[:name], resource[method.to_sym])
+        transport[wsdl].send("set_#{method}", @property_hash[:name], resource[method.to_sym])
       end
     end
   end
 
+  def monitor_ipport(value)
+    # change ip/port to a hash F5 create_template accepts, process wildcards to 0.0.0.0:0 as appropriate.
+    address_type = value[0]
+    address      = network_address(value[1])
+    port         = network_port(value[1])
+
+    address = '0.0.0.0' if address == '*'
+    port    = 0         if port == '*'
+
+    {:address_type => address_type, :ipport => {:address => address, :port => port}}
+  end
+
   def template_destination
     destinations= transport[wsdl].get_template_destination(resource[:name])
-    destinations = destinations.collect { |system|
-      # need F5 eng review: http://devcentral.f5.com/wiki/iControl.LocalLB__AddressType.ashx
-      #Puppet.debug("Puppet::Provider::F5_monitor: template destination address type #{system.address_type} address #{system.ipport.address} port #{system.ipport.port}")
-      case system.address_type
-      when 'ATYPE_STAR_ADDRESS_STAR_PORT'
-        "*:*"
-      when 'ATYPE_STAR_ADDRESS_EXPLICIT_PORT'
-        "*:#{system.ipport.port}"
-      when 'ATYPE_EXPLICIT_ADDRESS_EXPLICIT_PORT'
-        "#{system.ipport.address}:#{system.ipport.port}"
-      when 'ATYPE_STAR_ADDRESS'
-        "*:*"
-      when 'ATYPE_EXPLICIT_ADDRESS'
-        "#{system.ipport.address}:*"
-      else
-        "#{system.ipport.address}:#{system.ipport.port}"
-      end
-    }.sort.join(',')
+    system = destinations.first
+    # need F5 eng review: http://devcentral.f5.com/wiki/iControl.LocalLB__AddressType.ashx
+    #Puppet.debug("Puppet::Provider::F5_monitor: template destination address type #{system.address_type} address #{system.ipport.address} port #{system.ipport.port}")
+    case system.address_type
+    when 'ATYPE_STAR_ADDRESS_STAR_PORT'
+      [ 'ATYPE_STAR_ADDRESS_STAR_PORT', "*:*" ]
+    when 'ATYPE_STAR_ADDRESS_EXPLICIT_PORT'
+      [ 'ATYPE_STAR_ADDRESS_EXPLICIT_PORT', "*:#[system.ipport.port}" ]
+    when 'ATYPE_EXPLICIT_ADDRESS_EXPLICIT_PORT'
+      [ 'ATYPE_EXPLICIT_ADDRESS_EXPLICIT_PORT', "#[system.ipport.address}:#[system.ipport.port}" ]
+    when 'ATYPE_STAR_ADDRESS'
+      [ 'ATYPE_STAR_ADDRESS', "*:*" ]
+    when 'ATYPE_EXPLICIT_ADDRESS'
+      [ 'ATYPE_EXPLICIT_ADDRESS', "#[system.ipport.address}:*" ]
+    else
+      [ 'ATYPE_UNSET', "#[system.ipport.address}:#[system.ipport.port}" ]
+    end
+  end
+
+  def template_destination=(value)
+    transport[wsdl].set_template_destination(monitor_ipport(resource[:template_destination]))
   end
 
   def template_integer_property
@@ -91,9 +113,17 @@ Puppet::Type.type(:f5_monitor).provide(:f5_monitor, :parent => Puppet::Provider:
 
     template_integer = {}
     properties.each do |property|
-      template_integer[property] = transport[wsdl].get_template_integer_property(resource[:name],property).first.value
+      template_integer[property] = transport[wsdl].get_template_integer_property(@property_hash[:name],property).first.value
     end
     template_integer
+  end
+
+  def template_integer_property=(value)
+    resource[:template_integer_property].each do |k, v|
+      # Trying to configure ITYPE_UNSET results in Exception: Common::OperationFailed
+      transport[wsdl].set_template_integer_property(resource[:name], [{:type => k, :value => v}]) unless k = 'ITYPE_UNSET'
+    end
+    true
   end
 
   def template_string_property
@@ -194,13 +224,72 @@ Puppet::Type.type(:f5_monitor).provide(:f5_monitor, :parent => Puppet::Provider:
     template_string = {}
     properties.each do |property|
       begin
-        template_string[property] = transport[wsdl].get_template_string_property(resource[:name],property).first.value
+        template_string[property] = transport[wsdl].get_template_string_property(@property_hash[:name],property).first.value
       rescue Exception => e
-        # Not all string property are supported for every resource, so ignoring failures. Disable debug since it's too much noise.
+        # Not all string property are supported for every template type, so we are ignoring all failures.
+        # Disable debug message since it's too much noise.
         #Puppet.debug("Puppet::Provider::F5_Monitor: ignoring get_template_string_property exception \n #{e.message}")
       end
     end
     template_string
+  end
+
+  def template_string_property=(value)
+    resource[:template_string_property].each do |k, v|
+      transport[wsdl].set_template_string_property(resource[:name], [{:type => k, :value => v}])
+    end
+  end
+
+  def template_type
+    transport[wsdl].get_template_type(@property_hash[:name]).first
+  end
+
+  def template_type=(value)
+    # can't alter template_type, so destroy and recreate resource.
+    destroy
+    create
+  end
+
+  def create
+    Puppet.debug("Puppet::Provider::F5_Monitor: creating F5 monitor #{resource[:name]}")
+
+    @property_hash[:ensure] = :present
+    self.class.resource_type.validproperties.each do |property|
+      if val = resource.should(property)
+        @property_hash[property] = val
+      end
+    end
+
+    monitor_template = { :template_name => resource[:name],
+                         :template_type => resource[:template_type] }
+
+    # configure timeout default based on F5 recommendation of 3x interval + 1 second.
+    # http://devcentral.f5.com/wiki/iControl.LocalLB__Monitor__CommonAttributes.ashx
+    if resource[:template_integer_property] then
+      interval = resource[:template_integer_property]['ITYPE_INTERVAL']
+      timeout  = resource[:template_integer_property]['ITYPE_TIMEOUT']
+    end
+    interval ||= 5
+    timeout  ||= 3 * interval + 1
+
+    common_attributes = { :parent_template    => resource[:parent_template],
+                          :interval           => interval,
+                          :timeout            => timeout,
+                          :dest_ipport        => monitor_ipport(resource[:template_destination]),
+                          :is_read_only       => resource[:is_read_only],
+                          :is_directly_usable => resource[:is_directly_usable] }
+
+    transport[wsdl].create_template([monitor_template], [common_attributes])
+
+    # Update integer and string property upon resource creation
+    self.template_integer_property=resource[:template_integer_property] if resource[:template_integer_property]
+    self.template_string_property=resource[:template_string_property] if resource[:template_string_property]
+  end
+
+  def destroy
+    Puppet.debug("Puppet::Provider::F5_Monitor: deleting F5 monitor #{resource[:name]}")
+    @property_hash[:ensure] = :absent
+    transport[wsdl].delete_template(@property_hash[:name])
   end
 
   def exists?

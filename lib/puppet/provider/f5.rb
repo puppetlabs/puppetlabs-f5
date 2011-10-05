@@ -21,7 +21,9 @@ class Puppet::Provider::F5 < Puppet::Provider
   end
 
   def network_port(value)
-    (value.split(':')[1]).to_i
+    port = value.split(':')[1]
+    port.to_i unless port == '*'
+    port
   end
 
   def self.transport
