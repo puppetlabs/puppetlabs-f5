@@ -58,6 +58,7 @@ The following puppet manifest will deploy f5 gem on the f5_proxy system and depl
 
 * puppet agent on the proxy system will only enforce the system catalog, and it will not enforce the network device catalog. Network devices should be scheduled via cron to run puppet device command with the appropriate flags.
 * puppet device will run against all device specified in device.conf. If they should not be applied simultanously, maintain seperate conf files for f5 device and specify --deviceconfig.
+* puppet resource attribute hash values will be squashed unless the following commit [23d5aeb](https://github.com/jhelwig/puppet/commit/23d5aeb5cbc1f55ba4f40d9def149f22d8be33aa) or feature [#9879](http://projects.puppetlabs.com/issues/9879) is included in puppet on the proxy server.
 * Because pluginsync only support custom facts/functions [#7316](http://projects.puppetlabs.com/issues/7316), all puppet commands needs the appropriate RUBYLIB path (including puppet master):
 
         export RUBYLIB=/etc/puppet/modules/f5/lib/:$RUBYLIB
@@ -152,6 +153,32 @@ The certificate content can be embedded via file or template function:
 Certificates comparison is completed via sha1 fingerprint which is also used during logging instead of the actual certificate content.
 
     notice: /Stage[main]//F5_certificate[ca-bundle]/content: content changed 'sha1(0197e53f31798d43eac830b8561887dae22fd5c2)' to 'sha1(39c2e7fa576e98431bbab66ca0cb14e01cb8bfe4)'
+
+    f5_monitor { 'my_https':
+      ensure                    => 'present',
+      manual_resume_state       => 'STATE_ENABLED',
+      template_destination      => ['ATYPE_STAR_ADDRESS_STAR_PORT', '*:*'],
+      template_integer_property => { 'ITYPE_INTERVAL'            => '5',
+                                     'ITYPE_PROBE_INTERVAL'      => '0',
+                                     'ITYPE_PROBE_NUM_PROBES'    => '0',
+                                     'ITYPE_PROBE_NUM_SUCCESSES' => '0',
+                                     'ITYPE_PROBE_TIMEOUT'       => '0',
+                                     'ITYPE_TIMEOUT'             => '16',
+                                     'ITYPE_TIME_UNTIL_UP'       => '0',
+                                     'ITYPE_UNSET'               => '0',
+                                     'ITYPE_UP_INTERVAL'         => '0' },
+      template_state            => 'STATE_ENABLED',
+      template_string_property  => { 'STYPE_CIPHER_LIST'        => 'DEFAULT:+SHA:+3DES:+kEDH',
+                                     'STYPE_CLIENT_CERTIFICATE' => '',
+                                     'STYPE_CLIENT_KEY'         => '',
+                                     'STYPE_PASSWORD'           => '',
+                                     'STYPE_RECEIVE'            => '',
+                                     'STYPE_SEND'               => 'GET /',
+                                     'STYPE_SSL_OPTIONS'        => 'enabled',
+                                     'STYPE_USERNAME'           => '' },
+      template_transparent_mode => 'false',
+      template_type             => 'TTYPE_HTTPS',
+    }
 
     f5_node { '192.168.1.1':
       ensure                => 'present',
