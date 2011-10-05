@@ -54,6 +54,8 @@ Puppet::Type.newtype(:f5_monitor) do
     desc "The monitor template integer property."
 
     munge do |value|
+      raise Puppet::Error, "Puppet::Type::F5_Monitor: template_integer_property must be a hash." unless value.is_a? Hash
+
       value.keys.each do |k|
         unless k =~ /^("|'|)ITYPE_(UNSET|INTERVAL|TIMEOUT|PROBE_(INTERVAL|TIMEOUT|NUM_PROBES|NUM_SUCCESSES)|TIME_UNTIL_UP|UP_INTERVAL)("|'|)$/
           raise Puppet::Error, "Puppet::Type::F5_Monitor: does not support template_integer_property key #{k}"
@@ -102,6 +104,8 @@ Puppet::Type.newtype(:f5_monitor) do
     desc "The monitor template string property."
 
     munge do |value|
+      raise Puppet::Error, "Puppet::Type::F5_Monitor: template_integer_property must be a hash." unless value.is_a? Hash
+
       value.keys.each do |k|
         unless k =~ /^("|'|)STYPE_(UNSET|SEND|GET|RECEIVE|USERNAME|PASSWORD|RUN|NEWSGROUP|DATABASE|DOMAIN|AUGUMENTS|FOLDER|BASE|FILTER|SECRET|METHOD|URL|COMMAND|METRICS|POST|USERAGENT|AGENT_TYPE|(CPU|MEMORY|DISK)_(COEFFICIENT|THRESHOLD)|SNMP_VERSION|COMMUNITY|(SEND|TIMEOUT)_PACKETS|RECIEVE_(DRAIN|ROW|COLUMN)|DEBUG|SECURITY|MODE|CIPHER_LIST|NAMESPACE|PARAMETER_(NAME|VALUE|TYPE)|RETURN_(TYPE|VALUE)|SOAP_FAULT|SSL_OPTIONS|CLIENT_CERTIFICATE|PROTOCOL|MANDATORY_ATTRS|FILENAME|ACCOUNTING_(NODE|PORT)|(SERVER|CALL|SESSION)_ID|FRAMED_ADDRESS|PROGRAM|VERSION|SERVER|SERVICE|GW_MONITOR_(ADDRESS|SERVICE|INTERVAL|PROTOCOL)|DB_COUNT|REQUEST|HEADERS|FILTER_NEG|SERVER_IP|SNMP_PORT|POOL_NAME|NAS_IP|CLIENT_KEY|MAX_LOAD_AVERAGE|CONCURRENCY_LIMIT|FAILURES|FAILURE_INTERVAL|(RESPONSE|RETRY)_TIME|DIAMETER_((ACCT|AUTH)_APPLICATION_ID|ORIGIN_(HOST|REALM)|HOST_IP_ADDRESS|VENDOR_ID|PRODUCT_NAME|VENDOR_SPECIFIC_(VENDOR_ID|ACCT_APPLICATION_ID))|RUN_V2|CLIENT_(CERTIFICATE_V2|KEY_V2))("|'|)$/
           raise Puppet::Error, "Puppet::Type::F5_Monitor: does not support template_string_property key #{k}"
