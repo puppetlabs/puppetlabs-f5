@@ -144,7 +144,7 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
     when 'SNAT_TYPE_SNATPOOL'
       transport[wsdl].set_snat_pool(resource[:name], resource[:snat_pool])
     when 'SNAT_TYPE_TRANSLATION_ADDRESS'
-      Puppet.debug("Puppet::Provider::F5_VirtualServer: currently F5 API does not appear to support a way to set SNAT_TYPE_TRANSLATION_ADDRESS.")
+      Puppet.warning("Puppet::Provider::F5_VirtualServer: currently F5 API does not appear to support a way to set SNAT_TYPE_TRANSLATION_ADDRESS.")
     end
   end
 
