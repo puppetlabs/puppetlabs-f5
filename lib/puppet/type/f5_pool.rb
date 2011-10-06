@@ -87,8 +87,16 @@ Puppet::Type.newtype(:f5_pool) do
     desc "The pool minimum up member enabed state."
   end
 
-  newproperty(:monitor_association, :array_matching => :all) do
+  newproperty(:monitor_association) do
     desc "The pool monitor association."
+
+    def should_to_s(newvalue)
+      newvalue.inspect
+    end
+
+    def is_to_s(currentvalue)
+      currentvalue.inspect
+    end
   end
 
   newproperty(:server_ip_tos) do
