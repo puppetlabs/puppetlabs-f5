@@ -87,22 +87,18 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
   def monitor_association
     monitor = transport[wsdl].get_monitor_association(resource[:name]).first.monitor_rule
 
-    # Puppet still flattens this to [ , , ] instead of nesting the array.
-    [ monitor.type, monitor.quorum.to_s, *monitor.monitor_templates ]
+    { 'type' => monitor.type, 'quorum' => monitor.quorum.to_s, 'monitor_templates' => monitor.monitor_templates }
   end
 
   def monitor_association=(value)
     monitor = resource[:monitor_association]
-    newval = [
-      :pool_name    => resource[:name],
-      :monitor_rule => {
-        :type              => monitor.shift,
-        :quorum            => monitor.shift,
-        :monitor_templates => monitor,
-      }
-    ]
+    newval = { :pool_name    => resource[:name],
+               :monitor_rule => { :type              => monitor['type'],
+                                  :quorum            => monitor['quorum'],
+                                  :monitor_templates => monitor['monitor_templates'] }
+             }
 
-    transport[wsdl].set_monitor_association(newval)
+    transport[wsdl].set_monitor_association([newval])
   end
 
   def create
