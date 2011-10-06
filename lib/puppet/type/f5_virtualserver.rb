@@ -21,11 +21,6 @@ Puppet::Type.newtype(:f5_virtualserver) do
     desc "The virtual server name."
   end
 
-  newproperty(:cmp_enable_mode) do
-    desc "The virtual server cmp enable mode."
-    newvalues(/^RESOURCE_TYPE_CMP_ENABLE_(ALL|SINGLE|GROUP|UNKNOWN)$/)
-  end
-
   newproperty(:cmp_enabled_state) do
     desc "The virtual server cmp enable state."
     newvalues(/^STATE_(DISABLED|ENABLED)$/)

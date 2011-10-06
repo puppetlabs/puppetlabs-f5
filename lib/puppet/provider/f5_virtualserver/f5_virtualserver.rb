@@ -20,8 +20,7 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
     end
   end
 
-  methods = [ 'cmp_enable_mode',
-    'cmp_enabled_state',
+  methods = [ 'cmp_enabled_state',
     'connection_mirror_state',
     'default_pool_name',
     'enabled_state',
