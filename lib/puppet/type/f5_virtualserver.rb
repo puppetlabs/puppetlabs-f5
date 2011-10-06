@@ -21,11 +21,6 @@ Puppet::Type.newtype(:f5_virtualserver) do
     desc "The virtual server name."
   end
 
-  newproperty(:actual_hardware_acceleration) do
-    desc "The virtual server actual hardware acceleration config."
-    newvalues(/^HW_ACCELERATION_MODE_(NONE|ASSIST|FULL)$/)
-  end
-
   newproperty(:cmp_enable_mode) do
     desc "The virtual server cmp enable mode."
     newvalues(/^RESOURCE_TYPE_CMP_ENABLE_(ALL|SINGLE|GROUP|UNKNOWN)$/)
