@@ -20,9 +20,7 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
     end
   end
 
-  methods = [ 'actual_hardware_acceleration',
-    'cmp_enable_mode',
-    'cmp_enabled_state',
+  methods = [ 'cmp_enabled_state',
     'connection_mirror_state',
     'default_pool_name',
     'enabled_state',
@@ -31,8 +29,6 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
     'nat64_state',
     'protocol',
     'rate_class',
-    'snat_automap',
-    'snat_none',
     'snat_pool',
     'source_port_behavior',
     'translate_address_state',
@@ -135,30 +131,56 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
     transport[wsdl].set_destination(resource[:name], [ destination ])
   end
 
+  def snat_type
+    transport[wsdl].get_snat_type(resource[:name]).first
+  end
+
+  def snat_type=(value)
+    case resource[:snat_type]
+    when 'SNAT_TYPE_AUTOMAP'
+      transport[wsdl].set_snat_automap(resource[:name])
+    when 'SNAT_TYPE_NONE'
+      transport[wsdl].set_snat_none(resource[:name])
+    when 'SNAT_TYPE_SNATPOOL'
+      transport[wsdl].set_snat_pool(resource[:name], resource[:snat_pool])
+    when 'SNAT_TYPE_TRANSLATION_ADDRESS'
+      Puppet.warning("Puppet::Provider::F5_VirtualServer: currently F5 API does not appear to support a way to set SNAT_TYPE_TRANSLATION_ADDRESS.")
+    end
+  end
+
   def create
     Puppet.debug("Puppet::Provider::F5_VirtualServer: creating F5 virtual server #{resource[:name]}")
 
-    vs_definition = [ {"name"     => resource[:name],
-                       "address"  => network_address(resource[:destination]),
-                       "port"     => network_port(resource[:destination]),
-                       "protocol" => resource[:protocol]
-                      } ]
+    vs_definition = { :name     => resource[:name],
+                      :address  => network_address(resource[:destination]),
+                      :port     => network_port(resource[:destination]),
+                      :protocol => resource[:protocol] }
     vs_wildmask  = resource[:wildmask]
-    vs_resources = [{"type" => resource[:type]}]
-    vs_profiles  = [[]]
+    vs_resources = { :type => resource[:type] }
+    vs_profiles  = []
 
-    transport[wsdl].create(vs_definition, vs_wildmask, vs_resources, vs_profiles)
+    transport[wsdl].create([vs_definition], vs_wildmask, [vs_resources], [vs_profiles])
 
-    if resource[:default_pool_name]
-      self.default_pool_name = resource[:default_pool_name]
-    end
+    methods = [ 'cmp_enabled_state',
+                'connection_mirror_state',
+                'default_pool_name',
+                'enabled_state',
+                'fallback_persistence_profile',
+                'last_hop_pool',
+                'nat64_state',
+                'profile',
+                'rate_class',
+                'rule',
+                'snat_pool',
+                'snat_type',
+                'source_port_behavior',
+                'translate_address_state',
+                'translate_port_state',
+                'type',
+                'vlan' ]
 
-    if resource[:profile]
-      self.profile = resource[:profile]
-    end
-
-    if resource[:rule]
-      self.rule = resource[:rule]
+    methods.each do |method|
+      self.send("#{method}=", resource[method.to_sym]) if resource[method.to_sym]
     end
   end
 

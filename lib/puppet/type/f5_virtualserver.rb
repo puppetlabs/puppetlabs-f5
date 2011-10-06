@@ -21,16 +21,6 @@ Puppet::Type.newtype(:f5_virtualserver) do
     desc "The virtual server name."
   end
 
-  newproperty(:actual_hardware_acceleration) do
-    desc "The virtual server actual hardware acceleration config."
-    newvalues(/^HW_ACCELERATION_MODE_(NONE|ASSIST|FULL)$/)
-  end
-
-  newproperty(:cmp_enable_mode) do
-    desc "The virtual server cmp enable mode."
-    newvalues(/^RESOURCE_TYPE_CMP_ENABLE_(ALL|SINGLE|GROUP|UNKNOWN)$/)
-  end
-
   newproperty(:cmp_enabled_state) do
     desc "The virtual server cmp enable state."
     newvalues(/^STATE_(DISABLED|ENABLED)$/)
@@ -85,11 +75,16 @@ Puppet::Type.newtype(:f5_virtualserver) do
   end
 
   newproperty(:profile, :array_matching => :all) do
-    desc "Adds/associates profiles to the specified virtual servers."
+    desc "The virtual server profiles."
   end
 
   newproperty(:rule,  :array_matching => :all) do
-    desc "Adds/associates rules to the specified virtual servers."
+    desc "The virtual server rules."
+  end
+
+  newproperty(:snat_type) do
+    desc "The virtual server snat type."
+    newvalues(/^SNAT_TYPE_(NONE|TRANSLATION_ADDRESS|SNATPOOL|AUTOMAP)$/)
   end
 
   newproperty(:snat_pool) do
