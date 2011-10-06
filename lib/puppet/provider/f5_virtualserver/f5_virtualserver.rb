@@ -54,48 +54,78 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
   end
 
   def rule
-    transport[wsdl].get_rule(resource[:name]).first.map {|r| {"rule_name" => r.rule_name, "priority" => r.priority.to_s}}
+    rules = transport[wsdl].get_rule(resource[:name]).first.map {|r| r.rule_name}
+
+    # the 'munge' method in the type does not operate on arrays.  We want
+    # 'rule => ["foo", "bar"]' to be equivalent to 'rule => ["bar", "foo"]'.
+    if rules == resource[:rule].sort
+      return resource[:rule]
+    else
+      return rules
+    end
   end
 
-  def rule=(rules)
-    # TODO
-    #
+  def rule=(rule_names)
     # Unfortunately iControl doesn't support modifying existing rule
     # priorities.  This means if we had a our rules set to {"ruleA" => 0, "ruleB"
     # => 1} and we wanted to swap the priorities we have to remove all rules then
     # add our new ones with a second call.  This is _really_ bad because it means
     # that there will be an brief outage while the rules are removed.
     #
-    # What we will likely have to do is create dup the current rules into
-    # temporary names, remove the old ones, then add the correct ones and delete
-    # the dups. Yay.
-    Puppet.debug("Puppet::Provider::F5_VirtualServer: Deleting all current rules for #{resource[:name]}")
-    transport[wsdl].remove_all_rules(resource[:name])
-    transport[wsdl].add_rule(resource[:name], [rules])
+    # The current approach is to handle priorities from inside the rules:
+    # http://devcentral.f5.com/wiki/iRules.priority.ashx
+    #
+    # That document shows priorities can be bound to events.  For the priority
+    # given to the rule in the virtual server we are simply going to use the
+    # array index.
+
+    # We can't call 'add_rule' for rules that already exist so we subtract the
+    # known rules.
+    to_add = []
+    (rule_names - rule).each_with_index do |r, p|
+      # priorities must be unique so we must account for the rules we exclude
+      to_add << {"rule_name" => r, "priority" => rule.size + p}
+    end
+    transport[wsdl].add_rule(resource[:name], [to_add]) unless to_add.empty?
+
+    to_remove = []
+    (rule - rule_names).each_with_index do |r, p|
+      to_remove << {"rule_name" => r, "priority" => p}
+    end
+    transport[wsdl].remove_rule(resource[:name], [to_remove]) unless to_remove.empty?
   end
 
   def profile
-    profiles = transport[wsdl].get_profile(resource[:name]).first.map {|p| {"profile_name" => p.profile_name}}
+    profiles = transport[wsdl].get_profile(resource[:name]).first.map {|p| p.profile_name}
+
     # We get TCP by default.  Trying to create it will cause problems.
-    return profiles - [{"profile_name"=>"tcp"}]
+    profiles -= ["tcp"]
+
+    # the 'munge' method in the type does not operate on arrays.  We want
+    # 'profile => ["foo", "bar"]' to be equivalent to 'profile => ["bar",
+    # "foo"]'.
+    if profiles == resource[:profile].sort
+      return resource[:profile]
+    else
+      return profiles
+    end
   end
 
   def profile=(profiles)
-    # TODO: For the same reason as with rules, this is far from production
-    # ready.
-
-    Puppet.debug("Puppet::Provider::F5_VirtualServer: Deleting all current profiles for #{resource[:name]}")
-    transport[wsdl].remove_all_rules(resource[:name])
-    transport[wsdl].remove_all_profiles(resource[:name])
-
-    # Now create the array of hashes that iControl expects
-    new_profiles = profiles.map do |p|
-      # We're hard-coding the profile_context because that's the only one I've
-      # seen used
-      {:profile_name => p["profile_name"], :profile_context => "PROFILE_CONTEXT_TYPE_ALL"}
+    # We're hard-coding the profile_context because that's the only one I've
+    # seen used
+    to_add = (profiles - self.profile).map do |p|
+      {"profile_name" => p, "profile_context" => "PROFILE_CONTEXT_TYPE_ALL"}
     end
 
-    transport[wsdl].add_profile(resource[:name], [new_profiles])
+    to_remove = (self.profile - profiles).map do |p|
+      {"profile_name" => p, "profile_context" => "PROFILE_CONTEXT_TYPE_ALL"}
+    end
+
+    # We can't call 'add_profile' on a profile that already exists.  We need
+    # to remove the already present profiles from the list provided to puppet.
+    transport[wsdl].remove_profile(resource[:name], [to_remove]) unless to_remove.empty?
+    transport[wsdl].add_profile(resource[:name], [to_add]) unless to_add.empty?
   end
 
   def connection_limit
