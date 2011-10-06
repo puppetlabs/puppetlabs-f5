@@ -75,11 +75,16 @@ Puppet::Type.newtype(:f5_virtualserver) do
   end
 
   newproperty(:profile, :array_matching => :all) do
-    desc "Adds/associates profiles to the specified virtual servers."
+    desc "The virtual server profiles."
   end
 
   newproperty(:rule,  :array_matching => :all) do
-    desc "Adds/associates rules to the specified virtual servers."
+    desc "The virtual server rules."
+  end
+
+  newproperty(:snat_type) do
+    desc "The virtual server snat type."
+    newvalues(/^SNAT_TYPE_(NONE|TRANSLATION_ADDRESS|SNATPOOL|AUTOMAP)$/)
   end
 
   newproperty(:snat_pool) do
