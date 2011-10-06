@@ -92,13 +92,18 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
 
   def monitor_association=(value)
     monitor = resource[:monitor_association]
-    newval = { :pool_name    => resource[:name],
-               :monitor_rule => { :type              => monitor['type'],
-                                  :quorum            => monitor['quorum'],
-                                  :monitor_templates => monitor['monitor_templates'] }
-             }
 
-    transport[wsdl].set_monitor_association([newval])
+    if monitor.empty? then
+      transport[wsdl].remove_monitor_association(resource[:name])
+    else
+      newval = { :pool_name    => resource[:name],
+                 :monitor_rule => { :type              => monitor['type'],
+                                    :quorum            => monitor['quorum'],
+                                    :monitor_templates => monitor['monitor_templates'] }
+               }
+
+      transport[wsdl].set_monitor_association([newval])
+    end
   end
 
   def create
