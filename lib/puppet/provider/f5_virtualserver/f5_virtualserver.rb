@@ -34,7 +34,6 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
     'translate_address_state',
     'translate_port_state',
     'type',
-    'vlan',
     'wildmask']
 
   methods.each do |method|
@@ -146,6 +145,15 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
     when 'SNAT_TYPE_TRANSLATION_ADDRESS'
       Puppet.warning("Puppet::Provider::F5_VirtualServer: currently F5 API does not appear to support a way to set SNAT_TYPE_TRANSLATION_ADDRESS.")
     end
+  end
+
+  def vlan
+    val = transport[wsdl].get_vlan(resource[:name]).first
+    { 'state' => val.state, 'vlans' => val.vlans }
+  end
+
+  def vlan=(value)
+    transport[wsdl].set_vlan(resource[:name], [resource[:vlan]])
   end
 
   def create

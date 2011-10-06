@@ -112,6 +112,29 @@ Puppet::Type.newtype(:f5_virtualserver) do
 
   newproperty(:vlan) do
     desc "The virtual server vlan."
+
+    munge do |value|
+      raise Puppet::Error, "Puppet::Type::F5_VirtualServer: vlan must be a hash." unless value.is_a? Hash
+
+      value.keys.each do |k|
+        unless k =~ /^(state|vlans)$/
+          raise Puppet::Error, "Puppet::Type::F5_VirtualServer: does not support vlan key #{k}"
+        end
+
+        # ensure monitor_templates value is an array to avoid "http" != ["http"]
+        value[k] = value[k].to_a if k == 'vlan'
+      end
+
+      value
+    end
+
+    def should_to_s(newvalue)
+      newvalue.inspect
+    end
+
+    def is_to_s(currentvalue)
+      currentvalue.inspect
+    end
   end
 
   newproperty(:wildmask) do
