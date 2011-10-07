@@ -6,6 +6,8 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
   confine :feature => :posix
   defaultfor :feature => :posix
 
+  @priority = []
+
   def self.wsdl
     'LocalLB.VirtualServer'
   end
@@ -52,37 +54,66 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
     end
   end
 
-  def rule
-    transport[wsdl].get_rule(resource[:name]).first.map {|r| {"rule_name" => r.rule_name, "priority" => r.priority.to_s}}
+  def available_priority
+    @priority ||= transport[wsdl].get_rule(resource[:name]).first.collect {|p| p.priority}
+
+    list = @priority.sort
+    list.each_with_index do |val, i|
+      if val > i
+        @priority << i
+        return i
+      end
+    end
+    @priority << list.size
+    return list.size
   end
 
-  def rule=(rules)
-    # TODO
-    #
+  def rule
+    # Because rule changes are not atomic, we are ignoring priority.
+    transport[wsdl].get_rule(resource[:name]).first.collect {|r| r.rule_name}
+  end
+
+  def rule=(value)
     # Unfortunately iControl doesn't support modifying existing rule
     # priorities.  This means if we had a our rules set to {"ruleA" => 0, "ruleB"
     # => 1} and we wanted to swap the priorities we have to remove all rules then
     # add our new ones with a second call.  This is _really_ bad because it means
     # that there will be an brief outage while the rules are removed.
     #
-    # What we will likely have to do is create dup the current rules into
-    # temporary names, remove the old ones, then add the correct ones and delete
-    # the dups. Yay.
-    Puppet.debug("Puppet::Provider::F5_VirtualServer: Deleting all current rules for #{resource[:name]}")
-    transport[wsdl].remove_all_rules(resource[:name])
-    transport[wsdl].add_rule(resource[:name], [rules])
+    # The current approach is to handle priorities from inside the rules:
+    # http://devcentral.f5.com/wiki/iRules.priority.ashx
+    #
+    # That document shows priorities can be bound to events.
+
+    rules = {}
+    transport[wsdl].get_rule(resource[:name]).first.each do |r|
+      rules[r.rule_name] = r.priority
+    end
+
+    # Only add new rules and use first available priority.
+    to_add = []
+    (resource[:rule] - rules.keys).each do |r|
+      to_add << {"rule_name" => r, "priority" => available_priority}
+    end
+    transport[wsdl].add_rule(resource[:name], [to_add]) unless to_add.empty?
+
+    to_remove = []
+    (rules.keys - resource[:rule]).each do |r|
+      to_remove << {"rule_name" => r, "priority" => rules[r]}
+    end
+    transport[wsdl].remove_rule(resource[:name], [to_remove]) unless to_remove.empty?
   end
 
   def profile
     profiles = {}
     transport[wsdl].get_profile(resource[:name]).first.each do |p|
-      # For now suppress the default tcp profile.
+      # For now suppress the default tcp profile. (see profile= comment)
       profiles[p.profile_name] = p.profile_context unless p.profile_name == 'tcp'
     end
     profiles
   end
 
-  def profile=(profiles)
+  def profile=(value)
     existing  = self.profile
     new       = resource[:profile]
     to_remove = []
