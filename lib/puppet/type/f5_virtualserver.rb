@@ -1,4 +1,20 @@
 Puppet::Type.newtype(:f5_virtualserver) do
+
+  # We can't use munge to sort array values.
+  class Puppet::Property::ArrayHash < Puppet::Property
+    def insync?(is)
+      # array of hashes doesn't support .sort
+      is.sort_by(&:hash) == @should.sort_by(&:hash)
+    end
+  end
+
+  # Normally puppet array order matters, in this case we don't care.
+  class Puppet::Property::UnorderArray < Puppet::Property
+    def insync?(is)
+      is.sort == @should.sort
+    end
+  end
+
   @doc = "Manage F5 virtualserver."
 
   apply_to_device
@@ -74,12 +90,31 @@ Puppet::Type.newtype(:f5_virtualserver) do
     desc "The virtual server rate class."
   end
 
-  newproperty(:profile, :array_matching => :all) do
+  newproperty(:profile) do
     desc "The virtual server profiles."
+
+    # This is what F5 appears to reset the device, it's not something we can configure:
+    #defaultto({ "tcp" => "PROFILE_CONTEXT_TYPE_ALL" })
+
+    def should_to_s(newvalue)
+      newvalue.inspect
+    end
+
+    def is_to_s(currentvalue)
+      currentvalue.inspect
+    end
   end
 
-  newproperty(:rule,  :array_matching => :all) do
-    desc "The virtual server rules."
+  newproperty(:rule, :array_matching => :all, :parent => Puppet::Property::UnorderArray) do
+    desc "The virtual server rules. The rule order isn't enforced since F5 API does not provide ability to reorder rules, use irule priority to dictate rule processing order"
+
+    def should_to_s(newvalue)
+      newvalue.inspect
+    end
+
+    def is_to_s(currentvalue)
+      currentvalue.inspect
+    end
   end
 
   newproperty(:snat_type) do
@@ -121,8 +156,8 @@ Puppet::Type.newtype(:f5_virtualserver) do
           raise Puppet::Error, "Puppet::Type::F5_VirtualServer: does not support vlan key #{k}"
         end
 
-        # ensure monitor_templates value is an array to avoid "http" != ["http"]
-        value[k] = value[k].to_a if k == 'vlan'
+        # ensure vlans value is an array to avoid "http" != ["http"]
+        value[k] = value[k].to_a if k == 'vlans'
       end
 
       value

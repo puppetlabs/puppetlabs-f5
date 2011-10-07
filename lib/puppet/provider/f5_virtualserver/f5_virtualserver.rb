@@ -74,27 +74,42 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
   end
 
   def profile
-    profiles = transport[wsdl].get_profile(resource[:name]).first.map {|p| {"profile_name" => p.profile_name}}
-    # We get TCP by default.  Trying to create it will cause problems.
-    return profiles - [{"profile_name"=>"tcp"}]
+    profiles = {}
+    transport[wsdl].get_profile(resource[:name]).first.each do |p|
+      # For now suppress the default tcp profile.
+      profiles[p.profile_name] = p.profile_context unless p.profile_name == 'tcp'
+    end
+    profiles
   end
 
   def profile=(profiles)
-    # TODO: For the same reason as with rules, this is far from production
-    # ready.
+    existing  = self.profile
+    new       = resource[:profile]
+    to_remove = []
+    to_add    = []
 
-    Puppet.debug("Puppet::Provider::F5_VirtualServer: Deleting all current profiles for #{resource[:name]}")
-    transport[wsdl].remove_all_rules(resource[:name])
-    transport[wsdl].remove_all_profiles(resource[:name])
-
-    # Now create the array of hashes that iControl expects
-    new_profiles = profiles.map do |p|
-      # We're hard-coding the profile_context because that's the only one I've
-      # seen used
-      {:profile_name => p["profile_name"], :profile_context => "PROFILE_CONTEXT_TYPE_ALL"}
+    (existing.keys - new.keys).each do |p|
+      to_remove << {'profile_name'=> p, 'profile_context'=> existing[p]}
     end
 
-    transport[wsdl].add_profile(resource[:name], [new_profiles])
+    puts new.class
+    new.each do |k, v|
+      if ! existing.has_key?(k) then
+        to_add << {'profile_name'=> k, 'profile_context'=> v}
+      elsif v != existing[k]
+        to_remove << {'profile_name'=> k, 'profile_context'=> existing[k]}
+        to_add << {'profile_name' => k, 'profile_context'=> v}
+      end
+    end
+
+    # F5 API is rather confusing, it supports four different profile methods:
+    # add_authentication_profile
+    # add_httpclass_profile
+    # add_persistence_profile
+    # add_profile
+    # After testing it isn't clear which should be invoked, so this does not cover all profile configuration:
+    transport[wsdl].remove_profile(resource[:name], [to_remove]) unless to_remove.empty?
+    transport[wsdl].add_profile(resource[:name], [to_add]) unless to_add.empty?
   end
 
   def connection_limit
