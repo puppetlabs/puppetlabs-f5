@@ -37,6 +37,18 @@ Puppet::Type.newtype(:f5_virtualserver) do
     desc "The virtual server name."
   end
 
+  newproperty(:clone_pool) do
+    desc "The virtual server clone pool."
+
+    def should_to_s(newvalue)
+      newvalue.inspect
+    end
+
+    def is_to_s(currentvalue)
+      currentvalue.inspect
+    end
+  end
+
   newproperty(:cmp_enabled_state) do
     desc "The virtual server cmp enable state."
     newvalues(/^STATE_(DISABLED|ENABLED)$/)
@@ -90,11 +102,23 @@ Puppet::Type.newtype(:f5_virtualserver) do
     desc "The virtual server rate class."
   end
 
-  newproperty(:profile) do
-    desc "The virtual server profiles."
+  newproperty(:persistence_profile) do
+    desc "the virtual server persistence profiles."
 
-    # This is what F5 appears to reset the device, it's not something we can configure:
-    #defaultto({ "tcp" => "PROFILE_CONTEXT_TYPE_ALL" })
+    def should_to_s(newvalue)
+      newvalue.inspect
+    end
+
+    def is_to_s(currentvalue)
+      currentvalue.inspect
+    end
+  end
+
+  newproperty(:profile) do
+    desc "the virtual server profiles."
+
+    # this is what f5 appears to reset the device, it's not something we can configure:
+    #defaultto({ "tcp" => "profile_context_type_all" })
 
     def should_to_s(newvalue)
       newvalue.inspect

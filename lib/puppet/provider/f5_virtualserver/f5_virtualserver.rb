@@ -68,6 +68,101 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
     return list.size
   end
 
+  def clone_pool
+    pool = {}
+    transport[wsdl].get_clone_pool(resource[:name]).first.each do |p|
+      pool[p.pool_name] = p.type
+    end
+    pool
+  end
+
+  def clone_pool=(value)
+    existing  = clone_pool
+    new       = resource[:clone_pool]
+    to_remove = []
+    to_add    = []
+
+    (existing.keys - new.keys).each do |p|
+      to_remove << {'pool_name'=> p, 'type'=> existing[p]}
+    end
+
+    new.each do |k, v|
+      if ! existing.has_key?(k) then
+        to_add << {'pool_name'=> k, 'type'=> v.to_s}
+      elsif v != existing[k]
+        to_remove << {'pool_name'=> k, 'type'=> existing[k]}
+        to_add << {'pool_name' => k, 'type'=> v.to_s}
+      end
+    end
+
+    transport[wsdl].remove_clone_pool(resource[:name], [to_remove]) unless to_remove.empty?
+    transport[wsdl].add_clone_pool(resource[:name], [to_add]) unless to_add.empty?
+  end
+
+  def persistence_profile
+    profiles = {}
+    transport[wsdl].get_persistence_profile(resource[:name]).first.each do |p|
+      # For now suppress the default tcp profile. (see profile= comment)
+      profiles[p.profile_name] = p.default_profile.to_s
+    end
+    profiles
+  end
+
+  def persistence_profile=(value)
+    existing  = persistence_profile
+    new       = resource[:persistence_profile]
+    to_remove = []
+    to_add    = []
+
+    (existing.keys - new.keys).each do |p|
+      to_remove << {'profile_name'=> p, 'default_profile'=> existing[p]}
+    end
+
+    new.each do |k, v|
+      if ! existing.has_key?(k) then
+        to_add << {'profile_name'=> k, 'default_profile'=> v.to_s}
+      elsif v != existing[k]
+        to_remove << {'profile_name'=> k, 'default_profile'=> existing[k]}
+        to_add << {'profile_name' => k, 'default_profile'=> v.to_s}
+      end
+    end
+
+    transport[wsdl].remove_persistence_profile(resource[:name], [to_remove]) unless to_remove.empty?
+    transport[wsdl].add_persistence_profile(resource[:name], [to_add]) unless to_add.empty?
+  end
+
+  def profile
+    profiles = {}
+    transport[wsdl].get_profile(resource[:name]).first.each do |p|
+      # For now suppress the default tcp profile. (see profile= comment)
+      profiles[p.profile_name] = p.profile_context unless p.profile_name == 'tcp'
+    end
+    profiles
+  end
+
+  def profile=(value)
+    existing  = self.profile
+    new       = resource[:profile]
+    to_remove = []
+    to_add    = []
+
+    (existing.keys - new.keys).each do |p|
+      to_remove << {'profile_name'=> p, 'profile_context'=> existing[p]}
+    end
+
+    new.each do |k, v|
+      if ! existing.has_key?(k) then
+        to_add << {'profile_name'=> k, 'profile_context'=> v}
+      elsif v != existing[k]
+        to_remove << {'profile_name'=> k, 'profile_context'=> existing[k]}
+        to_add << {'profile_name' => k, 'profile_context'=> v}
+      end
+    end
+
+    transport[wsdl].remove_profile(resource[:name], [to_remove]) unless to_remove.empty?
+    transport[wsdl].add_profile(resource[:name], [to_add]) unless to_add.empty?
+  end
+
   def rule
     # Because rule changes are not atomic, we are ignoring priority.
     transport[wsdl].get_rule(resource[:name]).first.collect {|r| r.rule_name}
@@ -102,45 +197,6 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
       to_remove << {"rule_name" => r, "priority" => rules[r]}
     end
     transport[wsdl].remove_rule(resource[:name], [to_remove]) unless to_remove.empty?
-  end
-
-  def profile
-    profiles = {}
-    transport[wsdl].get_profile(resource[:name]).first.each do |p|
-      # For now suppress the default tcp profile. (see profile= comment)
-      profiles[p.profile_name] = p.profile_context unless p.profile_name == 'tcp'
-    end
-    profiles
-  end
-
-  def profile=(value)
-    existing  = self.profile
-    new       = resource[:profile]
-    to_remove = []
-    to_add    = []
-
-    (existing.keys - new.keys).each do |p|
-      to_remove << {'profile_name'=> p, 'profile_context'=> existing[p]}
-    end
-
-    puts new.class
-    new.each do |k, v|
-      if ! existing.has_key?(k) then
-        to_add << {'profile_name'=> k, 'profile_context'=> v}
-      elsif v != existing[k]
-        to_remove << {'profile_name'=> k, 'profile_context'=> existing[k]}
-        to_add << {'profile_name' => k, 'profile_context'=> v}
-      end
-    end
-
-    # F5 API is rather confusing, it supports four different profile methods:
-    # add_authentication_profile
-    # add_httpclass_profile
-    # add_persistence_profile
-    # add_profile
-    # After testing it isn't clear which should be invoked, so this does not cover all profile configuration:
-    transport[wsdl].remove_profile(resource[:name], [to_remove]) unless to_remove.empty?
-    transport[wsdl].add_profile(resource[:name], [to_add]) unless to_add.empty?
   end
 
   def connection_limit
@@ -215,13 +271,15 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
 
     transport[wsdl].create([vs_definition], vs_wildmask, [vs_resources], [vs_profiles])
 
-    methods = [ 'cmp_enabled_state',
+    methods = [ 'clone_pool',
+                'cmp_enabled_state',
                 'connection_mirror_state',
                 'default_pool_name',
                 'enabled_state',
                 'fallback_persistence_profile',
                 'last_hop_pool',
                 'nat64_state',
+                'persistence_profile',
                 'profile',
                 'rate_class',
                 'rule',
