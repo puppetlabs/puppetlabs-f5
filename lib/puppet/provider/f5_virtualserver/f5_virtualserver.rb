@@ -102,7 +102,6 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
   def persistence_profile
     profiles = {}
     transport[wsdl].get_persistence_profile(resource[:name]).first.each do |p|
-      # For now suppress the default tcp profile. (see profile= comment)
       profiles[p.profile_name] = p.default_profile.to_s
     end
     profiles
@@ -135,7 +134,7 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
     profiles = {}
     transport[wsdl].get_profile(resource[:name]).first.each do |p|
       # For now suppress the default tcp profile. (see profile= comment)
-      profiles[p.profile_name] = p.profile_context unless p.profile_name == 'tcp'
+      profiles[p.profile_name] = p.profile_context #unless p.profile_name == 'tcp'
     end
     profiles
   end
@@ -152,10 +151,10 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
 
     new.each do |k, v|
       if ! existing.has_key?(k) then
-        to_add << {'profile_name'=> k, 'profile_context'=> v}
+        to_add << {'profile_name'=> k, 'profile_context'=> v} unless k=='tcp'
       elsif v != existing[k]
         to_remove << {'profile_name'=> k, 'profile_context'=> existing[k]}
-        to_add << {'profile_name' => k, 'profile_context'=> v}
+        to_add << {'profile_name' => k, 'profile_context'=> v} unless k=='tcp'
       end
     end
 
@@ -271,7 +270,9 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
 
     transport[wsdl].create([vs_definition], vs_wildmask, [vs_resources], [vs_profiles])
 
-    methods = [ 'clone_pool',
+    # profile should be the first value added since some other settings require it.
+    methods = [ 'profile',
+                'clone_pool',
                 'cmp_enabled_state',
                 'connection_mirror_state',
                 'default_pool_name',
@@ -280,7 +281,6 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
                 'last_hop_pool',
                 'nat64_state',
                 'persistence_profile',
-                'profile',
                 'rate_class',
                 'rule',
                 'snat_pool',
