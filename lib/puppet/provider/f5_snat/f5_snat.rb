@@ -57,11 +57,11 @@ Puppet::Type.type(:f5_snat).provide(:f5_snat, :parent => Puppet::Provider::F5) d
 
   def vlan
     val = transport[wsdl].get_vlan(resource[:name]).first
-    [val.state, val.vlans]
+    { 'state' => val.state, 'vlans' => val.vlans }
   end
 
   def vlan=(value)
-    transport[wsdl].set_vlan(resource[:name], resource[:vlan])
+    transport[wsdl].set_vlan(resource[:name], [resource[:vlan]])
   end
 
   def create
