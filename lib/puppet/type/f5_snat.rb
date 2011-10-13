@@ -47,13 +47,15 @@ Puppet::Type.newtype(:f5_snat) do
     munge do |value|
       raise Puppet::Error, "Puppet::Type::F5_Snat: vlan must be a hash." unless value.is_a? Hash
 
-      value.keys.each do |k|
-        unless k =~ /^(state|vlans)$/
-          raise Puppet::Error, "Puppet::Type::F5_Snat: does not support vlan key #{k}"
+      unless value.empty?
+        value.keys.each do |k|
+          raise Puppet::Error, "Puppet::Type::F5_Snat: does not support vlan key #{k}" unless k =~ /^(state|vlans)$/
+
+          # ensure vlan value is an array
+          value[k] = value[k].to_a if k == 'vlan'
         end
 
-        # ensure monitor_templates value is an array to avoid "http" != ["http"]
-        value[k] = value[k].to_a if k == 'vlan'
+        raise Puppet::Error, "Puppet::Type::F5_Snat: vlan missing key." unless value.size == 2
       end
 
       value
