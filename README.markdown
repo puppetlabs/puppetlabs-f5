@@ -230,7 +230,8 @@ See F5 documentation: http://support.f5.com/kb/en-us/products/big-ip_ltm/manuals
       original_address        => ['0.0.0.0', '0.0.0.0'],
       source_port_behavior    => 'SOURCE_PORT_PRESERVE',
       translation_target      => ['SNAT_TYPE_TRANSLATION_ADDRESS', '10.10.10.10'],
-      vlan                    => ['STATE_DISABLED', ''],
+      vlan                    => { 'state' => 'STATE_DISABLED',
+                                   'vlans' => ['default'] },
     }
 
     f5_snatpool { 'nat_pool':
@@ -253,6 +254,7 @@ F5_virtualserver does not atomically change rules (F5 API limitation), so to reo
 
     f5_virtualserver { 'www':
       ensure                  => 'present',
+      cmp_enable_mode         => 'RESOURCE_TYPE_CMP_ENABLE_ALL',
       cmp_enabled_state       => 'STATE_ENABLED',
       connection_limit        => '5000000',
       connection_mirror_state => 'STATE_DISABLED',
@@ -260,12 +262,16 @@ F5_virtualserver does not atomically change rules (F5 API limitation), so to reo
       enabled_state           => 'STATE_DISABLED',
       gtm_score               => '0',
       protocol                => 'PROTOCOL_TCP',
+      profile                 => { 'http'       => 'PROFILE_CONTEXT_TYPE_ALL',
+                                   'oneconnect' => 'PROFILE_CONTEXT_TYPE_ALL' },
+      rule                    => [ 'demo', 'demo2' ],
       snat_pool               => 'alpha',
       snat_type               => 'SNAT_TYPE_SNATPOOL',
       source_port_behavior    => 'SOURCE_PORT_PRESERVE',
       translate_address_state => 'STATE_ENABLED',
       translate_port_state    => 'STATE_ENABLED',
       type                    => 'RESOURCE_TYPE_POOL',
-      vlan                    => '#<SOAP::Mapping::Object:0x104299b68>',
+      vlan                    => { 'state' => 'STATE_DISABLED',
+                                   'vlans' => ['default'] },
       wildmask                => '255.255.255.255',
     }

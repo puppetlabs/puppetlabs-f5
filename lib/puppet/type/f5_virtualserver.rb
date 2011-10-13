@@ -1,4 +1,20 @@
 Puppet::Type.newtype(:f5_virtualserver) do
+
+  # We can't use munge to sort array values.
+  class Puppet::Property::ArrayHash < Puppet::Property
+    def insync?(is)
+      # array of hashes doesn't support .sort
+      is.sort_by(&:hash) == @should.sort_by(&:hash)
+    end
+  end
+
+  # Normally puppet array order matters, in this case we don't care.
+  class Puppet::Property::UnorderArray < Puppet::Property
+    def insync?(is)
+      is.sort == @should.sort
+    end
+  end
+
   @doc = "Manage F5 virtualserver."
 
   apply_to_device
@@ -19,6 +35,18 @@ Puppet::Type.newtype(:f5_virtualserver) do
 
   newparam(:name, :namevar=>true) do
     desc "The virtual server name."
+  end
+
+  newproperty(:clone_pool) do
+    desc "The virtual server clone pool."
+
+    def should_to_s(newvalue)
+      newvalue.inspect
+    end
+
+    def is_to_s(currentvalue)
+      currentvalue.inspect
+    end
   end
 
   newproperty(:cmp_enabled_state) do
@@ -74,12 +102,43 @@ Puppet::Type.newtype(:f5_virtualserver) do
     desc "The virtual server rate class."
   end
 
-  newproperty(:profile, :array_matching => :all) do
-    desc "The virtual server profiles."
+  newproperty(:persistence_profile) do
+    desc "the virtual server persistence profiles."
+
+    def should_to_s(newvalue)
+      newvalue.inspect
+    end
+
+    def is_to_s(currentvalue)
+      currentvalue.inspect
+    end
   end
 
-  newproperty(:rule,  :array_matching => :all) do
-    desc "The virtual server rules."
+  newproperty(:profile) do
+    desc "the virtual server profiles."
+
+    # this is what f5 appears to reset the device, it's not something we can configure:
+    #defaultto({ "tcp" => "profile_context_type_all" })
+
+    def should_to_s(newvalue)
+      newvalue.inspect
+    end
+
+    def is_to_s(currentvalue)
+      currentvalue.inspect
+    end
+  end
+
+  newproperty(:rule, :array_matching => :all, :parent => Puppet::Property::UnorderArray) do
+    desc "The virtual server rules. The rule order isn't enforced since F5 API does not provide ability to reorder rules, use irule priority to dictate rule processing order"
+
+    def should_to_s(newvalue)
+      newvalue.inspect
+    end
+
+    def is_to_s(currentvalue)
+      currentvalue.inspect
+    end
   end
 
   newproperty(:snat_type) do
@@ -112,6 +171,31 @@ Puppet::Type.newtype(:f5_virtualserver) do
 
   newproperty(:vlan) do
     desc "The virtual server vlan."
+
+    munge do |value|
+      raise Puppet::Error, "Puppet::Type::F5_VirtualServer: vlan must be a hash." unless value.is_a? Hash
+
+      unless value.empty?
+        value.keys.each do |k|
+          raise Puppet::Error, "Puppet::Type::F5_VirtualServer: vlan does not support key #{k}" unless k =~ /^(state|vlans)$/
+
+          # ensure vlans value is an array
+          value[k] = value[k].to_a if k == 'vlans'
+        end
+
+        raise Puppet::Error, "Puppet::Type::F5_VirtualServer: vlan missing key." unless value.size == 2
+      end
+
+      value
+    end
+
+    def should_to_s(newvalue)
+      newvalue.inspect
+    end
+
+    def is_to_s(currentvalue)
+      currentvalue.inspect
+    end
   end
 
   newproperty(:wildmask) do

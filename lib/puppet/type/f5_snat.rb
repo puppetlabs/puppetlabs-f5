@@ -43,6 +43,30 @@ Puppet::Type.newtype(:f5_snat) do
 
   newproperty(:vlan) do
     desc "The snat vlan."
-    #TODO validate vlan state.
+
+    munge do |value|
+      raise Puppet::Error, "Puppet::Type::F5_Snat: vlan must be a hash." unless value.is_a? Hash
+
+      unless value.empty?
+        value.keys.each do |k|
+          raise Puppet::Error, "Puppet::Type::F5_Snat: does not support vlan key #{k}" unless k =~ /^(state|vlans)$/
+
+          # ensure vlan value is an array
+          value[k] = value[k].to_a if k == 'vlan'
+        end
+
+        raise Puppet::Error, "Puppet::Type::F5_Snat: vlan missing key." unless value.size == 2
+      end
+
+      value
+    end
+
+    def should_to_s(newvalue)
+      newvalue.inspect
+    end
+
+    def is_to_s(currentvalue)
+      currentvalue.inspect
+    end
   end
 end

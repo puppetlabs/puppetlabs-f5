@@ -6,6 +6,8 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
   confine :feature => :posix
   defaultfor :feature => :posix
 
+  @priority = []
+
   def self.wsdl
     'LocalLB.VirtualServer'
   end
@@ -34,7 +36,6 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
     'translate_address_state',
     'translate_port_state',
     'type',
-    'vlan',
     'wildmask']
 
   methods.each do |method|
@@ -53,49 +54,148 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
     end
   end
 
-  def rule
-    transport[wsdl].get_rule(resource[:name]).first.map {|r| {"rule_name" => r.rule_name, "priority" => r.priority.to_s}}
+  def available_priority
+    @priority ||= transport[wsdl].get_rule(resource[:name]).first.collect {|p| p.priority}
+
+    list = @priority.sort
+    list.each_with_index do |val, i|
+      if val > i
+        @priority << i
+        return i
+      end
+    end
+    @priority << list.size
+    return list.size
   end
 
-  def rule=(rules)
-    # TODO
-    #
+  def clone_pool
+    pool = {}
+    transport[wsdl].get_clone_pool(resource[:name]).first.each do |p|
+      pool[p.pool_name] = p.type
+    end
+    pool
+  end
+
+  def clone_pool=(value)
+    existing  = clone_pool
+    new       = resource[:clone_pool]
+    to_remove = []
+    to_add    = []
+
+    (existing.keys - new.keys).each do |p|
+      to_remove << {'pool_name'=> p, 'type'=> existing[p]}
+    end
+
+    new.each do |k, v|
+      if ! existing.has_key?(k) then
+        to_add << {'pool_name'=> k, 'type'=> v.to_s}
+      elsif v != existing[k]
+        to_remove << {'pool_name'=> k, 'type'=> existing[k]}
+        to_add << {'pool_name' => k, 'type'=> v.to_s}
+      end
+    end
+
+    transport[wsdl].remove_clone_pool(resource[:name], [to_remove]) unless to_remove.empty?
+    transport[wsdl].add_clone_pool(resource[:name], [to_add]) unless to_add.empty?
+  end
+
+  def persistence_profile
+    profiles = {}
+    transport[wsdl].get_persistence_profile(resource[:name]).first.each do |p|
+      profiles[p.profile_name] = p.default_profile.to_s
+    end
+    profiles
+  end
+
+  def persistence_profile=(value)
+    existing  = persistence_profile
+    new       = resource[:persistence_profile]
+    to_remove = []
+    to_add    = []
+
+    (existing.keys - new.keys).each do |p|
+      to_remove << {'profile_name'=> p, 'default_profile'=> existing[p]}
+    end
+
+    new.each do |k, v|
+      if ! existing.has_key?(k) then
+        to_add << {'profile_name'=> k, 'default_profile'=> v.to_s}
+      elsif v != existing[k]
+        to_remove << {'profile_name'=> k, 'default_profile'=> existing[k]}
+        to_add << {'profile_name' => k, 'default_profile'=> v.to_s}
+      end
+    end
+
+    transport[wsdl].remove_persistence_profile(resource[:name], [to_remove]) unless to_remove.empty?
+    transport[wsdl].add_persistence_profile(resource[:name], [to_add]) unless to_add.empty?
+  end
+
+  def profile
+    profiles = {}
+    transport[wsdl].get_profile(resource[:name]).first.each do |p|
+      # For now suppress the default tcp profile. (see profile= comment)
+      profiles[p.profile_name] = p.profile_context #unless p.profile_name == 'tcp'
+    end
+    profiles
+  end
+
+  def profile=(value)
+    existing  = self.profile
+    new       = resource[:profile]
+    to_remove = []
+    to_add    = []
+
+    (existing.keys - new.keys).each do |p|
+      to_remove << {'profile_name'=> p, 'profile_context'=> existing[p]}
+    end
+
+    new.each do |k, v|
+      if ! existing.has_key?(k) then
+        to_add << {'profile_name'=> k, 'profile_context'=> v} unless k=='tcp'
+      elsif v != existing[k]
+        to_remove << {'profile_name'=> k, 'profile_context'=> existing[k]}
+        to_add << {'profile_name' => k, 'profile_context'=> v} unless k=='tcp'
+      end
+    end
+
+    transport[wsdl].remove_profile(resource[:name], [to_remove]) unless to_remove.empty?
+    transport[wsdl].add_profile(resource[:name], [to_add]) unless to_add.empty?
+  end
+
+  def rule
+    # Because rule changes are not atomic, we are ignoring priority.
+    transport[wsdl].get_rule(resource[:name]).first.collect {|r| r.rule_name}
+  end
+
+  def rule=(value)
     # Unfortunately iControl doesn't support modifying existing rule
     # priorities.  This means if we had a our rules set to {"ruleA" => 0, "ruleB"
     # => 1} and we wanted to swap the priorities we have to remove all rules then
     # add our new ones with a second call.  This is _really_ bad because it means
     # that there will be an brief outage while the rules are removed.
     #
-    # What we will likely have to do is create dup the current rules into
-    # temporary names, remove the old ones, then add the correct ones and delete
-    # the dups. Yay.
-    Puppet.debug("Puppet::Provider::F5_VirtualServer: Deleting all current rules for #{resource[:name]}")
-    transport[wsdl].remove_all_rules(resource[:name])
-    transport[wsdl].add_rule(resource[:name], [rules])
-  end
+    # The current approach is to handle priorities from inside the rules:
+    # http://devcentral.f5.com/wiki/iRules.priority.ashx
+    #
+    # That document shows priorities can be bound to events.
 
-  def profile
-    profiles = transport[wsdl].get_profile(resource[:name]).first.map {|p| {"profile_name" => p.profile_name}}
-    # We get TCP by default.  Trying to create it will cause problems.
-    return profiles - [{"profile_name"=>"tcp"}]
-  end
-
-  def profile=(profiles)
-    # TODO: For the same reason as with rules, this is far from production
-    # ready.
-
-    Puppet.debug("Puppet::Provider::F5_VirtualServer: Deleting all current profiles for #{resource[:name]}")
-    transport[wsdl].remove_all_rules(resource[:name])
-    transport[wsdl].remove_all_profiles(resource[:name])
-
-    # Now create the array of hashes that iControl expects
-    new_profiles = profiles.map do |p|
-      # We're hard-coding the profile_context because that's the only one I've
-      # seen used
-      {:profile_name => p["profile_name"], :profile_context => "PROFILE_CONTEXT_TYPE_ALL"}
+    rules = {}
+    transport[wsdl].get_rule(resource[:name]).first.each do |r|
+      rules[r.rule_name] = r.priority
     end
 
-    transport[wsdl].add_profile(resource[:name], [new_profiles])
+    # Only add new rules and use first available priority.
+    to_add = []
+    (resource[:rule] - rules.keys).each do |r|
+      to_add << {"rule_name" => r, "priority" => available_priority}
+    end
+    transport[wsdl].add_rule(resource[:name], [to_add]) unless to_add.empty?
+
+    to_remove = []
+    (rules.keys - resource[:rule]).each do |r|
+      to_remove << {"rule_name" => r, "priority" => rules[r]}
+    end
+    transport[wsdl].remove_rule(resource[:name], [to_remove]) unless to_remove.empty?
   end
 
   def connection_limit
@@ -148,6 +248,15 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
     end
   end
 
+  def vlan
+    val = transport[wsdl].get_vlan(resource[:name]).first
+    { 'state' => val.state, 'vlans' => val.vlans }
+  end
+
+  def vlan=(value)
+    transport[wsdl].set_vlan(resource[:name], [resource[:vlan]])
+  end
+
   def create
     Puppet.debug("Puppet::Provider::F5_VirtualServer: creating F5 virtual server #{resource[:name]}")
 
@@ -161,14 +270,17 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
 
     transport[wsdl].create([vs_definition], vs_wildmask, [vs_resources], [vs_profiles])
 
-    methods = [ 'cmp_enabled_state',
+    # profile should be the first value added since some other settings require it.
+    methods = [ 'profile',
+                'clone_pool',
+                'cmp_enabled_state',
                 'connection_mirror_state',
                 'default_pool_name',
                 'enabled_state',
                 'fallback_persistence_profile',
                 'last_hop_pool',
                 'nat64_state',
-                'profile',
+                'persistence_profile',
                 'rate_class',
                 'rule',
                 'snat_pool',
