@@ -27,10 +27,13 @@ class Puppet::Provider::F5 < Puppet::Provider
   end
 
   def self.transport
-    # TODO: support Facter url to simplify testing. this will be removed in the final release.
-    url= Facter.url ? Facter.url : 'https://admin:admin@f5.puppetlabs.lan/'
-
-    @device ||= Puppet::Util::NetworkDevice.current ? Puppet::Util::NetworkDevice.current : Puppet::Util::NetworkDevice::F5::Device.new(url)
+    if Facter.value(:url) then
+      Puppet.debug "Puppet::Util::NetworkDevice::F5: connecting via facter url."
+      @device ||= Puppet::Util::NetworkDevice::F5::Device.new(Facter.value(:url))
+    else
+      @device ||= Puppet::Util::NetworkDevice.current
+      raise Puppet::Error, "Pupet::Util::NetworkDevice::F5: device not initialized." unless @device
+    end
     @tranport = @device.transport
   end
 
