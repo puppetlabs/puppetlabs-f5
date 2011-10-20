@@ -4,6 +4,11 @@ Warning: this project is currently work in progress, *pending* sections are plan
 ## Overview
 The F5 module was written against F5 VE version 10.1.0.3341. F5 have released version 11 with several API changes but currently they have not released any hardware or software running version 11. This provider uses several version 10.1 API, so it is not expected to work with older F5 devices.
 
+Thanks to the following contributor/testers for this module (outside of PuppetLabs employees):
+Brenton Leanhardt (brenton)
+Bretm (bretm-rh)
+Scott Henson (shenson)
+
 ## Installation and Usage
 Since we can not directly install a puppet agent on F5, it is managed through an intermediate proxy system running puppet agent similar to cisco devices. The requirement for the proxy system:
 
