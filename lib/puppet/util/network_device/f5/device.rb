@@ -11,6 +11,7 @@ class Puppet::Util::NetworkDevice::F5::Device
     @option = option
 
     modules = [
+      'LocalLB.Class',
       'LocalLB.Monitor',
       'LocalLB.NodeAddress',
       'LocalLB.ProfileClientSSL',
