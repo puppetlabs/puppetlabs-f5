@@ -10,7 +10,8 @@ class Puppet::Util::NetworkDevice::F5::Device
     @url = URI.parse(url)
     @option = option
 
-    modules   = [ 'LocalLB.Monitor',
+    modules   = [ 'LocalLB.Class', 
+                  'LocalLB.Monitor',
                   'LocalLB.NodeAddress',
                   'LocalLB.ProfileClientSSL',
                   'LocalLB.Pool',
