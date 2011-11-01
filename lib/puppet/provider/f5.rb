@@ -17,11 +17,11 @@ class Puppet::Provider::F5 < Puppet::Provider
   end
 
   def network_address(value)
-    value.split(':')[0]
+    value.sub(":" + value.split(':').last, '')
   end
 
   def network_port(value)
-    port = value.split(':')[1]
+    port = value.split(':').last
     port.to_i unless port == '*'
     port
   end
@@ -32,7 +32,7 @@ class Puppet::Provider::F5 < Puppet::Provider
       @device ||= Puppet::Util::NetworkDevice::F5::Device.new(Facter.value(:url))
     else
       @device ||= Puppet::Util::NetworkDevice.current
-      raise Puppet::Error, "Pupet::Util::NetworkDevice::F5: device not initialized." unless @device
+      raise Puppet::Error, "Puppet::Util::NetworkDevice::F5: device not initialized." unless @device
     end
     @tranport = @device.transport
   end

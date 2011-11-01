@@ -147,6 +147,7 @@ Puppet::Type.newtype(:f5_virtualserver) do
   end
 
   newproperty(:snat_pool) do
+    desc "Virtual server snat_pool."
   end
 
   newproperty(:source_port_behavior) do

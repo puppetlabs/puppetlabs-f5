@@ -92,19 +92,9 @@ Puppet::Type.newtype(:f5_pool) do
     desc "The pool monitor association should be a hash consisting of the following keys: { 'monitor_templates' => [], 'quorum' => '0', 'type' => 'MONITOR_RULE_TYPE_AND_LIST' }"
 
     munge do |value|
-      raise Puppet::Error, "Puppet::Type::F5_Pool: monitor_association must be a hash." unless value.is_a? Hash
-
-      unless value.empty?
-        value.keys.each do |k|
-          raise Puppet::Error, "Puppet::Type::F5_Pool: monitor_association does not support key #{k}" unless k =~ /^(monitor_templates|quorum|type)$/
-
-          # ensure monitor_templates value is an array to avoid "http" != ["http"]
-          value[k] = value[k].to_a if k == 'monitor_templates'
-        end
-
-        raise Puppet::Error, "Puppet::Type::F5_Pool: monitor_association missing key." unless value.size== 3
-      end
-
+      # Make sure monitor_templates is converted to an array to aid with
+      # matching
+      value["monitor_templates"] = value["monitor_templates"].to_a
       value
     end
 
@@ -114,6 +104,25 @@ Puppet::Type.newtype(:f5_pool) do
 
     def is_to_s(currentvalue)
       currentvalue.inspect
+    end
+
+    validate do |value|
+      unless value.is_a? Hash then
+        raise Puppet::Error.new("Parameter monitor_association failed: must " \
+          "be a hash.")
+      end
+
+      unless value.size == 3
+        raise Puppet::Error.new("Parameter monitor_association failed: there " \
+          "should be 3 keys in hash")
+      end
+
+      value.keys.each do |key|
+        unless ["monitor_templates","quorum","type"].include?(key) then
+          raise Puppet::Error.new("Parameter monitor_assocation failed: no " \
+            "support for key #{k}")
+        end
+      end
     end
   end
 
