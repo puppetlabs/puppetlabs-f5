@@ -23,7 +23,7 @@ Puppet::Type.newtype(:f5_snattranslationaddress) do
 
   newproperty(:arp_state) do
     desc "The snat translation address arp state."
-    newvalues(/^STATE_(DISABLE|ENABLED)$/)
+    newvalues(/^STATE_(DISABLED|ENABLED)$/)
   end
 
   newproperty(:connection_limit) do
@@ -33,7 +33,7 @@ Puppet::Type.newtype(:f5_snattranslationaddress) do
 
   newproperty(:enabled_state) do
     desc "The snat translation enabled state."
-    newvalues(/^STATE_(DISABLE|ENABLED)$/)
+    newvalues(/^STATE_(DISABLED|ENABLED)$/)
   end
 
   newproperty(:ip_timeout) do

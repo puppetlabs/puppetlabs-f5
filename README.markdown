@@ -280,3 +280,14 @@ F5_virtualserver does not atomically change rules (F5 API limitation), so to reo
                                    'vlans' => ['default'] },
       wildmask                => '255.255.255.255',
     }
+
+## Development
+
+The following section applies to developers of this module only.
+
+### Testing
+
+You will need to install the 'f5-icontrol' gem for most of the tests to work.
+This file is available in the 'files' section of this module.
+
+    gem install --no-ri files/f5-icontrol-10.2.0.2.gem
