@@ -20,7 +20,8 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
     end
   end
 
-  methods = [ 'action_on_service_down',
+  methods = [
+    'action_on_service_down',
     'allow_nat_state',
     'allow_snat_state',
     'client_ip_tos',                      # Array
@@ -35,7 +36,8 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
     'server_ip_tos',
     'server_link_qos',
     'simple_timeout',
-    'slow_ramp_time']
+    'slow_ramp_time'
+  ]
 
   methods.each do |method|
     define_method(method.to_sym) do
@@ -54,10 +56,31 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
   end
 
   def member
+    result = {}
+
     members = transport[wsdl].get_member(resource[:name]).first
-    members = members.collect { |system|
-      "#{system.address}:#{system.port}"
-    }.sort.join(',')
+    members.each { |system|
+      result["#{system.address}:#{system.port}"] = {}
+    }
+
+    # does not support v11 wsdl
+    member = 'LocalLB.PoolMember'
+
+    methods = [
+      'connection_limit',
+      'dynamic_ratio',
+      'priority',
+      'ratio',
+    ]
+
+    methods.each do |method|
+      value = transport[member].send("get_#{method}", resource[:name]).first
+      value.each do |val|
+        result["#{val.member.address}:#{val.member.port}"][method] = val.send(method).to_s
+      end
+    end
+
+    result
   end
 
   def member=(value)
@@ -66,21 +89,21 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
       "#{system.address}:#{system.port}"
     }
 
-    members = resource[:member].split(',')
+    members = resource[:member].keys
 
     # Should add first to avoid clearing all members of the pool.
     (members - current_members).each do |node|
       Puppet.debug "Puppet::Provider::F5_Pool: adding member #{node}"
       transport[wsdl].add_member(resource[:name],
-        [[{:address => node.split(':')[0],
-           :port    => node.split(':')[1]}]])
+        [[{:address => network_address(node),
+           :port    => network_port(node)}]])
     end
 
     (current_members - members).each do |node|
       Puppet.debug "Puppet::Provider::F5_Pool: removing member #{node}"
       transport[wsdl].remove_member(resource[:name],
-        [[{:address => node.split(':')[0],
-           :port    => node.split(':')[1]}]])
+        [[{:address => network_address(node),
+           :port    => network_port(node)}]])
     end
   end
 

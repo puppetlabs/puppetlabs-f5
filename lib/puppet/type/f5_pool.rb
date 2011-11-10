@@ -62,8 +62,31 @@ Puppet::Type.newtype(:f5_pool) do
     newvalues(/^LB_METHOD_(ROUND_ROBIN|RATIO_MEMBER|LEAST_CONNECTION_MEMBER|OBSERVED_MEMBER|PREDICTIVE_MEMBER|RATIO_NODE_ADDRESS|LEAST_CONNECTION_NODE_ADDRESS|FASTEST_NODE_ADDRESS|OBSERVED_NODE_ADDRESS|PREDICTIVE_NODE_ADDESS|DYNAMIC_RATIO|FASTEST_APP_RESPONSE|LEAST_SESSIONS|DYNAMIC_RATIO_MEMBER|L3_ADDR|UNKNOWN|WEIGHTED_LEAST_CONNECTION_MEMBER|WEIGHTED_LEAST_CONNECTION_NODE_ADDRESS|RATIO_SESSION|RATIO_LEAST_CONNECTION_MEMBER|RATIO_LEAST_CONNECTION_NODE_ADDRESS)$/)
   end
 
-  newproperty(:member, :parent => Puppet::Property::List) do
+  newproperty(:member) do
     desc "The pool member."
+
+    def insync?(is)
+      # @should is an Array. see lib/puppet/type.rb insync?
+      should = @should.first
+      return false unless is.class == Hash and should.class == Hash and is.keys == should.keys
+      should.each do |k, sval|
+          ival = is[k]
+        if sval.is_a?(Hash)
+          sval.each do |l, m|
+            return false unless ival.include?(l) and m == ival[l]
+          end
+        end
+      end
+      true
+    end
+
+    def should_to_s(newvalue)
+      newvalue.inspect
+    end
+
+    def is_to_s(currentvalue)
+      currentvalue.inspect
+    end
   end
 
   newparam(:membership) do
