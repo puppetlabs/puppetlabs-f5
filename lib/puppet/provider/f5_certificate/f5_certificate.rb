@@ -62,9 +62,10 @@ Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::P
     @property_hash.clear
   end
 
-
   def content
-    cert = transport[wsdl].certificate_export_to_pem(@property_hash[:mode], @property_hash[:name]).first
+    # Fetch and calculate all certificate sha1
+    cert = transport[wsdl].certificate_export_to_pem(@property_hash[:mode], @property_hash[:name]).join("\n")
+    Puppet.debug cert
     "sha1(#{Puppet::Util::NetworkDevice::F5.fingerprint(cert)})"
   end
 
