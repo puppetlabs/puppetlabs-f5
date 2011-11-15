@@ -4,7 +4,7 @@ require 'puppet/util/network_device/f5/facts'
 
 class Puppet::Util::NetworkDevice::F5::Device
 
-  attr_accessor :url, :transport
+  attr_accessor :url, :transport, :partition
 
   def initialize(url, option = {})
     @url = URI.parse(url)
@@ -30,22 +30,26 @@ class Puppet::Util::NetworkDevice::F5::Device
 
     # Access Common partition by default:
     if @url.path == '' or @url.path == '/'
-      partition = 'Common'
+      @partition = 'Common'
     else
-      partition = /\/(.*)/.match(@url.path).captures
+      @partition = /\/(.*)/.match(@url.path).captures
     end
 
     # System.Session API not supported until V11.
-    Puppet.debug("Puppet::Device::F5: connecting to partition #{partition}.")
+    Puppet.debug("Puppet::Device::F5: connecting to partition #{@partition}.")
     if transport['System.Session']
-      transport['System.Session'].set_active_folder(partition)
+      transport['System.Session'].set_active_folder(@partition)
     else
-      transport['Management.Partition'].set_active_partition(partition)
+      transport['Management.Partition'].set_active_partition(@partition)
     end
   end
 
   def facts
     @facts ||= Puppet::Util::NetworkDevice::F5::Facts.new(@transport)
-    @facts.retreive
+    facts = @facts.retreive
+
+    # inject F5 partition info.
+    facts['partition'] = @partition
+    facts
   end
 end
