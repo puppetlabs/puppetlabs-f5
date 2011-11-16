@@ -1,5 +1,5 @@
-require 'digest/sha1'
 require 'puppet/provider/f5'
+require 'puppet/util/network_device/f5'
 
 Puppet::Type.type(:f5_key).provide(:f5_key, :parent => Puppet::Provider::F5) do
   @doc = "Manages f5 cert"
@@ -59,8 +59,15 @@ Puppet::Type.type(:f5_key).provide(:f5_key, :parent => Puppet::Provider::F5) do
   end
 
   def content
-    key = transport[wsdl].key_export_to_pem(@property_hash[:mode], @property_hash[:name]).first
-    "sha1(#{Digest::SHA1.hexdigest(key)})"
+    value = transport[wsdl].key_export_to_pem(@property_hash[:mode], @property_hash[:name]).first
+
+    keys = value.scan(/([-| ]*BEGIN [R|D]SA (?:PRIVATE|PUBLIC) KEY[-| ]*.*?[-| ]*END [R|D]SA (?:PRIVATE|PUBLIC) KEY[-| ]*)/m).flatten
+
+    keys_sha1 = keys.collect { |key|
+      Puppet::Util::NetworkDevice::F5.fingerprint(key)
+    }
+
+    "sha1(#{keys_sha1.sort.inspect})"
   end
 
   def content=(value)
