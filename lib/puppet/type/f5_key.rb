@@ -1,4 +1,4 @@
-require 'digest/sha1'
+require 'puppet/util/network_device/f5'
 
 Puppet::Type.newtype(:f5_key) do
   @doc = "Manage F5 key."
@@ -29,7 +29,15 @@ Puppet::Type.newtype(:f5_key) do
     # Since we won't be able to decode private key, calculating sha1 of the content instead.
     munge do |value|
       resource[:real_content] = value
-      "sha1(#{Digest::SHA1.hexdigest(value)})"
+
+      # users can provide content with certs and keys, f5 will import both, but we should only compare the key sha1:
+      keys = value.scan(/([-| ]*BEGIN [R|D]SA (?:PRIVATE|PUBLIC) KEY[-| ]*.*?[-| ]*END [R|D]SA (?:PRIVATE|PUBLIC) KEY[-| ]*)/m).flatten
+
+      keys_sha1 = keys.collect { |key|
+        Puppet::Util::NetworkDevice::F5.fingerprint(key)
+      }
+
+      "sha1(#{keys_sha1.sort.inspect})"
     end
   end
 
