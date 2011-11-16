@@ -32,7 +32,16 @@ Puppet::Type.newtype(:f5_certificate) do
 
     munge do |value|
       resource[:real_content] = value
-      "sha1(#{Puppet::Util::NetworkDevice::F5.fingerprint(value)})"
+
+      # users can provide content with certs and keys, f5 will import both, but we should only compare the cert sha1:
+      certs = value.scan(/([-| ]*BEGIN CERTIFICATE[-| ]*.*?[-| ]*END CERTIFICATE[-| ]*)/m).flatten
+      raise Puppet::Error, "Puppet::Type::F5_certificate: content does not contain certficates." unless certs.size > 0
+
+      certs_sha1 = certs.collect { |cert|
+        Puppet::Util::NetworkDevice::F5.fingerprint(cert)
+      }
+
+      "sha1(#{certs_sha1.sort.inspect})"
     end
   end
 

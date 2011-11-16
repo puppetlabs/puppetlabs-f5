@@ -63,10 +63,16 @@ Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::P
   end
 
   def content
+
     # Fetch and calculate all certificate sha1
-    cert = transport[wsdl].certificate_export_to_pem(@property_hash[:mode], @property_hash[:name]).join("\n")
-    Puppet.debug cert
-    "sha1(#{Puppet::Util::NetworkDevice::F5.fingerprint(cert)})"
+    value = transport[wsdl].certificate_export_to_pem(@property_hash[:mode], @property_hash[:name]).first
+    certs = value.scan(/([-| ]*BEGIN CERTIFICATE[-| ]*.*?[-| ]*END CERTIFICATE[-| ]*)/m).flatten
+
+    certs_sha1 = certs.collect { |cert|
+      Puppet::Util::NetworkDevice::F5.fingerprint(cert)
+    }
+
+    "sha1(#{certs_sha1.sort.inspect})"
   end
 
   def content=(value)
