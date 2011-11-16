@@ -19,7 +19,7 @@ module Puppet::Util::NetworkDevice::F5
            end
     cert.new(content)
   rescue Exception => e
-    Puppet.debug("Puppet::Provider::F5_Cert: failed to decode certificate #{resource[:name]} content. Error: #{e.message}")
+    raise Puppet::Error, "Puppet::Provider::F5_Cert: failed to decode certificate content. Error: #{e.message}\n#{content}"
   end
 
   # Calculate cert fingerprint
