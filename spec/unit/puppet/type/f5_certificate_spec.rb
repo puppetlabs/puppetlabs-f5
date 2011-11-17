@@ -53,7 +53,7 @@ describe res_type do
   }
   it_should_behave_like "a puppet type", parameter_tests, :f5_certificate
 
-  it "parameter content certificate should be munged into a fingerprint" do
+  it "parameter content should munge certificate into a fingerprint" do
     resource[:content] = <<EOS
 -----BEGIN CERTIFICATE-----
 MIICWjCCAcMCAgGlMA0GCSqGSIb3DQEBBAUAMHUxCzAJBgNVBAYTAlVTMRgwFgYD
@@ -74,7 +74,39 @@ EOS
     resource[:content].should == "sha1([\"97817950d81c9670cc34d809cf794431367ef474\"])"
   end
 
-  it "parameter content multiple certificate should be munged into fingerprints" do
+  it "parameter content should only munge certificate to fingerprint" do
+    resource[:content] = <<EOS
+-----BEGIN CERTIFICATE-----
+MIICWjCCAcMCAgGlMA0GCSqGSIb3DQEBBAUAMHUxCzAJBgNVBAYTAlVTMRgwFgYD
+VQQKEw9HVEUgQ29ycG9yYXRpb24xJzAlBgNVBAsTHkdURSBDeWJlclRydXN0IFNv
+bHV0aW9ucywgSW5jLjEjMCEGA1UEAxMaR1RFIEN5YmVyVHJ1c3QgR2xvYmFsIFJv
+b3QwHhcNOTgwODEzMDAyOTAwWhcNMTgwODEzMjM1OTAwWjB1MQswCQYDVQQGEwJV
+UzEYMBYGA1UEChMPR1RFIENvcnBvcmF0aW9uMScwJQYDVQQLEx5HVEUgQ3liZXJU
+cnVzdCBTb2x1dGlvbnMsIEluYy4xIzAhBgNVBAMTGkdURSBDeWJlclRydXN0IEds
+b2JhbCBSb290MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCVD6C28FCc6HrH
+iM3dFw4usJTQGz0O9pTAipTHBsiQl8i4ZBp6fmw8U+E3KHNgf7KXUwefU/ltWJTS
+r41tiGeA5u2ylc9yMcqlHHK6XALnZELn+aks1joNrI1CqiQBOeacPwGFVw1Yh0X4
+04Wqk2kmhXBIgD8SFcd5tB8FLztimQIDAQABMA0GCSqGSIb3DQEBBAUAA4GBAG3r
+GwnpXtlR22ciYaQqPEh346B8pt5zohQDhT37qw4wxYMWM4ETCJ57NE7fQMh017l9
+3PR2VX2bY1QY6fDq81yx2YtCHrnAlU66+tXifPVoYb+O7AWXX1uw16OFNMQkpw0P
+lZPvy5TYnh+dXIVtx6quTx8itc2VrbqnzPmrC3p/
+-----END CERTIFICATE-----
+------BEGIN X509 CRL-----
+-MIIBmjCCAQMwDQYJKoZIhvcNAQEEBQAwgb0xCzAJBgNVBAYTAlVTMRMwEQYDVQQI
+-EwpDYWxpZm9ybmlhMRAwDgYDVQQHEwdPYWtsYW5kMRYwFAYDVQQKEw1SZWQgSGF0
+-LCBJbmMuMSIwIAYDVQQLFBlHbG9iYWwgU2VydmljZXMgJiBTdXBwb3J0MR0wGwYD
+-VQQDExRSZWQgSGF0IFRlc3QgUm9vdCBDQTEsMCoGCSqGSIb3DQEJARYdc3Ryb25n
+-aG9sZC1zdXBwb3J0QHJlZGhhdC5jb20XDTAwMTExMzIwNTcyNVoXDTAwMTIxMzIw
+-NTcyNVowFDASAgEBFw0wMDA4MzEyMTE5MTdaMA0GCSqGSIb3DQEBBAUAA4GBAIge
+-X5VaOkNOKn8MrbxFiqpOrH/M9Vocu9oDeQ6EMTeA5xIWBGN53BZ/HUJ1NjS32VDG
+-waM3P6DXud4xKXauVgAXyH6D6xEDBt5GIBTFrWKIDKGOkvRChTUvzObmx9ZVSMMg
+-5xvAbsaFgJx3RBbznySlqVU4APYE0W2/xL0/8fzM
+------END X509 CRL-----
+EOS
+    resource[:content].should == "sha1([\"97817950d81c9670cc34d809cf794431367ef474\"])"
+  end
+
+  it "parameter content should munge multiple certificates into fingerprints" do
     resource[:content] = <<EOS
 -----BEGIN CERTIFICATE-----
 MIICWjCCAcMCAgGlMA0GCSqGSIb3DQEBBAUAMHUxCzAJBgNVBAYTAlVTMRgwFgYD
