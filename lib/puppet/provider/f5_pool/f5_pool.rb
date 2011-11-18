@@ -76,7 +76,21 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
     methods.each do |method|
       value = transport[member].send("get_#{method}", resource[:name]).first
       value.each do |val|
-        result["#{val.member.address}:#{val.member.port}"][method] = val.send(method).to_s
+
+        # F5 A.B.C.D%ID routing domain requires special handling.
+        #   If we don't detect a routine domain in get_member, we ignore %ID.
+        #   If we detect routine domain in get_member, we provide %ID.
+        address = val.member.address
+        noroute = address.split("%").first
+        port    = val.member.port
+
+        if result.member?("#{address}:#{port}")
+          result["#{address}:#{port}"][method] = val.send(method).to_s
+        elsif result.member?("#{noroute}:#{port}")
+          result["#{noroute}:#{port}"][method] = val.send(method).to_s
+        else
+          raise Puppet::Error, "Puppet::Provider::F5_Pool: LocalLB.PoolMember get_#{method} returned #{address}:#{port} that does not exist in get_member."
+         end
       end
     end
 
@@ -91,7 +105,7 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
 
     members = resource[:member].keys
 
-    # Should add first to avoid clearing all members of the pool.
+    # Should add new members first to avoid removing all members of the pool.
     (members - current_members).each do |node|
       Puppet.debug "Puppet::Provider::F5_Pool: adding member #{node}"
       transport[wsdl].add_member(resource[:name],
