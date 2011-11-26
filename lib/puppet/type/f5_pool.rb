@@ -5,7 +5,7 @@ Puppet::Type.newtype(:f5_pool) do
 
   apply_to_device
 
-	ensurable do
+  ensurable do
     desc "Add or delete pool."
 
     defaultto(:present)
