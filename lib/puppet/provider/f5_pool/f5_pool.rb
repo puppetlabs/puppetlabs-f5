@@ -64,7 +64,7 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
     }
 
     # does not support v11 wsdl
-    member = 'LocalLB.PoolMember'
+    wsdl = 'LocalLB.PoolMember'
 
     methods = [
       'connection_limit',
@@ -74,7 +74,7 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
     ]
 
     methods.each do |method|
-      value = transport[member].send("get_#{method}", resource[:name]).first
+      value = transport[wsdl].send("get_#{method}", resource[:name]).first
       value.each do |val|
 
         # F5 A.B.C.D%ID routing domain requires special handling.
@@ -119,6 +119,31 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
         [[{:address => network_address(node),
            :port    => network_port(node)}]])
     end
+
+    # does not support v11 wsdl
+    wsdl = 'LocalLB.PoolMember'
+
+    methods = [
+      'connection_limit',
+      'dynamic_ratio',
+      'priority',
+      'ratio',
+    ]
+
+    methods.each do |m|
+
+      # converts the value from ip:netmask => { 'priority' => '1', 'ratio' => '1' } to
+      # { :member   => {:address => ip, :port => port},
+      #   :priority => '1' }
+      # { :member   => {:address => ip, :port => port},
+      #   :ratio    => '1' }
+      r = Hash[*resource[:member].select {|k,v| v.include?(m)}.flatten]
+      r = r.collect do |k,v|
+        {:member => {:address => network_address(k), :port => network_port(k)}, m.to_s => v[m]}
+      end
+
+      value = transport[wsdl].send("set_#{m}", [resource[:name]], [r]) unless r.empty?
+    end
   end
 
   def monitor_association
@@ -148,23 +173,27 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
     # [[]] because we will add members later using member=...
     transport[wsdl].create(resource[:name], resource[:lb_method], [[]])
 
-    methods = [ 'action_on_service_down',
-    'allow_nat_state',
-    'allow_snat_state',
-    'client_ip_tos',                      # Array
-    'client_link_qos',                    # Array
-    'gateway_failsafe_device',
-    'gateway_failsafe_unit_id',           # Array
-    'lb_method',
-    'minimum_active_member',              # Array
-    'minimum_up_member',                  # Array
-    'minimum_up_member_action',
-    'minimum_up_member_enabled_state',
-    'server_ip_tos',
-    'server_link_qos',
-    'simple_timeout',
-    'slow_ramp_time']
-    methods << "monitor_association" << "member"
+    methods = [
+      'action_on_service_down',
+      'allow_nat_state',
+      'allow_snat_state',
+      'client_ip_tos',                      # Array
+      'client_link_qos',                    # Array
+      'gateway_failsafe_device',
+      'gateway_failsafe_unit_id',           # Array
+      'lb_method',
+      'minimum_active_member',              # Array
+      'minimum_up_member',                  # Array
+      'minimum_up_member_action',
+      'minimum_up_member_enabled_state',
+      'server_ip_tos',
+      'server_link_qos',
+      'simple_timeout',
+      'slow_ramp_time',
+      'monitor_association',
+      'member'
+    ]
+
     methods.each do |method|
       self.send("#{method}=", resource[method.to_sym]) if resource[method.to_sym]
     end
