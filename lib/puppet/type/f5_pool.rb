@@ -74,7 +74,7 @@ Puppet::Type.newtype(:f5_pool) do
         if v.is_a?(Hash)
           v.each do |l, m|
             # so far all member values are int
-            return false unless is[k].include?(l).to_i and is[k][l] == m.to_i
+            return false unless is[k].include?(l).to_s and is[k][l] == m.to_s
           end
         end
       end
