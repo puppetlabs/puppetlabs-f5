@@ -6,7 +6,7 @@ Puppet::Type.newtype(:f5_monitor) do
 
   apply_to_device
 
-	ensurable do
+  ensurable do
     desc "Add or delete monitor."
 
     defaultto(:present)
@@ -24,15 +24,15 @@ Puppet::Type.newtype(:f5_monitor) do
     desc "The monitor template name (namevar)."
   end
 
-	newparam(:is_read_only) do
-		desc "The monitor template is read only or not."
-		defaultto('false')
-	end
+  newparam(:is_read_only) do
+    desc "The monitor template is read only or not."
+    defaultto('false')
+  end
 
-	newparam(:is_directly_usable) do
-		desc "The monitor template is directly usable or not."
-		defaultto('true')
-	end
+  newparam(:is_directly_usable) do
+    desc "The monitor template is directly usable or not."
+    defaultto('true')
+  end
 
   newproperty(:manual_resume_state) do
     desc "The monitor template allow nat state."
@@ -41,13 +41,13 @@ Puppet::Type.newtype(:f5_monitor) do
 
   newparam(:parent_template) do
     desc "The monitor template parent template name."
-		defaultto('')
+    defaultto('')
   end
 
   newproperty(:template_destination, :array_matching => :all) do
     desc "The monitor template destination."
 
-		defaultto(['ATYPE_STAR_ADDRESS_STAR_PORT', '*:*'])
+    defaultto(['ATYPE_STAR_ADDRESS_STAR_PORT', '*:*'])
   end
 
   newproperty(:template_integer_property) do
