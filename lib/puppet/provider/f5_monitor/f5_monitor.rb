@@ -121,9 +121,8 @@ Puppet::Type.type(:f5_monitor).provide(:f5_monitor, :parent => Puppet::Provider:
   def template_integer_property=(value)
     resource[:template_integer_property].each do |k, v|
       # Trying to configure ITYPE_UNSET results in Exception: Common::OperationFailed
-      transport[wsdl].set_template_integer_property(resource[:name], [{:type => k, :value => v}]) unless k = 'ITYPE_UNSET'
+      transport[wsdl].set_template_integer_property(resource[:name], [{:type => k, :value => v}]) unless k == 'ITYPE_UNSET'
     end
-    true
   end
 
   def template_string_property
