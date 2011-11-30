@@ -41,11 +41,13 @@ Puppet::Type.type(:f5_monitor).provide(:f5_monitor, :parent => Puppet::Provider:
     @property_hash[:name] ||= resource[:name]
   end
 
-  methods = [ 'manual_resume_state',
-              'parent_template',
-              'template_state',
-              'template_transparent_mode',
-              'template_user_defined_string_property']
+  methods = [
+    'manual_resume_state',
+    'parent_template',
+    'template_state',
+    'template_transparent_mode',
+    'template_user_defined_string_property'
+  ]
 
   methods.each do |method|
     define_method(method.to_sym) do
@@ -58,7 +60,10 @@ Puppet::Type.type(:f5_monitor).provide(:f5_monitor, :parent => Puppet::Provider:
   methods.each do |method|
     define_method("#{method}=") do |value|
       if transport[wsdl].respond_to?("set_#{method}".to_sym)
-        transport[wsdl].send("set_#{method}", @property_hash[:name], resource[method.to_sym])
+        # Without this it appears to skip resources attributes on creation.
+        namevar = @property_hash[:name] || resource[:name]
+        raise Puppet::Error, "Puppet::Provider::F5_monitor: missing namevar for resource" unless namevar
+        transport[wsdl].send("set_#{method}", namevar, value)
       end
     end
   end
@@ -281,9 +286,20 @@ Puppet::Type.type(:f5_monitor).provide(:f5_monitor, :parent => Puppet::Provider:
 
     transport[wsdl].create_template([monitor_template], [common_attributes])
 
-    # Update integer and string property upon resource creation
-    self.template_integer_property=resource[:template_integer_property] if resource[:template_integer_property]
-    self.template_string_property=resource[:template_string_property] if resource[:template_string_property]
+    # Update other monitor attributes after resource creation.
+    methods = [
+      'template_state',
+      'template_transparent_mode',
+      # We don't know which user_defined string to support yet.
+      #template_user_defined_string_property',
+      'template_integer_property',
+      'template_string_property',
+      'manual_resume_state'
+    ]
+
+    methods.each do |method|
+      self.send("#{method}=", resource[method.to_sym]) if resource[method.to_sym]
+    end
   end
 
   def destroy
