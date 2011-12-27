@@ -6,8 +6,8 @@ Puppet::Type.newtype(:f5_monitor) do
 
   apply_to_device
 
-	ensurable do
-    desc "Add or delete monitor."
+  ensurable do
+    desc "F5 monitor resource state. Valid values are present, absent."
 
     defaultto(:present)
 
@@ -21,37 +21,51 @@ Puppet::Type.newtype(:f5_monitor) do
   end
 
   newparam(:name, :namevar=>true) do
-    desc "The monitor template name (namevar)."
+    desc "The monitor name."
   end
 
-	newparam(:is_read_only) do
-		desc "The monitor template is read only or not."
-		defaultto('false')
-	end
 
-	newparam(:is_directly_usable) do
-		desc "The monitor template is directly usable or not."
-		defaultto('true')
-	end
+  newparam(:is_directly_usable) do
+    desc "Determines if the specified monitor templates can be used directly,
+    or a user-defined monitor based on each monitor must be created first
+    before it can be used."
+
+    defaultto('true')
+  end
+
+  newparam(:is_read_only) do
+    desc "Determines if the specified monitor templates are read-only. The user
+    can only modify properties for read/write monitor templates."
+
+    defaultto('false')
+  end
 
   newproperty(:manual_resume_state) do
-    desc "The monitor template allow nat state."
+    desc "The monitor templates' manual resume states. When enabled and a
+    monitor has marked an object down, that object will not be marked up by the
+    monitor, i.e. the object will be manually marked up."
+
     newvalues(/^STATE_(DISABLED|ENABLED)$/)
   end
 
   newparam(:parent_template) do
-    desc "The monitor template parent template name."
-		defaultto('')
+    desc "The parent monitor templates from which the specified monitor
+    templates are derived. A user-defined monitor template will get its
+    defaults from its parent monitor template."
+
+    defaultto('')
   end
 
   newproperty(:template_destination, :array_matching => :all) do
-    desc "The monitor template destination."
+    desc "The destination IP:port values for the specified templates. NOTE:
+    This should only be done when the monitor templates in 'template_names'
+    have NOT been associated to any node addresses or pool members."
 
-		defaultto(['ATYPE_STAR_ADDRESS_STAR_PORT', '*:*'])
+    defaultto(['ATYPE_STAR_ADDRESS_STAR_PORT', '*:*'])
   end
 
   newproperty(:template_integer_property) do
-    desc "The monitor template integer property."
+    desc "The integer property values of the specified monitor templates."
 
     munge do |value|
       raise Puppet::Error, "Puppet::Type::F5_Monitor: template_integer_property must be a hash." unless value.is_a? Hash
@@ -96,12 +110,17 @@ Puppet::Type.newtype(:f5_monitor) do
   end
 
   newproperty(:template_state) do
-    desc "The monitor template state."
+    desc "The monitor templates' enabled/disabled states. This will
+    enable/disable all instances that use the specified templates. This serves
+    as a quick and convenient method to enable/disable all instances, but if
+    you want only to enable/disable a specific instance, use
+    set_instance_enabled."
+
     newvalues(/^STATE_(DISABLED|ENABLED)$/)
   end
 
   newproperty(:template_string_property) do
-    desc "The monitor template string property."
+    desc "The string property values of the specified monitor templates."
 
     munge do |value|
       raise Puppet::Error, "Puppet::Type::F5_Monitor: template_integer_property must be a hash." unless value.is_a? Hash
@@ -124,12 +143,15 @@ Puppet::Type.newtype(:f5_monitor) do
   end
 
   newproperty(:template_type) do
-    desc "The monitor template type."
+    desc "The template types of the specified monitor templates."
+
     newvalues(/^TTYPE_(UNSET|ICMP|TCP|TCP_ECHO|EXTERNAL|HTTP|HTTPS|NNTP|FTP|POP3|SMTP|MSSQL|GATEWAY|IMAP|RADIUS|LDAP|WMI|SNMP_DCA(|_BASE)|REAL_SERVER|UDP|NONE|ORACLE|SOAP|GATEWAY_ICMP|SIP|TCP_HALF_OPEN|SCRIPTED|WAP|RPC|SMB|SASP|MODULE_SCORE|FIREPASS|INBAND|RADIUS_ACCOUNTING|VIRTUAL_LOCATION|MYSQL|POSTGRESQL)$/)
   end
 
   newproperty(:template_transparent_mode) do
     desc "The monitor template transparent mode."
+
+    newvalues(:true, :false)
   end
 
   #newproperty(:template_user_defined_string_property) do

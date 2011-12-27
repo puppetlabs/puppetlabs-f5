@@ -6,7 +6,7 @@ Puppet::Type.newtype(:f5_certificate) do
   apply_to_device
 
   ensurable do
-    desc "Add or delete key."
+    desc "F5 certificate resource state. Valid values are present, absent."
 
     defaultto(:present)
 
@@ -20,15 +20,11 @@ Puppet::Type.newtype(:f5_certificate) do
   end
 
   newparam(:name, :namevar=>true) do
-    desc "The key name."
-  end
-
-  newparam(:real_content) do
-    desc "Store actual PEM file content."
+    desc "The certificate name."
   end
 
   newproperty(:content) do
-    desc "The cerficate file PEM content (fingerprint compared)."
+    desc "The cerficate content in PEM format (sha1 fingerprint)."
 
     munge do |value|
       resource[:real_content] = value
@@ -45,8 +41,14 @@ Puppet::Type.newtype(:f5_certificate) do
     end
   end
 
+  newparam(:real_content) do
+    desc "Stores actual certificate PEM-formatted content."
+  end
+
   newparam(:mode) do
-    desc "The certificate management mode type."
+    desc "The certificate management mode. An enumerated type that will
+    describe what mode of key/cert management to use."
+
     defaultto("MANAGEMENT_MODE_DEFAULT")
     newvalues(/^MANAGEMENT_MODE_(DEFAULT|WEBSERVER|EM|IQUERY|IQUERY_BIG3D)$/)
   end

@@ -22,11 +22,14 @@ Puppet::Type.newtype(:f5_profileclientssl) do
   end
 
   newproperty(:certificate_file) do
-    desc "Sets the certificate filenames to be used by BIG-IP acting as an SSL server."
+    desc "The certificate filenames to be used by BIG-IP acting as an SSL
+    server."
   end
 
   newproperty(:key_file) do
-    desc "Sets the key filenames to be used by BIG-IP acting as an SSL server. If a full path is not specified, the file name is relative to /config/ssl/ssl.key."
+    desc "The key filenames to be used by BIG-IP acting as an SSL server. If a
+    full path is not specified, the file name is relative to
+    /config/ssl/ssl.key."
   end
 
   newproperty(:ca_file) do
@@ -38,6 +41,6 @@ Puppet::Type.newtype(:f5_profileclientssl) do
   end
 
   newproperty(:peer_certification_mode) do
-    desc "Sets the peer certification modes for the specified client SSL profiles."
+    desc "The peer certification modes for the specified client SSL profiles."
   end
 end
