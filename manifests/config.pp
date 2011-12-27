@@ -17,16 +17,18 @@
 # Sample Usage:
 #
 #  f5::config { 'bigip':
-#    username => 'admin',
-#    password => 'password',
-#    url      => 'f5.puppetlabs.lan',
-#    target   => '/etc/puppetlabs/puppet/device/bigip.conf
+#    username  => 'admin',
+#    password  => 'password',
+#    url       => 'f5.puppetlabs.lan',
+#    partition => 'Common',
+#    target    => '/etc/puppetlabs/puppet/device/bigip.conf
 #  }
 #
 define f5::config(
   $username = 'admin',
   $password,
   $url,
+  $partition = 'Common',
   $target
 ) {
 
