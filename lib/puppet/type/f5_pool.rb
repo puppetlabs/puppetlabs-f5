@@ -5,7 +5,7 @@ Puppet::Type.newtype(:f5_pool) do
 
   apply_to_device
 
-	ensurable do
+  ensurable do
     desc "Add or delete pool."
 
     defaultto(:present)
@@ -68,12 +68,14 @@ Puppet::Type.newtype(:f5_pool) do
     def insync?(is)
       # @should is an Array. see lib/puppet/type.rb insync?
       should = @should.first
-      return false unless is.class == Hash and should.class == Hash and is.keys == should.keys
-      should.each do |k, sval|
-          ival = is[k]
-        if sval.is_a?(Hash)
-          sval.each do |l, m|
-            return false unless ival.include?(l) and m == ival[l]
+
+      # Comparison of hashes
+      return false unless is.class == Hash and should.class == Hash and is.keys.sort == should.keys.sort
+      should.each do |k, v|
+        if v.is_a?(Hash)
+          v.each do |l, w|
+            # so far all member values are int
+            return false unless is[k].include?(l).to_s and is[k][l] == w.to_s
           end
         end
       end
