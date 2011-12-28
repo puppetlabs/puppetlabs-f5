@@ -10,20 +10,23 @@ class Puppet::Util::NetworkDevice::F5::Device
     @url = URI.parse(url)
     @option = option
 
-    modules   = [ 'LocalLB.Monitor',
-                  'LocalLB.NodeAddress',
-                  'LocalLB.ProfileClientSSL',
-                  'LocalLB.Pool',
-                  'LocalLB.PoolMember',
-                  'LocalLB.Rule',
-                  'LocalLB.SNAT',
-                  'LocalLB.SNATPool',
-                  'LocalLB.SNATTranslationAddress',
-                  'LocalLB.VirtualServer',
-                  'Management.KeyCertificate',
-                  'Management.Partition',
-                  'System.Session',
-                  'System.SystemInfo' ]
+    modules = [
+      'LocalLB.Monitor',
+      'LocalLB.NodeAddress',
+      'LocalLB.ProfileClientSSL',
+      'LocalLB.ProfilePersistence',
+      'LocalLB.Pool',
+      'LocalLB.PoolMember',
+      'LocalLB.Rule',
+      'LocalLB.SNAT',
+      'LocalLB.SNATPool',
+      'LocalLB.SNATTranslationAddress',
+      'LocalLB.VirtualServer',
+      'Management.KeyCertificate',
+      'Management.Partition',
+      'System.Session',
+      'System.SystemInfo'
+    ]
 
     Puppet.debug("Puppet::Device::F5: connecting to F5 device #{@url.host}.")
     @transport ||= F5::IControl.new(@url.host, @url.user, @url.password, modules).get_interfaces
