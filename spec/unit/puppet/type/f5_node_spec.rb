@@ -17,7 +17,7 @@ describe res_type do
     type
   }
   let(:resource) {
-    res_type.new({:name => 'test_node'})
+    res_type.new({:name => 'test.node'})
   }
 
   it 'should have :name be its namevar' do
@@ -28,7 +28,7 @@ describe res_type do
   # for people not familiar with rspec.
   parameter_tests = {
     :name => {
-      :valid => ["test_node", "test node"],
+      :valid => ["test.node", "testnode"],
       :default => "test", # just to make tests pass
     },
     :connection_limit => {
