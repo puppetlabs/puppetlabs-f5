@@ -4,7 +4,7 @@ Puppet::Type.newtype(:f5_snat) do
   apply_to_device
 
   ensurable do
-    desc "Add or delete snat."
+    desc "F5 snat resource state. Valid values are present, absent."
 
     defaultto(:present)
 
@@ -22,27 +22,34 @@ Puppet::Type.newtype(:f5_snat) do
   end
 
   newproperty(:connection_mirror_state) do
-    desc "The snat connection mirror state."
+    desc "The connection mirror states for a specified SNATs."
+
     newvalues(/^STATE_(DISABLED|ENABLED)$/)
   end
 
   newproperty(:original_address) do
-    desc "The snat original address/netmask."
+    desc "The list of original client addresses used to filter the traffic to
+    the SNATs."
+
     #TODO validate network address and netmask.
   end
 
   newproperty(:source_port_behavior) do
-    desc "The snat port behavior."
+    desc "The source port behavior for the specified SNATs."
+
     newvalues(/^SOURCE_PORT_(PRESERVE|PRESERVE_STRICT|CHANGE)$/)
   end
 
   newproperty(:translation_target) do
-    desc "The snat translation target."
+    desc "The translation targets for the specified SNATs. If the target type
+    is SNAT_TYPE_AUTOMAP, then the translation object should be empty."
+
     #TODO validate target and network address.
   end
 
   newproperty(:vlan) do
-    desc "The snat vlan."
+    desc "The list of VLANs on which access to the specified SNATs is
+    disabled/enabled."
 
     munge do |value|
       raise Puppet::Error, "Puppet::Type::F5_Snat: vlan must be a hash." unless value.is_a? Hash
