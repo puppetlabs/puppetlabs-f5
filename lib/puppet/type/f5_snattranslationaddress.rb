@@ -4,7 +4,8 @@ Puppet::Type.newtype(:f5_snattranslationaddress) do
   apply_to_device
 
   ensurable do
-    desc "Add or delete snat translation address."
+    desc "F5 snattranstlationaddress resource state. Valid values are present,
+    absent."
 
     defaultto(:present)
 
@@ -22,37 +23,45 @@ Puppet::Type.newtype(:f5_snattranslationaddress) do
   end
 
   newproperty(:arp_state) do
-    desc "The snat translation address arp state."
+    desc "The ARP states for the specified tranlation SNAT address."
+
     newvalues(/^STATE_(DISABLED|ENABLED)$/)
   end
 
   newproperty(:connection_limit) do
-    desc "The snat translation address connection limit."
+    desc "The connection limits of the specified original SNAT translation
+    address."
+
     newvalues(/^\d+$/)
   end
 
   newproperty(:enabled_state) do
-    desc "The snat translation enabled state."
+    desc "The state of a SNAT translation address."
+
     newvalues(/^STATE_(DISABLED|ENABLED)$/)
   end
 
   newproperty(:ip_timeout) do
-    desc "The snat translation address ip timeout."
+    desc "The IP idle timeouts of the specified SNAT translation address."
+
     newvalues(/^\d+$/)
   end
 
   newproperty(:tcp_timeout) do
-    desc "The snat translation address tcp timeout."
+    desc "The TCP idle timeouts of the specified SNAT translation address."
+
     newvalues(/^\d+$/)
   end
 
   newproperty(:udp_timeout) do
-    desc "The snat translation address udp timeout."
+    desc "The UDP idle timeouts of the specified SNAT translation addresses."
+
     newvalues(/^\d+$/)
   end
 
   newproperty(:unit_id) do
-    desc "The snat translation address unit id."
+    desc "The unit IDs for the specified tranlation SNAT address."
+
     newvalues(/^\d+$/)
   end
 end

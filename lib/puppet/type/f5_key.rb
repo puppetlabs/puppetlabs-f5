@@ -6,7 +6,7 @@ Puppet::Type.newtype(:f5_key) do
   apply_to_device
 
   ensurable do
-    desc "Add or delete key."
+    desc "F5 key resource state. Valid values are present, absent."
 
     defaultto(:present)
 
@@ -24,7 +24,7 @@ Puppet::Type.newtype(:f5_key) do
   end
 
   newproperty(:content) do
-    desc "The key content in PEM format."
+    desc "The cerficate key in PEM format (sha1 fingerprint)."
 
     # Since we won't be able to decode private key, calculating sha1 of the content instead.
     munge do |value|
@@ -42,11 +42,13 @@ Puppet::Type.newtype(:f5_key) do
   end
 
   newparam(:real_content) do
-    desc "The actual key content."
+    desc "Stores actual key PEM-formatted content."
   end
 
   newparam(:mode) do
-    desc "They key management mode."
+    desc "The key management mode. An enumerated type that will describe what
+    mode of key/cert management to use."
+
     defaultto("MANAGEMENT_MODE_DEFAULT")
     newvalues(/^MANAGEMENT_MODE_(DEFAULT|WEBSERVER|EM|IQUERY|IQUERY_BIG3D)$/)
   end

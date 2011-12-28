@@ -5,7 +5,7 @@ Puppet::Type.newtype(:f5_snatpool) do
   apply_to_device
 
   ensurable do
-    desc "Add or delete snatpool."
+    desc "F5 snatpool resource state. Valid values are present, absent."
 
     defaultto(:present)
 
@@ -27,7 +27,7 @@ Puppet::Type.newtype(:f5_snatpool) do
   end
 
   newproperty(:member, :parent => Puppet::Property::List) do
-    desc "The snatpool member."
+    desc "The list of members belonging to the specified SNAT pools."
 
     munge do |value|
       if value =~ /^([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])$/ then

@@ -4,7 +4,7 @@ Puppet::Type.newtype(:f5_rule) do
   apply_to_device
 
   ensurable do
-    desc "Add or delete pool."
+    desc "F5 rule resource state. Valid values are present, absent."
 
     defaultto(:present)
 
