@@ -19,8 +19,6 @@ Puppet::Type.newtype(:f5_profilepersistence) do
 
   newparam(:name, :namevar=>true) do
     desc "The persistence profile name."
-
-#    newvalues(/^[[:alpha:][:digit:][:space:]]+$/)
   end
 
   newproperty(:across_pool_state) do
@@ -138,10 +136,6 @@ Puppet::Type.newtype(:f5_profilepersistence) do
     desc "The hash method used to generate the persistence values for a set of
     persistence profiles. This only returns useful values if the persistence
     mode is PERSISTENCE_MODE_HASH. (v10.1)"
-
-    #validate do |value|
-    #  raise Puppet::Error, 'Pupppet::Type::F5_ProfilePersistence: value must be /^\d+$/.' unless value['value'] =~ /^\d+$/
-    #end
   end
 
   newproperty(:hash_more_data_state) do

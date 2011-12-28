@@ -139,9 +139,6 @@ Puppet::Type.type(:f5_profilepersistence).provide(:f5_profilepersistence, :paren
   end
 
   def exists?
-    #require 'ruby-debug'
-    #Debugger.start
-    #debugger
     transport[wsdl].get_list.include?(resource[:name])
   end
 end
