@@ -97,19 +97,20 @@ describe Puppet::Provider::F5 do
 
       f5_prov_obj.transport.class.should == Hash
       f5_prov_obj.transport.should == {
-        "LocalLB.Rule"=>driver,
-        "LocalLB.VirtualServer"=>driver,
-        "LocalLB.SNATTranslationAddress"=>driver,
-        "Management.Partition"=>driver,
-        "LocalLB.Pool"=>driver,
-        "LocalLB.SNATPool"=>driver,
-        "Management.KeyCertificate"=>driver,
-        "LocalLB.PoolMember"=>driver,
-        "System.SystemInfo"=>driver,
-        "LocalLB.Monitor"=>driver,
-        "LocalLB.SNAT"=>driver,
-        "LocalLB.ProfileClientSSL"=>driver,
-        "LocalLB.NodeAddress"=>driver,
+        "LocalLB.Rule"                   => driver,
+        "LocalLB.VirtualServer"          => driver,
+        "LocalLB.SNATTranslationAddress" => driver,
+        "Management.Partition"           => driver,
+        "LocalLB.Pool"                   => driver,
+        "LocalLB.SNATPool"               => driver,
+        "Management.KeyCertificate"      => driver,
+        "LocalLB.PoolMember"             => driver,
+        "LocalLB.ProfilePersistence"     => driver,
+        "System.SystemInfo"              => driver,
+        "LocalLB.Monitor"                => driver,
+        "LocalLB.SNAT"                   => driver,
+        "LocalLB.ProfileClientSSL"       => driver,
+        "LocalLB.NodeAddress"            => driver
       }
     end
 
