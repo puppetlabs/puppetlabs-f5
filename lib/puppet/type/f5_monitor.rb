@@ -24,7 +24,6 @@ Puppet::Type.newtype(:f5_monitor) do
     desc "The monitor name."
   end
 
-
   newparam(:is_directly_usable) do
     desc "Determines if the specified monitor templates can be used directly,
     or a user-defined monitor based on each monitor must be created first
