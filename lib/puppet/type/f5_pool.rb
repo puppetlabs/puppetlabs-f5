@@ -69,12 +69,13 @@ Puppet::Type.newtype(:f5_pool) do
       # @should is an Array. see lib/puppet/type.rb insync?
       should = @should.first
 
+      # Comparison of hashes
       return false unless is.class == Hash and should.class == Hash and is.keys.sort == should.keys.sort
       should.each do |k, v|
         if v.is_a?(Hash)
-          v.each do |l, m|
+          v.each do |l, w|
             # so far all member values are int
-            return false unless is[k].include?(l).to_s and is[k][l] == m.to_s
+            return false unless is[k].include?(l).to_s and is[k][l] == w.to_s
           end
         end
       end

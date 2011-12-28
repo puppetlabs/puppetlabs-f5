@@ -120,7 +120,7 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
            :port    => network_port(node)}]])
     end
 
-    # does not support v11 wsdl
+    # using PoolMember since we do not use v11.0 API.
     wsdl = 'LocalLB.PoolMember'
 
     methods = [
@@ -132,7 +132,13 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
 
     methods.each do |m|
 
-      # converts the value from ip:netmask => { 'priority' => '1', 'ratio' => '1' } to
+      # We store the list of PoolMember interfaces in the f5_pool resource as
+      # an attribute in the data structure of hash of hashes.  This allows
+      # purging of members on a per pool basis.
+      #
+      # Example of f5_pool member attribute hash entry:
+      # ip:netmask => { 'priority' => '1', 'ratio' => '1' }
+      # Resulting hash transformation used by F5:
       # { :member   => {:address => ip, :port => port},
       #   :priority => '1' }
       # { :member   => {:address => ip, :port => port},
