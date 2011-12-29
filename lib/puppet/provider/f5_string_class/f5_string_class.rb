@@ -6,8 +6,6 @@ Puppet::Type.type(:f5_string_class).provide(:f5_string_class, :parent => Puppet:
   confine :feature => :posix
   defaultfor :feature => :posix
 
-  mk_resource_methods
-
   def self.wsdl
     'LocalLB.Class'
   end
@@ -16,48 +14,62 @@ Puppet::Type.type(:f5_string_class).provide(:f5_string_class, :parent => Puppet:
     self.class.wsdl
   end
 
-  def members
-    m = {}
-    @string_class = transport[wsdl].get_string_class([resource[:name]])[0]
-    values = transport[wsdl].get_string_class_member_data_value([@string_class])[0]
-    @string_class.members.zip(values) {|zipped| m[zipped[0]] = zipped[1]}
-    m
+  def self.instances
+    transport[wsdl].get_string_class_list.collect do |name|
+      new(:name => name)
+    end
   end
 
-  def members=(member_hash)
-    member_hash.each do |key,val|
-      # iControl doesn't let you add a string class member that already exists
-      if @string_class.nil? || ! @string_class.members.include?(key)
-        transport[wsdl].add_string_class_member([{:name => resource[:name], :members => [key]}])
-      end
+  def string_class
+    return @string_class if @string_class
 
-      # Set the value
-      transport[wsdl].set_string_class_member_data_value([{:name => resource[:name], :members => [key]}], [val])
+    @string_class = {}
+    key = transport[wsdl].get_string_class([resource[:name]]).first
+    value = transport[wsdl].get_string_class_member_data_value([key]).first
+    key.members.zip(value) {|zipped| @string_class[zipped[0]] = zipped[1]}
+    @string_class
+  end
+
+  def members
+    string_class
+  end
+
+  def members=(value)
+    new_members     = value.keys - string_class.keys
+    current_members = value.keys & string_class.keys
+    remove_members  = string_class.keys - value.keys
+
+    new_members.each do |member|
+      Puppet.debug("Puppet::Provider::F5_String_Class: adding members #{new_members.join(', ')}")
+
+      transport[wsdl].add_string_class_member( [{ :name => resource[:name], :members => [member]}] )
+      transport[wsdl].set_string_class_member_data_value( [{ :name => resource[:name], :members => [member] }], value[member])
     end
 
-    # Now remove members that shouldn't be there
-    extra_members = if @string_class.nil?
-                      []
-                    else
-                      @string_class.members - member_hash.keys
-                    end
-    unless extra_members.empty?
-      Puppet.debug("Puppet::Provider::F5_String_Class: Removing members #{extra_members.join(',')}")
-      transport[wsdl].delete_string_class_member([{:name => resource[:name], :members => [extra_members]}])
+    current_members.each do |member|
+      if value[member] != string_class[member]
+        Puppet.debug("Puppet::Provider::F5_String_Class: modifying members #{new_members.join(', ')}")
+        transport[wsdl].set_string_class_member_data_value( [{ :name => resource[:name], :members => [member] }], value[member])
+      end
+    end
+
+    unless remove_members.empty?
+      Puppet.debug("Puppet::Provider::F5_String_Class: removing members #{remove_members.join(', ')}")
+      transport[wsdl].delete_string_class_member( [{ :name => resource[:name], :members => remove_members }] )
     end
   end
 
   def create
     Puppet.debug("Puppet::Provider::F5_String_Class: creating F5 string class #{resource[:name]}")
 
+    @string_class = {}
     transport[wsdl].create_string_class([{:name => resource[:name], :members => []}])
-
     self.members = resource[:members]
   end
 
   def destroy
     Puppet.debug("Puppet::Provider::F5_String_Class: deleting F5 string class #{resource[:name]}")
-    @property_hash[:ensure] = :absent
+
     transport[wsdl].delete_class(resource[:name])
   end
 
