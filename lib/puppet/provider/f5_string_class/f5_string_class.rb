@@ -35,6 +35,9 @@ Puppet::Type.type(:f5_string_class).provide(:f5_string_class, :parent => Puppet:
   end
 
   def members=(value)
+    # F5 modify_string_class only changes the members and not the member value,
+    # hence the much more complicated implimentation below.
+    # transport[wsdl].modify_string_class( [{ :name => resource[:name], :members => resource[:members] }] )
     new_members     = value.keys - string_class.keys
     current_members = value.keys & string_class.keys
     remove_members  = string_class.keys - value.keys
