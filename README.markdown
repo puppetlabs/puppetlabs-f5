@@ -159,6 +159,16 @@ Certificates comparison is completed via sha1 fingerprint which is also used dur
 
     notice: /Stage[main]//F5_certificate[ca-bundle]/content: content changed 'sha1(0197e53f31798d43eac830b8561887dae22fd5c2)' to 'sha1(39c2e7fa576e98431bbab66ca0cb14e01cb8bfe4)'
 
+f5_file resource is intended for f5_external_class to manage datagroup files. The performance in v10 is slow because it requires downloading the file to calculate the file checksum. Content should be the string content of the file, and internally the type converts into md5 checksum (example below content comparison value is 'md5(b8353824beaf868010d823cf128ecc97)'). f5_files are processed in 64KB chunks per F5 recommendation: http://devcentral.f5.com/Tutorials/TechTips/tabid/63/articleType/ArticleView/articleId/144/iControl-101--06--File-Transfer-APIs.aspx.
+
+    f5_file { '/config/addr.class':
+      ensure  => 'present',
+      content => 'host 192.168.1.1,
+                  host 192.168.1.2 := "host 2",
+                  network 192.168.2.0/24,
+                  network 192.168.3.0/24 := "network 2",',
+    }
+
     f5_monitor { 'my_https':
       ensure                    => 'present',
       manual_resume_state       => 'STATE_ENABLED',
@@ -286,6 +296,22 @@ F5_virtualserver does not atomically change rules (F5 API limitation), so to reo
       vlan                    => { 'state' => 'STATE_DISABLED',
                                    'vlans' => ['default'] },
       wildmask                => '255.255.255.255',
+    }
+
+F5 datagroup consists of f5_string_class and f5_external_class. f5_external_class will autorequire f5_files that matches the file_name (fully qualified file path).
+
+    f5_string_class { 'default_accept_language':
+      ensure  => 'present',
+      members => {'en' => '', 'ja' => '', 'zh-cn' => '', 'zh-tw' => ''},
+    }
+
+    f5_external_class { 'addr':
+      ensure         => 'present',
+      data_separator => ':=',
+      file_format    => 'FILE_FORMAT_CSV',
+      file_mode      => 'FILE_MODE_TYPE_READ_WRITE',
+      file_name      => '/config/addr.class',
+      type           => 'CLASS_TYPE_ADDRESS',
     }
 
 ## Development
