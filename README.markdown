@@ -314,6 +314,22 @@ F5 datagroup consists of f5_string_class and f5_external_class. f5_external_clas
       type           => 'CLASS_TYPE_ADDRESS',
     }
 
+F5 user resource notes :
+
+    f5_user { 'username':
+      ensure          => 'present',
+      password        => {
+        'password'     => '$1$abcdef$TSUZRW2CK3aUh/W8JXyHF/',
+        'is_encrypted' => true
+      },
+      user_permission => {
+        '[All]' => 'USER_ROLE_ADMINISTRATOR',
+      },
+      login_shell     => '/bin/bash',
+
+      fullname        => 'Full Name of the User',
+    }
+
 ## Development
 
 The following section applies to developers of this module only.
