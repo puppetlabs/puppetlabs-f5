@@ -27,6 +27,7 @@ class Puppet::Util::NetworkDevice::F5::Device
       'Management.LicenseAdministration',
       'Management.Partition',
       'Management.Provision',
+      'Management.UserManagement',
       'Networking.SelfIP',
       'Networking.VLAN',
       'System.ConfigSync',
