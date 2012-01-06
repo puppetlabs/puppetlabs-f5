@@ -63,11 +63,6 @@ Puppet::Type.newtype(:f5_user) do
     desc "The password for the specified user."
   end
 
-  
-  newproperty(:home_directory) do
-    desc "The home directory for the specified user."
-  end
-
   newproperty(:login_shell) do
     desc "The login shell for the specified user."
   end 
