@@ -30,7 +30,7 @@ Puppet::Type.type(:f5_user).provide(:f5_user_10, :parent => Puppet::Provider::F5
     result
   end
   def user_permission=(value)
-    # Updating user permissions doesn't work as expected. get_user_permission returns correctly the new values but there aren't effective (10.1.0 & 10.2.0). A ticket has been open by F5.
+    # Updating user permissions doesn't work as expected. get_user_permission returns correctly the new values but there aren't effective (10.1.0 & 10.2.0). A ticket has been opened with F5.
     permission = []
     resource[:user_permission].keys.each do |part|
       permission.push({:role =>  resource[:user_permission][part], :partition => part})
@@ -38,7 +38,33 @@ Puppet::Type.type(:f5_user).provide(:f5_user_10, :parent => Puppet::Provider::F5
     value = transport[wsdl].send("set_user_permission", [resource[:name]], [permission]) unless permission.empty?
   end
 
+  def password
+    # Passing from a password (encrypted) to the same password (unencrypted) won't trigger changes as passwords are always stored in an encrypted form on the bigip. The only consequence is that the crypt salt will remain the same.
+    Puppet.debug("Puppet::Provider::F5_User: retrieving encrypted_password for #{resource[:name]}")
+    result = {}
+    old_encrypted_password=transport[wsdl].get_encrypted_password(resource[:name]).first
+    if resource[:password]['is_encrypted'] != true
+      salt = old_encrypted_password.sub(/^(\$1\$\w+?\$).*$/, '\1')
+      new_encrypted_password = resource[:password]['password'].crypt(salt)
+    else
+      new_encrypted_password = resource[:password]['password']
+    end
+    if new_encrypted_password == old_encrypted_password
+      result['password']     = resource[:password]['password']
+      result['is_encrypted'] = resource[:password]['is_encrypted']
+    else
+      result['password'] = old_encrypted_password
+      result['is_encrypted'] = true
+    end
+    result
+  end
 
+  def password=(value)
+    Puppet.debug("Puppet::Provider::F5_User: setting password for #{resource[:name]}")
+    transport[wsdl].change_password_2([resource[:name]],[{ :password => resource[:password]['password'], :is_encrypted => resource[:password]['is_encrypted'] }])
+  end
+  
+  
   methods = [
     'description',
     'fullname',
@@ -72,7 +98,7 @@ Puppet::Type.type(:f5_user).provide(:f5_user_10, :parent => Puppet::Provider::F5
     
     user_info_3 = {
       :user           => { :name => resource[:name], :full_name => resource[:fullname]},
-      :password       => { :password => resource[:password], :is_encrypted => false },
+      :password       => { :password => resource[:password]['password'], :is_encrypted => resource[:password]['is_encrypted'] },
       :permissions    => permission,
       :login_shell    => resource[:login_shell],
     }
