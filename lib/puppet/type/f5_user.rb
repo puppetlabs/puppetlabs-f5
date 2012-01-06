@@ -61,6 +61,11 @@ Puppet::Type.newtype(:f5_user) do
 
   newproperty(:password) do
     desc "The password for the specified user."
+    validate do |value|
+      unless value['is_encrypted'] == true or value['is_encrypted'] == false
+        raise Puppet::Error.new("#{value['is_encrypted']} is not a valid is_encrypted value which must be true or false.")
+      end
+    end
   end
 
   newproperty(:login_shell) do
