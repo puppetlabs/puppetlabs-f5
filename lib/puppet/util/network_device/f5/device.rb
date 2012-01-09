@@ -25,6 +25,8 @@ class Puppet::Util::NetworkDevice::F5::Device
       'LocalLB.VirtualServer',
       'Management.KeyCertificate',
       'Management.Partition',
+      'Management.UserManagement',
+      'Networking.SelfIP',
       'System.ConfigSync',
       'System.Session',
       'System.SystemInfo'
