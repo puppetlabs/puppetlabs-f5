@@ -23,6 +23,7 @@ class Puppet::Util::NetworkDevice::F5::Device
       'LocalLB.SNATPool',
       'LocalLB.SNATTranslationAddress',
       'LocalLB.VirtualServer',
+      'Networking.VLAN',
       'Management.KeyCertificate',
       'Management.Partition',
       'System.ConfigSync',

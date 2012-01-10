@@ -314,6 +314,32 @@ F5 datagroup consists of f5_string_class and f5_external_class. f5_external_clas
       type           => 'CLASS_TYPE_ADDRESS',
     }
 
+F5 VLAN resource notes :
+
+    f5_vlan { 'vlan_test_01':
+      ensure                 => 'present',
+      vlan_id                => 127,
+      member                 => [
+        { member_name => '1.2', 'member_type' =>  'MEMBER_INTERFACE', 'tag_state' => 'MEMBER_TAGGED' },
+        { member_name => '1.3', 'member_type' =>  'MEMBER_INTERFACE', 'tag_state' => 'MEMBER_TAGGED' },
+        { member_name => '1.4', 'member_type' =>  'MEMBER_INTERFACE', 'tag_state' => 'MEMBER_TAGGED' },
+        { member_name => '1.5', 'member_type' =>  'MEMBER_INTERFACE', 'tag_state' => 'MEMBER_UNTAGGED' },
+      ],
+      failsafe_state         => 'STATE_DISABLED',
+      failsafe_timeout       => 60,
+      
+      failsafe_action        => 'HA_ACTION_RESTART_ALL',
+      learning_mode          => 'LEARNING_MODE_ENABLE_FORWARD',
+      mtu                    => 1000,
+      static_forwarding      => [
+        { mac_address => '02:02:29:97:79:92', 'interface_name' => '1.2', 'interface_type' => 'MEMBER_INTERFACE' },
+        { mac_address => '02:02:29:97:79:93', 'interface_name' => '1.3', 'interface_type' => 'MEMBER_INTERFACE' },
+        { mac_address => '02:02:29:97:79:95', 'interface_name' => '1.5', 'interface_type' => 'MEMBER_INTERFACE' },  
+      ],
+      source_check_state     => 'STATE_ENABLED',
+      mac_masquerade_address => '02:02:29:97:79:90',
+    }  
+
 ## Development
 
 The following section applies to developers of this module only.
