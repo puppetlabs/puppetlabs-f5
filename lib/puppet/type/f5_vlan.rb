@@ -19,12 +19,14 @@ Puppet::Type.newtype(:f5_vlan) do
 
   newparam(:name, :namevar=>true) do
     desc "The VLAN name."
-    newvalues(/^[[:digit:][:alpha:]]+$/)
+    #What are the valid characters ?
+    #newvalues(/^[[:digit:][:alpha:]]+$/)
   end
 
-  newproperty(:description) do
-    desc "The description for the specified VLAN."
-  end
+  ## v11 API which we dont use here
+  #newproperty(:description) do
+  #  desc "The description for the specified VLAN."
+  #end
   
   newproperty(:member) do
     desc "The list of VLAN members."
@@ -89,6 +91,7 @@ Puppet::Type.newtype(:f5_vlan) do
     newvalues(/^STATE_(ENABLED|DISABLED)$/)
   end 
 
+  #v11 API
   #newproperty(:static_forwarding_description) do
   #  desc "The VLAN for the specified VLAN."
   #end 

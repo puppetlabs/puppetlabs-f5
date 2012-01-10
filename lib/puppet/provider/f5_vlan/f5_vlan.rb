@@ -1,6 +1,6 @@
 require 'puppet/provider/f5'
 
-Puppet::Type.type(:f5_selfip).provide(:f5_selfip, :parent => Puppet::Provider::F5) do
+Puppet::Type.type(:f5_vlan).provide(:f5_vlan, :parent => Puppet::Provider::F5) do
   @doc = "Manages F5 VLAN"
 
   confine    :feature => :posix
@@ -69,7 +69,7 @@ def member
 
     members = resource[:member].keys
 
-    # Should add new members first to avoid removing all members of the pool.
+    # Add new members first to avoid removing all members of the pool.
     (members - current_members).each do |vlan_member|
       Puppet.debug "Puppet::Provider::F5_VLAN: adding member #{vlan_member}"
       transport[wsdl].add_member([resource[:name]], [{:member_name => vlan_member.member_name, :member_type => value[vlan_member.member_name]['member_type'], :tag_state => value[vlan_member.member_name]['tag_state'] }])
@@ -87,7 +87,9 @@ def member
   def create
     Puppet.debug("Puppet::Provider::F5_VLAN: creating F5 VLAN #{resource[:name]}")
     members=[]
-    
+    resource[:member].keys.each do |member_name|
+      members.push({:member_name => member_name, :member_type => resource[:member][member_name]['member_type'], :tag_state => resource[:member][member_name]['tag_state'] })
+    end
     transport[wsdl].create([resource[:name]],[resource[:vlan_id]],[members],[resource[:failsafe_state]],[resource[:failsafe_timeout]],[resource[:mac_masquerade_address]])
   end
 
