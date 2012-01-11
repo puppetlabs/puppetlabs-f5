@@ -377,6 +377,20 @@ F5 license manages the device's licence file.
       license_file_data => file('/path/to/bigip.licence'),
     }
 
+F5 trunk resource notes :
+
+    f5_trunk { 'trunk_test_01':
+      ensure                             => 'present',
+      active_lacp_state                  => 'STATE_DISABLED',
+      distribution_hash_option           => 'DISTRIBUTION_HASH_OPTION_DST_MAC',
+      interface                          => [ '1.1', '1.2', '1.3', '1.4' ],
+      lacp_enabled_state                 => 'STATE_DISABLED',
+      lacp_timeout_option                => 'LACP_TIMEOUT_SHORT',
+      link_selection_policy              => 'LINK_SELECTION_AUTO',
+      stp_enabled_state                  => 'STATE_DISABLED',
+      stp_protocol_detection_reset_state => 'STATE_DISABLED',
+    }
+
 ## Development
 
 The following section applies to developers of this module only.
