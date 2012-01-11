@@ -21,7 +21,6 @@ Puppet::Type.type(:f5_vlan).provide(:f5_vlan, :parent => Puppet::Provider::F5) d
   end
 
   methods = [
-    'description',
     'failsafe_action',
     'failsafe_state',
     'failsafe_timeout',
@@ -29,13 +28,12 @@ Puppet::Type.type(:f5_vlan).provide(:f5_vlan, :parent => Puppet::Provider::F5) d
     'mac_masquerade_address',
     'mtu',
     'source_check_state',
-    'vlan_id'
+    'vlan_id',
   ]
 
   methods.each do |method|
     define_method(method.to_sym) do
       if transport[wsdl].respond_to?("get_#{method}".to_sym)
-        Puppet.debug("Puppet::Provider::F5_VLAN: retrieving #{method} for #{resource[:name]}")
         transport[wsdl].send("get_#{method}", resource[:name]).first.to_s
       end
     end
@@ -49,41 +47,52 @@ Puppet::Type.type(:f5_vlan).provide(:f5_vlan, :parent => Puppet::Provider::F5) d
     end
   end
 
-def member
-    result = {}
+  def member
     members = transport[wsdl].get_member(resource[:name]).first
-    members.each do |vlan_member|
-      result[vlan_member.member_name] = {
-        :member_type => vlan_member.member_type,
-        :tag_state   => vlan_member.tag_state,
+    members.collect { |vlan_member|
+      {
+        'member_name' => vlan_member.member_name,
+        'member_type' => vlan_member.member_type,
+        'tag_state'   => vlan_member.tag_state,
+      }
+    }
+  end
+  def member=(value)
+    members          = resource[:member]
+    current_members  = transport[wsdl].get_member(resource[:name]).first.collect do |vlan_member|
+      {
+        'member_name' => vlan_member.member_name,
+        'member_type' => vlan_member.member_type,
+        'tag_state'   => vlan_member.tag_state,
       }
     end
-    result
+    transport[wsdl].remove_member([resource[:name]], [current_members - members])
+    transport[wsdl].add_member([resource[:name]], [members - current_members])
   end
 
-  def member=(value)
-    current_members = transport[wsdl].get_member(resource[:name]).first
-    current_members = current_members.collect { |vlan_member|
-      vlan_member.member_name
+  def static_forwarding
+    entries=transport[wsdl].get_static_forwarding(resource[:name]).first
+    entries.collect {|entry|
+      {
+        'mac_address'    => entry.mac_address,
+        'interface_name' => entry.interface_name,
+        'interface_type' => entry.interface_type,
+      } 
     }
-
-    members = resource[:member].keys
-
-    # Add new members first to avoid removing all members of the pool.
-    (members - current_members).each do |vlan_member|
-      Puppet.debug "Puppet::Provider::F5_VLAN: adding member #{vlan_member}"
-      transport[wsdl].add_member([resource[:name]], [{:member_name => vlan_member.member_name, :member_type => value[vlan_member.member_name]['member_type'], :tag_state => value[vlan_member.member_name]['tag_state'] }])
-    end
-
-    (current_members - members).each do |vlan_member|
-      Puppet.debug "Puppet::Provider::F5_Pool: removing member #{vlan_member}"
-      transport[wsdl].remove_member([resource[:name]], [{:member_name => vlan_member.member_name, :member_type => value[vlan_member.member_name]['member_type'], :tag_state => value[vlan_member.member_name]['tag_state'] }])
-    end
-
-   
+  end
+  def static_forwarding=(value)
+    entries         = resource[:static_forwarding]
+    current_entries = transport[wsdl].get_static_forwarding(resource[:name]).first.collect { |entry|
+      {
+        'mac_address'    => entry.mac_address,
+        'interface_name' => entry.interface_name,
+        'interface_type' => entry.interface_type
+      }
+    }
+    transport[wsdl].remove_static_forwarding([resource[:name]], [current_entries - entries])
+    transport[wsdl].add_static_forwarding([resource[:name]], [entries - current_entries])
   end
 
-  
   def create
     Puppet.debug("Puppet::Provider::F5_VLAN: creating F5 VLAN #{resource[:name]}")
     members=[]
@@ -91,10 +100,27 @@ def member
       members.push({:member_name => member_name, :member_type => resource[:member][member_name]['member_type'], :tag_state => resource[:member][member_name]['tag_state'] })
     end
     transport[wsdl].create([resource[:name]],[resource[:vlan_id]],[members],[resource[:failsafe_state]],[resource[:failsafe_timeout]],[resource[:mac_masquerade_address]])
+    
+    ## The create method provided by the iControl API does not set the following so that we have to do it here
+    methods = [
+      'failsafe_action',
+      'source_check_state',
+      'mtu',
+    ]
+    methods.each do |method|
+      if transport[wsdl].respond_to?("set_#{method}".to_sym)
+        transport[wsdl].send("set_#{method}", resource[:name], resource[method.to_sym])
+      end
+    end
+    if resource[:static_forwarding].is_a?(Hash)
+      transport[wsdl].add_static_forwarding([resource[:name]], [resource[:static_forwarding].keys.collect { |mac_address| { :mac_address => mac_address, :interface_name => resource[:static_forwarding][mac_address]['interface_name'], :interface_type => resource[:static_forwarding][mac_address]['interface_type'] } } ])
+    end
+    puts "TESTPARAM INST #{resource[:test_param].inspect}"
   end
 
   def destroy
     Puppet.debug("Puppet::Provider::F5_VLAN: destroying F5 VLAN #{resource[:name]}")
+    transport[wsdl].remove_all_static_forwardings(resource[:name])
     transport[wsdl].delete_vlan(resource[:name])
   end
 
@@ -103,4 +129,5 @@ def member
     Puppet.debug("Puppet::Provider::F5_VLAN: does F5 VLAN #{resource[:name]} exist ? #{r}")
     r
   end
+  
 end

@@ -19,42 +19,6 @@ Puppet::Type.newtype(:f5_vlan) do
 
   newparam(:name, :namevar=>true) do
     desc "The VLAN name."
-    #What are the valid characters ?
-    #newvalues(/^[[:digit:][:alpha:]]+$/)
-  end
-
-  ## v11 API which we dont use here
-  #newproperty(:description) do
-  #  desc "The description for the specified VLAN."
-  #end
-  
-  newproperty(:member) do
-    desc "The list of VLAN members."
-
-    def insync?(is)
-      # @should is an Array. see lib/puppet/type.rb insync?
-      should = @should.first
-
-      # Comparison of hashes
-      return false unless is.class == Hash and should.class == Hash and is.keys.sort == should.keys.sort
-      should.each do |k, v|
-        if v.is_a?(Hash)
-          v.each do |l, w|
-            # so far all member values are int
-            return false unless is[k].include?(l).to_s and is[k][l] == w.to_s
-          end
-        end
-      end
-      true
-    end
-
-    def should_to_s(newvalue)
-      newvalue.inspect
-    end
-
-    def is_to_s(currentvalue)
-      currentvalue.inspect
-    end
   end
 
   newproperty(:failsafe_action) do
@@ -81,25 +45,45 @@ Puppet::Type.newtype(:f5_vlan) do
     desc "The MAC masquerade address for the specified VLAN."
   end 
   
+  newproperty(:member, :array_matching => :all) do
+    desc "The list of VLAN members."
+    def insync?(is)
+      is.eql?(@should)
+    end
+    def should_to_s(newvalue)
+      newvalue.inspect
+    end
+    def is_to_s(currentvalue)
+      currentvalue.inspect
+    end
+  end
+
   newproperty(:mtu) do
     desc "The MTU for the specified VLAN."
     newvalues(/^[[:digit:]]+$/)
   end
   
   newproperty(:source_check_state) do
-    desc "The VLAN for the specified VLAN."
+    desc "The source check state for the specified VLAN."
     newvalues(/^STATE_(ENABLED|DISABLED)$/)
   end 
 
-  #v11 API
-  #newproperty(:static_forwarding_description) do
-  #  desc "The VLAN for the specified VLAN."
-  #end 
-
+  newproperty(:static_forwarding, :array_matching => :all) do
+    desc "The list of VLAN static forwarding rules."
+    def insync?(is)
+      is.eql?(@should)
+    end
+    def should_to_s(newvalue)
+      newvalue.inspect
+    end
+    def is_to_s(currentvalue)
+      currentvalue.inspect
+    end
+  end    
+  
   newproperty(:vlan_id) do
     desc "The tag ID for the specified VLAN."
     newvalues(/^[[:digit:]]+$/)
-  end 
-
-  
+  end
+ 
 end
