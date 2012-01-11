@@ -115,7 +115,6 @@ Puppet::Type.type(:f5_vlan).provide(:f5_vlan, :parent => Puppet::Provider::F5) d
     if resource[:static_forwarding].is_a?(Hash)
       transport[wsdl].add_static_forwarding([resource[:name]], [resource[:static_forwarding].keys.collect { |mac_address| { :mac_address => mac_address, :interface_name => resource[:static_forwarding][mac_address]['interface_name'], :interface_type => resource[:static_forwarding][mac_address]['interface_type'] } } ])
     end
-    puts "TESTPARAM INST #{resource[:test_param].inspect}"
   end
 
   def destroy
