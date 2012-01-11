@@ -30,6 +30,7 @@ class Puppet::Util::NetworkDevice::F5::Device
       'Management.Provision',
       'Management.UserManagement',
       'Networking.SelfIP',
+      'Networking.Trunk',
       'Networking.VLAN',
       'System.ConfigSync',
       'System.Session',
