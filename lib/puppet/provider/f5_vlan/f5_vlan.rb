@@ -95,11 +95,7 @@ Puppet::Type.type(:f5_vlan).provide(:f5_vlan, :parent => Puppet::Provider::F5) d
 
   def create
     Puppet.debug("Puppet::Provider::F5_VLAN: creating F5 VLAN #{resource[:name]}")
-    members=[]
-    resource[:member].keys.each do |member_name|
-      members.push({:member_name => member_name, :member_type => resource[:member][member_name]['member_type'], :tag_state => resource[:member][member_name]['tag_state'] })
-    end
-    transport[wsdl].create([resource[:name]],[resource[:vlan_id]],[members],[resource[:failsafe_state]],[resource[:failsafe_timeout]],[resource[:mac_masquerade_address]])
+    transport[wsdl].create([resource[:name]],[resource[:vlan_id]],[resource[:member]],[resource[:failsafe_state]],[resource[:failsafe_timeout]],[resource[:mac_masquerade_address]])
     
     ## The create method provided by the iControl API does not set the following so that we have to do it here
     methods = [
