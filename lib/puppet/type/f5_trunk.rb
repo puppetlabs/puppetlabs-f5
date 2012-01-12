@@ -68,5 +68,9 @@ Puppet::Type.newtype(:f5_trunk) do
     desc "The STP protocol detection reset state for the specified trunk."
     newvalues(/^STATE_(ENABLED|DISABLED)$/)
   end
+
+  autorequire(:f5_license) do
+    ['license']
+  end
  
 end
