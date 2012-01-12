@@ -86,4 +86,21 @@ Puppet::Type.newtype(:f5_vlan) do
     newvalues(/^[[:digit:]]+$/)
   end
  
+  autorequire(:f5_trunk) do
+    trunks=[]
+    self[:member].each do |m|
+      if m['member_type'] ==  'MEMBER_TRUNK'
+        trunks.push(m['member_name'])
+      end
+    end
+    self[:static_forwarding].each do |i|
+      if i['interface_type'] ==  'MEMBER_TRUNK'
+        trunks.push(m['interface_name'])
+      end
+    end    
+    trunks
+  end
+  autorequire(:f5_license) do
+    ['license']
+  end
 end
