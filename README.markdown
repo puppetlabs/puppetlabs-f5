@@ -371,6 +371,11 @@ F5 provision resource notes :
       level               => 'PROVISION_LEVEL_CUSTOM',
     }
 
+F5 license manages the device's licence file.
+
+    f5_license { 'license':
+      license_file_data => file('/path/to/bigip.licence'),
+    }
 
 ## Development
 
