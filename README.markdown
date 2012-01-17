@@ -326,6 +326,20 @@ f5_external_class resource using external data group should subscribe to f5_file
       subscribe      => F5_file['/config/addr.class'],
     }
 
+
+F5 routetable manages 'static' and 'management' routing tables.
+
+    f5_routetable { 'static':
+      table => [
+        { destination => '0.0.0.0',
+          netmask     => '0.0.0.0',
+          gateway     => '10.0.0.1',
+          mtu         => 1500 },
+      ]
+    }
+
+
+
 F5 user resource notes :
 
     f5_user { 'username':
