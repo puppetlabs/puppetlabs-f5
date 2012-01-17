@@ -26,6 +26,7 @@ class Puppet::Util::NetworkDevice::F5::Device
       'Management.KeyCertificate',
       'Management.Partition',
       'System.ConfigSync',
+      'System.Inet',
       'System.Session',
       'System.SystemInfo'
     ]
