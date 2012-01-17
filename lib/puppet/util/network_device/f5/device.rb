@@ -34,6 +34,7 @@ class Puppet::Util::NetworkDevice::F5::Device
       'Networking.Trunk',
       'Networking.VLAN',
       'System.ConfigSync',
+      'System.Inet',
       'System.Session',
       'System.SystemInfo'
     ]
