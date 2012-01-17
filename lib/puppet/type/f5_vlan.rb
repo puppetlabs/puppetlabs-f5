@@ -48,7 +48,7 @@ Puppet::Type.newtype(:f5_vlan) do
   newproperty(:member, :array_matching => :all) do
     desc "The list of VLAN members."
     def insync?(is)
-      is.eql?(@should)
+      is.count == @should.count && (is & @should).count == @should.count
     end
     def should_to_s(newvalue)
       newvalue.inspect
@@ -71,7 +71,7 @@ Puppet::Type.newtype(:f5_vlan) do
   newproperty(:static_forwarding, :array_matching => :all) do
     desc "The list of VLAN static forwarding rules."
     def insync?(is)
-      is.eql?(@should)
+      is.count == @should.count && (is & @should).count == @should.count
     end
     def should_to_s(newvalue)
       newvalue.inspect
@@ -95,9 +95,9 @@ Puppet::Type.newtype(:f5_vlan) do
     end
     self[:static_forwarding].each do |i|
       if i['interface_type'] ==  'MEMBER_TRUNK'
-        trunks.push(m['interface_name'])
+        trunks.push(i['interface_name'])
       end
-    end    
+    end
     trunks
   end
   autorequire(:f5_license) do

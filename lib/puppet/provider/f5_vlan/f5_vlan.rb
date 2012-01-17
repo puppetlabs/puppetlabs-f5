@@ -48,8 +48,8 @@ Puppet::Type.type(:f5_vlan).provide(:f5_vlan, :parent => Puppet::Provider::F5) d
   end
 
   def member
-    members = transport[wsdl].get_member(resource[:name]).first
-    members.collect { |vlan_member|
+    @vlan_members=transport[wsdl].get_member(resource[:name]).first
+    @vlan_members.collect! { |vlan_member|
       {
         'member_name' => vlan_member.member_name,
         'member_type' => vlan_member.member_type,
@@ -58,21 +58,13 @@ Puppet::Type.type(:f5_vlan).provide(:f5_vlan, :parent => Puppet::Provider::F5) d
     }
   end
   def member=(value)
-    members          = resource[:member]
-    current_members  = transport[wsdl].get_member(resource[:name]).first.collect do |vlan_member|
-      {
-        'member_name' => vlan_member.member_name,
-        'member_type' => vlan_member.member_type,
-        'tag_state'   => vlan_member.tag_state,
-      }
-    end
-    transport[wsdl].remove_member([resource[:name]], [current_members - members])
-    transport[wsdl].add_member([resource[:name]], [members - current_members])
+    transport[wsdl].remove_member([resource[:name]], [@vlan_members - value])
+    transport[wsdl].add_member([resource[:name]], [value - @vlan_members])
   end
 
   def static_forwarding
-    entries=transport[wsdl].get_static_forwarding(resource[:name]).first
-    entries.collect {|entry|
+    @static_forwarding_table=transport[wsdl].get_static_forwarding(resource[:name]).first
+    @static_forwarding_table.collect! {|entry|
       {
         'mac_address'    => entry.mac_address,
         'interface_name' => entry.interface_name,
@@ -81,16 +73,8 @@ Puppet::Type.type(:f5_vlan).provide(:f5_vlan, :parent => Puppet::Provider::F5) d
     }
   end
   def static_forwarding=(value)
-    entries         = resource[:static_forwarding]
-    current_entries = transport[wsdl].get_static_forwarding(resource[:name]).first.collect { |entry|
-      {
-        'mac_address'    => entry.mac_address,
-        'interface_name' => entry.interface_name,
-        'interface_type' => entry.interface_type
-      }
-    }
-    transport[wsdl].remove_static_forwarding([resource[:name]], [current_entries - entries])
-    transport[wsdl].add_static_forwarding([resource[:name]], [entries - current_entries])
+    transport[wsdl].remove_static_forwarding([resource[:name]], [@static_forwarding_table - value])
+    transport[wsdl].add_static_forwarding([resource[:name]], [value - @static_forwarding_table])
   end
 
   def create
