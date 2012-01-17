@@ -29,6 +29,7 @@ class Puppet::Util::NetworkDevice::F5::Device
       'Management.Partition',
       'Management.Provision',
       'Management.UserManagement',
+      'Networking.RouteTable',
       'Networking.SelfIP',
       'Networking.Trunk',
       'Networking.VLAN',
