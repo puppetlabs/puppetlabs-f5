@@ -34,7 +34,7 @@ Puppet::Type.newtype(:f5_trunk) do
   newproperty(:interface, :array_matching => :all) do
     desc "The member interface list for the specified trunk."
     def insync?(is)
-      is.eql?(@should)
+      is.count == @should.count && (is & @should).count == @should.count
     end
     def should_to_s(newvalue)
       newvalue.inspect
