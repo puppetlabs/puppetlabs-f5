@@ -314,6 +314,12 @@ F5 datagroup consists of f5_string_class and f5_external_class. f5_external_clas
       type           => 'CLASS_TYPE_ADDRESS',
     }
 
+F5 license manages the device's licence file.
+
+    f5_license { 'license':
+      license_file_data => file('/path/to/bigip.licence'),
+    }
+
 ## Development
 
 The following section applies to developers of this module only.
