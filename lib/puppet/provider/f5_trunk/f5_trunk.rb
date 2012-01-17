@@ -47,23 +47,11 @@ Puppet::Type.type(:f5_trunk).provide(:f5_trunk, :parent => Puppet::Provider::F5)
   end
 
   def interface
-    transport[wsdl].get_interface(resource[:name]).first
-    #interfaces.collect {|interface|
-    #  interfaces.mac_address
-    #}
+    @interfaces=transport[wsdl].get_interface(resource[:name]).first
   end
   def interface=(value)
-    ifs         = resource[:interface]
-    current_ifs = transport[wsdl].get_interface(resource[:name]).first
-    #.collect { |interface|
-    #  {
-    #    'mac_address'    => entry.mac_address,
-    #    'interface_name' => entry.interface_name,
-    #    'interface_type' => entry.interface_type
-    #  }
-    #}
-    transport[wsdl].remove_interface([resource[:name]], [current_ifs - ifs])
-    transport[wsdl].add_interface([resource[:name]], [ifs - current_ifs])
+    transport[wsdl].remove_interface([resource[:name]], [@interfaces - value])
+    transport[wsdl].add_interface([resource[:name]], [value - @interfaces])
   end
 
   def create
