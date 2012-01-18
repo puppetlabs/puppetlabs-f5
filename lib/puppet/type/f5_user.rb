@@ -50,11 +50,11 @@ Puppet::Type.newtype(:f5_user) do
       currentvalue.inspect
     end
   end
-  
+
   newproperty(:description) do
     desc "The description for the specified user. (API >= v10)"
   end
-  
+
   newproperty(:fullname) do
     desc "The full name for the specified user."
   end
@@ -70,6 +70,6 @@ Puppet::Type.newtype(:f5_user) do
 
   newproperty(:login_shell) do
     desc "The login shell for the specified user."
-  end 
-  
+  end
+
 end
