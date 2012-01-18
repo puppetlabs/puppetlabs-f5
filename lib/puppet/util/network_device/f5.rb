@@ -14,7 +14,7 @@ module Puppet::Util::NetworkDevice::F5
            when /BEGIN RSA (PRIVATE|PUBLIC) KEY/
              OpenSSL::PKey::RSA
            when /BEGIN DSA (PRIVATE|PUBLIC) KEY/
-             OpenSSL::Pkey::DSA
+             OpenSSL::PKey::DSA
            else return nil
            end
     cert.new(content)
