@@ -102,7 +102,7 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
   def persistence_profile
     profiles = {}
     transport[wsdl].get_persistence_profile(resource[:name]).first.each do |p|
-      profiles[p.profile_name] = p.default_profile.to_s
+      profiles[p.profile_name] = p.default_profile
     end
     profiles
   end
@@ -113,15 +113,20 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
     to_remove = []
     to_add    = []
 
+    # The retrieved value is boolean, but we cannot set the value via boolean. So all deafult_profile value is converted to_s
+    # transport[wsdl].add_persistence_profile(resource[:name], [[{"default_profile"=>false, "profile_name"=>"my_cookie"}]])
+    # SOAP::FaultError: Cannot convert null value to a boolean.
+    #   from
     (existing.keys - new.keys).each do |p|
-      to_remove << {'profile_name'=> p, 'default_profile'=> existing[p]}
+      to_remove << {'profile_name'=> p, 'default_profile'=> existing[p].to_s}
     end
 
+    # We don't have a modify API, so remove and re-add profile.
     new.each do |k, v|
       if ! existing.has_key?(k) then
         to_add << {'profile_name'=> k, 'default_profile'=> v.to_s}
       elsif v != existing[k]
-        to_remove << {'profile_name'=> k, 'default_profile'=> existing[k]}
+        to_remove << {'profile_name'=> k, 'default_profile'=> existing[k].to_s}
         to_add << {'profile_name' => k, 'default_profile'=> v.to_s}
       end
     end

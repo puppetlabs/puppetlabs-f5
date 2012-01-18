@@ -298,6 +298,15 @@ F5_virtualserver does not atomically change rules (F5 API limitation), so to reo
       wildmask                => '255.255.255.255',
     }
 
+F5_virtualserver attribute profile_persistence should configure the value => false. Currently, it does not appear that this can be configured to true:
+
+    persistence_profile: persistence_profile changed '{"ssl"=>"false", "cookie"=>"false"}' to '{"ssl"=>false, "cookie"=>true}'
+
+    > transport[wsdl].add_persistence_profile(resource[:name], [[{"default_profile"=>"true", "profile_name"=>"ssl"}, {"default_profile"=>"false", "profile_name"=>"cookie"}]])
+    > transport[wsdl].get_persistence_profile(resource[:name])
+    => [[#<SOAP::Mapping::Object:0x827c3f1c {}profile_name="cookie" {}default_profile=false>, #<SOAP::Mapping::Object:0x827c207c {}profile_name="ssl" {}default_profile=false>]]
+
+
 F5 datagroup consists of f5_string_class and f5_external_class. f5_external_class will autorequire f5_files that matches the file_name (fully qualified file path).
 
     f5_string_class { 'default_accept_language':
