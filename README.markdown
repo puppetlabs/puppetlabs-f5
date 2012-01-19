@@ -316,8 +316,8 @@ F5 datagroup consists of f5_string_class and f5_external_class. f5_external_clas
 
 F5 inet sets hostname and ntp server. There is no API for setting the DNS servers.
 
-    f5_inet { 'bigip-t1.fednot.be':
-      ntp_server_address => 'ntp.fednot.be',
+    f5_inet { 'f5.puppetlabs.lan':
+      ntp_server_address => 'ntp.puppetlabs.lan',
     }
   
 ## Development
