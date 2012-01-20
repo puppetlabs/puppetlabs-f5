@@ -16,8 +16,8 @@ Puppet::Type.type(:f5_user).provide(:f5_user_10, :parent => Puppet::Provider::F5
 
   def self.instances
     Puppet.debug("Puppet::Provider::F5_User: instances")
-    transport[wsdl].get_list.collect do |name|
-      new(:name => name)
+    transport[wsdl].get_list.collect do |user|
+      new(:name => user.name)
     end
   end
 
@@ -41,20 +41,23 @@ Puppet::Type.type(:f5_user).provide(:f5_user_10, :parent => Puppet::Provider::F5
   def password
     # Passing from a password (encrypted) to the same password (unencrypted) won't trigger changes as passwords are always stored in an encrypted form on the bigip. The only consequence is that the crypt salt will remain the same.
     Puppet.debug("Puppet::Provider::F5_User: retrieving encrypted_password for #{resource[:name]}")
-    result = {}
+    
     old_encrypted_password=transport[wsdl].get_encrypted_password(resource[:name]).first
-    if resource[:password]['is_encrypted'] != true
-      salt = old_encrypted_password.sub(/^(\$1\$\w+?\$).*$/, '\1')
-      new_encrypted_password = resource[:password]['password'].crypt(salt)
-    else
-      new_encrypted_password = resource[:password]['password']
-    end
-    if new_encrypted_password == old_encrypted_password
-      result['password']     = resource[:password]['password']
-      result['is_encrypted'] = resource[:password]['is_encrypted']
-    else
-      result['password'] = old_encrypted_password
-      result['is_encrypted'] = true
+    
+    result = { 'password' => old_encrypted_password, 'is_encrypted' => true }
+    
+    # resource is an object when this method is called from instances (?!)
+    if resource.is_a?(Hash)
+      if resource[:password]['is_encrypted'] != true
+        salt = old_encrypted_password.sub(/^(\$1\$\w+?\$).*$/, '\1')
+        new_encrypted_password = resource[:password]['password'].crypt(salt)
+      else
+        new_encrypted_password = resource[:password]['password']
+      end
+      if new_encrypted_password == old_encrypted_password
+        result['password']     = resource[:password]['password']
+        result['is_encrypted'] = resource[:password]['is_encrypted']
+      end
     end
     result
   end
