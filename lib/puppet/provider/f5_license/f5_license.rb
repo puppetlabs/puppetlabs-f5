@@ -16,9 +16,7 @@ Puppet::Type.type(:f5_license).provide(:f5_license, :parent => Puppet::Provider:
   end
 
   def self.instances
-    transport[wsdl].get_list.collect do |name|
-      new(:name => name)
-    end
+    [new(:name => 'license')]
   end
 
   def license_file_data
