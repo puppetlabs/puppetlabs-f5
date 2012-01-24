@@ -15,11 +15,9 @@ Puppet::Type.type(:f5_inet).provide(:f5_inet, :parent => Puppet::Provider::F5) d
   end
 
   def self.instances
-    transport[wsdl].get_list.collect do |name|
-      new(:name => name)
-    end
+    [new(:name => transport[wsdl].get_hostname)]
   end
-
+  
   methods = [
     'hostname',
     'ntp_server_address',
