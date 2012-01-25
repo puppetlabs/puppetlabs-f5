@@ -1,5 +1,3 @@
-require 'puppet/util/network_device/f5'
-
 Puppet::Type.newtype(:f5_key) do
   @doc = "Manage F5 key."
 

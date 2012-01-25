@@ -1,7 +1,7 @@
 require 'puppet/provider/f5'
 
 Puppet::Type.type(:f5_profileclientssl).provide(:f5_profileclientssl, :parent => Puppet::Provider::F5) do
-  @doc = "Manages f5 device"
+  @doc = "Manages f5 device clientssl profile"
 
   confine :feature => :posix
   defaultfor :feature => :posix
@@ -37,30 +37,37 @@ Puppet::Type.type(:f5_profileclientssl).provide(:f5_profileclientssl, :parent =>
     end
   end
 
+  methods = [
+    'certificate_file',
+    'key_file',
+    'ca_file',
+    'client_certificate_ca_file',
+  ]
+
   methods.each do |method|
     define_method("#{method}=") do |profile_string|
       if transport[wsdl].respond_to?("set_#{method}".to_sym)
-        transport[wsdl].send("set_#{method}",
-                              resource[:name],
-                              [:value => profile_string["value"],
-                               :default_flag => profile_string["default_flag"]])
+        transport[wsdl].send("set_#{method}", resource[:name],
+                             [ :value        => profile_string["value"],
+                               :default_flag => profile_string["default_flag"] ])
       end
     end
   end
 
-  # Aliases for API inconsistencies
-  class << transport[wsdl]
-    alias_method :set_peer_certification_mode, :set_peer_certificate_mode
+  def peer_certification_mode=(value)
+    transport[wsdl].set_peer_certificate_mode( resource[:name],
+                                             [ :value        => resource[:peer_certification_mode]["value"],
+                                               :default_flag => resource[:peer_certification_mode]["default_flag"] ])
   end
 
   def create
     Puppet.debug("Puppet::Provider::F5_ProfileClientSSL: creating F5 client ssl profile #{resource[:name]}")
 
-    transport[wsdl].create([resource[:name]],
-                           [:value => resource[:key_file]["value"],
-                            :default_flag => resource[:key_file]["default_flag"]],
-                           [:value => resource[:certificate_file]["value"],
-                            :default_flag => resource[:certificate_file]["default_flag"]])
+    transport[wsdl].create([ resource[:name]],
+                           [ :value        => resource[:key_file]["value"] ,
+                             :default_flag => resource[:key_file]["default_flag"] ],
+                           [ :value        => resource[:certificate_file]["value"] ,
+                             :default_flag => resource[:certificate_file]["default_flag"] ])
 
     # It's not clear to me the difference between these two.  We've been
     # setting them to be the same thing.

@@ -1,5 +1,4 @@
 require 'puppet/provider/f5'
-require 'puppet/util/network_device/f5'
 
 Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::Provider::F5 ) do
   @doc = "Manages f5 certificates"
