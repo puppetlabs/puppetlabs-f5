@@ -102,7 +102,7 @@ Puppet::Type.type(:f5_monitor).provide(:f5_monitor, :parent => Puppet::Provider:
   end
 
   def template_destination=(value)
-    transport[wsdl].set_template_destination(monitor_ipport(resource[:template_destination]))
+    transport[wsdl].set_template_destination([resource[:name]], [monitor_ipport(resource[:template_destination])])
   end
 
   def template_integer_property
