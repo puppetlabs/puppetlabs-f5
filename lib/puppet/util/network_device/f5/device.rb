@@ -28,6 +28,7 @@ class Puppet::Util::NetworkDevice::F5::Device
       'Management.LicenseAdministration',
       'Management.Partition',
       'Management.Provision',
+      'Management.SNMPConfiguration',
       'Management.UserManagement',
       'Networking.RouteTable',
       'Networking.SelfIP',
