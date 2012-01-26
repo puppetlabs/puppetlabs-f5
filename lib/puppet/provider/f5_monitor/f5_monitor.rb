@@ -89,15 +89,15 @@ Puppet::Type.type(:f5_monitor).provide(:f5_monitor, :parent => Puppet::Provider:
     when 'ATYPE_STAR_ADDRESS_STAR_PORT'
       [ 'ATYPE_STAR_ADDRESS_STAR_PORT', "*:*" ]
     when 'ATYPE_STAR_ADDRESS_EXPLICIT_PORT'
-      [ 'ATYPE_STAR_ADDRESS_EXPLICIT_PORT', "*:#[system.ipport.port}" ]
+      [ 'ATYPE_STAR_ADDRESS_EXPLICIT_PORT', "*:#{system.ipport.port}" ]
     when 'ATYPE_EXPLICIT_ADDRESS_EXPLICIT_PORT'
-      [ 'ATYPE_EXPLICIT_ADDRESS_EXPLICIT_PORT', "#[system.ipport.address}:#[system.ipport.port}" ]
+      [ 'ATYPE_EXPLICIT_ADDRESS_EXPLICIT_PORT', "#{system.ipport.address}:#{system.ipport.port}" ]
     when 'ATYPE_STAR_ADDRESS'
       [ 'ATYPE_STAR_ADDRESS', "*:*" ]
     when 'ATYPE_EXPLICIT_ADDRESS'
-      [ 'ATYPE_EXPLICIT_ADDRESS', "#[system.ipport.address}:*" ]
+      [ 'ATYPE_EXPLICIT_ADDRESS', "#{system.ipport.address}:*" ]
     else
-      [ 'ATYPE_UNSET', "#[system.ipport.address}:#[system.ipport.port}" ]
+      [ 'ATYPE_UNSET', "#{system.ipport.address}:#{system.ipport.port}" ]
     end
   end
 
