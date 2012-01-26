@@ -15,9 +15,7 @@ Puppet::Type.type(:f5_routetable).provide(:f5_routetable, :parent => Puppet::Pro
   end
 
   def self.instances
-    transport[wsdl].get_list.collect do |name|
-      new(:name => name)
-    end
+     [new(:name => 'static'),new(:name => 'management')]
   end
 
   def table
