@@ -1,5 +1,4 @@
 require 'puppet/provider/f5'
-require 'puppet/util/network_device/f5'
 
 Puppet::Type.type(:f5_key).provide(:f5_key, :parent => Puppet::Provider::F5) do
   @doc = "Manages f5 cert"
@@ -72,7 +71,16 @@ Puppet::Type.type(:f5_key).provide(:f5_key, :parent => Puppet::Provider::F5) do
 
   def content=(value)
     Puppet.debug("Puppet::Provider::F5_key: replacing key #{resource[:name]}")
-    transport[wsdl].key_import_from_pem(resource[:mode], [resource[:name]], [ resource[:real_content] ], true)
+
+    # Replace key/cert altogether in one step if they are bundled.
+    if resource[:real_content].match(/([-| ]*BEGIN CERTIFICATE[-| ]*.*?[-| ]*END CERTIFICATE[-| ]*)/m)
+      transport[wsdl].key_delete(resource[:mode], [resource[:name]])
+      transport[wsdl].certificate_delete(resource[:mode], [resource[:name]])
+      transport[wsdl].key_import_from_pem(resource[:mode], [resource[:name]], [ resource[:real_content] ], true)
+      transport[wsdl].certificate_import_from_pem(resource[:mode], [resource[:name]], [ resource[:real_content] ], true)
+    else
+      transport[wsdl].key_import_from_pem(resource[:mode], [resource[:name]], [ resource[:real_content] ], true)
+    end
   end
 
   def create
