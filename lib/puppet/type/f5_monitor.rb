@@ -59,7 +59,10 @@ Puppet::Type.newtype(:f5_monitor) do
     desc "The destination IP:port values for the specified templates. NOTE:
     This should only be done when the monitor templates in 'template_names'
     have NOT been associated to any node addresses or pool members."
-
+    
+    def insync?(is)
+      is.eql?(@should)
+    end
     defaultto(['ATYPE_STAR_ADDRESS_STAR_PORT', '*:*'])
   end
 
