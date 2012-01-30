@@ -88,14 +88,18 @@ Puppet::Type.newtype(:f5_vlan) do
  
   autorequire(:f5_trunk) do
     trunks=[]
-    self[:member].each do |m|
-      if m['member_type'] ==  'MEMBER_TRUNK'
-        trunks.push(m['member_name'])
+    if self[:member] && self[:member].class == Array
+      self[:member].each do |m|
+        if m['member_type'] ==  'MEMBER_TRUNK'
+          trunks.push(m['member_name'])
+        end
       end
     end
-    self[:static_forwarding].each do |i|
-      if i['interface_type'] ==  'MEMBER_TRUNK'
-        trunks.push(i['interface_name'])
+    if self[:static_forwarding] && self[:static_forwarding].class == Array
+      self[:static_forwarding].each do |i|
+        if i['interface_type'] ==  'MEMBER_TRUNK'
+          trunks.push(i['interface_name'])
+        end
       end
     end
     trunks
