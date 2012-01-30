@@ -46,13 +46,13 @@ Puppet::Type.type(:f5_string_class).provide(:f5_string_class, :parent => Puppet:
       Puppet.debug("Puppet::Provider::F5_String_Class: adding members #{new_members.join(', ')}")
 
       transport[wsdl].add_string_class_member( [{ :name => resource[:name], :members => [member]}] )
-      transport[wsdl].set_string_class_member_data_value( [{ :name => resource[:name], :members => [member] }], value[member])
+      transport[wsdl].set_string_class_member_data_value( [{ :name => resource[:name], :members => [member] }], [value[member]])
     end
 
     current_members.each do |member|
       if value[member] != string_class[member]
         Puppet.debug("Puppet::Provider::F5_String_Class: modifying members #{new_members.join(', ')}")
-        transport[wsdl].set_string_class_member_data_value( [{ :name => resource[:name], :members => [member] }], value[member])
+        transport[wsdl].set_string_class_member_data_value( [{ :name => resource[:name], :members => [member] }], [value[member]])
       end
     end
 
