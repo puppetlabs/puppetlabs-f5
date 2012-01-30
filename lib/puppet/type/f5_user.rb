@@ -66,6 +66,12 @@ Puppet::Type.newtype(:f5_user) do
         raise Puppet::Error.new("#{value['is_encrypted']} is not a valid is_encrypted value which must be true or false.")
       end
     end
+    def should_to_s(newvalue)
+      newvalue.inspect
+    end
+    def is_to_s(currentvalue)
+      currentvalue.inspect
+    end
   end
 
   newproperty(:login_shell) do
