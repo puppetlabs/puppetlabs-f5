@@ -32,8 +32,9 @@ class Puppet::Provider::F5 < Puppet::Provider
       @device ||= Puppet::Util::NetworkDevice::F5::Device.new(Facter.value(:url))
     else
       @device ||= Puppet::Util::NetworkDevice.current
-      raise Puppet::Error, "Puppet::Util::NetworkDevice::F5: device not initialized." unless @device
+      raise Puppet::Error, "Puppet::Util::NetworkDevice::F5: device not initialized #{caller.join("\n")}" unless @device
     end
+
     @tranport = @device.transport
   end
 
