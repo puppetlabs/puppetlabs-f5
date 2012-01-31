@@ -1,5 +1,4 @@
 require 'puppet/provider/f5'
-require 'puppet/util/network_device/f5'
 
 Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::Provider::F5 ) do
   @doc = "Manages f5 certificates"
@@ -63,7 +62,6 @@ Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::P
   end
 
   def content
-
     # Fetch and calculate all certificate sha1
     value = transport[wsdl].certificate_export_to_pem(@property_hash[:mode], @property_hash[:name]).first
     certs = value.scan(/([-| ]*BEGIN CERTIFICATE[-| ]*.*?[-| ]*END CERTIFICATE[-| ]*)/m).flatten
@@ -77,7 +75,16 @@ Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::P
 
   def content=(value)
     Puppet.debug("Puppet::Provider::F5_Cert: replacing cetificate #{resource[:name]}")
-    transport[wsdl].certificate_import_from_pem(resource[:mode], [resource[:name]], [ resource[:real_content] ], true)
+
+    # Replace key/cert altogether in one step if they are bundled.
+    if resource[:real_content].match(/([-| ]*BEGIN [R|D]SA (?:PRIVATE|PUBLIC) KEY[-| ]*.*?[-| ]*END [R|D]SA (?:PRIVATE|PUBLIC) KEY[-| ]*)/m)
+      transport[wsdl].key_delete(resource[:mode], [resource[:name]])
+      transport[wsdl].certificate_delete(resource[:mode], [resource[:name]])
+      transport[wsdl].key_import_from_pem(resource[:mode], [resource[:name]], [ resource[:real_content] ], true)
+      transport[wsdl].certificate_import_from_pem(resource[:mode], [resource[:name]], [ resource[:real_content] ], true)
+    else
+      transport[wsdl].certificate_import_from_pem(resource[:mode], [resource[:name]], [ resource[:real_content] ], true)
+    end
   end
 
   def create
