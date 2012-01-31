@@ -5,6 +5,7 @@ Warning: this project is currently work in progress, *pending* sections are plan
 The F5 module was written against F5 VE version 10.1.0.3341. F5 have released version 11 with several API changes but currently they have not released any hardware or software running version 11. This provider uses several version 10.1 API, so it is not expected to work with older F5 devices.
 
 Thanks to the following contributor/testers for this module (outside of PuppetLabs employees):
+Bernard Nauwelaerts (bernardn)
 Brenton Leanhardt (brenton)
 Bretm (bretm-rh)
 Scott Henson (shenson)
@@ -354,6 +355,21 @@ f5_external_class resource using external data group should subscribe to f5_file
       type           => 'CLASS_TYPE_ADDRESS',
       subscribe      => F5_file['/config/addr.class'],
     }
+
+F5 provision resource notes :
+
+    Provision level can be NONE, MINIMUM, NOMINAL, DEDICATED or CUSTOM. The custom level allows you specify a value between 0 and 255 for CPU, disk and memory usage.
+    
+    f5_provision { 'TMOS_MODULE_LTM':
+      level               => 'PROVISION_LEVEL_NOMINAL',
+    }
+    f5_provision { 'TMOS_MODULE_ASM':
+      custom_cpu_ratio    => '127',
+      custom_disk_ratio   => '127',
+      custom_memory_ratio => '127',
+      level               => 'PROVISION_LEVEL_CUSTOM',
+    }
+
 
 ## Development
 
