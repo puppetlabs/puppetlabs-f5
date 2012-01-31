@@ -1,0 +1,22 @@
+0.3.0 2012-01-30 Nan Liu <nan@puppetlabs.com>
+* Add F5 file type/provider support.
+* Add F5 profilepersistence type/provider support.
+* Add F5 datagroup string_class, external_class support.
+* Add spec tests for most f5 types.
+* Fix bug with f5 key/certificates where key/cert are bundled in same PEM.
+* Fix bug with f5 cert bundles.
+* Fix some facts value that were inaccessible.
+* Fix F5_profileclientssl iniitialzing f5 device during compilation.
+* Update f5::config define type and template to support partition.
+* Updatd type documentation to match iControl API documentation.
+
+0.2.0 2011-10-20 Nan Liu <nan@puppetlabs.com>
+* Add F5 partition support.
+* Add F5 monitor type/provider support.
+* Add contributor documentation.
+* Expand F5 virtual server type attributes.
+* Improve F5 virtual server provider behavior.
+* Change F5 pool monitor_association to a hash instead of array.
+
+0.1.0 2011-9-15 Nan Liu <nan@puppetlabs.com>
+* Initial release.
