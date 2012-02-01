@@ -29,8 +29,11 @@ Puppet::Type.type(:f5_user).provide(:f5_user_10, :parent => Puppet::Provider::F5
     }
     result
   end
+
   def user_permission=(value)
-    # Updating user permissions doesn't work as expected. get_user_permission returns correctly the new values but there aren't effective (10.1.0 & 10.2.0). A ticket has been opened with F5.
+    # Updating user permissions doesn't work as expected. get_user_permission
+    # returns correctly the new values but there aren't effective (10.1.0 &
+    # 10.2.0). A ticket has been opened with F5 (C1010153).
     permission = []
     resource[:user_permission].keys.each do |part|
       permission.push({:role =>  resource[:user_permission][part], :partition => part})
@@ -39,7 +42,10 @@ Puppet::Type.type(:f5_user).provide(:f5_user_10, :parent => Puppet::Provider::F5
   end
 
   def password
-    # Passing from a password (encrypted) to the same password (unencrypted) won't trigger changes as passwords are always stored in an encrypted form on the bigip. The only consequence is that the crypt salt will remain the same.
+    # Passing from a password (encrypted) to the same password (unencrypted)
+    # won't trigger changes as passwords are always stored in an encrypted form
+    # on the bigip. The only consequence is that the crypt salt will remain the
+    # same.
     Puppet.debug("Puppet::Provider::F5_User: retrieving encrypted_password for #{resource[:name]}")
     
     old_encrypted_password=transport[wsdl].get_encrypted_password(resource[:name]).first
@@ -66,8 +72,7 @@ Puppet::Type.type(:f5_user).provide(:f5_user_10, :parent => Puppet::Provider::F5
     Puppet.debug("Puppet::Provider::F5_User: setting password for #{resource[:name]}")
     transport[wsdl].change_password_2([resource[:name]],[{ :password => resource[:password]['password'], :is_encrypted => resource[:password]['is_encrypted'] }])
   end
-  
-  
+
   methods = [
     'description',
     'fullname',
@@ -90,7 +95,7 @@ Puppet::Type.type(:f5_user).provide(:f5_user_10, :parent => Puppet::Provider::F5
       end
     end
   end
-  
+
   def create
     Puppet.debug("Puppet::Provider::F5_User: creating F5 user #{resource[:name]}")
     
@@ -115,14 +120,7 @@ Puppet::Type.type(:f5_user).provide(:f5_user_10, :parent => Puppet::Provider::F5
   end
 
   def exists?
-    r = false
-    transport[wsdl].get_list.each do |u|
-      if u.name == resource[:name]
-        r = true
-        break
-      end
-    end
-    Puppet.debug("Puppet::Provider::F5_User: does F5 user #{resource[:name]} exist ? #{r}")
-    r
+    users = transport[wsdl].get_list.collect{ |u| u.name }
+    users.include? resource[:name]
   end
 end
