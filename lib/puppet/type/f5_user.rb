@@ -24,28 +24,15 @@ Puppet::Type.newtype(:f5_user) do
 
   newproperty(:user_permission) do
     desc "The list of user permissions."
-
-    def insync?(is)
-      # @should is an Array. see lib/puppet/type.rb insync?
-      should = @should.first
-
-      # Comparison of hashes
-      return false unless is.class == Hash and should.class == Hash and is.keys.sort == should.keys.sort
-      should.each do |k, v|
-        if v.is_a?(Hash)
-          v.each do |l, w|
-            # so far all member values are int
-            return false unless is[k].include?(l).to_s and is[k][l] == w.to_s
-          end
-        end
+    validate do |value|
+      raise Puppet::Error.new("Property 'user_permission' must be a Hash.") unless value.class == Hash
+      value.values.each do |perm|
+        raise Puppet::Error.new("'#{perm}' is not a valid permission role value.") unless perm =~ /^USER_ROLE_(ADMINISTRATOR|TRAFFIC_MANAGER|GUEST|ASM_POLICY_EDITOR|MANAGER|EDITOR|APPLICATION_EDITOR|CERTIFICATE_MANAGER|USER_MANAGER|RESOURCE_ADMINISTRATOR|ASM_EDITOR|ADVANCED_OPERATOR)$/
       end
-      true
     end
-
     def should_to_s(newvalue)
       newvalue.inspect
     end
-
     def is_to_s(currentvalue)
       currentvalue.inspect
     end
