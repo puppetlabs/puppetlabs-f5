@@ -1,10 +1,12 @@
 require 'puppet/provider/f5'
 
-Puppet::Type.type(:f5_user).provide(:f5_user_10, :parent => Puppet::Provider::F5) do
+Puppet::Type.type(:f5_user).provide(:f5_user_11, :parent => Puppet::Provider::F5) do
   @doc = "Manages F5 user"
 
-  confine    :feature => :posix
-  defaultfor :feature => :posix
+  confine    :true => false
+
+#  confine    :feature => :posix
+#  defaultfor :feature => :posix
 
   def self.wsdl
     'Management.UserManagement'
@@ -31,9 +33,10 @@ Puppet::Type.type(:f5_user).provide(:f5_user_10, :parent => Puppet::Provider::F5
   end
 
   def user_permission=(value)
-    # Updating user permissions doesn't work as expected. get_user_permission
-    # returns correctly the new values but there aren't effective (10.1.0 &
-    # 10.2.0). A ticket has been opened with F5 (C1010153).
+    # Works only on V11 branch This functionality is associated to an internal
+    # Change Request: ID227274 Deprecate the get_role and set_role methods in
+    # the Management/UserManagement interface. (CR84297)
+    # The change was completed in V11.
     permission = []
     resource[:user_permission].keys.each do |part|
       permission.push({:role =>  resource[:user_permission][part], :partition => part})

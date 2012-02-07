@@ -5,13 +5,10 @@ Puppet::Type.newtype(:f5_user) do
 
   ensurable do
     desc "F5 user resource state. Valid values are present, absent."
-
     defaultto(:present)
-
     newvalue(:present) do
       provider.create
     end
-
     newvalue(:absent) do
       provider.destroy
     end
@@ -22,8 +19,13 @@ Puppet::Type.newtype(:f5_user) do
     newvalues(/^[[:alpha:][:digit:]]+$/)
   end
 
+  newproperty(:role) do
+    desc "The user role. (API < V11)"
+    newvalues(/^USER_ROLE_(ADMINISTRATOR|TRAFFIC_MANAGER|GUEST|ASM_POLICY_EDITOR|MANAGER|EDITOR|APPLICATION_EDITOR|CERTIFICATE_MANAGER|USER_MANAGER|RESOURCE_ADMINISTRATOR|ASM_EDITOR|ADVANCED_OPERATOR)$/)
+  end
+
   newproperty(:user_permission) do
-    desc "The list of user permissions."
+    desc "The list of user permissions (API >=V11)."
     validate do |value|
       raise Puppet::Error.new("Property 'user_permission' must be a Hash.") unless value.class == Hash
       value.values.each do |perm|
@@ -37,11 +39,11 @@ Puppet::Type.newtype(:f5_user) do
       currentvalue.inspect
     end
   end
-  
+
   newproperty(:description) do
     desc "The description for the specified user. (API >= v10)"
   end
-  
+
   newproperty(:fullname) do
     desc "The full name for the specified user."
   end
@@ -64,5 +66,5 @@ Puppet::Type.newtype(:f5_user) do
   newproperty(:login_shell) do
     desc "The login shell for the specified user."
   end 
-  
+
 end
