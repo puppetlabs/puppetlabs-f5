@@ -68,7 +68,7 @@ The following puppet manifest will deploy f5 gem on the f5_proxy system and depl
 
         export RUBYLIB=/etc/puppet/modules/f5/lib/:$RUBYLIB
 
-For more information see: http://www.puppetlabs.com/blog/puppet-network-device-management/
+For more information see our website on [network device management](http://www.puppetlabs.com/blog/puppet-network-device-management/).
 
 ## F5 Facts
 Similar to Puppet 2.7 cisco devices, the F5 facts are not collected via facter, so please review $vardir/yaml/facts for F5 system information.
@@ -131,8 +131,7 @@ Similar to Puppet 2.7 cisco devices, the F5 facts are not collected via facter, 
         !ruby/sym version: BIG-IP_v10.1.0
 
 ## Appendix
-Sample Puppet F5 manifests and usage notes where applicable. F5 API documentation:
-http://devcentral.f5.com/wiki/iControl.APIReference.ashx
+Sample Puppet F5 manifests and usage notes where applicable. See [F5 iControl API documentation](http://devcentral.f5.com/wiki/iControl.APIReference.ashx) for more more information.
 
 f5_(key|certificate) content attribute accepts the certificate in PEM format:
 
@@ -159,7 +158,7 @@ Certificates comparison is completed via sha1 fingerprint which is also used dur
 
     notice: /Stage[main]//F5_certificate[ca-bundle]/content: content changed 'sha1(0197e53f31798d43eac830b8561887dae22fd5c2)' to 'sha1(39c2e7fa576e98431bbab66ca0cb14e01cb8bfe4)'
 
-f5_file resource is intended for f5_external_class to manage datagroup files. The performance in v10 is slow because it requires downloading the file to calculate the file checksum. Content should be the string content of the file, and internally the type converts into md5 checksum (example below content comparison value is 'md5(b8353824beaf868010d823cf128ecc97)'). f5_files are processed in 64KB chunks per F5 recommendation: http://devcentral.f5.com/Tutorials/TechTips/tabid/63/articleType/ArticleView/articleId/144/iControl-101--06--File-Transfer-APIs.aspx.
+f5_file resource is intended for f5_external_class to manage datagroup files. The performance in v10 is slow because it requires downloading the file to calculate the file checksum. Content should be the string content of the file, and internally the type converts into md5 checksum (example below content comparison value is 'md5(b8353824beaf868010d823cf128ecc97)'). f5_files are processed in 64KB chunks per F5 [techtips recommendation](http://devcentral.f5.com/Tutorials/TechTips/tabid/63/articleType/ArticleView/articleId/144/iControl-101--06--File-Transfer-APIs.aspx).
 
     f5_file { '/config/addr.class':
       ensure  => 'present',
@@ -209,7 +208,7 @@ F5_pool resource notes:
 * The member attribute is not order dependent, the monitor_associate is order dependent.
 * The member attribute may contain addresses A.B.C.D%ID such as: 192.168.1.1.%0, ID indicates route domain (0 is common).
 
-See F5 documentation: http://support.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos_management_guide_10_1/tmos_route_domains.html
+See [F5 documentation](http://support.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos_management_guide_10_1/tmos_route_domains.html) for more information.
 
     f5_pool { 'webserver':
       ensure                          => 'present',
@@ -272,7 +271,7 @@ See F5 documentation: http://support.f5.com/kb/en-us/products/big-ip_ltm/manuals
       unit_id          => '1',
     }
 
-F5_virtualserver does not atomically change rules (F5 API limitation), so to reorder rule priority please use irule priority which can be modified in f5_rule. See: http://devcentral.f5.com/wiki/iRules.priority.ashx
+F5_virtualserver does not atomically change rules (F5 API limitation), so to reorder rule priority please use irule priority which can be modified in f5_rule. See [F5 documentation](http://devcentral.f5.com/wiki/iRules.priority.ashx).
 
     f5_virtualserver { 'www':
       ensure                  => 'present',
@@ -305,6 +304,8 @@ F5 datagroup consists of f5_string_class and f5_external_class. f5_external_clas
       members => {'en' => '', 'ja' => '', 'zh-cn' => '', 'zh-tw' => ''},
     }
 
+f5_external_class resource using external data group should subscribe to f5_file to trigger a data reload when the file content changes.  This issue is explained in further details in the following [F5 techtip](http://devcentral.f5.com/Tutorials/TechTips/tabid/63/articleType/ArticleView/articleId/33/Forcing-a-reload-of-External-Data-Groups-within-an-iRule.aspx).
+
     f5_external_class { 'addr':
       ensure         => 'present',
       data_separator => ':=',
@@ -312,6 +313,7 @@ F5 datagroup consists of f5_string_class and f5_external_class. f5_external_clas
       file_mode      => 'FILE_MODE_TYPE_READ_WRITE',
       file_name      => '/config/addr.class',
       type           => 'CLASS_TYPE_ADDRESS',
+      subscribe      => F5_file['/config/addr.class'],
     }
 
 ## Development
