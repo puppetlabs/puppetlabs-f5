@@ -4,7 +4,7 @@ require 'puppet/util/network_device/f5/facts'
 
 class Puppet::Util::NetworkDevice::F5::Device
 
-  attr_accessor :url, :transport, :partition
+  attr_accessor :url, :transport, :partition, :facts
 
   def initialize(url, option = {})
     @url = URI.parse(url)

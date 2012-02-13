@@ -1,9 +1,13 @@
 require 'puppet/provider/f5'
 
-Puppet::Type.type(:f5_selfip).provide(:f5_selfip, :parent => Puppet::Provider::F5) do
-  @doc = "Manages F5 user"
+Puppet::Type.type(:f5_selfip).provide(:f5_selfip_v9, :parent => Puppet::Provider::F5) do
+  @doc = "Manages F5 selfip"
 
+  bigip_version = /([\d\.]+)$/.match(facts["version"])
   confine    :feature => :posix
+  confine    :true    => if Gem::Version.new(bigip_version) < Gem::Version.new('11.0.0')
+    true
+  end
   defaultfor :feature => :posix
 
   def self.wsdl
@@ -43,7 +47,7 @@ Puppet::Type.type(:f5_selfip).provide(:f5_selfip, :parent => Puppet::Provider::F
       end
     end
   end
-  
+
   def create
     Puppet.debug("Puppet::Provider::F5_SelfIP: creating F5 self IP #{resource[:name]}")
     transport[wsdl].create([resource[:name]],[resource[:vlan]],[resource[:netmask]],[resource[:unit_id]],[resource[:floating_state]])

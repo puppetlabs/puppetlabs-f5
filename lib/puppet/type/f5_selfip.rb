@@ -5,13 +5,13 @@ Puppet::Type.newtype(:f5_selfip) do
 
   ensurable do
     desc "F5 self IP resource state. Valid values are present, absent."
-    
+
     defaultto(:present)
-    
+
     newvalue(:present) do
       provider.create
     end
-    
+
     newvalue(:absent) do
       provider.destroy
     end
@@ -26,7 +26,7 @@ Puppet::Type.newtype(:f5_selfip) do
     desc "The floating_state for the specified self IP."
     newvalues(/^STATE_(DISABLED|ENABLED)$/)
   end
-  
+
   newproperty(:netmask) do
     desc "The net mask for the specified self IP."
     newvalues(/^[0-9A-Fa-f\.\:]+$/)
@@ -39,6 +39,12 @@ Puppet::Type.newtype(:f5_selfip) do
 
   newproperty(:vlan) do
     desc "The VLAN for the specified self IP."
-  end 
-  
+  end
+
+  autorequire(:f5_vlan) do
+    if f5_vlan = self[:vlan]
+      f5_vlan
+    end
+  end
+
 end
