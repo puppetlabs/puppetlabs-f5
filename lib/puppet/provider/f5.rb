@@ -26,7 +26,7 @@ class Puppet::Provider::F5 < Puppet::Provider
     port
   end
 
-  def self.transport
+  def self.device
     if Facter.value(:url) then
       Puppet.debug "Puppet::Util::NetworkDevice::F5: connecting via facter url."
       @device ||= Puppet::Util::NetworkDevice::F5::Device.new(Facter.value(:url))
@@ -34,7 +34,20 @@ class Puppet::Provider::F5 < Puppet::Provider
       @device ||= Puppet::Util::NetworkDevice.current
       raise Puppet::Error, "Puppet::Util::NetworkDevice::F5: device not initialized #{caller.join("\n")}" unless @device
     end
+  end
 
+  def self.facts
+    @device ||= device
+    @facts = @device.facts
+  end
+
+  def facts
+    # this calls the class instance of self.transport instead of the object instance which causes an infinite loop.
+    self.class.facts
+  end
+
+  def self.transport
+    @device ||= device
     @tranport = @device.transport
   end
 

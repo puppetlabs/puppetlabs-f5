@@ -47,9 +47,12 @@ Puppet::Type.type(:f5_vlan).provide(:f5_vlan, :parent => Puppet::Provider::F5) d
     end
   end
 
+  def vlan_members
+    @vlan_members ||= transport[wsdl].get_member(resource[:name]).first
+  end
+
   def member
-    @vlan_members=transport[wsdl].get_member(resource[:name]).first
-    @vlan_members.collect! { |vlan_member|
+    vlan_members.collect! { |vlan_member|
       {
         'member_name' => vlan_member.member_name,
         'member_type' => vlan_member.member_type,
@@ -57,30 +60,51 @@ Puppet::Type.type(:f5_vlan).provide(:f5_vlan, :parent => Puppet::Provider::F5) d
       }
     }
   end
+
   def member=(value)
-    transport[wsdl].remove_member([resource[:name]], [@vlan_members - value])
-    transport[wsdl].add_member([resource[:name]], [value - @vlan_members])
+    transport[wsdl].remove_member([resource[:name]], [vlan_members - value])
+    transport[wsdl].add_member([resource[:name]], [value - vlan_members])
+  end
+
+  def static_forwarding_table
+    @static_forwarding_table ||= transport[wsdl].get_static_forwarding(resource[:name]).first
   end
 
   def static_forwarding
-    @static_forwarding_table=transport[wsdl].get_static_forwarding(resource[:name]).first
-    @static_forwarding_table.collect! {|entry|
+    static_forwarding_table.collect! {|entry|
       {
         'mac_address'    => entry.mac_address,
         'interface_name' => entry.interface_name,
         'interface_type' => entry.interface_type,
-      } 
+      }
     }
   end
+
   def static_forwarding=(value)
-    transport[wsdl].remove_static_forwarding([resource[:name]], [@static_forwarding_table - value])
-    transport[wsdl].add_static_forwarding([resource[:name]], [value - @static_forwarding_table])
+    transport[wsdl].remove_static_forwarding([resource[:name]], [static_forwarding_table - value])
+    transport[wsdl].add_static_forwarding([resource[:name]], [value - static_forwarding_table])
   end
 
   def create
     Puppet.debug("Puppet::Provider::F5_VLAN: creating F5 VLAN #{resource[:name]}")
-    transport[wsdl].create([resource[:name]],[resource[:vlan_id]],[resource[:member]],[resource[:failsafe_state]],[resource[:failsafe_timeout]],[resource[:mac_masquerade_address]])
-    
+
+    bigip_version = /([\d\.]+)$/.match(facts["version"])
+    if Gem::Version.new(bigip_version) < Gem::Version.new('11.0.0')
+      transport[wsdl].create( [resource[:name]],
+                              [resource[:vlan_id]],
+                              [resource[:member]],
+                              [resource[:failsafe_state]],
+                              [resource[:failsafe_timeout]],
+                              [resource[:mac_masquerade_address]] )
+    else
+      transport[wsdl].create_v2( [resource[:name]],
+                                 [resource[:vlan_id]],
+                                 [resource[:member]],
+                                 [resource[:failsafe_state]],
+                                 [resource[:failsafe_timeout]],
+                                 [resource[:mac_masquerade_address]] )
+    end
+
     ## The create method provided by the iControl API does not set the following so that we have to do it here
     methods = [
       'failsafe_action',
@@ -92,8 +116,15 @@ Puppet::Type.type(:f5_vlan).provide(:f5_vlan, :parent => Puppet::Provider::F5) d
         transport[wsdl].send("set_#{method}", resource[:name], resource[method.to_sym])
       end
     end
+
     if resource[:static_forwarding].is_a?(Hash)
-      transport[wsdl].add_static_forwarding([resource[:name]], [resource[:static_forwarding].keys.collect { |mac_address| { :mac_address => mac_address, :interface_name => resource[:static_forwarding][mac_address]['interface_name'], :interface_type => resource[:static_forwarding][mac_address]['interface_type'] } } ])
+      transport[wsdl].add_static_forwarding( [resource[:name]],
+        [ resource[:static_forwarding].keys.collect { |mac_address|
+          { :mac_address    => mac_address,
+            :interface_name => resource[:static_forwarding][mac_address]['interface_name'],
+            :interface_type => resource[:static_forwarding][mac_address]['interface_type']
+          }
+        }] )
     end
   end
 
@@ -108,5 +139,5 @@ Puppet::Type.type(:f5_vlan).provide(:f5_vlan, :parent => Puppet::Provider::F5) d
     Puppet.debug("Puppet::Provider::F5_VLAN: does F5 VLAN #{resource[:name]} exist ? #{r}")
     r
   end
-  
+
 end

@@ -327,18 +327,17 @@ F5 VLAN resource notes :
       ],
       failsafe_state         => 'STATE_DISABLED',
       failsafe_timeout       => 60,
-      
       failsafe_action        => 'HA_ACTION_RESTART_ALL',
       learning_mode          => 'LEARNING_MODE_ENABLE_FORWARD',
       mtu                    => 1000,
       static_forwarding      => [
         { mac_address => '02:02:29:97:79:92', 'interface_name' => '1.2', 'interface_type' => 'MEMBER_INTERFACE' },
         { mac_address => '02:02:29:97:79:93', 'interface_name' => '1.3', 'interface_type' => 'MEMBER_INTERFACE' },
-        { mac_address => '02:02:29:97:79:95', 'interface_name' => '1.5', 'interface_type' => 'MEMBER_INTERFACE' },  
+        { mac_address => '02:02:29:97:79:95', 'interface_name' => '1.5', 'interface_type' => 'MEMBER_INTERFACE' }
       ],
       source_check_state     => 'STATE_ENABLED',
       mac_masquerade_address => '02:02:29:97:79:90',
-    }  
+    }
 
 ## Development
 
