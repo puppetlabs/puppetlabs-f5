@@ -5,13 +5,13 @@ Puppet::Type.newtype(:f5_vlan) do
 
   ensurable do
     desc "F5 VLAN resource state. Valid values are present, absent."
-    
+
     defaultto(:present)
-    
+
     newvalue(:present) do
       provider.create
     end
-    
+
     newvalue(:absent) do
       provider.destroy
     end
@@ -34,17 +34,17 @@ Puppet::Type.newtype(:f5_vlan) do
   newproperty(:failsafe_timeout) do
     desc "The failsafe timeout for the specified VLAN."
     newvalues(/^[[:digit:]]+$/)
-  end 
+  end
 
   newproperty(:learning_mode) do
     desc "The learning mode for the specified VLAN."
     newvalues(/^LEARNING_MODE_(ENABLE_FORWARD|DISABLE_FORWARD|DISABLE_DROP)$/)
-  end 
+  end
 
   newproperty(:mac_masquerade_address) do
     desc "The MAC masquerade address for the specified VLAN."
-  end 
-  
+  end
+
   newproperty(:member, :array_matching => :all) do
     desc "The list of VLAN members."
     def insync?(is)
@@ -62,11 +62,11 @@ Puppet::Type.newtype(:f5_vlan) do
     desc "The MTU for the specified VLAN."
     newvalues(/^[[:digit:]]+$/)
   end
-  
+
   newproperty(:source_check_state) do
     desc "The source check state for the specified VLAN."
     newvalues(/^STATE_(ENABLED|DISABLED)$/)
-  end 
+  end
 
   newproperty(:static_forwarding, :array_matching => :all) do
     desc "The list of VLAN static forwarding rules."
@@ -79,13 +79,13 @@ Puppet::Type.newtype(:f5_vlan) do
     def is_to_s(currentvalue)
       currentvalue.inspect
     end
-  end    
-  
+  end
+
   newproperty(:vlan_id) do
     desc "The tag ID for the specified VLAN."
     newvalues(/^[[:digit:]]+$/)
   end
- 
+
   autorequire(:f5_trunk) do
     trunks=[]
     if self[:member] && self[:member].class == Array
@@ -104,7 +104,5 @@ Puppet::Type.newtype(:f5_vlan) do
     end
     trunks
   end
-  autorequire(:f5_license) do
-    ['license']
-  end
+
 end
