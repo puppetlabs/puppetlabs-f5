@@ -246,6 +246,14 @@ See F5 documentation: http://support.f5.com/kb/en-us/products/big-ip_ltm/manuals
       definition => 'when HTTP_REQUEST {}',
     }
 
+    f5_selfip { 'fd88:d0a3:9645:6b83::':
+      ensure         => 'present',
+      netmask        => 'ffff:ffff:ffff:ffff:0000:0000:0000:0000',
+      floating_state => 'STATE_DISABLED',
+      unit_id        => 0,
+      vlan           => 'vlan_test_01'
+    }
+
     f5_snat { 'nat':
       ensure                  => 'present',
       connection_mirror_state => 'STATE_DISABLED',
@@ -298,6 +306,29 @@ F5_virtualserver does not atomically change rules (F5 API limitation), so to reo
       wildmask                => '255.255.255.255',
     }
 
+    f5_vlan { 'vlan_test_01':
+      ensure                 => 'present',
+      vlan_id                => 127,
+      member                 => [
+        { member_name => '1.2', 'member_type' =>  'MEMBER_INTERFACE', 'tag_state' => 'MEMBER_TAGGED' },
+        { member_name => '1.3', 'member_type' =>  'MEMBER_INTERFACE', 'tag_state' => 'MEMBER_TAGGED' },
+        { member_name => '1.4', 'member_type' =>  'MEMBER_INTERFACE', 'tag_state' => 'MEMBER_TAGGED' },
+        { member_name => '1.5', 'member_type' =>  'MEMBER_INTERFACE', 'tag_state' => 'MEMBER_UNTAGGED' },
+      ],
+      failsafe_action        => 'HA_ACTION_RESTART_ALL',
+      failsafe_state         => 'STATE_DISABLED',
+      failsafe_timeout       => 60,
+      learning_mode          => 'LEARNING_MODE_ENABLE_FORWARD',
+      mtu                    => 1000,
+      static_forwarding      => [
+        { mac_address => '02:02:29:97:79:92', 'interface_name' => '1.2', 'interface_type' => 'MEMBER_INTERFACE' },
+        { mac_address => '02:02:29:97:79:93', 'interface_name' => '1.3', 'interface_type' => 'MEMBER_INTERFACE' },
+        { mac_address => '02:02:29:97:79:95', 'interface_name' => '1.5', 'interface_type' => 'MEMBER_INTERFACE' }
+      ],
+      source_check_state     => 'STATE_ENABLED',
+      mac_masquerade_address => '02:02:29:97:79:90',
+    }
+
 F5 datagroup consists of f5_string_class and f5_external_class. f5_external_class will autorequire f5_files that matches the file_name (fully qualified file path).
 
     f5_string_class { 'default_accept_language':
@@ -312,16 +343,6 @@ F5 datagroup consists of f5_string_class and f5_external_class. f5_external_clas
       file_mode      => 'FILE_MODE_TYPE_READ_WRITE',
       file_name      => '/config/addr.class',
       type           => 'CLASS_TYPE_ADDRESS',
-    }
-
-F5 selfip resource notes :
-
-    f5_selfip { 'fd88:d0a3:9645:6b83::':
-      ensure         => 'present',
-      netmask        => 'ffff:ffff:ffff:ffff:0000:0000:0000:0000',
-      floating_state => 'STATE_DISABLED',
-      unit_id        => 0,
-      vlan           => 'vlan_test_01'
     }
 
 ## Development
