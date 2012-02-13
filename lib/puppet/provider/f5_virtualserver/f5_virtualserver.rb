@@ -12,8 +12,16 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
     'LocalLB.VirtualServer'
   end
 
+  def self.va_wsdl
+    'LocalLB.VirtualAddress'
+  end
+
   def wsdl
     self.class.wsdl
+  end
+
+  def va_wsdl
+    self.class.va_wsdl
   end
 
   def self.instances
@@ -231,6 +239,14 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
     transport[wsdl].set_destination(resource[:name], [ destination ])
   end
 
+  def route_advertisement
+    transport[va_wsdl].get_route_advertisement_state(network_address(resource[:destination]))
+  end
+
+  def route_advertisement=(value)
+    transport[va_wsdl].set_route_advertisement_state(network_address(resource[:destination]), resource[:route_advertisement])
+  end
+
   def snat_type
     transport[wsdl].get_snat_type(resource[:name]).first
   end
@@ -282,6 +298,7 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
                 'nat64_state',
                 'persistence_profile',
                 'rate_class',
+                'route_advertisement',
                 'rule',
                 'snat_pool',
                 'snat_type',

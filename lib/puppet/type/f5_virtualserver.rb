@@ -98,6 +98,11 @@ Puppet::Type.newtype(:f5_virtualserver) do
     newvalues(/^PROTOCOL_(ANY|IPV6|ROUTING|NONE|FRAGMENT|DSTOPTS|TCP|UDP|ICMP|ICMPV6|OSPF|SCTP)$/)
   end
 
+  newproperty(:route_advertisement) do
+    desc "The route advertisement state."
+    newvalues(/^STATE_(DISABLED|ENABLED)$/)
+  end
+
   newproperty(:rate_class) do
     desc "The virtual server rate class."
   end

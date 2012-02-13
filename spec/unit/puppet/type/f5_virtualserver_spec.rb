@@ -114,6 +114,16 @@ describe res_type do
     :profile => {
       :default => nil,
     },
+    :route_advertisement => {
+      :valid => [
+        "STATE_ENABLED",
+        "STATE_DISABLED",
+      ],
+      :invalid => [
+        "something else",
+      ],
+      :default => nil,
+    },
     :rule => {
       :default => nil,
     },
