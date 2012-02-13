@@ -314,6 +314,16 @@ F5 datagroup consists of f5_string_class and f5_external_class. f5_external_clas
       type           => 'CLASS_TYPE_ADDRESS',
     }
 
+F5 selfip resource notes :
+
+    f5_selfip { 'fd88:d0a3:9645:6b83::':
+      ensure         => 'present',
+      netmask        => 'ffff:ffff:ffff:ffff:0000:0000:0000:0000',
+      floating_state => 'STATE_DISABLED',
+      unit_id        => 0,
+      vlan           => 'vlan_test_01'
+    }
+
 ## Development
 
 The following section applies to developers of this module only.
