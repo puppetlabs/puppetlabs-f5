@@ -325,6 +325,12 @@ f5_external_class resource using external data group should subscribe to f5_file
       subscribe      => F5_file['/config/addr.class'],
     }
 
+F5 license manages the device's licence file.
+
+    f5_license { 'license':
+      license_file_data => file('/path/to/bigip.licence'),
+    }
+
 ## Development
 
 The following section applies to developers of this module only.
