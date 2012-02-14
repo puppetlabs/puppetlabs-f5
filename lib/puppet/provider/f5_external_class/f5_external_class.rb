@@ -1,7 +1,7 @@
 require 'puppet/provider/f5'
 
 Puppet::Type.type(:f5_external_class).provide(:f5_external_class, :parent => Puppet::Provider::F5) do
-  @doc = "Manages f5 String classes (datagroups)"
+  @doc = "Manages f5 external classes (datagroups)"
 
   confine :feature => :posix
   defaultfor :feature => :posix
@@ -62,7 +62,7 @@ Puppet::Type.type(:f5_external_class).provide(:f5_external_class, :parent => Pup
     # F5 external class can not conflict with address, string, or value class
     # namevar.  Since Puppet can not enforce unique resource names, it is not
     # safe to delete the class.
-    Puppet.debug("Puppet::Provider::F5_external_class: creating F5 string class #{resource[:name]}")
+    Puppet.debug("Puppet::Provider::F5_external_class: creating F5 external class #{resource[:name]}")
 
     metainfo = {
                  :class_name  => resource[:name],
@@ -76,9 +76,14 @@ Puppet::Type.type(:f5_external_class).provide(:f5_external_class, :parent => Pup
   end
 
   def destroy
-    Puppet.debug("Puppet::Provider::F5_external_class: deleting F5 string class #{resource[:name]}")
+    Puppet.debug("Puppet::Provider::F5_external_class: deleting F5 external class #{resource[:name]}")
 
     transport[wsdl].delete_class(resource[:name])
+  end
+
+  def refresh
+    Puppet.debug("Puppet::Provider::F5_external_class: refreshing F5 external class #{resource[:name]}")
+    transport[wsdl].set_external_class_file_name(resource[:name], resource[:file_name])
   end
 
   def exists?
