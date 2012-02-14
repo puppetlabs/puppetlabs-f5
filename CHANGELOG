@@ -1,3 +1,7 @@
+0.3.1 2012-02-14 Nan Liu <nan@puppetlabs.com>
+* f5_external_class supports refresh of external data.
+* Fix bug with f5_virtualserver profile_persistence attribute.
+
 0.3.0 2012-01-30 Nan Liu <nan@puppetlabs.com>
 * Add F5 file type/provider support.
 * Add F5 profilepersistence type/provider support.
