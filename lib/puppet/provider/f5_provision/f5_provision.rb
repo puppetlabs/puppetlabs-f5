@@ -33,11 +33,12 @@ Puppet::Type.type(:f5_provision).provide(:f5_provision, :parent => Puppet::Provi
         transport[wsdl].send("get_#{method}", [resource[:name]]).first.to_s
       end
     end
+
     define_method("#{method}=") do |value|
       if transport[wsdl].respond_to?("set_#{method}".to_sym)
         transport[wsdl].send("set_#{method}", [resource[:name]], value)
       end
     end
   end
-  
+
 end

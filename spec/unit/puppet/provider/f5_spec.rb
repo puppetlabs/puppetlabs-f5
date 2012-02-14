@@ -65,8 +65,7 @@ describe Puppet::Provider::F5 do
   describe "transport method" do
     it "with uninitialized device and no url should return error" do
       expect { f5_prov_obj.transport }.to(
-        raise_error(Puppet::Error, "Puppet::Util::NetworkDevice::F5: device " \
-        "not initialized.")
+        raise_error(Puppet::Error, /Puppet::Util::NetworkDevice::F5: device not initialized/)
       )
     end
 
@@ -109,7 +108,9 @@ describe Puppet::Provider::F5 do
         "LocalLB.SNATPool"               => driver,
         "LocalLB.SNATTranslationAddress" => driver,
         "LocalLB.VirtualServer"          => driver,
+        "Networking.SelfIP"              => driver,
         "Management.Partition"           => driver,
+        "Management.Provision"           => driver,
         "Management.KeyCertificate"      => driver,
         "Networking.VLAN"                => driver,
         "System.ConfigSync"              => driver,

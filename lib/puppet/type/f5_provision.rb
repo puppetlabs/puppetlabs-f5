@@ -10,39 +10,18 @@ Puppet::Type.newtype(:f5_provision) do
 
   newproperty(:custom_cpu_ratio) do
     desc "The CPU ratio for the given TMOS module."
-    # The newvalues method doesnt support neither ranges nor arrays.
-    newvalues(/^\d+$/)
-    validate do |value|
-      raise Puppet::Error, "Puppet::Type::F5_provision: value must be comprised between 0 and 255" if value < 0 || value > 255
-    end
-    defaultto 0
-  end
-  
-  newproperty(:custom_disk_ratio) do
-    desc "The disk ratio for the given TMOS module."
-    # The newvalues method doesnt support neither ranges nor arrays.
-    newvalues(/^\d+$/)
-    validate do |value|
-      raise Puppet::Error, "Puppet::Type::F5_provision: value must be comprised between 0 and 255" if value < 0 || value > 255
-    end
+    newvalues(/^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$/)
     defaultto 0
   end
 
   newproperty(:custom_memory_ratio) do
-    # The newvalues method doesnt support neither ranges nor arrays.
-    newvalues(/^\d+$/)
-    validate do |value|
-      raise Puppet::Error, "Puppet::Type::F5_provision: value must be comprised between 0 and 255" if value < 0 || value > 255
-    end
+    newvalues(/^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$/)
     defaultto 0
   end
-  
+
   newproperty(:level) do
     desc "The provisioning level for the given TMOS module."
     newvalues(/^PROVISION_LEVEL_(NONE|MINIMUM|NOMINAL|DEDICATED|CUSTOM)$/)
   end
-  
-  autorequire(:f5_license) do
-    ["license"]
-  end
+
 end
