@@ -96,25 +96,26 @@ describe Puppet::Provider::F5 do
 
       f5_prov_obj.transport.class.should == Hash
       f5_prov_obj.transport.should == {
-        "LocalLB.Class"                  => driver,
-        "LocalLB.NodeAddress"            => driver,
-        "LocalLB.Monitor"                => driver,
-        "LocalLB.Pool"                   => driver,
-        "LocalLB.PoolMember"             => driver,
-        "LocalLB.ProfileClientSSL"       => driver,
-        "LocalLB.ProfilePersistence"     => driver,
-        "LocalLB.Rule"                   => driver,
-        "LocalLB.SNAT"                   => driver,
-        "LocalLB.SNATPool"               => driver,
-        "LocalLB.SNATTranslationAddress" => driver,
-        "LocalLB.VirtualServer"          => driver,
-        "Networking.SelfIP"              => driver,
-        "Management.Partition"           => driver,
-        "Management.Provision"           => driver,
-        "Management.KeyCertificate"      => driver,
-        "Networking.VLAN"                => driver,
-        "System.ConfigSync"              => driver,
-        "System.SystemInfo"              => driver
+        "LocalLB.Class"                    => driver,
+        "LocalLB.NodeAddress"              => driver,
+        "LocalLB.Monitor"                  => driver,
+        "LocalLB.Pool"                     => driver,
+        "LocalLB.PoolMember"               => driver,
+        "LocalLB.ProfileClientSSL"         => driver,
+        "LocalLB.ProfilePersistence"       => driver,
+        "LocalLB.Rule"                     => driver,
+        "LocalLB.SNAT"                     => driver,
+        "LocalLB.SNATPool"                 => driver,
+        "LocalLB.SNATTranslationAddress"   => driver,
+        "LocalLB.VirtualServer"            => driver,
+        "Networking.SelfIP"                => driver,
+        "Management.Partition"             => driver,
+        "Management.Provision"             => driver,
+        "Management.KeyCertificate"        => driver,
+        "Management.LicenseAdministration" => driver,
+        "Networking.VLAN"                  => driver,
+        "System.ConfigSync"                => driver,
+        "System.SystemInfo"                => driver
       }
     end
 
