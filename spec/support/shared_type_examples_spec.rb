@@ -15,6 +15,8 @@ shared_examples "a puppet type" do |parameter_tests, res_type_name|
     case res_type_name
     when :f5_provision
       type.new({:name => 'TMOS_MODULE_LTM'})
+    when :f5_license
+      type.new({:name => 'license'})
     else
       type.new({:name => 'test'})
     end

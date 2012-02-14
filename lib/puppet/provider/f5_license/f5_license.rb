@@ -1,5 +1,5 @@
-require 'puppet/provider/f5'
 require "base64"
+require 'puppet/provider/f5'
 
 Puppet::Type.type(:f5_license).provide(:f5_license, :parent => Puppet::Provider::F5) do
   @doc = "Manages f5 license"
@@ -16,9 +16,7 @@ Puppet::Type.type(:f5_license).provide(:f5_license, :parent => Puppet::Provider:
   end
 
   def self.instances
-    transport[wsdl].get_list.collect do |name|
-      new(:name => name)
-    end
+    [new(:name => 'license')]
   end
 
   def license_file_data
@@ -29,8 +27,9 @@ Puppet::Type.type(:f5_license).provide(:f5_license, :parent => Puppet::Provider:
       "NO_LICENCE_ACTIVATED"
     end
   end
-  
+
   def license_file_data=(value)
     transport[wsdl].install_license(resource[:license_file_content])
   end
+
 end

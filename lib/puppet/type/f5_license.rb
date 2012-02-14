@@ -5,6 +5,7 @@ Puppet::Type.newtype(:f5_license) do
 
   newparam(:name, :namevar=>true) do
     desc "The license name. Must be fixed to 'license'."
+    newvalues(/^license$/)
   end
 
   newproperty(:license_file_data) do
@@ -14,8 +15,9 @@ Puppet::Type.newtype(:f5_license) do
       value = "md5(#{Digest::MD5.hexdigest(value)})"
     end
   end
-  
+
   newparam(:license_file_content) do
     desc "The license's real content."
   end
+
 end
