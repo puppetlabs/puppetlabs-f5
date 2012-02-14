@@ -14,6 +14,12 @@ Puppet::Type.newtype(:f5_provision) do
     defaultto 0
   end
 
+  newproperty(:custom_disk_ratio) do
+    desc "The diks ratio for the given TMOS module."
+    newvalues(/^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$/)
+    defaultto 0
+  end
+
   newproperty(:custom_memory_ratio) do
     newvalues(/^([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])$/)
     defaultto 0
