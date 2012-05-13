@@ -111,6 +111,7 @@ describe Puppet::Provider::F5 do
         "LocalLB.VirtualServer"          => driver,
         "Management.Partition"           => driver,
         "Management.KeyCertificate"      => driver,
+        "Management.UserManagement"      => driver,
         "System.ConfigSync"              => driver,
         "System.SystemInfo"              => driver
       }

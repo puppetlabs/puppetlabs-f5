@@ -325,6 +325,22 @@ f5_external_class resource using external data group should subscribe to f5_file
       subscribe      => F5_file['/config/addr.class'],
     }
 
+F5 user resource notes :
+
+    f5_user { 'username':
+      ensure          => 'present',
+      password        => {
+        'password'     => '$1$abcdef$TSUZRW2CK3aUh/W8JXyHF/',
+        'is_encrypted' => true
+      },
+      user_permission => {
+        '[All]' => 'USER_ROLE_ADMINISTRATOR',
+      },
+      login_shell     => '/bin/bash',
+
+      fullname        => 'Full Name of the User',
+    }
+
 ## Development
 
 The following section applies to developers of this module only.
