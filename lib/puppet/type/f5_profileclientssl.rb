@@ -43,4 +43,8 @@ Puppet::Type.newtype(:f5_profileclientssl) do
   newproperty(:peer_certification_mode) do
     desc "The peer certification modes for the specified client SSL profiles."
   end
+
+  newproperty(:chain_file) do
+    desc "The certificate chain filenames for the specified client SSL profiles."
+  end
 end

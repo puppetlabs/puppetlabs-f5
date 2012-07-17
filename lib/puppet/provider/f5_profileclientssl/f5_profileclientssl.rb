@@ -26,6 +26,7 @@ Puppet::Type.type(:f5_profileclientssl).provide(:f5_profileclientssl, :parent =>
     'ca_file',
     'client_certificate_ca_file',
     'peer_certification_mode',
+    'chain_file',
   ]
 
   methods.each do |method|
@@ -42,6 +43,7 @@ Puppet::Type.type(:f5_profileclientssl).provide(:f5_profileclientssl, :parent =>
     'key_file',
     'ca_file',
     'client_certificate_ca_file',
+    'chain_file',
   ]
 
   methods.each do |method|
@@ -79,6 +81,10 @@ Puppet::Type.type(:f5_profileclientssl).provide(:f5_profileclientssl, :parent =>
 
     if resource[:peer_certification_mode]
       self.peer_certification_mode = resource[:peer_certification_mode]
+    end
+
+    if resource[:chain_file]
+      self.chain_file = resource[:chain_file]
     end
   end
 
