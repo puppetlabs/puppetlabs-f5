@@ -5,6 +5,7 @@ Warning: this project is currently work in progress, *pending* sections are plan
 The F5 module was written against F5 VE version 10.1.0.3341. F5 have released version 11 with several API changes but currently they have not released any hardware or software running version 11. This provider uses several version 10.1 API, so it is not expected to work with older F5 devices.
 
 Thanks to the following contributor/testers for this module (outside of PuppetLabs employees):
+Bernard Nauwelaerts (bernardn)
 Brenton Leanhardt (brenton)
 Bretm (bretm-rh)
 Scott Henson (shenson)
@@ -323,6 +324,22 @@ f5_external_class resource using external data group should subscribe to f5_file
       file_name      => '/config/addr.class',
       type           => 'CLASS_TYPE_ADDRESS',
       subscribe      => F5_file['/config/addr.class'],
+    }
+
+F5 user resource notes :
+
+    f5_user { 'username':
+      ensure          => 'present',
+      password        => {
+        'password'     => '$1$abcdef$TSUZRW2CK3aUh/W8JXyHF/',
+        'is_encrypted' => true
+      },
+      user_permission => {
+        '[All]' => 'USER_ROLE_ADMINISTRATOR',
+      },
+      login_shell     => '/bin/bash',
+
+      fullname        => 'Full Name of the User',
     }
 
 ## Development
