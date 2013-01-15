@@ -28,7 +28,7 @@ The following puppet manifest will deploy f5 gem on the f5_proxy system and depl
       }
 
       cron { "bigip":
-        command => 'puppet device --deviceconf /etc/puppetlabs/puppet/device/f5.puppetlabs.lan.conf',
+        command => 'puppet device --deviceconfig /etc/puppetlabs/puppet/device/f5.puppetlabs.lan.conf',
         min     => fqdn_rand(60),
       }
     }
