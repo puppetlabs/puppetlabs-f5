@@ -4,6 +4,7 @@ rvm:
   - 1.9.3
   - ruby-head
 script:
+  - "gem install files/f5-icontrol-10.2.0.2.gem"
   - "rake lint"
   - "rake spec SPEC_OPTS='--format documentation'"
 env:
