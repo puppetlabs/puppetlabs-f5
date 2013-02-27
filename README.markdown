@@ -342,6 +342,12 @@ F5 user resource notes :
       fullname        => 'Full Name of the User',
     }
 
+F5 inet sets hostname and ntp server. There is no API for setting the DNS servers.
+
+    f5_inet { 'f5.puppetlabs.lan':
+      ntp_server_address => 'ntp.puppetlabs.lan',
+    }
+  
 ## Development
 
 The following section applies to developers of this module only.
