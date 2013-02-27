@@ -193,4 +193,14 @@ Puppet::Type.newtype(:f5_pool) do
 
     newvalues(/^\d+$/)
   end
+  
+  autorequire(:f5_monitor) do
+    monitors=[]
+    if self[:monitor_association] && self[:monitor_association].class == Hash && self[:monitor_association]['monitor_templates'] && self[:monitor_association]['monitor_templates'].class == Array
+      self[:monitor_association]['monitor_templates'].each do |m|
+        monitors.push(m)
+      end
+    end
+    monitors
+  end  
 end
