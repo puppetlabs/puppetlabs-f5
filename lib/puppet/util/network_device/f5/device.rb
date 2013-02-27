@@ -27,6 +27,7 @@ class Puppet::Util::NetworkDevice::F5::Device
       'Management.Partition',
       'Management.UserManagement',
       'System.ConfigSync',
+      'System.Inet',
       'System.Session',
       'System.SystemInfo'
     ]
