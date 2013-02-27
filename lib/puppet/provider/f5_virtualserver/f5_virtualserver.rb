@@ -68,7 +68,38 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
     return list.size
   end
 
-  def clone_pool
+def authentication_profile
+  profiles = {}
+  transport[wsdl].get_authentication_profile(resource[:name]).first.each do |p|
+    profiles[p.profile_name] = p.priority.to_s
+  end
+  profiles
+end
+
+def authentication_profile=(value)
+  existing  = authentication_profile
+  new       = resource[:authentication_profile]
+  to_remove = []
+  to_add    = []
+
+  (existing.keys - new.keys).each do |p|
+    to_remove << {'profile_name'=> p, 'priority'=> existing[p]}
+  end
+
+  new.each do |k, v|
+    if ! existing.has_key?(k) then
+      to_add << {'profile_name'=> k, 'priority'=> v.to_s}
+    elsif v != existing[k]
+      to_remove << {'profile_name'=> k, 'priority'=> existing[k]}
+      to_add << {'profile_name' => k, 'priority'=> v.to_s}
+    end
+  end
+
+  transport[wsdl].remove_authentication_profile(resource[:name], [to_remove]) unless to_remove.empty?
+  transport[wsdl].add_authentication_profile(resource[:name], [to_add]) unless to_add.empty?
+end
+
+def clone_pool
     pool = {}
     transport[wsdl].get_clone_pool(resource[:name]).first.each do |p|
       pool[p.pool_name] = p.type

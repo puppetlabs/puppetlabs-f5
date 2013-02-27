@@ -355,6 +355,128 @@ f5_external_class resource using external data group should subscribe to f5_file
       type           => 'CLASS_TYPE_ADDRESS',
       subscribe      => F5_file['/config/addr.class'],
     }
+    
+F5_snmpconfiguration configures the SNMP agent
+
+    f5_snmpconfiguration { 'agent':
+    access_info                => [
+      { access_context => 'access_context_01', access_name => 'access_map_01', level => 'LEVEL_NOAUTH', model => 'MODEL_V2C', notify_access => 'c', prefix => 'PREFIX_PREFIX', read_access => 'r', write_access => 'w'},
+      { access_context => 'access_context_02', access_name => 'access_map_02', level => 'LEVEL_NOAUTH', model => 'MODEL_V2C', notify_access => 'c', prefix => 'PREFIX_PREFIX', read_access => 'r', write_access => 'w'},
+    ],
+    agent_group_id             => 'agent_group_01',
+    agent_interface            => {
+      intf_name  => '',
+      intf_speed => '',
+      intf_type  => ''
+    },
+    agent_listen_address       => [
+      { ipport => { address => '', port => 161}, transport => 'TRANSPORT_UDP6'},
+      { ipport => { address => '', port => 161}, transport => 'TRANSPORT_TCP6'},
+      { ipport => { address => '105.0.1.1', port =>1161}, transport => 'TRANSPORT_TCP6'},
+      { ipport => { address => '105.0.2.1', port =>2161}, transport => 'TRANSPORT_TCP6'},     
+    ],
+    agent_trap_state           => 'STATE_ENABLED',
+    agent_user_id              => 'agent_user_01',
+    auth_trap_state            => 'STATE_DISABLED',
+    check_disk                 => [
+      { check_type => 'DISKCHECK_SIZE', disk_path => '/',    minimum_space => 2000},
+      { check_type => 'DISKCHECK_SIZE', disk_path => '/var', minimum_space => 10000},
+    ],
+    check_file                 => [
+      { file_name => '/tmp/foo',    maximum_size => 2000 },
+      { file_name => '/tmp/bar',    maximum_size => 2000 },
+      { file_name => '/tmp/baz',    maximum_size => 2000 },
+    ],
+    check_load                 => {
+      max_1_minute_load  => 12,
+      max_5_minute_load  => 11,
+      max_15_minute_load => 10
+    },
+    check_process              => [
+      { max => 1, min => 1, process_name => '/usr/bin/bigd'},
+      { max => 1, min => 1, process_name => '/bin/chmand'},
+      { max => 0, min => 1, process_name => '/usr/sbin/httpd'},
+      { max => 1, min => 1, process_name => '/bin/mcpd'},
+      { max => 1, min => 1, process_name => '/usr/bin/sod'},
+      { max => 1, min => 0, process_name => '/tmp/foo'},
+    ],
+    client_access              => [
+      { address => '127.',      netmask => '' },
+      { address => '105.0.1.1', netmask => '' },
+      { address => '105.0.2.1', netmask => '' },
+    ],
+    community_to_security_info => [
+      { community_name => 'community_name_01', ipv6 => 'false', security_name => 'security_name_01', source => 'source_01'},
+      { community_name => 'community_name_02', ipv6 => 'false', security_name => 'security_name_02', source => 'source_02'},
+    ],
+    exec                       => [
+      { mib_num => '', name_prog_args => { process_name => '1', program_args => 'foo', program_name => '/bin/foo'}},
+      { mib_num => '', name_prog_args => { process_name => '2', program_args => 'bar', program_name => '/bin/bar'}},
+    ],
+    exec_fix                   => [
+      { process_name => '/bin/foo', program_args => '', program_name => 'foo'},
+      { process_name => '/bin/bar', program_args => '', program_name => 'bar'},
+      { process_name => '/bin/baz', program_args => '', program_name => 'baz'},
+    ],
+    generic_traps_v2           => [
+      { sink_host => 'snmp.example.com', sink_port => 162, snmpcmd_args => '-v 2c -c public'},
+      { sink_host => 'snmp.example.org', sink_port => 162, snmpcmd_args => '-v 2c -c public'},
+    ],
+    group_info                 => [
+      { group_name => 'group_name_01', model => 'MODEL_ANY', security_name => 'security_name_01'},
+      { group_name => 'group_name_02', model => 'MODEL_ANY', security_name => 'security_name_02'},
+    ],
+    ignore_disk                => [
+      '/dev/sdy1',
+      '/dev/sdz1'
+    ],
+    pass_through               => [
+      { mib_oid   => 1, exec_name => '/tmp/foo' },
+      { mib_oid   => 2, exec_name => '/tmp/bar' },
+    ],
+    pass_through_persist       => [
+      { mib_oid   => 1, exec_name => '/tmp/foo' },
+      { mib_oid   => 2, exec_name => '/tmp/bar' },
+    ],
+    process_fix                => [
+      { process_name => '/bin/foo', program_name => 'foo', program_args => '--noargs' },
+      { process_name => '/bin/bar', program_name => 'bar', program_args => '--noargs' },
+    ],
+    proxy                      => [
+      'snmp-proxy-01.example.com',
+      'snmp-proxy-2.example.com',
+    ],
+    readonly_community         => [
+      { community => 'public', 'ipv6' => 'false', 'oid' => '', 'source' => 'default'},
+      { community => 'commu_t_01', 'ipv6' => 'false', 'oid' => 'oid_test_01', 'source' => 'sefg'},
+    ],
+    readonly_user              => [
+      {'level' => 'LEVEL_PRIV', 'oid' => '.1.3.6.1.2.1.2.2.1.8.1301', 'user' => 'test_user_ro_01'},
+      {'level' => 'LEVEL_PRIV', 'oid' => '.1.3.6.1.2.1.2.2.1.8.1301', 'user' => 'test_user_ro_02'},
+    ],
+    readwrite_community         => [
+      { community => 'private', 'ipv6' => 'false', 'oid' => '', 'source' => 'default'},
+      { community => 'commu_rw_01', 'ipv6' => 'false', 'oid' => 'oid_test_01', 'source' => 'sefg'},
+    ],
+    readwrite_user             => [
+      {'level' => 'LEVEL_PRIV', 'oid' => '.1.3.6.1.2.1.2.2.1.8.1301', 'user' => 'toto'},
+      {'level' => 'LEVEL_PRIV', 'oid' => '.1.3.6.1.2.1.2.2.1.8.1301', 'user' => 'test_user_rw_02'},
+    ],
+    system_information         => {
+      sys_name        => "BigIP_01",
+      sys_location    => "Office01 - ServerRoom01 - Rack01 - U01",
+      sys_contact     => "Infrastructure (noc@example.com)",
+      sys_description => "Traffic Manager Unit 01",
+      sys_object_id   => "LTM01",
+      sys_services    => 76
+    },
+    trap_community             => 'public',
+    view_info                  => [
+      { view_name => 'view_info_01', type => 'VIEW_INCLUDED', subtree   => '', masks     => '' },
+      { view_name => 'view_info_02', type => 'VIEW_EXCLUDED', subtree   => '', masks     => '' },
+    ],
+  }
+
 
 F5 provision resource notes :
 
@@ -376,6 +498,47 @@ F5 license manages the device's licence file.
     f5_license { 'license':
       license_file_data => file('/path/to/bigip.licence'),
     }
+
+F5 VLAN resource notes :
+
+    f5_vlan { 'vlan_test_01':
+      ensure                 => 'present',
+      vlan_id                => 127,
+      member                 => [
+        { member_name => '1.2', 'member_type' =>  'MEMBER_INTERFACE', 'tag_state' => 'MEMBER_TAGGED' },
+        { member_name => '1.3', 'member_type' =>  'MEMBER_INTERFACE', 'tag_state' => 'MEMBER_TAGGED' },
+        { member_name => '1.4', 'member_type' =>  'MEMBER_INTERFACE', 'tag_state' => 'MEMBER_TAGGED' },
+        { member_name => '1.5', 'member_type' =>  'MEMBER_INTERFACE', 'tag_state' => 'MEMBER_UNTAGGED' },
+      ],
+      failsafe_state         => 'STATE_DISABLED',
+      failsafe_timeout       => 60,
+      
+      failsafe_action        => 'HA_ACTION_RESTART_ALL',
+      learning_mode          => 'LEARNING_MODE_ENABLE_FORWARD',
+      mtu                    => 1000,
+      static_forwarding      => [
+        { mac_address => '02:02:29:97:79:92', 'interface_name' => '1.2', 'interface_type' => 'MEMBER_INTERFACE' },
+        { mac_address => '02:02:29:97:79:93', 'interface_name' => '1.3', 'interface_type' => 'MEMBER_INTERFACE' },
+        { mac_address => '02:02:29:97:79:95', 'interface_name' => '1.5', 'interface_type' => 'MEMBER_INTERFACE' },  
+      ],
+      source_check_state     => 'STATE_ENABLED',
+      mac_masquerade_address => '02:02:29:97:79:90',
+    }
+
+F5 provision resource notes :
+
+    Provision level can be NONE, MINIMUM, NOMINAL, DEDICATED or CUSTOM. The custom level allows you specify a value between 0 and 255 for CPU, disk and memory usage.
+    
+    f5_provision { 'TMOS_MODULE_LTM':
+      level               => 'PROVISION_LEVEL_NOMINAL',
+    }
+    f5_provision { 'TMOS_MODULE_ASM':
+      custom_cpu_ratio    => '127',
+      custom_disk_ratio   => '127',
+      custom_memory_ratio => '127',
+      level               => 'PROVISION_LEVEL_CUSTOM',
+    }
+
 
 ## Development
 

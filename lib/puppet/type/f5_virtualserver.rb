@@ -37,6 +37,19 @@ Puppet::Type.newtype(:f5_virtualserver) do
     desc "The virtual server name."
   end
 
+  
+  newproperty(:authentication_profile) do
+    desc "the virtual server authentication profiles."
+
+    def should_to_s(newvalue)
+      newvalue.inspect
+    end
+
+    def is_to_s(currentvalue)
+      currentvalue.inspect
+    end
+  end
+  
   newproperty(:clone_pool) do
     desc "The virtual server clone pool."
 
