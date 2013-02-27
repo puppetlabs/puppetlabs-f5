@@ -25,19 +25,24 @@
 #  }
 #
 define f5::config(
-  $username = 'admin',
-  $password,
-  $url,
+  $username  = 'admin',
+  $password  = 'admin',
+  $url       = $name,
   $partition = 'Common',
-  $target
+  $target    = "${settings::confdir}/device/${name}.conf"
 ) {
 
+  include f5::params
+
+  $owner = $f5::params::owner
+  $group = $f5::params::group
+  $mode  = $f5::params::mode
+
   file { $target:
-    ensure => present,
-    owner  => 'puppet',
-    group  => 'puppet',
-    mode   => '0644',
+    ensure  => present,
+    owner   => $owner,
+    group   => $group,
+    mode    => $mode,
     content => template('f5/config.erb'),
   }
-
 }
