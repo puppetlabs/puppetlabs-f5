@@ -1,6 +1,6 @@
 require 'openssl'
 require 'digest/sha1'
-
+require 'puppet/util/network_device'
 module Puppet::Util::NetworkDevice::F5
   # This is intended to decode certificate (subject, serial, issuer, expiration) for comparison.
   def self.decode(content)
