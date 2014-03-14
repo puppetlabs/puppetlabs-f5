@@ -1,6 +1,8 @@
 # Puppet Labs F5 module
 Warning: this project is currently work in progress, *pending* sections are planned features.
 
+[![Build Status](https://travis-ci.org/puppetlabs/puppetlabs-f5.png?branch=master)](https://travis-ci.org/puppetlabs/puppetlabs-f5)
+
 ## Overview
 The F5 module was written against F5 VE version 10.1.0.3341. F5 have released version 11 with several API changes but currently they have not released any hardware or software running version 11. This provider uses several version 10.1 API, so it is not expected to work with older F5 devices.
 
