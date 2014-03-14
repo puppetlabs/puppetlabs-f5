@@ -14,7 +14,7 @@ class Puppet::Util::NetworkDevice::F5::Facts
     (value.high.to_i << 32) + value.low.to_i
   end
 
-  def retreive
+  def retrieve
     @facts = {}
     [ 'base_mac_address',
       'group_id',
