@@ -1,0 +1,926 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.PacketFilterGlobals"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.PacketFilterGlobals.DefaultAction">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="PACKET_FILTER_DEFAULT_ACTION_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>PACKET_FILTER_DEFAULT_ACTION_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PACKET_FILTER_DEFAULT_ACTION_ACCEPT">
+					<xsd:annotation>
+						<xsd:documentation>PACKET_FILTER_DEFAULT_ACTION_ACCEPT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PACKET_FILTER_DEFAULT_ACTION_DISCARD">
+					<xsd:annotation>
+						<xsd:documentation>PACKET_FILTER_DEFAULT_ACTION_DISCARD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PACKET_FILTER_DEFAULT_ACTION_REJECT">
+					<xsd:annotation>
+						<xsd:documentation>PACKET_FILTER_DEFAULT_ACTION_REJECT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.IPAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.PacketFilterGlobals.set_packet_filter_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="Networking.PacketFilterGlobals.set_packet_filter_stateResponse">
+</message>
+
+<message name="Networking.PacketFilterGlobals.get_packet_filter_stateRequest">
+</message>
+<message name="Networking.PacketFilterGlobals.get_packet_filter_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="Networking.PacketFilterGlobals.set_filter_established_connections_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="Networking.PacketFilterGlobals.set_filter_established_connections_stateResponse">
+</message>
+
+<message name="Networking.PacketFilterGlobals.get_filter_established_connections_stateRequest">
+</message>
+<message name="Networking.PacketFilterGlobals.get_filter_established_connections_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="Networking.PacketFilterGlobals.set_send_icmp_error_on_packet_reject_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="Networking.PacketFilterGlobals.set_send_icmp_error_on_packet_reject_stateResponse">
+</message>
+
+<message name="Networking.PacketFilterGlobals.get_send_icmp_error_on_packet_reject_stateRequest">
+</message>
+<message name="Networking.PacketFilterGlobals.get_send_icmp_error_on_packet_reject_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="Networking.PacketFilterGlobals.set_always_accept_arp_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="Networking.PacketFilterGlobals.set_always_accept_arp_stateResponse">
+</message>
+
+<message name="Networking.PacketFilterGlobals.get_always_accept_arp_stateRequest">
+</message>
+<message name="Networking.PacketFilterGlobals.get_always_accept_arp_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="Networking.PacketFilterGlobals.set_always_accept_important_icmp_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="Networking.PacketFilterGlobals.set_always_accept_important_icmp_stateResponse">
+</message>
+
+<message name="Networking.PacketFilterGlobals.get_always_accept_important_icmp_stateRequest">
+</message>
+<message name="Networking.PacketFilterGlobals.get_always_accept_important_icmp_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="Networking.PacketFilterGlobals.set_default_actionRequest">
+	<part name="action" type="tns:Networking.PacketFilterGlobals.DefaultAction"/>
+</message>
+<message name="Networking.PacketFilterGlobals.set_default_actionResponse">
+</message>
+
+<message name="Networking.PacketFilterGlobals.get_default_actionRequest">
+</message>
+<message name="Networking.PacketFilterGlobals.get_default_actionResponse">
+	<part name="return" type="tns:Networking.PacketFilterGlobals.DefaultAction"/>
+</message>
+
+<message name="Networking.PacketFilterGlobals.get_trusted_vlanRequest">
+</message>
+<message name="Networking.PacketFilterGlobals.get_trusted_vlanResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.PacketFilterGlobals.add_trusted_vlanRequest">
+	<part name="vlans" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.PacketFilterGlobals.add_trusted_vlanResponse">
+</message>
+
+<message name="Networking.PacketFilterGlobals.remove_trusted_vlanRequest">
+	<part name="vlans" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.PacketFilterGlobals.remove_trusted_vlanResponse">
+</message>
+
+<message name="Networking.PacketFilterGlobals.get_trusted_addressRequest">
+</message>
+<message name="Networking.PacketFilterGlobals.get_trusted_addressResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Networking.PacketFilterGlobals.add_trusted_addressRequest">
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.PacketFilterGlobals.add_trusted_addressResponse">
+</message>
+
+<message name="Networking.PacketFilterGlobals.remove_trusted_addressRequest">
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.PacketFilterGlobals.remove_trusted_addressResponse">
+</message>
+
+<message name="Networking.PacketFilterGlobals.get_trusted_mac_addressRequest">
+</message>
+<message name="Networking.PacketFilterGlobals.get_trusted_mac_addressResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.PacketFilterGlobals.add_trusted_mac_addressRequest">
+	<part name="mac_addresses" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.PacketFilterGlobals.add_trusted_mac_addressResponse">
+</message>
+
+<message name="Networking.PacketFilterGlobals.remove_trusted_mac_addressRequest">
+	<part name="mac_addresses" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.PacketFilterGlobals.remove_trusted_mac_addressResponse">
+</message>
+
+<message name="Networking.PacketFilterGlobals.get_versionRequest">
+</message>
+<message name="Networking.PacketFilterGlobals.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.PacketFilterGlobalsPortType">
+	<operation name="set_packet_filter_state">
+  	<documentation>
+ Sets the state indicating whether packet filtering is
+ enabled or disabled. The default is disabled.
+ 
+ If enabled, the system filters incoming packets, and
+ directs traffic based on the criteria you specify, both in
+ the packet filter globals and in the packet filter rules.
+
+        	</documentation>
+		<input message="tns:Networking.PacketFilterGlobals.set_packet_filter_stateRequest"/>
+		<output message="tns:Networking.PacketFilterGlobals.set_packet_filter_stateResponse"/>
+	</operation>
+	<operation name="get_packet_filter_state">
+	<documentation>
+ Gets the state indicating whether packet filtering is
+ enabled or disabled.
+
+        	</documentation>
+		<input message="tns:Networking.PacketFilterGlobals.get_packet_filter_stateRequest"/>
+		<output message="tns:Networking.PacketFilterGlobals.get_packet_filter_stateResponse"/>
+	</operation>
+	<operation name="set_filter_established_connections_state">
+	<documentation>
+ Sets the state indicating whether the system should filter
+ all ingress packets, even if the packets are part of an
+ existing connection. The default is disabled (unchecked).
+ 
+        	</documentation>
+		<input message="tns:Networking.PacketFilterGlobals.set_filter_established_connections_stateRequest"/>
+		<output message="tns:Networking.PacketFilterGlobals.set_filter_established_connections_stateResponse"/>
+	</operation>
+	<operation name="get_filter_established_connections_state">
+	<documentation>
+ Gets the state indicating whether the system should filter
+ all ingress packets, even if the packets are part of an
+ existing connection.
+
+        	</documentation>
+		<input message="tns:Networking.PacketFilterGlobals.get_filter_established_connections_stateRequest"/>
+		<output message="tns:Networking.PacketFilterGlobals.get_filter_established_connections_stateResponse"/>
+	</operation>
+	<operation name="set_send_icmp_error_on_packet_reject_state">
+	<documentation>
+ Sets the state indicating whether the system should send an
+ ICMP type 3 (destination unreachable), code 13
+ (administratively prohibited) packet when an ingress packet
+ is rejected.
+
+ When disabled, the system sends an ICMP reject
+ packet that is protocol-dependent. The default is disabled.
+ 
+        	</documentation>
+		<input message="tns:Networking.PacketFilterGlobals.set_send_icmp_error_on_packet_reject_stateRequest"/>
+		<output message="tns:Networking.PacketFilterGlobals.set_send_icmp_error_on_packet_reject_stateResponse"/>
+	</operation>
+	<operation name="get_send_icmp_error_on_packet_reject_state">
+	<documentation>
+ Gets the state indicating whether the system should send an
+ ICMP type 3 (destination unreachable), code 13
+ (administratively prohibited) packet when an ingress packet
+ is rejected.
+
+        	</documentation>
+		<input message="tns:Networking.PacketFilterGlobals.get_send_icmp_error_on_packet_reject_stateRequest"/>
+		<output message="tns:Networking.PacketFilterGlobals.get_send_icmp_error_on_packet_reject_stateResponse"/>
+	</operation>
+	<operation name="set_always_accept_arp_state">
+	<documentation>
+ Sets the state indicating whether the system automatically
+ accepts ARP packets. The default is enabled.
+ 
+        	</documentation>
+		<input message="tns:Networking.PacketFilterGlobals.set_always_accept_arp_stateRequest"/>
+		<output message="tns:Networking.PacketFilterGlobals.set_always_accept_arp_stateResponse"/>
+	</operation>
+	<operation name="get_always_accept_arp_state">
+	<documentation>
+ Gets the state indicating whether the system automatically
+ accepts ARP packets.
+
+        	</documentation>
+		<input message="tns:Networking.PacketFilterGlobals.get_always_accept_arp_stateRequest"/>
+		<output message="tns:Networking.PacketFilterGlobals.get_always_accept_arp_stateResponse"/>
+	</operation>
+	<operation name="set_always_accept_important_icmp_state">
+	<documentation>
+ Sets the state indicating whether the system automatically
+ accepts the following ICMP packet types: UNREACH,
+ SOURCEQUENCH, REDIRECT, TIMEXCEED. The default is enabled.
+ 
+        	</documentation>
+		<input message="tns:Networking.PacketFilterGlobals.set_always_accept_important_icmp_stateRequest"/>
+		<output message="tns:Networking.PacketFilterGlobals.set_always_accept_important_icmp_stateResponse"/>
+	</operation>
+	<operation name="get_always_accept_important_icmp_state">
+	<documentation>
+ Gets the state indicating whether the system automatically
+ accepts the following ICMP packet types: UNREACH,
+ SOURCEQUENCH, REDIRECT, TIMEXCEED.
+
+        	</documentation>
+		<input message="tns:Networking.PacketFilterGlobals.get_always_accept_important_icmp_stateRequest"/>
+		<output message="tns:Networking.PacketFilterGlobals.get_always_accept_important_icmp_stateResponse"/>
+	</operation>
+	<operation name="set_default_action">
+	<documentation>
+ Sets the action to take for packets that do not match the
+ criteria specified in any of the packet filter rules. The
+ default is accept. Note that you can effectively stop all
+ traffic to the system if you select either discard or
+ reject, and you do not configure additional packet filter
+ rules to accept management or other acceptable traffic. We
+ recommend that you leave this setting at the default value,
+ accept.
+
+        	</documentation>
+		<input message="tns:Networking.PacketFilterGlobals.set_default_actionRequest"/>
+		<output message="tns:Networking.PacketFilterGlobals.set_default_actionResponse"/>
+	</operation>
+	<operation name="get_default_action">
+	<documentation>
+ Gets the action to take for packets that do not match the
+ criteria specified in any of the packet filter rules.
+
+        	</documentation>
+		<input message="tns:Networking.PacketFilterGlobals.get_default_actionRequest"/>
+		<output message="tns:Networking.PacketFilterGlobals.get_default_actionResponse"/>
+	</operation>
+	<operation name="get_trusted_vlan">
+	<documentation>
+ Gets a list of all trusted ingress VLANs used in packet filtering on this device.
+ 
+        	</documentation>
+		<input message="tns:Networking.PacketFilterGlobals.get_trusted_vlanRequest"/>
+		<output message="tns:Networking.PacketFilterGlobals.get_trusted_vlanResponse"/>
+	</operation>
+	<operation name="add_trusted_vlan">
+	<documentation>
+ Adds the specified ingress VLANs to the list of trusted VLANs.
+ 
+        	</documentation>
+		<input message="tns:Networking.PacketFilterGlobals.add_trusted_vlanRequest"/>
+		<output message="tns:Networking.PacketFilterGlobals.add_trusted_vlanResponse"/>
+	</operation>
+	<operation name="remove_trusted_vlan">
+	<documentation>
+ Removes the specified ingress VLANs from the list of trusted VLANs.
+ 
+        	</documentation>
+		<input message="tns:Networking.PacketFilterGlobals.remove_trusted_vlanRequest"/>
+		<output message="tns:Networking.PacketFilterGlobals.remove_trusted_vlanResponse"/>
+	</operation>
+	<operation name="get_trusted_address">
+	<documentation>
+ Gets a list of all trusted source addresses used in packet filtering on this device.
+ 
+        	</documentation>
+		<input message="tns:Networking.PacketFilterGlobals.get_trusted_addressRequest"/>
+		<output message="tns:Networking.PacketFilterGlobals.get_trusted_addressResponse"/>
+	</operation>
+	<operation name="add_trusted_address">
+	<documentation>
+ Adds the specified addresses to the list of trusted source addresses.
+ 
+        	</documentation>
+		<input message="tns:Networking.PacketFilterGlobals.add_trusted_addressRequest"/>
+		<output message="tns:Networking.PacketFilterGlobals.add_trusted_addressResponse"/>
+	</operation>
+	<operation name="remove_trusted_address">
+	<documentation>
+ Removes the specified addresses from the list of trusted source addresses.
+ 
+        	</documentation>
+		<input message="tns:Networking.PacketFilterGlobals.remove_trusted_addressRequest"/>
+		<output message="tns:Networking.PacketFilterGlobals.remove_trusted_addressResponse"/>
+	</operation>
+	<operation name="get_trusted_mac_address">
+	<documentation>
+ Gets a list of all trusted MAC addresses used in packet filtering on this device.
+ 
+        	</documentation>
+		<input message="tns:Networking.PacketFilterGlobals.get_trusted_mac_addressRequest"/>
+		<output message="tns:Networking.PacketFilterGlobals.get_trusted_mac_addressResponse"/>
+	</operation>
+	<operation name="add_trusted_mac_address">
+	<documentation>
+ Adds the specified MAC addresses to the list of trusted MAC addresses.
+ 
+        	</documentation>
+		<input message="tns:Networking.PacketFilterGlobals.add_trusted_mac_addressRequest"/>
+		<output message="tns:Networking.PacketFilterGlobals.add_trusted_mac_addressResponse"/>
+	</operation>
+	<operation name="remove_trusted_mac_address">
+	<documentation>
+ Removes the specified MAC addresses from the list of trusted MAC addresses.
+ 
+        	</documentation>
+		<input message="tns:Networking.PacketFilterGlobals.remove_trusted_mac_addressRequest"/>
+		<output message="tns:Networking.PacketFilterGlobals.remove_trusted_mac_addressResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.PacketFilterGlobals.get_versionRequest"/>
+		<output message="tns:Networking.PacketFilterGlobals.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.PacketFilterGlobalsBinding" type="tns:Networking.PacketFilterGlobalsPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="set_packet_filter_state">
+	<documentation>
+ Sets the state indicating whether packet filtering is
+ enabled or disabled. The default is disabled.
+ 
+ If enabled, the system filters incoming packets, and
+ directs traffic based on the criteria you specify, both in
+ the packet filter globals and in the packet filter rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PacketFilterGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_packet_filter_state">
+	<documentation>
+ Gets the state indicating whether packet filtering is
+ enabled or disabled.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PacketFilterGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_filter_established_connections_state">
+	<documentation>
+ Sets the state indicating whether the system should filter
+ all ingress packets, even if the packets are part of an
+ existing connection. The default is disabled (unchecked).
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PacketFilterGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_filter_established_connections_state">
+	<documentation>
+ Gets the state indicating whether the system should filter
+ all ingress packets, even if the packets are part of an
+ existing connection.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PacketFilterGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_send_icmp_error_on_packet_reject_state">
+	<documentation>
+ Sets the state indicating whether the system should send an
+ ICMP type 3 (destination unreachable), code 13
+ (administratively prohibited) packet when an ingress packet
+ is rejected.
+
+ When disabled, the system sends an ICMP reject
+ packet that is protocol-dependent. The default is disabled.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PacketFilterGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_send_icmp_error_on_packet_reject_state">
+	<documentation>
+ Gets the state indicating whether the system should send an
+ ICMP type 3 (destination unreachable), code 13
+ (administratively prohibited) packet when an ingress packet
+ is rejected.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PacketFilterGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_always_accept_arp_state">
+	<documentation>
+ Sets the state indicating whether the system automatically
+ accepts ARP packets. The default is enabled.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PacketFilterGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_always_accept_arp_state">
+	<documentation>
+ Gets the state indicating whether the system automatically
+ accepts ARP packets.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PacketFilterGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_always_accept_important_icmp_state">
+	<documentation>
+ Sets the state indicating whether the system automatically
+ accepts the following ICMP packet types: UNREACH,
+ SOURCEQUENCH, REDIRECT, TIMEXCEED. The default is enabled.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PacketFilterGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_always_accept_important_icmp_state">
+	<documentation>
+ Gets the state indicating whether the system automatically
+ accepts the following ICMP packet types: UNREACH,
+ SOURCEQUENCH, REDIRECT, TIMEXCEED.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PacketFilterGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_default_action">
+	<documentation>
+ Sets the action to take for packets that do not match the
+ criteria specified in any of the packet filter rules. The
+ default is accept. Note that you can effectively stop all
+ traffic to the system if you select either discard or
+ reject, and you do not configure additional packet filter
+ rules to accept management or other acceptable traffic. We
+ recommend that you leave this setting at the default value,
+ accept.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PacketFilterGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_default_action">
+	<documentation>
+ Gets the action to take for packets that do not match the
+ criteria specified in any of the packet filter rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PacketFilterGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_trusted_vlan">
+	<documentation>
+ Gets a list of all trusted ingress VLANs used in packet filtering on this device.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PacketFilterGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_trusted_vlan">
+	<documentation>
+ Adds the specified ingress VLANs to the list of trusted VLANs.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PacketFilterGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_trusted_vlan">
+	<documentation>
+ Removes the specified ingress VLANs from the list of trusted VLANs.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PacketFilterGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_trusted_address">
+	<documentation>
+ Gets a list of all trusted source addresses used in packet filtering on this device.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PacketFilterGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_trusted_address">
+	<documentation>
+ Adds the specified addresses to the list of trusted source addresses.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PacketFilterGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_trusted_address">
+	<documentation>
+ Removes the specified addresses from the list of trusted source addresses.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PacketFilterGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_trusted_mac_address">
+	<documentation>
+ Gets a list of all trusted MAC addresses used in packet filtering on this device.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PacketFilterGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_trusted_mac_address">
+	<documentation>
+ Adds the specified MAC addresses to the list of trusted MAC addresses.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PacketFilterGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_trusted_mac_address">
+	<documentation>
+ Removes the specified MAC addresses from the list of trusted MAC addresses.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PacketFilterGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PacketFilterGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PacketFilterGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.PacketFilterGlobals">
+	<documentation>
+ The PacketFilterGlobals interface enables you to work with the
+ global lists of trusted source addresses and ingress VLANs used
+ in packet filtering, and allows you to view and modify other
+ overall packet filter settings.
+
+ Note: The system processes exemptions before packet filter
+ rules, so you cannot override such settings with a packet
+ filter rule. Attributes controlling exemptions include:
+ always_accept_arp, always_accept_important_icmp, and those
+ involving trusted VLANs, trusted addresses, and trusted MAC
+ addresses.
+ 
+        	</documentation>
+	<port name="Networking.PacketFilterGlobalsPort" binding="tns:Networking.PacketFilterGlobalsBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

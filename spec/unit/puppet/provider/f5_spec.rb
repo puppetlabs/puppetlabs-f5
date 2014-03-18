@@ -3,6 +3,7 @@ require 'puppet/provider/f5'
 require 'ostruct'
 
 describe Puppet::Provider::F5 do
+
   let(:f5_prov_obj) { Puppet::Provider::F5.new }
 
   number_tests = [
@@ -65,8 +66,7 @@ describe Puppet::Provider::F5 do
   describe "transport method" do
     it "with uninitialized device and no url should return error" do
       expect { f5_prov_obj.transport }.to(
-        raise_error(Puppet::Error, "Puppet::Util::NetworkDevice::F5: device " \
-        "not initialized.")
+        raise_error(Puppet::Error, /device not initialized/)
       )
     end
 
@@ -75,45 +75,6 @@ describe Puppet::Provider::F5 do
       expect { f5_prov_obj.transport }.to(
         raise_error(SocketError, /^getaddrinfo: nodename nor servname provided, or not known/)
       )
-    end
-
-    it "should return interfaces Hash when request to F5 is valid" do
-      # TODO: My laim first attempt at SOAP mocking. Need something cleaner ...
-      driveroptions = mock('SOAP::Property') do
-        expects(:'[]=').at_least_once
-        expects(:'[]').at_least_once.with("protocol.http.basic_auth").returns(Array.new)
-      end
-      driver = mock('SOAP::RPC::Driver') do
-        expects(:options).at_least_once.returns(driveroptions)
-        expects(:'endpoint_url=').at_least_once.with("https://127.0.0.1//iControl/iControlPortal.cgi")
-        expects(:set_active_partition).at_least_once.with("Common")
-      end
-      driverfactory = mock('SOAP::WSDLDriverFactory') do
-        expects(:create_rpc_driver).at_least_once.returns(driver)
-      end
-
-      SOAP::WSDLDriverFactory.expects(:new).at_least_once.returns(driverfactory)
-      Facter.expects(:value).with(:url).at_least_once.returns("https://myuser:mypass@127.0.0.1/")
-
-      f5_prov_obj.transport.class.should == Hash
-      f5_prov_obj.transport.should == {
-        "LocalLB.Class"                  => driver,
-        "LocalLB.NodeAddress"            => driver,
-        "LocalLB.Monitor"                => driver,
-        "LocalLB.Pool"                   => driver,
-        "LocalLB.PoolMember"             => driver,
-        "LocalLB.ProfileClientSSL"       => driver,
-        "LocalLB.ProfilePersistence"     => driver,
-        "LocalLB.Rule"                   => driver,
-        "LocalLB.SNAT"                   => driver,
-        "LocalLB.SNATPool"               => driver,
-        "LocalLB.SNATTranslationAddress" => driver,
-        "LocalLB.VirtualServer"          => driver,
-        "Management.Partition"           => driver,
-        "Management.KeyCertificate"      => driver,
-        "System.ConfigSync"              => driver,
-        "System.SystemInfo"              => driver
-      }
     end
 
   end

@@ -1,0 +1,1456 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.ApplicationService"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.MetadataPersistenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.MetadataPersistence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.ApplicationService.ScalarVar">
+			<xsd:sequence>
+				<xsd:element name="name" type="xsd:string"/>
+				<xsd:element name="value" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ApplicationService.TableVarSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.ApplicationService.TableVarSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.BooleanSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:boolean[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ApplicationService.ListVarSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.ApplicationService.ListVar[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ApplicationService.ScalarVarSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.ApplicationService.ScalarVar[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ApplicationService.ListVar">
+			<xsd:sequence>
+				<xsd:element name="name" type="xsd:string"/>
+				<xsd:element name="values" type="tns:Common.StringSequence"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.MetadataPersistence">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="METADATA_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>METADATA_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="METADATA_EPHEMERAL">
+					<xsd:annotation>
+						<xsd:documentation>METADATA_EPHEMERAL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="METADATA_PERSISTENT">
+					<xsd:annotation>
+						<xsd:documentation>METADATA_PERSISTENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ApplicationService.ScalarVarSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.ApplicationService.ScalarVarSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ApplicationService.TableVar">
+			<xsd:sequence>
+				<xsd:element name="name" type="xsd:string"/>
+				<xsd:element name="column_names" type="tns:Common.StringSequence"/>
+				<xsd:element name="values" type="tns:Common.StringSequenceSequence"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.MetadataPersistenceSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.MetadataPersistenceSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ApplicationService.TableVarSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.ApplicationService.TableVar[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ApplicationService.ListVarSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.ApplicationService.ListVarSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.ApplicationService.get_listRequest">
+</message>
+<message name="Management.ApplicationService.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.ApplicationService.createRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+	<part name="templates" type="tns:Common.StringSequence"/>
+	<part name="scalar_vars" type="tns:Management.ApplicationService.ScalarVarSequenceSequence"/>
+	<part name="list_vars" type="tns:Management.ApplicationService.ListVarSequenceSequence"/>
+	<part name="table_vars" type="tns:Management.ApplicationService.TableVarSequenceSequence"/>
+</message>
+<message name="Management.ApplicationService.createResponse">
+</message>
+
+<message name="Management.ApplicationService.create_genericRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationService.create_genericResponse">
+</message>
+
+<message name="Management.ApplicationService.modifyRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+	<part name="templates" type="tns:Common.StringSequence"/>
+	<part name="scalar_vars" type="tns:Management.ApplicationService.ScalarVarSequenceSequence"/>
+	<part name="list_vars" type="tns:Management.ApplicationService.ListVarSequenceSequence"/>
+	<part name="table_vars" type="tns:Management.ApplicationService.TableVarSequenceSequence"/>
+</message>
+<message name="Management.ApplicationService.modifyResponse">
+</message>
+
+<message name="Management.ApplicationService.convert_to_genericRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationService.convert_to_genericResponse">
+</message>
+
+<message name="Management.ApplicationService.delete_application_serviceRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationService.delete_application_serviceResponse">
+</message>
+
+<message name="Management.ApplicationService.delete_all_application_servicesRequest">
+</message>
+<message name="Management.ApplicationService.delete_all_application_servicesResponse">
+</message>
+
+<message name="Management.ApplicationService.set_descriptionRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+	<part name="values" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationService.set_descriptionResponse">
+</message>
+
+<message name="Management.ApplicationService.get_descriptionRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationService.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.ApplicationService.set_device_groupRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+	<part name="values" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationService.set_device_groupResponse">
+</message>
+
+<message name="Management.ApplicationService.get_device_groupRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationService.get_device_groupResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.ApplicationService.is_device_group_inheritedRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationService.is_device_group_inheritedResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="Management.ApplicationService.set_traffic_groupRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+	<part name="values" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationService.set_traffic_groupResponse">
+</message>
+
+<message name="Management.ApplicationService.get_traffic_groupRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationService.get_traffic_groupResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.ApplicationService.is_traffic_group_inheritedRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationService.is_traffic_group_inheritedResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="Management.ApplicationService.set_strict_updates_stateRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.ApplicationService.set_strict_updates_stateResponse">
+</message>
+
+<message name="Management.ApplicationService.get_strict_updates_stateRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationService.get_strict_updates_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.ApplicationService.is_template_modifiedRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationService.is_template_modifiedResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="Management.ApplicationService.get_scalar_varsRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationService.get_scalar_varsResponse">
+	<part name="return" type="tns:Management.ApplicationService.ScalarVarSequenceSequence"/>
+</message>
+
+<message name="Management.ApplicationService.get_list_varsRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationService.get_list_varsResponse">
+	<part name="return" type="tns:Management.ApplicationService.ListVarSequenceSequence"/>
+</message>
+
+<message name="Management.ApplicationService.get_table_varsRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationService.get_table_varsResponse">
+	<part name="return" type="tns:Management.ApplicationService.TableVarSequenceSequence"/>
+</message>
+
+<message name="Management.ApplicationService.get_metadataRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationService.get_metadataResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Management.ApplicationService.add_metadataRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+	<part name="names" type="tns:Common.StringSequenceSequence"/>
+	<part name="values" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.ApplicationService.add_metadataResponse">
+</message>
+
+<message name="Management.ApplicationService.remove_metadataRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+	<part name="names" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.ApplicationService.remove_metadataResponse">
+</message>
+
+<message name="Management.ApplicationService.remove_all_metadataRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationService.remove_all_metadataResponse">
+</message>
+
+<message name="Management.ApplicationService.set_metadata_valueRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+	<part name="names" type="tns:Common.StringSequenceSequence"/>
+	<part name="values" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.ApplicationService.set_metadata_valueResponse">
+</message>
+
+<message name="Management.ApplicationService.get_metadata_valueRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+	<part name="names" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.ApplicationService.get_metadata_valueResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Management.ApplicationService.set_metadata_descriptionRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+	<part name="names" type="tns:Common.StringSequenceSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.ApplicationService.set_metadata_descriptionResponse">
+</message>
+
+<message name="Management.ApplicationService.get_metadata_descriptionRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+	<part name="names" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.ApplicationService.get_metadata_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Management.ApplicationService.set_metadata_persistenceRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+	<part name="names" type="tns:Common.StringSequenceSequence"/>
+	<part name="values" type="tns:Common.MetadataPersistenceSequenceSequence"/>
+</message>
+<message name="Management.ApplicationService.set_metadata_persistenceResponse">
+</message>
+
+<message name="Management.ApplicationService.get_metadata_persistenceRequest">
+	<part name="apps" type="tns:Common.StringSequence"/>
+	<part name="names" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.ApplicationService.get_metadata_persistenceResponse">
+	<part name="return" type="tns:Common.MetadataPersistenceSequenceSequence"/>
+</message>
+
+<message name="Management.ApplicationService.get_versionRequest">
+</message>
+<message name="Management.ApplicationService.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.ApplicationServicePortType">
+	<operation name="get_list">
+   	<documentation>
+ Gets the names of all application services. Note that Application
+ Services are always created in a subfolder so if you call get_list
+ immediately after creating an Application Service you will not get
+ the application in the results unless you set the app folder as the
+ active folder or you enable recursive queries.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.get_listRequest"/>
+		<output message="tns:Management.ApplicationService.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a new Application Service. This method first creates a
+ folder named after the application with a ".app" suffix, then
+ executes the application template implementation script to create the
+ objects owned by the application. For example, for an application
+ service named "myapp", and application template named "myapp_tpl",
+ the system creates a folder named "myapp.app" in the current folder,
+ perhaps with a pool and virtual in the new folder, if the
+ application template script so directs. 
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.createRequest"/>
+		<output message="tns:Management.ApplicationService.createResponse"/>
+	</operation>
+	<operation name="create_generic">
+	<documentation>
+ Creates a generic Application service. This method automatically
+ creates a folder named after the application with a ".app" suffix.
+ Any object created in this folder will become owned by the
+ application.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.create_genericRequest"/>
+		<output message="tns:Management.ApplicationService.create_genericResponse"/>
+	</operation>
+	<operation name="modify">
+	<documentation>
+ Modifies an existing application service. This causes previous
+  variables to be replaced by any new variables, where specified, and
+  causes the application template implementation script to be rerun,
+  which may create new objects, as directed by the script. Existing
+  objects owned by the application will be deleted if they are not
+  recreated by the script.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.modifyRequest"/>
+		<output message="tns:Management.ApplicationService.modifyResponse"/>
+	</operation>
+	<operation name="convert_to_generic">
+	<documentation>
+ Modifies an existing application service to remove the association
+ with the application template. All objects that were created by the
+ template will continue to be owned by the application service and the
+ application variables will be preserved. The modify method can be
+ used to reassociate a generic application service with a template.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.convert_to_genericRequest"/>
+		<output message="tns:Management.ApplicationService.convert_to_genericResponse"/>
+	</operation>
+	<operation name="delete_application_service">
+	<documentation>
+ Deletes the specified application services. All objects owned by the
+  application and the application folder are also deleted.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.delete_application_serviceRequest"/>
+		<output message="tns:Management.ApplicationService.delete_application_serviceResponse"/>
+	</operation>
+	<operation name="delete_all_application_services">
+	<documentation>
+ Deletes all application services.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.delete_all_application_servicesRequest"/>
+		<output message="tns:Management.ApplicationService.delete_all_application_servicesResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the descriptions for the the specified application services.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.set_descriptionRequest"/>
+		<output message="tns:Management.ApplicationService.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the the specified application services.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.get_descriptionRequest"/>
+		<output message="tns:Management.ApplicationService.get_descriptionResponse"/>
+	</operation>
+	<operation name="set_device_group">
+	<documentation>
+ Set the device group that will be used to sync the application
+  objects to other devices.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.set_device_groupRequest"/>
+		<output message="tns:Management.ApplicationService.set_device_groupResponse"/>
+	</operation>
+	<operation name="get_device_group">
+	<documentation>
+ Gets the name of the device group for the application. Note that if
+  the keyword "default" was used to set the device group, the value
+  returned here will be the actual name of the device group that was
+  inherited.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.get_device_groupRequest"/>
+		<output message="tns:Management.ApplicationService.get_device_groupResponse"/>
+	</operation>
+	<operation name="is_device_group_inherited">
+	<documentation>
+ Gets whether the value returned by get_device_group was inherited
+  from the parent folder.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.is_device_group_inheritedRequest"/>
+		<output message="tns:Management.ApplicationService.is_device_group_inheritedResponse"/>
+	</operation>
+	<operation name="set_traffic_group">
+	<documentation>
+ Set the traffic group that will be used for failover with the
+  application services.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.set_traffic_groupRequest"/>
+		<output message="tns:Management.ApplicationService.set_traffic_groupResponse"/>
+	</operation>
+	<operation name="get_traffic_group">
+	<documentation>
+ Gets the name of the application's traffic group. Note that if
+  the keyword "default" was used to set the traffic group, the value
+  returned here will be the actual name of the traffic group that was
+  inherited.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.get_traffic_groupRequest"/>
+		<output message="tns:Management.ApplicationService.get_traffic_groupResponse"/>
+	</operation>
+	<operation name="is_traffic_group_inherited">
+	<documentation>
+ Gets whether the value returned by get_traffic_group was inherited
+  from the parent folder.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.is_traffic_group_inheritedRequest"/>
+		<output message="tns:Management.ApplicationService.is_traffic_group_inheritedResponse"/>
+	</operation>
+	<operation name="set_strict_updates_state">
+	<documentation>
+ Sets the state to enforce strict-updates checking for the object
+ owned by the application service.
+
+ If set, all modifications made directly to the objects owned by the
+ application will be rejected. All changes must be made by modifying
+ the application variables and executing the appropriate application
+ template action.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.set_strict_updates_stateRequest"/>
+		<output message="tns:Management.ApplicationService.set_strict_updates_stateResponse"/>
+	</operation>
+	<operation name="get_strict_updates_state">
+	<documentation>
+ Gets the state to enforce strict-update checking for a set of
+ application services.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.get_strict_updates_stateRequest"/>
+		<output message="tns:Management.ApplicationService.get_strict_updates_stateResponse"/>
+	</operation>
+	<operation name="is_template_modified">
+	<documentation>
+ Gets a booleann indicating whether the template that was used to create the
+  application service has been modified and the application service should
+  be updated using the modify method.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.is_template_modifiedRequest"/>
+		<output message="tns:Management.ApplicationService.is_template_modifiedResponse"/>
+	</operation>
+	<operation name="get_scalar_vars">
+	<documentation>
+ Gets the scalar variables for the application.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.get_scalar_varsRequest"/>
+		<output message="tns:Management.ApplicationService.get_scalar_varsResponse"/>
+	</operation>
+	<operation name="get_list_vars">
+	<documentation>
+ Gets the list variables for the application.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.get_list_varsRequest"/>
+		<output message="tns:Management.ApplicationService.get_list_varsResponse"/>
+	</operation>
+	<operation name="get_table_vars">
+	<documentation>
+ Gets the table variables for the application.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.get_table_varsRequest"/>
+		<output message="tns:Management.ApplicationService.get_table_varsResponse"/>
+	</operation>
+	<operation name="get_metadata">
+	<documentation>
+ Gets the user metadata for the specified apps.
+ User metadata, also metadata for short, is mainly a name/value
+ pair that is associated with a metadata capable config (MCC) object.
+ Some exmaples of MCC objects are ltm pool and virtual server.
+ The combination of the MCC object name and the metadata name
+ uniguely identify an instance of the metadata. One MCC object
+ may have multiple instances of metadata associated with it.
+ In addition to name/value pair, metadata also has a persistence
+ attribute. See Common::MetadataPersistence for its definition.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.get_metadataRequest"/>
+		<output message="tns:Management.ApplicationService.get_metadataResponse"/>
+	</operation>
+	<operation name="add_metadata">
+	<documentation>
+ Adds the metadata for the specified apps.
+ For definition of the metadata, refer to the get_metadata method
+ description.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.add_metadataRequest"/>
+		<output message="tns:Management.ApplicationService.add_metadataResponse"/>
+	</operation>
+	<operation name="remove_metadata">
+	<documentation>
+ Removes the metadata for the specified apps and names.
+ For definition of the metadata, refer to the get_metadata method
+ description.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.remove_metadataRequest"/>
+		<output message="tns:Management.ApplicationService.remove_metadataResponse"/>
+	</operation>
+	<operation name="remove_all_metadata">
+	<documentation>
+ Removes all the metadata instances for the specified apps.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.remove_all_metadataRequest"/>
+		<output message="tns:Management.ApplicationService.remove_all_metadataResponse"/>
+	</operation>
+	<operation name="set_metadata_value">
+	<documentation>
+ Sets the values for the specified metadata.
+ For definition of the metadata, refer to the get_metadata method
+ description.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.set_metadata_valueRequest"/>
+		<output message="tns:Management.ApplicationService.set_metadata_valueResponse"/>
+	</operation>
+	<operation name="get_metadata_value">
+	<documentation>
+ Gets the metadata values for the specified metadata.
+ For definition of the metadata, refer to the get_metadata method
+ description.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.get_metadata_valueRequest"/>
+		<output message="tns:Management.ApplicationService.get_metadata_valueResponse"/>
+	</operation>
+	<operation name="set_metadata_description">
+	<documentation>
+ Sets the descriptions for the specified metadata.
+ For definition of the metadata, refer to the get_metadata method
+ description.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.set_metadata_descriptionRequest"/>
+		<output message="tns:Management.ApplicationService.set_metadata_descriptionResponse"/>
+	</operation>
+	<operation name="get_metadata_description">
+	<documentation>
+ Gets the metadata descriptions for the specified metadata.
+ For definition of the metadata, refer to the get_metadata method
+ description.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.get_metadata_descriptionRequest"/>
+		<output message="tns:Management.ApplicationService.get_metadata_descriptionResponse"/>
+	</operation>
+	<operation name="set_metadata_persistence">
+	<documentation>
+ Sets the persistence for the specified metadata.
+ For definition of the metadata, refer to the get_metadata method
+ description.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.set_metadata_persistenceRequest"/>
+		<output message="tns:Management.ApplicationService.set_metadata_persistenceResponse"/>
+	</operation>
+	<operation name="get_metadata_persistence">
+	<documentation>
+ Gets the persistence for the specified metadata.
+ For definition of the metadata, refer to the get_metadata method
+ description.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.get_metadata_persistenceRequest"/>
+		<output message="tns:Management.ApplicationService.get_metadata_persistenceResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationService.get_versionRequest"/>
+		<output message="tns:Management.ApplicationService.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.ApplicationServiceBinding" type="tns:Management.ApplicationServicePortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the names of all application services. Note that Application
+ Services are always created in a subfolder so if you call get_list
+ immediately after creating an Application Service you will not get
+ the application in the results unless you set the app folder as the
+ active folder or you enable recursive queries.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a new Application Service. This method first creates a
+ folder named after the application with a ".app" suffix, then
+ executes the application template implementation script to create the
+ objects owned by the application. For example, for an application
+ service named "myapp", and application template named "myapp_tpl",
+ the system creates a folder named "myapp.app" in the current folder,
+ perhaps with a pool and virtual in the new folder, if the
+ application template script so directs. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_generic">
+	<documentation>
+ Creates a generic Application service. This method automatically
+ creates a folder named after the application with a ".app" suffix.
+ Any object created in this folder will become owned by the
+ application.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="modify">
+	<documentation>
+ Modifies an existing application service. This causes previous
+  variables to be replaced by any new variables, where specified, and
+  causes the application template implementation script to be rerun,
+  which may create new objects, as directed by the script. Existing
+  objects owned by the application will be deleted if they are not
+  recreated by the script.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="convert_to_generic">
+	<documentation>
+ Modifies an existing application service to remove the association
+ with the application template. All objects that were created by the
+ template will continue to be owned by the application service and the
+ application variables will be preserved. The modify method can be
+ used to reassociate a generic application service with a template.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_application_service">
+	<documentation>
+ Deletes the specified application services. All objects owned by the
+  application and the application folder are also deleted.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_application_services">
+	<documentation>
+ Deletes all application services.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the descriptions for the the specified application services.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the the specified application services.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_device_group">
+	<documentation>
+ Set the device group that will be used to sync the application
+  objects to other devices.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_device_group">
+	<documentation>
+ Gets the name of the device group for the application. Note that if
+  the keyword "default" was used to set the device group, the value
+  returned here will be the actual name of the device group that was
+  inherited.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="is_device_group_inherited">
+	<documentation>
+ Gets whether the value returned by get_device_group was inherited
+  from the parent folder.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_traffic_group">
+	<documentation>
+ Set the traffic group that will be used for failover with the
+  application services.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_traffic_group">
+	<documentation>
+ Gets the name of the application's traffic group. Note that if
+  the keyword "default" was used to set the traffic group, the value
+  returned here will be the actual name of the traffic group that was
+  inherited.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="is_traffic_group_inherited">
+	<documentation>
+ Gets whether the value returned by get_traffic_group was inherited
+  from the parent folder.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_strict_updates_state">
+	<documentation>
+ Sets the state to enforce strict-updates checking for the object
+ owned by the application service.
+
+ If set, all modifications made directly to the objects owned by the
+ application will be rejected. All changes must be made by modifying
+ the application variables and executing the appropriate application
+ template action.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_strict_updates_state">
+	<documentation>
+ Gets the state to enforce strict-update checking for a set of
+ application services.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="is_template_modified">
+	<documentation>
+ Gets a booleann indicating whether the template that was used to create the
+  application service has been modified and the application service should
+  be updated using the modify method.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_scalar_vars">
+	<documentation>
+ Gets the scalar variables for the application.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_list_vars">
+	<documentation>
+ Gets the list variables for the application.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_table_vars">
+	<documentation>
+ Gets the table variables for the application.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_metadata">
+	<documentation>
+ Gets the user metadata for the specified apps.
+ User metadata, also metadata for short, is mainly a name/value
+ pair that is associated with a metadata capable config (MCC) object.
+ Some exmaples of MCC objects are ltm pool and virtual server.
+ The combination of the MCC object name and the metadata name
+ uniguely identify an instance of the metadata. One MCC object
+ may have multiple instances of metadata associated with it.
+ In addition to name/value pair, metadata also has a persistence
+ attribute. See Common::MetadataPersistence for its definition.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_metadata">
+	<documentation>
+ Adds the metadata for the specified apps.
+ For definition of the metadata, refer to the get_metadata method
+ description.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_metadata">
+	<documentation>
+ Removes the metadata for the specified apps and names.
+ For definition of the metadata, refer to the get_metadata method
+ description.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_metadata">
+	<documentation>
+ Removes all the metadata instances for the specified apps.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_metadata_value">
+	<documentation>
+ Sets the values for the specified metadata.
+ For definition of the metadata, refer to the get_metadata method
+ description.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_metadata_value">
+	<documentation>
+ Gets the metadata values for the specified metadata.
+ For definition of the metadata, refer to the get_metadata method
+ description.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_metadata_description">
+	<documentation>
+ Sets the descriptions for the specified metadata.
+ For definition of the metadata, refer to the get_metadata method
+ description.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_metadata_description">
+	<documentation>
+ Gets the metadata descriptions for the specified metadata.
+ For definition of the metadata, refer to the get_metadata method
+ description.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_metadata_persistence">
+	<documentation>
+ Sets the persistence for the specified metadata.
+ For definition of the metadata, refer to the get_metadata method
+ description.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_metadata_persistence">
+	<documentation>
+ Gets the persistence for the specified metadata.
+ For definition of the metadata, refer to the get_metadata method
+ description.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationService"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationService"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.ApplicationService">
+	<documentation>
+ An Application Service is a collection of settings that represent a
+ cohesive unit. It is created from an Application Template which defines
+ which objects should be created for the application. When creating or
+ modifying the application service, you supply values for the variables
+ defined by the application template, and the system runs the application
+ template implementation script with the variables you supply, typically
+ resulting in creation of a tightly bound, related set of objects, as 
+ directed by the script. 
+ Note: Creation and modifications of application services do not obey
+ normal transaction rules.  If an application is modified as part of a
+ transaction, the modification will be committed regardless if the
+ transaction is rolled back.
+
+        	</documentation>
+	<port name="Management.ApplicationServicePort" binding="tns:Management.ApplicationServiceBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

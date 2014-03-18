@@ -1,0 +1,922 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.iSessionLocalInterface"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Networking.Uuid_128Sequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.Uuid_128[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULong64">
+			<xsd:sequence>
+				<xsd:element name="high" type="xsd:long"/>
+				<xsd:element name="low" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPAddressSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.IPAddressSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.ULong">
+			<xsd:restriction base="xsd:long"/>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.PortSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.iSessionLocalInterface.NatSourceAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.iSessionLocalInterface.NatSourceAddress[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.Uuid_128">
+			<xsd:sequence>
+				<xsd:element name="low_part" type="tns:Common.ULong64"/>
+				<xsd:element name="high_part" type="tns:Common.ULong64"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.iSessionLocalInterface.NatSourceAddress">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="WOC_NAT_SOURCE_ADDRESS_NONE">
+					<xsd:annotation>
+						<xsd:documentation>WOC_NAT_SOURCE_ADDRESS_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="WOC_NAT_SOURCE_ADDRESS_CLIENT">
+					<xsd:annotation>
+						<xsd:documentation>WOC_NAT_SOURCE_ADDRESS_CLIENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="WOC_NAT_SOURCE_ADDRESS_WOM">
+					<xsd:annotation>
+						<xsd:documentation>WOC_NAT_SOURCE_ADDRESS_WOM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="WOC_NAT_SOURCE_ADDRESS_TUNNEL">
+					<xsd:annotation>
+						<xsd:documentation>WOC_NAT_SOURCE_ADDRESS_TUNNEL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.iSessionLocalInterface.get_listRequest">
+</message>
+<message name="Networking.iSessionLocalInterface.get_listResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.iSessionLocalInterface.createRequest">
+	<part name="woc_instance" type="xsd:long"/>
+	<part name="local_ips" type="tns:Common.IPAddressSequence"/>
+	<part name="enabled" type="tns:Common.EnabledState"/>
+	<part name="serverssl" type="xsd:string"/>
+</message>
+<message name="Networking.iSessionLocalInterface.createResponse">
+</message>
+
+<message name="Networking.iSessionLocalInterface.delete_localRequest">
+	<part name="wocs" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.iSessionLocalInterface.delete_localResponse">
+</message>
+
+<message name="Networking.iSessionLocalInterface.get_ip_listRequest">
+	<part name="wocs" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.iSessionLocalInterface.get_ip_listResponse">
+	<part name="return" type="tns:Common.IPAddressSequenceSequence"/>
+</message>
+
+<message name="Networking.iSessionLocalInterface.set_ip_listRequest">
+	<part name="wocs" type="tns:Common.ULongSequence"/>
+	<part name="local_ips" type="tns:Common.IPAddressSequenceSequence"/>
+</message>
+<message name="Networking.iSessionLocalInterface.set_ip_listResponse">
+</message>
+
+<message name="Networking.iSessionLocalInterface.set_enabled_stateRequest">
+	<part name="wocs" type="tns:Common.ULongSequence"/>
+	<part name="enabled_states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.iSessionLocalInterface.set_enabled_stateResponse">
+</message>
+
+<message name="Networking.iSessionLocalInterface.get_enabled_stateRequest">
+	<part name="wocs" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.iSessionLocalInterface.get_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.iSessionLocalInterface.set_allow_natRequest">
+	<part name="wocs" type="tns:Common.ULongSequence"/>
+	<part name="nat_states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.iSessionLocalInterface.set_allow_natResponse">
+</message>
+
+<message name="Networking.iSessionLocalInterface.get_allow_natRequest">
+	<part name="wocs" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.iSessionLocalInterface.get_allow_natResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.iSessionLocalInterface.set_nat_source_addressRequest">
+	<part name="wocs" type="tns:Common.ULongSequence"/>
+	<part name="nat_states" type="tns:Networking.iSessionLocalInterface.NatSourceAddressSequence"/>
+</message>
+<message name="Networking.iSessionLocalInterface.set_nat_source_addressResponse">
+</message>
+
+<message name="Networking.iSessionLocalInterface.get_nat_source_addressRequest">
+	<part name="wocs" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.iSessionLocalInterface.get_nat_source_addressResponse">
+	<part name="return" type="tns:Networking.iSessionLocalInterface.NatSourceAddressSequence"/>
+</message>
+
+<message name="Networking.iSessionLocalInterface.set_serversslRequest">
+	<part name="wocs" type="tns:Common.ULongSequence"/>
+	<part name="serverssls" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionLocalInterface.set_serversslResponse">
+</message>
+
+<message name="Networking.iSessionLocalInterface.get_serversslRequest">
+	<part name="wocs" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.iSessionLocalInterface.get_serversslResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.iSessionLocalInterface.set_tunnel_portRequest">
+	<part name="wocs" type="tns:Common.ULongSequence"/>
+	<part name="ports" type="tns:Common.PortSequence"/>
+</message>
+<message name="Networking.iSessionLocalInterface.set_tunnel_portResponse">
+</message>
+
+<message name="Networking.iSessionLocalInterface.get_tunnel_portRequest">
+	<part name="wocs" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.iSessionLocalInterface.get_tunnel_portResponse">
+	<part name="return" type="tns:Common.PortSequence"/>
+</message>
+
+<message name="Networking.iSessionLocalInterface.set_management_addressRequest">
+	<part name="wocs" type="tns:Common.ULongSequence"/>
+	<part name="ips" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.iSessionLocalInterface.set_management_addressResponse">
+</message>
+
+<message name="Networking.iSessionLocalInterface.get_management_addressRequest">
+	<part name="wocs" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.iSessionLocalInterface.get_management_addressResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Networking.iSessionLocalInterface.get_UUIDRequest">
+	<part name="wocs" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.iSessionLocalInterface.get_UUIDResponse">
+	<part name="return" type="tns:Networking.Uuid_128Sequence"/>
+</message>
+
+<message name="Networking.iSessionLocalInterface.set_descriptionRequest">
+	<part name="description" type="xsd:string"/>
+</message>
+<message name="Networking.iSessionLocalInterface.set_descriptionResponse">
+</message>
+
+<message name="Networking.iSessionLocalInterface.get_descriptionRequest">
+</message>
+<message name="Networking.iSessionLocalInterface.get_descriptionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="Networking.iSessionLocalInterface.get_versionRequest">
+</message>
+<message name="Networking.iSessionLocalInterface.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.iSessionLocalInterfacePortType">
+	<operation name="get_list">
+       	<documentation>
+ Gets a list of the local endpoints.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionLocalInterface.get_listRequest"/>
+		<output message="tns:Networking.iSessionLocalInterface.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a local endpoint.
+
+ Note that only one local endpoint can exist at any time, and thus
+ only one value should be set in the given arrays.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionLocalInterface.createRequest"/>
+		<output message="tns:Networking.iSessionLocalInterface.createResponse"/>
+	</operation>
+	<operation name="delete_local">
+	<documentation>
+ Deletes the local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionLocalInterface.delete_localRequest"/>
+		<output message="tns:Networking.iSessionLocalInterface.delete_localResponse"/>
+	</operation>
+	<operation name="get_ip_list">
+	<documentation>
+ Gets the local IP addresses assigned to the local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionLocalInterface.get_ip_listRequest"/>
+		<output message="tns:Networking.iSessionLocalInterface.get_ip_listResponse"/>
+	</operation>
+	<operation name="set_ip_list">
+	<documentation>
+ Sets the local IP addresses in the local endpoint.
+
+ Note that currently only one local IP address is allowed.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionLocalInterface.set_ip_listRequest"/>
+		<output message="tns:Networking.iSessionLocalInterface.set_ip_listResponse"/>
+	</operation>
+	<operation name="set_enabled_state">
+	<documentation>
+ Sets the enabled state for the local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionLocalInterface.set_enabled_stateRequest"/>
+		<output message="tns:Networking.iSessionLocalInterface.set_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_enabled_state">
+	<documentation>
+ Gets the enabled state of the local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionLocalInterface.get_enabled_stateRequest"/>
+		<output message="tns:Networking.iSessionLocalInterface.get_enabled_stateResponse"/>
+	</operation>
+	<operation name="set_allow_nat">
+	<documentation>
+ Sets the allow NAT state for the local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionLocalInterface.set_allow_natRequest"/>
+		<output message="tns:Networking.iSessionLocalInterface.set_allow_natResponse"/>
+	</operation>
+	<operation name="get_allow_nat">
+	<documentation>
+ Gets the allow NAT state of the local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionLocalInterface.get_allow_natRequest"/>
+		<output message="tns:Networking.iSessionLocalInterface.get_allow_natResponse"/>
+	</operation>
+	<operation name="set_nat_source_address">
+	<documentation>
+ Sets the NAT source address type for the local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionLocalInterface.set_nat_source_addressRequest"/>
+		<output message="tns:Networking.iSessionLocalInterface.set_nat_source_addressResponse"/>
+	</operation>
+	<operation name="get_nat_source_address">
+	<documentation>
+ Gets the NAT source address type of the local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionLocalInterface.get_nat_source_addressRequest"/>
+		<output message="tns:Networking.iSessionLocalInterface.get_nat_source_addressResponse"/>
+	</operation>
+	<operation name="set_serverssl">
+	<documentation>
+ Sets the server SSL profile used for encrypting traffic for the
+ local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionLocalInterface.set_serversslRequest"/>
+		<output message="tns:Networking.iSessionLocalInterface.set_serversslResponse"/>
+	</operation>
+	<operation name="get_serverssl">
+	<documentation>
+ Gets the server SSL profile used for encrypting traffic by the
+ local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionLocalInterface.get_serversslRequest"/>
+		<output message="tns:Networking.iSessionLocalInterface.get_serversslResponse"/>
+	</operation>
+	<operation name="set_tunnel_port">
+	<documentation>
+ Sets the local service number in the local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionLocalInterface.set_tunnel_portRequest"/>
+		<output message="tns:Networking.iSessionLocalInterface.set_tunnel_portResponse"/>
+	</operation>
+	<operation name="get_tunnel_port">
+	<documentation>
+ Gets the local service number in the local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionLocalInterface.get_tunnel_portRequest"/>
+		<output message="tns:Networking.iSessionLocalInterface.get_tunnel_portResponse"/>
+	</operation>
+	<operation name="set_management_address">
+	<documentation>
+ Sets the management address for the local endpoint.
+
+ Note that this method does nothing, as the management address is
+ automatically assigned and cannot be changed.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionLocalInterface.set_management_addressRequest"/>
+		<output message="tns:Networking.iSessionLocalInterface.set_management_addressResponse"/>
+	</operation>
+	<operation name="get_management_address">
+	<documentation>
+ Gets the management address for the local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionLocalInterface.get_management_addressRequest"/>
+		<output message="tns:Networking.iSessionLocalInterface.get_management_addressResponse"/>
+	</operation>
+	<operation name="get_UUID">
+	<documentation>
+ Gets the UUID for the local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionLocalInterface.get_UUIDRequest"/>
+		<output message="tns:Networking.iSessionLocalInterface.get_UUIDResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for the local endpoint.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionLocalInterface.set_descriptionRequest"/>
+		<output message="tns:Networking.iSessionLocalInterface.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionLocalInterface.get_descriptionRequest"/>
+		<output message="tns:Networking.iSessionLocalInterface.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionLocalInterface.get_versionRequest"/>
+		<output message="tns:Networking.iSessionLocalInterface.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.iSessionLocalInterfaceBinding" type="tns:Networking.iSessionLocalInterfacePortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of the local endpoints.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionLocalInterface"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a local endpoint.
+
+ Note that only one local endpoint can exist at any time, and thus
+ only one value should be set in the given arrays.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionLocalInterface"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_local">
+	<documentation>
+ Deletes the local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionLocalInterface"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ip_list">
+	<documentation>
+ Gets the local IP addresses assigned to the local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionLocalInterface"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ip_list">
+	<documentation>
+ Sets the local IP addresses in the local endpoint.
+
+ Note that currently only one local IP address is allowed.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionLocalInterface"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_enabled_state">
+	<documentation>
+ Sets the enabled state for the local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionLocalInterface"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_enabled_state">
+	<documentation>
+ Gets the enabled state of the local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionLocalInterface"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_allow_nat">
+	<documentation>
+ Sets the allow NAT state for the local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionLocalInterface"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_allow_nat">
+	<documentation>
+ Gets the allow NAT state of the local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionLocalInterface"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_nat_source_address">
+	<documentation>
+ Sets the NAT source address type for the local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionLocalInterface"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_nat_source_address">
+	<documentation>
+ Gets the NAT source address type of the local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionLocalInterface"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_serverssl">
+	<documentation>
+ Sets the server SSL profile used for encrypting traffic for the
+ local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionLocalInterface"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_serverssl">
+	<documentation>
+ Gets the server SSL profile used for encrypting traffic by the
+ local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionLocalInterface"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_tunnel_port">
+	<documentation>
+ Sets the local service number in the local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionLocalInterface"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_tunnel_port">
+	<documentation>
+ Gets the local service number in the local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionLocalInterface"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_management_address">
+	<documentation>
+ Sets the management address for the local endpoint.
+
+ Note that this method does nothing, as the management address is
+ automatically assigned and cannot be changed.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionLocalInterface"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_management_address">
+	<documentation>
+ Gets the management address for the local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionLocalInterface"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_UUID">
+	<documentation>
+ Gets the UUID for the local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionLocalInterface"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for the local endpoint.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionLocalInterface"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionLocalInterface"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionLocalInterface"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionLocalInterface"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.iSessionLocalInterface">
+	<documentation>
+ The iSession Local interface enables you to work with the definitions
+ and attributes contained in a device's WAN Optimization Module local
+ endpoint object.
+
+ This interface includes an object key which is a Common::ULong value.
+ This value is meaningless in itself, and since only one local endpoint
+ can exist, it is of no real use.  Its value is ignored in all methods
+ in this interface.
+
+        	</documentation>
+	<port name="Networking.iSessionLocalInterfacePort" binding="tns:Networking.iSessionLocalInterfaceBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

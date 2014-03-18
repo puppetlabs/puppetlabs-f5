@@ -1,0 +1,1001 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.ApplicationTemplate"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.TMOSModuleSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.TMOSModule[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.TMOSModule">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="TMOS_MODULE_ASM">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_ASM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_SAM">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_SAM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_WAM">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_WAM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_PSM">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_PSM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_WOM">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_WOM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_LC">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_LC</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_LTM">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_LTM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_GTM">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_GTM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_WOML">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_WOML</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_APML">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_APML</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_EM">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_EM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_VCMP">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_VCMP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_TMOS">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_TMOS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_HOST">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_HOST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_UI">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_UI</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_MONITORS">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_MONITORS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_AVR">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_AVR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_PEM">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_PEM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_CGNAT">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_CGNAT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_AFM">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_AFM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.TMOSModuleSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.TMOSModuleSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.ApplicationTemplate.get_listRequest">
+</message>
+<message name="Management.ApplicationTemplate.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.ApplicationTemplate.get_action_listRequest">
+	<part name="templates" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationTemplate.get_action_listResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Management.ApplicationTemplate.createRequest">
+	<part name="templates" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationTemplate.createResponse">
+</message>
+
+<message name="Management.ApplicationTemplate.delete_application_templateRequest">
+	<part name="templates" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationTemplate.delete_application_templateResponse">
+</message>
+
+<message name="Management.ApplicationTemplate.delete_all_templatesRequest">
+</message>
+<message name="Management.ApplicationTemplate.delete_all_templatesResponse">
+</message>
+
+<message name="Management.ApplicationTemplate.set_descriptionRequest">
+	<part name="templates" type="tns:Common.StringSequence"/>
+	<part name="values" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationTemplate.set_descriptionResponse">
+</message>
+
+<message name="Management.ApplicationTemplate.get_descriptionRequest">
+	<part name="templates" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationTemplate.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.ApplicationTemplate.set_prerequisite_bigip_version_minimumRequest">
+	<part name="templates" type="tns:Common.StringSequence"/>
+	<part name="values" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationTemplate.set_prerequisite_bigip_version_minimumResponse">
+</message>
+
+<message name="Management.ApplicationTemplate.get_prerequisite_bigip_version_minimumRequest">
+	<part name="templates" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationTemplate.get_prerequisite_bigip_version_minimumResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.ApplicationTemplate.set_prerequisite_bigip_version_maximumRequest">
+	<part name="templates" type="tns:Common.StringSequence"/>
+	<part name="values" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationTemplate.set_prerequisite_bigip_version_maximumResponse">
+</message>
+
+<message name="Management.ApplicationTemplate.get_prerequisite_bigip_version_maximumRequest">
+	<part name="templates" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationTemplate.get_prerequisite_bigip_version_maximumResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.ApplicationTemplate.set_prerequisite_modulesRequest">
+	<part name="templates" type="tns:Common.StringSequence"/>
+	<part name="values" type="tns:Common.TMOSModuleSequenceSequence"/>
+</message>
+<message name="Management.ApplicationTemplate.set_prerequisite_modulesResponse">
+</message>
+
+<message name="Management.ApplicationTemplate.get_prerequisite_modulesRequest">
+	<part name="templates" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationTemplate.get_prerequisite_modulesResponse">
+	<part name="return" type="tns:Common.TMOSModuleSequenceSequence"/>
+</message>
+
+<message name="Management.ApplicationTemplate.get_prerequisite_errorsRequest">
+	<part name="templates" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ApplicationTemplate.get_prerequisite_errorsResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.ApplicationTemplate.set_action_presentationRequest">
+	<part name="templates" type="tns:Common.StringSequence"/>
+	<part name="actions" type="tns:Common.StringSequenceSequence"/>
+	<part name="values" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.ApplicationTemplate.set_action_presentationResponse">
+</message>
+
+<message name="Management.ApplicationTemplate.get_action_presentationRequest">
+	<part name="templates" type="tns:Common.StringSequence"/>
+	<part name="actions" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.ApplicationTemplate.get_action_presentationResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Management.ApplicationTemplate.set_action_implementationRequest">
+	<part name="templates" type="tns:Common.StringSequence"/>
+	<part name="actions" type="tns:Common.StringSequenceSequence"/>
+	<part name="values" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.ApplicationTemplate.set_action_implementationResponse">
+</message>
+
+<message name="Management.ApplicationTemplate.get_action_implementationRequest">
+	<part name="templates" type="tns:Common.StringSequence"/>
+	<part name="actions" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.ApplicationTemplate.get_action_implementationResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Management.ApplicationTemplate.set_action_presentation_helpRequest">
+	<part name="templates" type="tns:Common.StringSequence"/>
+	<part name="actions" type="tns:Common.StringSequenceSequence"/>
+	<part name="values" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.ApplicationTemplate.set_action_presentation_helpResponse">
+</message>
+
+<message name="Management.ApplicationTemplate.get_action_presentation_helpRequest">
+	<part name="templates" type="tns:Common.StringSequence"/>
+	<part name="actions" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.ApplicationTemplate.get_action_presentation_helpResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Management.ApplicationTemplate.get_versionRequest">
+</message>
+<message name="Management.ApplicationTemplate.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.ApplicationTemplatePortType">
+	<operation name="get_list">
+  	<documentation>
+ Gets the names of all application templates.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationTemplate.get_listRequest"/>
+		<output message="tns:Management.ApplicationTemplate.get_listResponse"/>
+	</operation>
+	<operation name="get_action_list">
+	<documentation>
+ Gets the names of the actions in the application templates.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationTemplate.get_action_listRequest"/>
+		<output message="tns:Management.ApplicationTemplate.get_action_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a set of application templates. Each template automatically
+ is created with a default empty "definition" action.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationTemplate.createRequest"/>
+		<output message="tns:Management.ApplicationTemplate.createResponse"/>
+	</operation>
+	<operation name="delete_application_template">
+	<documentation>
+ Deletes a set of application templates.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationTemplate.delete_application_templateRequest"/>
+		<output message="tns:Management.ApplicationTemplate.delete_application_templateResponse"/>
+	</operation>
+	<operation name="delete_all_templates">
+	<documentation>
+ Deletes all application templates.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationTemplate.delete_all_templatesRequest"/>
+		<output message="tns:Management.ApplicationTemplate.delete_all_templatesResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the descriptions for the specified appliation templates.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationTemplate.set_descriptionRequest"/>
+		<output message="tns:Management.ApplicationTemplate.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the specified application templates.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationTemplate.get_descriptionRequest"/>
+		<output message="tns:Management.ApplicationTemplate.get_descriptionResponse"/>
+	</operation>
+	<operation name="set_prerequisite_bigip_version_minimum">
+	<documentation>
+ Sets the minimum version of BIG-IP for which this template is valid.
+ Attempting to create an application from this template on an
+ incompatible version of BIG-IP will produce an error.
+ The version is of the form #.#.#, #.#, or #.  For example,
+ "11", "11.1", and "11.1.2" would all be valid version strings.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationTemplate.set_prerequisite_bigip_version_minimumRequest"/>
+		<output message="tns:Management.ApplicationTemplate.set_prerequisite_bigip_version_minimumResponse"/>
+	</operation>
+	<operation name="get_prerequisite_bigip_version_minimum">
+	<documentation>
+ Gets the minimum version of BIG-IP for which this template is valid.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationTemplate.get_prerequisite_bigip_version_minimumRequest"/>
+		<output message="tns:Management.ApplicationTemplate.get_prerequisite_bigip_version_minimumResponse"/>
+	</operation>
+	<operation name="set_prerequisite_bigip_version_maximum">
+	<documentation>
+ Sets the maximum version of BIG-IP for which this template is valid.
+ Attempting to create an application from this template on an
+ incompatible version of BIG-IP will produce an error.
+ The version is of the form #.#.#, #.#, or #.  For example,
+ "11", "11.1", and "11.1.2" would all be valid version strings.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationTemplate.set_prerequisite_bigip_version_maximumRequest"/>
+		<output message="tns:Management.ApplicationTemplate.set_prerequisite_bigip_version_maximumResponse"/>
+	</operation>
+	<operation name="get_prerequisite_bigip_version_maximum">
+	<documentation>
+ Gets the maximum version of BIG-IP for which this template is valid.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationTemplate.get_prerequisite_bigip_version_maximumRequest"/>
+		<output message="tns:Management.ApplicationTemplate.get_prerequisite_bigip_version_maximumResponse"/>
+	</operation>
+	<operation name="set_prerequisite_modules">
+	<documentation>
+ Sets the list of modules required by each template.
+ Attempting to create an application from this template 
+ when one or more of these modules are not provisioned 
+ will produce an error.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationTemplate.set_prerequisite_modulesRequest"/>
+		<output message="tns:Management.ApplicationTemplate.set_prerequisite_modulesResponse"/>
+	</operation>
+	<operation name="get_prerequisite_modules">
+	<documentation>
+ Gets the list of modules required by the specified 
+ templates.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationTemplate.get_prerequisite_modulesRequest"/>
+		<output message="tns:Management.ApplicationTemplate.get_prerequisite_modulesResponse"/>
+	</operation>
+	<operation name="get_prerequisite_errors">
+	<documentation>
+ Gets the error string indicating the prerequisite errors 
+ for a template.  A blank string indicates no errors.  A
+ non-blank error string means that there are prerequisites
+ for the template that are not met on that machine, and 
+ creating a system application object from that template 
+ on that machine will result in an exception.  Note that
+ the contents of the error string are meant to be human 
+ readable.  While the presence of a non-blank  error string 
+ can be used programmatically, the contents should only be 
+ used for non-programmatic purposes.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationTemplate.get_prerequisite_errorsRequest"/>
+		<output message="tns:Management.ApplicationTemplate.get_prerequisite_errorsResponse"/>
+	</operation>
+	<operation name="set_action_presentation">
+	<documentation>
+ Sets the presentation text for a set of actions in application
+ templates.
+
+ The presentation contains Application Presentation Language (APL)
+ text that describes what input is needed and how it should be
+ displayed in the UI.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationTemplate.set_action_presentationRequest"/>
+		<output message="tns:Management.ApplicationTemplate.set_action_presentationResponse"/>
+	</operation>
+	<operation name="get_action_presentation">
+	<documentation>
+ Gets the presentation text for the specified application template
+    actions.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationTemplate.get_action_presentationRequest"/>
+		<output message="tns:Management.ApplicationTemplate.get_action_presentationResponse"/>
+	</operation>
+	<operation name="set_action_implementation">
+	<documentation>
+ Sets the implementation script text for a set of actions in an
+ application templates.
+
+ The implementation is a TMSH script that can use the answers to the
+ questions in the presentation, provided as variables, to create the
+ configuration objects that make up the application service. This
+ script is executed whenever the application is created or modified.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationTemplate.set_action_implementationRequest"/>
+		<output message="tns:Management.ApplicationTemplate.set_action_implementationResponse"/>
+	</operation>
+	<operation name="get_action_implementation">
+	<documentation>
+ Gets the implementation script text for the specified application
+ template actions.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationTemplate.get_action_implementationRequest"/>
+		<output message="tns:Management.ApplicationTemplate.get_action_implementationResponse"/>
+	</operation>
+	<operation name="set_action_presentation_help">
+	<documentation>
+ Sets the HTML help text for a set of actions in application
+    templates.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationTemplate.set_action_presentation_helpRequest"/>
+		<output message="tns:Management.ApplicationTemplate.set_action_presentation_helpResponse"/>
+	</operation>
+	<operation name="get_action_presentation_help">
+	<documentation>
+ Gets the HTML help text for the specified application template
+    actions.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationTemplate.get_action_presentation_helpRequest"/>
+		<output message="tns:Management.ApplicationTemplate.get_action_presentation_helpResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Management.ApplicationTemplate.get_versionRequest"/>
+		<output message="tns:Management.ApplicationTemplate.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.ApplicationTemplateBinding" type="tns:Management.ApplicationTemplatePortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the names of all application templates.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationTemplate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_action_list">
+	<documentation>
+ Gets the names of the actions in the application templates.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationTemplate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a set of application templates. Each template automatically
+ is created with a default empty "definition" action.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationTemplate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_application_template">
+	<documentation>
+ Deletes a set of application templates.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationTemplate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_templates">
+	<documentation>
+ Deletes all application templates.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationTemplate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the descriptions for the specified appliation templates.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationTemplate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the specified application templates.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationTemplate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_prerequisite_bigip_version_minimum">
+	<documentation>
+ Sets the minimum version of BIG-IP for which this template is valid.
+ Attempting to create an application from this template on an
+ incompatible version of BIG-IP will produce an error.
+ The version is of the form #.#.#, #.#, or #.  For example,
+ "11", "11.1", and "11.1.2" would all be valid version strings.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationTemplate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_prerequisite_bigip_version_minimum">
+	<documentation>
+ Gets the minimum version of BIG-IP for which this template is valid.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationTemplate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_prerequisite_bigip_version_maximum">
+	<documentation>
+ Sets the maximum version of BIG-IP for which this template is valid.
+ Attempting to create an application from this template on an
+ incompatible version of BIG-IP will produce an error.
+ The version is of the form #.#.#, #.#, or #.  For example,
+ "11", "11.1", and "11.1.2" would all be valid version strings.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationTemplate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_prerequisite_bigip_version_maximum">
+	<documentation>
+ Gets the maximum version of BIG-IP for which this template is valid.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationTemplate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_prerequisite_modules">
+	<documentation>
+ Sets the list of modules required by each template.
+ Attempting to create an application from this template 
+ when one or more of these modules are not provisioned 
+ will produce an error.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationTemplate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_prerequisite_modules">
+	<documentation>
+ Gets the list of modules required by the specified 
+ templates.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationTemplate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_prerequisite_errors">
+	<documentation>
+ Gets the error string indicating the prerequisite errors 
+ for a template.  A blank string indicates no errors.  A
+ non-blank error string means that there are prerequisites
+ for the template that are not met on that machine, and 
+ creating a system application object from that template 
+ on that machine will result in an exception.  Note that
+ the contents of the error string are meant to be human 
+ readable.  While the presence of a non-blank  error string 
+ can be used programmatically, the contents should only be 
+ used for non-programmatic purposes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationTemplate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_action_presentation">
+	<documentation>
+ Sets the presentation text for a set of actions in application
+ templates.
+
+ The presentation contains Application Presentation Language (APL)
+ text that describes what input is needed and how it should be
+ displayed in the UI.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationTemplate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_action_presentation">
+	<documentation>
+ Gets the presentation text for the specified application template
+    actions.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationTemplate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_action_implementation">
+	<documentation>
+ Sets the implementation script text for a set of actions in an
+ application templates.
+
+ The implementation is a TMSH script that can use the answers to the
+ questions in the presentation, provided as variables, to create the
+ configuration objects that make up the application service. This
+ script is executed whenever the application is created or modified.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationTemplate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_action_implementation">
+	<documentation>
+ Gets the implementation script text for the specified application
+ template actions.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationTemplate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_action_presentation_help">
+	<documentation>
+ Sets the HTML help text for a set of actions in application
+    templates.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationTemplate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_action_presentation_help">
+	<documentation>
+ Gets the HTML help text for the specified application template
+    actions.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationTemplate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ApplicationTemplate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ApplicationTemplate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.ApplicationTemplate">
+	<documentation>
+ An Application Template is used to create and modify Application
+ Services. The template provides a custom UI (presentation) to present
+ questions to the user that are needed to create the application. The 
+ implementation script is executed when the application is created or 
+ modified to create the necessary configuration objects from the user 
+ supplied answers to the presentation questions.
+
+        	</documentation>
+	<port name="Management.ApplicationTemplatePort" binding="tns:Management.ApplicationTemplateBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

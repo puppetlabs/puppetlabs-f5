@@ -1,0 +1,2227 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Security.ProfileDoS"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Security.ProfileDoS.OperationModeSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Security.ProfileDoS.OperationModeSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.ULongSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Security.ProfileDoS.OperationModeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Security.ProfileDoS.OperationMode[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPNetmask">
+			<xsd:sequence>
+				<xsd:element name="address" type="xsd:string"/>
+				<xsd:element name="netmask" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Security.ProfileDoS.Anomaly">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="ANOMALY_TPS_BASED">
+					<xsd:annotation>
+						<xsd:documentation>ANOMALY_TPS_BASED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ANOMALY_LATENCY_BASED">
+					<xsd:annotation>
+						<xsd:documentation>ANOMALY_LATENCY_BASED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Security.ProfileDoS.OperationMode">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="OPERATION_MODE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>OPERATION_MODE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OPERATION_MODE_OFF">
+					<xsd:annotation>
+						<xsd:documentation>OPERATION_MODE_OFF</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OPERATION_MODE_TRANSPARENT">
+					<xsd:annotation>
+						<xsd:documentation>OPERATION_MODE_TRANSPARENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OPERATION_MODE_BLOCKING">
+					<xsd:annotation>
+						<xsd:documentation>OPERATION_MODE_BLOCKING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.BooleanSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:boolean[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPNetmaskSequenceSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.IPNetmaskSequenceSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPNetmaskSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.IPNetmaskSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledStateSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPNetmaskSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.IPNetmask[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Security.ProfileDoS.get_listRequest">
+</message>
+<message name="Security.ProfileDoS.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Security.ProfileDoS.createRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.ProfileDoS.createResponse">
+</message>
+
+<message name="Security.ProfileDoS.delete_profileRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.ProfileDoS.delete_profileResponse">
+</message>
+
+<message name="Security.ProfileDoS.delete_all_profilesRequest">
+</message>
+<message name="Security.ProfileDoS.delete_all_profilesResponse">
+</message>
+
+<message name="Security.ProfileDoS.is_system_profileRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.ProfileDoS.is_system_profileResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="Security.ProfileDoS.set_descriptionRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.ProfileDoS.set_descriptionResponse">
+</message>
+
+<message name="Security.ProfileDoS.get_descriptionRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.ProfileDoS.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Security.ProfileDoS.get_applicationRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.ProfileDoS.get_applicationResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Security.ProfileDoS.add_applicationRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.add_applicationResponse">
+</message>
+
+<message name="Security.ProfileDoS.remove_applicationRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.remove_applicationResponse">
+</message>
+
+<message name="Security.ProfileDoS.remove_all_applicationsRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.ProfileDoS.remove_all_applicationsResponse">
+</message>
+
+<message name="Security.ProfileDoS.set_trigger_irule_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.set_trigger_irule_stateResponse">
+</message>
+
+<message name="Security.ProfileDoS.get_trigger_irule_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.get_trigger_irule_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+
+<message name="Security.ProfileDoS.set_operation_modeRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+	<part name="modes" type="tns:Security.ProfileDoS.OperationModeSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.set_operation_modeResponse">
+</message>
+
+<message name="Security.ProfileDoS.get_operation_modeRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+</message>
+<message name="Security.ProfileDoS.get_operation_modeResponse">
+	<part name="return" type="tns:Security.ProfileDoS.OperationModeSequenceSequence"/>
+</message>
+
+<message name="Security.ProfileDoS.set_source_ip_based_client_side_integrity_defense_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+	<part name="states" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.set_source_ip_based_client_side_integrity_defense_stateResponse">
+</message>
+
+<message name="Security.ProfileDoS.get_source_ip_based_client_side_integrity_defense_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+</message>
+<message name="Security.ProfileDoS.get_source_ip_based_client_side_integrity_defense_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+
+<message name="Security.ProfileDoS.set_url_based_client_side_integrity_defense_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+	<part name="states" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.set_url_based_client_side_integrity_defense_stateResponse">
+</message>
+
+<message name="Security.ProfileDoS.get_url_based_client_side_integrity_defense_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+</message>
+<message name="Security.ProfileDoS.get_url_based_client_side_integrity_defense_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+
+<message name="Security.ProfileDoS.set_source_ip_based_rate_limiting_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+	<part name="states" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.set_source_ip_based_rate_limiting_stateResponse">
+</message>
+
+<message name="Security.ProfileDoS.get_source_ip_based_rate_limiting_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+</message>
+<message name="Security.ProfileDoS.get_source_ip_based_rate_limiting_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+
+<message name="Security.ProfileDoS.set_url_based_rate_limiting_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+	<part name="states" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.set_url_based_rate_limiting_stateResponse">
+</message>
+
+<message name="Security.ProfileDoS.get_url_based_rate_limiting_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+</message>
+<message name="Security.ProfileDoS.get_url_based_rate_limiting_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+
+<message name="Security.ProfileDoS.set_ip_tps_increase_rateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+	<part name="values" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.set_ip_tps_increase_rateResponse">
+</message>
+
+<message name="Security.ProfileDoS.get_ip_tps_increase_rateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+</message>
+<message name="Security.ProfileDoS.get_ip_tps_increase_rateResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="Security.ProfileDoS.set_ip_maximum_tpsRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+	<part name="values" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.set_ip_maximum_tpsResponse">
+</message>
+
+<message name="Security.ProfileDoS.get_ip_maximum_tpsRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+</message>
+<message name="Security.ProfileDoS.get_ip_maximum_tpsResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="Security.ProfileDoS.set_ip_minimum_tpsRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+	<part name="values" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.set_ip_minimum_tpsResponse">
+</message>
+
+<message name="Security.ProfileDoS.get_ip_minimum_tpsRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+</message>
+<message name="Security.ProfileDoS.get_ip_minimum_tpsResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="Security.ProfileDoS.set_url_tps_increase_rateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+	<part name="values" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.set_url_tps_increase_rateResponse">
+</message>
+
+<message name="Security.ProfileDoS.get_url_tps_increase_rateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+</message>
+<message name="Security.ProfileDoS.get_url_tps_increase_rateResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="Security.ProfileDoS.set_url_maximum_tpsRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+	<part name="values" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.set_url_maximum_tpsResponse">
+</message>
+
+<message name="Security.ProfileDoS.get_url_maximum_tpsRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+</message>
+<message name="Security.ProfileDoS.get_url_maximum_tpsResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="Security.ProfileDoS.set_url_minimum_tpsRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+	<part name="values" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.set_url_minimum_tpsResponse">
+</message>
+
+<message name="Security.ProfileDoS.get_url_minimum_tpsRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+</message>
+<message name="Security.ProfileDoS.get_url_minimum_tpsResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="Security.ProfileDoS.set_maximum_prevention_durationRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+	<part name="values" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.set_maximum_prevention_durationResponse">
+</message>
+
+<message name="Security.ProfileDoS.get_maximum_prevention_durationRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="anomaly" type="tns:Security.ProfileDoS.Anomaly"/>
+</message>
+<message name="Security.ProfileDoS.get_maximum_prevention_durationResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="Security.ProfileDoS.set_latency_increase_rateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="values" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.set_latency_increase_rateResponse">
+</message>
+
+<message name="Security.ProfileDoS.get_latency_increase_rateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.get_latency_increase_rateResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="Security.ProfileDoS.set_maximum_latencyRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="values" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.set_maximum_latencyResponse">
+</message>
+
+<message name="Security.ProfileDoS.get_maximum_latencyRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.get_maximum_latencyResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="Security.ProfileDoS.set_minimum_latencyRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="values" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.set_minimum_latencyResponse">
+</message>
+
+<message name="Security.ProfileDoS.get_minimum_latencyRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.get_minimum_latencyResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="Security.ProfileDoS.get_white_ipRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.get_white_ipResponse">
+	<part name="return" type="tns:Common.IPNetmaskSequenceSequenceSequence"/>
+</message>
+
+<message name="Security.ProfileDoS.add_white_ipRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="ip_netmasks" type="tns:Common.IPNetmaskSequenceSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.add_white_ipResponse">
+</message>
+
+<message name="Security.ProfileDoS.remove_white_ipRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="ip_netmasks" type="tns:Common.IPNetmaskSequenceSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.remove_white_ipResponse">
+</message>
+
+<message name="Security.ProfileDoS.remove_all_white_ipsRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.ProfileDoS.remove_all_white_ipsResponse">
+</message>
+
+<message name="Security.ProfileDoS.get_versionRequest">
+</message>
+<message name="Security.ProfileDoS.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Security.ProfileDoSPortType">
+	<operation name="get_list">
+     	<documentation>
+ Gets a list of all DoS profiles.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.get_listRequest"/>
+		<output message="tns:Security.ProfileDoS.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates the specified DoS profiles.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.createRequest"/>
+		<output message="tns:Security.ProfileDoS.createResponse"/>
+	</operation>
+	<operation name="delete_profile">
+	<documentation>
+ Deletes the specified DoS profiles.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.delete_profileRequest"/>
+		<output message="tns:Security.ProfileDoS.delete_profileResponse"/>
+	</operation>
+	<operation name="delete_all_profiles">
+	<documentation>
+ Deletes all DoS profiles.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.delete_all_profilesRequest"/>
+		<output message="tns:Security.ProfileDoS.delete_all_profilesResponse"/>
+	</operation>
+	<operation name="is_system_profile">
+	<documentation>
+ Determines whether the specified DoS profiles are system profiles.
+ A system profile is a profile pre-configured on the system, ready
+ for use.  Non-system profiles are profiles created or modified by a
+ user.  Note that if a system profile is modified, it is no longer
+ considered a system profile.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.is_system_profileRequest"/>
+		<output message="tns:Security.ProfileDoS.is_system_profileResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of DoS profiles.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.set_descriptionRequest"/>
+		<output message="tns:Security.ProfileDoS.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of DoS profiles.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.get_descriptionRequest"/>
+		<output message="tns:Security.ProfileDoS.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_application">
+	<documentation>
+ Gets a list of Application Security sub-profiles for a list of given profiles.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.get_applicationRequest"/>
+		<output message="tns:Security.ProfileDoS.get_applicationResponse"/>
+	</operation>
+	<operation name="add_application">
+	<documentation>
+ Adds a list of Application Security sub-profiles to given profiles.
+ Note: Only one Application Security sub-profile can exist per profile.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.add_applicationRequest"/>
+		<output message="tns:Security.ProfileDoS.add_applicationResponse"/>
+	</operation>
+	<operation name="remove_application">
+	<documentation>
+ Removes specific Application Security sub-profiles from the specified profiles.
+ 
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.remove_applicationRequest"/>
+		<output message="tns:Security.ProfileDoS.remove_applicationResponse"/>
+	</operation>
+	<operation name="remove_all_applications">
+	<documentation>
+ Removes all Application Security sub-profiles from the specified profiles.
+ 
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.remove_all_applicationsRequest"/>
+		<output message="tns:Security.ProfileDoS.remove_all_applicationsResponse"/>
+	</operation>
+	<operation name="set_trigger_irule_state">
+	<documentation>
+ Sets the trigger DoS iRule event state in Application Security.
+
+ Trigger DoS iRule event specifies, when enabled, that the system activates an Application DoS iRule event.
+ The default setting is disabled.
+ Enable it if you have written iRules that process this event, and assigned them to a specific virtual server.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.set_trigger_irule_stateRequest"/>
+		<output message="tns:Security.ProfileDoS.set_trigger_irule_stateResponse"/>
+	</operation>
+	<operation name="get_trigger_irule_state">
+	<documentation>
+ Gets the trigger DoS iRule event state in Application Security.
+ 
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.get_trigger_irule_stateRequest"/>
+		<output message="tns:Security.ProfileDoS.get_trigger_irule_stateResponse"/>
+	</operation>
+	<operation name="set_operation_mode">
+	<documentation>
+ Sets the operation mode of the specified anomaly.
+ The available operation modes are mentioned under the OperationMode enumeration.
+ 
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.set_operation_modeRequest"/>
+		<output message="tns:Security.ProfileDoS.set_operation_modeResponse"/>
+	</operation>
+	<operation name="get_operation_mode">
+	<documentation>
+ Gets the operation mode of the specified anomaly.
+ 
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.get_operation_modeRequest"/>
+		<output message="tns:Security.ProfileDoS.get_operation_modeResponse"/>
+	</operation>
+	<operation name="set_source_ip_based_client_side_integrity_defense_state">
+	<documentation>
+ Sets the Source IP-based client side integrity defense state in the specified anomaly.
+
+ Prevention policy consisting of four methods specifies how the system handles an attack.
+ The system begins with the first method that you enabled in this list.
+ If the system finds this method not effective enough to stop the attack,
+ it uses the next method that you enabled in this list.
+  - Source IP-based client side integrity defense: Specifies, when enabled,
+                    that the system determines whether the client is a legal browser or an illegal script
+                    by sending a JavaScript challenge to each suspicious IP address and waiting for a response.
+                    (Legal browsers are able to respond, while illegal scripts cannot.) The default is disabled.
+  - URL-based client side integrity defense
+  - Source IP-based rate limiting
+  - URL-based rate limiting
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.set_source_ip_based_client_side_integrity_defense_stateRequest"/>
+		<output message="tns:Security.ProfileDoS.set_source_ip_based_client_side_integrity_defense_stateResponse"/>
+	</operation>
+	<operation name="get_source_ip_based_client_side_integrity_defense_state">
+	<documentation>
+ Gets the Source IP-based client side integrity defense state in the specified anomaly.
+ 
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.get_source_ip_based_client_side_integrity_defense_stateRequest"/>
+		<output message="tns:Security.ProfileDoS.get_source_ip_based_client_side_integrity_defense_stateResponse"/>
+	</operation>
+	<operation name="set_url_based_client_side_integrity_defense_state">
+	<documentation>
+ Sets the URL-based client side integrity defense state in the specified anomaly.
+
+ Please see set_source_ip_based_client_side_integrity_defense_state for more information about prevention policy.
+  - URL-based client side integrity defense: Specifies, when enabled,
+                    that the system determines whether the client is a legal browser or an illegal script
+                    by sending a JavaScript challenge to each suspicious URL and waiting for a response.
+                    (Legal URLs are able to respond, while illegal scripts cannot.) The default is disabled.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.set_url_based_client_side_integrity_defense_stateRequest"/>
+		<output message="tns:Security.ProfileDoS.set_url_based_client_side_integrity_defense_stateResponse"/>
+	</operation>
+	<operation name="get_url_based_client_side_integrity_defense_state">
+	<documentation>
+ Gets the URL-based client side integrity defense state in the specified anomaly.
+ 
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.get_url_based_client_side_integrity_defense_stateRequest"/>
+		<output message="tns:Security.ProfileDoS.get_url_based_client_side_integrity_defense_stateResponse"/>
+	</operation>
+	<operation name="set_source_ip_based_rate_limiting_state">
+	<documentation>
+ Sets the Source IP-based rate limiting state in the specified anomaly.
+
+ Please see set_source_ip_based_client_side_integrity_defense_state for more information about prevention policy.
+  - Source IP-based rate limiting: Specifies, when enabled,
+                    that the system drops transactions from suspicious IP addresses.
+                    The system allows requests from that IP address when its request rate per second
+                    is less than the legitimate history interval (before the attack started),
+                    or less than the threshold you configure in the maximum TPS. The default is enabled.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.set_source_ip_based_rate_limiting_stateRequest"/>
+		<output message="tns:Security.ProfileDoS.set_source_ip_based_rate_limiting_stateResponse"/>
+	</operation>
+	<operation name="get_source_ip_based_rate_limiting_state">
+	<documentation>
+ Gets the Source IP-based rate limiting state in the specified anomaly.
+ 
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.get_source_ip_based_rate_limiting_stateRequest"/>
+		<output message="tns:Security.ProfileDoS.get_source_ip_based_rate_limiting_stateResponse"/>
+	</operation>
+	<operation name="set_url_based_rate_limiting_state">
+	<documentation>
+ Sets the URL-based rate limiting state in the specified anomaly.
+ 
+ Please see set_source_ip_based_client_side_integrity_defense_state for more information about prevention policy.
+  - URL-based rate limiting: Specifies, when enabled,
+                    that the system drops transactions for suspicious URLs,
+                    regardless of whether the IP address is suspicious or not.
+                    The system allows requests for that URL when the request rate per second
+                    is less than the legitimate history interval (before the attack started),
+                    or less than the threshold you configure in the maximum TPS. The default is enabled.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.set_url_based_rate_limiting_stateRequest"/>
+		<output message="tns:Security.ProfileDoS.set_url_based_rate_limiting_stateResponse"/>
+	</operation>
+	<operation name="get_url_based_rate_limiting_state">
+	<documentation>
+ Gets the URL-based rate limiting state in the specified anomaly.
+ 
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.get_url_based_rate_limiting_stateRequest"/>
+		<output message="tns:Security.ProfileDoS.get_url_based_rate_limiting_stateResponse"/>
+	</operation>
+	<operation name="set_ip_tps_increase_rate">
+	<documentation>
+ Sets the TPS increase rate value in IP detection criteria (or suspicious IP criteria) of the specified anomaly.
+ 
+ IP detection criteria setting is only available in TPS-based anomaly.
+ It specifies that if at least one of the following criteria is met, the system treats the IP address as an attacker.
+ If these numbers are reached, the system prevents further attacks by limiting the number of requests per second to the history interval.
+ The system does not return the blocking response page.
+
+ Suspicious IP criteria setting is only available in Latency-based anomaly.
+ It specifies that if at least one of the following criteria is met, the system treats the IP address as suspicious (suspects the IP address to be an attacker).
+ If an attack was detected according to the detection criteria, IP rate limiting will be done on the suspicious IP addresses.
+ The system prevents the attack by limiting the number of requests per second to the history interval.
+ The system does not return the blocking response page.
+
+  - TPS increase rate: Specifies that the system considers an IP address to be an attacker (or treats as suspicious)
+                       if the ratio between the transaction rate detection interval and the transaction rate history interval,
+                       for one IP address, is greater than this number. The default setting is 500 percent.
+  - Maximum TPS
+  - Minimum TPS
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.set_ip_tps_increase_rateRequest"/>
+		<output message="tns:Security.ProfileDoS.set_ip_tps_increase_rateResponse"/>
+	</operation>
+	<operation name="get_ip_tps_increase_rate">
+	<documentation>
+ Gets the TPS increase rate value in IP detection criteria (or suspicious IP criteria) of the specified anomaly.
+ 
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.get_ip_tps_increase_rateRequest"/>
+		<output message="tns:Security.ProfileDoS.get_ip_tps_increase_rateResponse"/>
+	</operation>
+	<operation name="set_ip_maximum_tps">
+	<documentation>
+ Sets the maximum TPS value in IP detection criteria (or suspicious IP criteria) of the specified anomaly.
+ 
+ Please see set_ip_tps_increase_rate for more information about IP detection criteria and suspicious IP criteria.
+  - Maximum TPS: Specifies that the system considers an IP address to be an attacker (or treats as suspicious)
+                 if the number of requests sent, per second, from an IP address is equal to or greater than this number.
+                 The default setting is 200 requests per second.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.set_ip_maximum_tpsRequest"/>
+		<output message="tns:Security.ProfileDoS.set_ip_maximum_tpsResponse"/>
+	</operation>
+	<operation name="get_ip_maximum_tps">
+	<documentation>
+ Gets the maximum TPS value in IP detection criteria (or suspicious IP criteria) of the specified anomaly.
+ 
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.get_ip_maximum_tpsRequest"/>
+		<output message="tns:Security.ProfileDoS.get_ip_maximum_tpsResponse"/>
+	</operation>
+	<operation name="set_ip_minimum_tps">
+	<documentation>
+ Sets the minimum TPS value in IP detection criteria (or suspicious IP criteria) of the specified anomaly.
+ 
+ Please see set_ip_tps_increase_rate for more information about IP detection criteria and suspicious IP criteria.
+  - Minimum TPS: Specifies that the system considers an IP address to be an attacker (or treats as suspicious)
+                 if the detected TPS for a specific IP address equals, or is greater than, this number,
+                 and the TPS increase rate was reached. If the detected TPS is lower than this number,
+                 the system does not consider this IP address to be an attacker (or suspicious) even if
+                 the TPS increase rate was reached. The default setting is 40 transactions per second.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.set_ip_minimum_tpsRequest"/>
+		<output message="tns:Security.ProfileDoS.set_ip_minimum_tpsResponse"/>
+	</operation>
+	<operation name="get_ip_minimum_tps">
+	<documentation>
+ Gets the minimum TPS value in IP detection criteria (or suspicious IP criteria) of the specified anomaly.
+ 
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.get_ip_minimum_tpsRequest"/>
+		<output message="tns:Security.ProfileDoS.get_ip_minimum_tpsResponse"/>
+	</operation>
+	<operation name="set_url_tps_increase_rate">
+	<documentation>
+ Sets the TPS increase rate value in URL detection criteria (or suspicious URL criteria) of the specified anomaly.
+ 
+ URL detection criteria setting is only available in TPS-based anomaly.
+ It specifies that if at least one of the following criteria is met, the system treats a URL to be under attack.
+ If these numbers are reached, the system prevents further attacks by limiting the number of requests per second to the history interval.
+ The system does not return the blocking response page.
+
+ Suspicious URL criteria setting is only available in Latency-based anomaly.
+ It specifies that if at least one of the following criteria is met, the system treats the URL as suspicious (suspects the URL to be attacked).
+ If an attack was detected according to the detection criteria, URL rate limiting will be done on the suspicious URLs.
+ The system prevents the attack by limiting the number of requests per second to the history interval.
+ The system does not return the blocking response page.
+
+  - TPS increase rate: Specifies that the system considers an IP address to be an attacker (or treats as suspicious)
+                       if the ratio between the transaction rate detection interval and the transaction rate history interval,
+                       for one IP address, is greater than this number. The default setting is 500 percent.
+  - Maximum TPS
+  - Minimum TPS
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.set_url_tps_increase_rateRequest"/>
+		<output message="tns:Security.ProfileDoS.set_url_tps_increase_rateResponse"/>
+	</operation>
+	<operation name="get_url_tps_increase_rate">
+	<documentation>
+ Gets the TPS increase rate value in URL detection criteria (or suspicious URL criteria) of the specified anomaly.
+ 
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.get_url_tps_increase_rateRequest"/>
+		<output message="tns:Security.ProfileDoS.get_url_tps_increase_rateResponse"/>
+	</operation>
+	<operation name="set_url_maximum_tps">
+	<documentation>
+ Sets the maximum TPS value in URL detection criteria (or suspicious URL criteria) of the specified anomaly.
+ 
+ Please see set_url_tps_increase_rate for more information about URL detection criteria and suspicious URL criteria.
+  - Maximum TPS: Specifies that the system considers a URL to be under attack (or treats as suspicious)
+                 if the number of requests sent, per second, for the URL is equal to or greater than this number.
+                 The default setting is 1000 requests per second.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.set_url_maximum_tpsRequest"/>
+		<output message="tns:Security.ProfileDoS.set_url_maximum_tpsResponse"/>
+	</operation>
+	<operation name="get_url_maximum_tps">
+	<documentation>
+ Gets the maximum TPS value in URL detection criteria (or suspicious URL criteria) of the specified anomaly.
+ 
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.get_url_maximum_tpsRequest"/>
+		<output message="tns:Security.ProfileDoS.get_url_maximum_tpsResponse"/>
+	</operation>
+	<operation name="set_url_minimum_tps">
+	<documentation>
+ Sets the minimum TPS value in URL detection criteria (or suspicious URL criteria) of the specified anomaly.
+ 
+ Please see set_url_tps_increase_rate for more information about URL detection criteria and suspicious URL criteria.
+  - Minimum TPS: Specifies that the system considers a URL to be under attack (or treats as suspicious)
+                 if the detected TPS for a specific URL equals, or is greater than, this number,
+                 and the TPS increase rate was reached. If the detected TPS is lower than this number,
+                 the system does not consider this URL to be under attack (or suspicious) even if
+                 the TPS increase rate was reached. The default setting is 200 transactions per second.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.set_url_minimum_tpsRequest"/>
+		<output message="tns:Security.ProfileDoS.set_url_minimum_tpsResponse"/>
+	</operation>
+	<operation name="get_url_minimum_tps">
+	<documentation>
+ Gets the minimum TPS value in URL detection criteria (or suspicious URL criteria) of the specified anomaly.
+ 
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.get_url_minimum_tpsRequest"/>
+		<output message="tns:Security.ProfileDoS.get_url_minimum_tpsResponse"/>
+	</operation>
+	<operation name="set_maximum_prevention_duration">
+	<documentation>
+ Sets the maximum prevention duration (in seconds) in the specified anomaly.
+
+ Prevention duration specifies for how long the system prevents attacks against an attacker IP address or an attacked URL.
+ The system prevents attacks by rejecting requests either from the attacking IP address, or for the attacked URL.
+  - Unlimited (zero value): Specifies that after the system detects and stops a DoS attack,
+             it performs attack prevention until it detects the end of the attack. This is the default.
+  - Number of seconds (positive value): Specifies that after the system detects and stops a DoS  attack,
+             it performs attack prevention either for the amount of time configured here even if the system detects
+             that the attack continues, or until the system detects the end of the attack, whichever is earlier.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.set_maximum_prevention_durationRequest"/>
+		<output message="tns:Security.ProfileDoS.set_maximum_prevention_durationResponse"/>
+	</operation>
+	<operation name="get_maximum_prevention_duration">
+	<documentation>
+ Gets the maximum prevention duration (in seconds) in the specified anomaly.
+ 
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.get_maximum_prevention_durationRequest"/>
+		<output message="tns:Security.ProfileDoS.get_maximum_prevention_durationResponse"/>
+	</operation>
+	<operation name="set_latency_increase_rate">
+	<documentation>
+ Sets the latency increase rate value in detection criteria of Latency-based anomaly.
+ 
+ Detection criteria setting is only available in Latency-based anomaly.
+ It specifies the criteria under which the system considers traffic to be an attack.
+ First, the minimum latency must be reached, and then either the latency increase rate or the maximum latency must be reached.
+  - Latency increase rate: Specifies that the system considers traffic to be an attack if
+                           the ratio of the latency detection interval to the latency history interval,
+                           for one URL, is greater than this number. The default setting is 500 percent.
+  - Maximum latency
+  - Minimum latency
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.set_latency_increase_rateRequest"/>
+		<output message="tns:Security.ProfileDoS.set_latency_increase_rateResponse"/>
+	</operation>
+	<operation name="get_latency_increase_rate">
+	<documentation>
+ Gets the latency increase rate value in detection criteria of Latency-based anomaly.
+ 
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.get_latency_increase_rateRequest"/>
+		<output message="tns:Security.ProfileDoS.get_latency_increase_rateResponse"/>
+	</operation>
+	<operation name="set_maximum_latency">
+	<documentation>
+ Sets the maximum latency value in detection criteria of Latency-based anomaly.
+ 
+ Please see set_latency_increase_rate for more information about detection criteria.
+  - Maximum latency: Specifies that the system considers traffic to be an attack if
+                     the latency detection interval for a specific URL is greater than this number.
+                     The default setting is 10000 milliseconds.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.set_maximum_latencyRequest"/>
+		<output message="tns:Security.ProfileDoS.set_maximum_latencyResponse"/>
+	</operation>
+	<operation name="get_maximum_latency">
+	<documentation>
+ Gets the maximum latency value in detection criteria of Latency-based anomaly.
+ 
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.get_maximum_latencyRequest"/>
+		<output message="tns:Security.ProfileDoS.get_maximum_latencyResponse"/>
+	</operation>
+	<operation name="set_minimum_latency">
+	<documentation>
+ Sets the minimum latency value in detection criteria of Latency-based anomaly.
+ 
+ Please see set_latency_increase_rate for more information about detection criteria.
+  - Minimum latency: Specifies that the system considers traffic to be an attack if
+                     the detection interval for a specific URL equals, or is greater than, this number,
+                     and at least one of the latency increase rate or maximum latency was reached.
+                     If the detection interval is lower than this number, the system does not consider
+                     this traffic to be an attack even if one of the latency increase rate or maximum latency was reached.
+                     The default setting is 200 milliseconds.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.set_minimum_latencyRequest"/>
+		<output message="tns:Security.ProfileDoS.set_minimum_latencyResponse"/>
+	</operation>
+	<operation name="get_minimum_latency">
+	<documentation>
+ Gets the minimum latency value in detection criteria of Latency-based anomaly.
+ 
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.get_minimum_latencyRequest"/>
+		<output message="tns:Security.ProfileDoS.get_minimum_latencyResponse"/>
+	</operation>
+	<operation name="get_white_ip">
+	<documentation>
+ Gets the entire IP address whitelist of DoS profile Application Security.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.get_white_ipRequest"/>
+		<output message="tns:Security.ProfileDoS.get_white_ipResponse"/>
+	</operation>
+	<operation name="add_white_ip">
+	<documentation>
+ Adds a list of IP addresses with subnet masks to the whitelist of DoS profile Application Security.
+ 
+ IP address whitelist specifies IP addresses, including subnet masks, that the system considers
+ legitimate and does not examine when performing DoS prevention.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.add_white_ipRequest"/>
+		<output message="tns:Security.ProfileDoS.add_white_ipResponse"/>
+	</operation>
+	<operation name="remove_white_ip">
+	<documentation>
+ Removes specific IP addresses with subnet masks from the whitelist of DoS profile Application Security.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.remove_white_ipRequest"/>
+		<output message="tns:Security.ProfileDoS.remove_white_ipResponse"/>
+	</operation>
+	<operation name="remove_all_white_ips">
+	<documentation>
+ Removes the entire IP address whitelist of DoS profile Application Security.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.remove_all_white_ipsRequest"/>
+		<output message="tns:Security.ProfileDoS.remove_all_white_ipsResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Security.ProfileDoS.get_versionRequest"/>
+		<output message="tns:Security.ProfileDoS.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Security.ProfileDoSBinding" type="tns:Security.ProfileDoSPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all DoS profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates the specified DoS profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_profile">
+	<documentation>
+ Deletes the specified DoS profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_profiles">
+	<documentation>
+ Deletes all DoS profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="is_system_profile">
+	<documentation>
+ Determines whether the specified DoS profiles are system profiles.
+ A system profile is a profile pre-configured on the system, ready
+ for use.  Non-system profiles are profiles created or modified by a
+ user.  Note that if a system profile is modified, it is no longer
+ considered a system profile.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of DoS profiles.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of DoS profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application">
+	<documentation>
+ Gets a list of Application Security sub-profiles for a list of given profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_application">
+	<documentation>
+ Adds a list of Application Security sub-profiles to given profiles.
+ Note: Only one Application Security sub-profile can exist per profile.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_application">
+	<documentation>
+ Removes specific Application Security sub-profiles from the specified profiles.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_applications">
+	<documentation>
+ Removes all Application Security sub-profiles from the specified profiles.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_trigger_irule_state">
+	<documentation>
+ Sets the trigger DoS iRule event state in Application Security.
+
+ Trigger DoS iRule event specifies, when enabled, that the system activates an Application DoS iRule event.
+ The default setting is disabled.
+ Enable it if you have written iRules that process this event, and assigned them to a specific virtual server.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_trigger_irule_state">
+	<documentation>
+ Gets the trigger DoS iRule event state in Application Security.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_operation_mode">
+	<documentation>
+ Sets the operation mode of the specified anomaly.
+ The available operation modes are mentioned under the OperationMode enumeration.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_operation_mode">
+	<documentation>
+ Gets the operation mode of the specified anomaly.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_source_ip_based_client_side_integrity_defense_state">
+	<documentation>
+ Sets the Source IP-based client side integrity defense state in the specified anomaly.
+
+ Prevention policy consisting of four methods specifies how the system handles an attack.
+ The system begins with the first method that you enabled in this list.
+ If the system finds this method not effective enough to stop the attack,
+ it uses the next method that you enabled in this list.
+  - Source IP-based client side integrity defense: Specifies, when enabled,
+                    that the system determines whether the client is a legal browser or an illegal script
+                    by sending a JavaScript challenge to each suspicious IP address and waiting for a response.
+                    (Legal browsers are able to respond, while illegal scripts cannot.) The default is disabled.
+  - URL-based client side integrity defense
+  - Source IP-based rate limiting
+  - URL-based rate limiting
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_source_ip_based_client_side_integrity_defense_state">
+	<documentation>
+ Gets the Source IP-based client side integrity defense state in the specified anomaly.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_url_based_client_side_integrity_defense_state">
+	<documentation>
+ Sets the URL-based client side integrity defense state in the specified anomaly.
+
+ Please see set_source_ip_based_client_side_integrity_defense_state for more information about prevention policy.
+  - URL-based client side integrity defense: Specifies, when enabled,
+                    that the system determines whether the client is a legal browser or an illegal script
+                    by sending a JavaScript challenge to each suspicious URL and waiting for a response.
+                    (Legal URLs are able to respond, while illegal scripts cannot.) The default is disabled.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_url_based_client_side_integrity_defense_state">
+	<documentation>
+ Gets the URL-based client side integrity defense state in the specified anomaly.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_source_ip_based_rate_limiting_state">
+	<documentation>
+ Sets the Source IP-based rate limiting state in the specified anomaly.
+
+ Please see set_source_ip_based_client_side_integrity_defense_state for more information about prevention policy.
+  - Source IP-based rate limiting: Specifies, when enabled,
+                    that the system drops transactions from suspicious IP addresses.
+                    The system allows requests from that IP address when its request rate per second
+                    is less than the legitimate history interval (before the attack started),
+                    or less than the threshold you configure in the maximum TPS. The default is enabled.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_source_ip_based_rate_limiting_state">
+	<documentation>
+ Gets the Source IP-based rate limiting state in the specified anomaly.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_url_based_rate_limiting_state">
+	<documentation>
+ Sets the URL-based rate limiting state in the specified anomaly.
+ 
+ Please see set_source_ip_based_client_side_integrity_defense_state for more information about prevention policy.
+  - URL-based rate limiting: Specifies, when enabled,
+                    that the system drops transactions for suspicious URLs,
+                    regardless of whether the IP address is suspicious or not.
+                    The system allows requests for that URL when the request rate per second
+                    is less than the legitimate history interval (before the attack started),
+                    or less than the threshold you configure in the maximum TPS. The default is enabled.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_url_based_rate_limiting_state">
+	<documentation>
+ Gets the URL-based rate limiting state in the specified anomaly.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ip_tps_increase_rate">
+	<documentation>
+ Sets the TPS increase rate value in IP detection criteria (or suspicious IP criteria) of the specified anomaly.
+ 
+ IP detection criteria setting is only available in TPS-based anomaly.
+ It specifies that if at least one of the following criteria is met, the system treats the IP address as an attacker.
+ If these numbers are reached, the system prevents further attacks by limiting the number of requests per second to the history interval.
+ The system does not return the blocking response page.
+
+ Suspicious IP criteria setting is only available in Latency-based anomaly.
+ It specifies that if at least one of the following criteria is met, the system treats the IP address as suspicious (suspects the IP address to be an attacker).
+ If an attack was detected according to the detection criteria, IP rate limiting will be done on the suspicious IP addresses.
+ The system prevents the attack by limiting the number of requests per second to the history interval.
+ The system does not return the blocking response page.
+
+  - TPS increase rate: Specifies that the system considers an IP address to be an attacker (or treats as suspicious)
+                       if the ratio between the transaction rate detection interval and the transaction rate history interval,
+                       for one IP address, is greater than this number. The default setting is 500 percent.
+  - Maximum TPS
+  - Minimum TPS
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ip_tps_increase_rate">
+	<documentation>
+ Gets the TPS increase rate value in IP detection criteria (or suspicious IP criteria) of the specified anomaly.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ip_maximum_tps">
+	<documentation>
+ Sets the maximum TPS value in IP detection criteria (or suspicious IP criteria) of the specified anomaly.
+ 
+ Please see set_ip_tps_increase_rate for more information about IP detection criteria and suspicious IP criteria.
+  - Maximum TPS: Specifies that the system considers an IP address to be an attacker (or treats as suspicious)
+                 if the number of requests sent, per second, from an IP address is equal to or greater than this number.
+                 The default setting is 200 requests per second.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ip_maximum_tps">
+	<documentation>
+ Gets the maximum TPS value in IP detection criteria (or suspicious IP criteria) of the specified anomaly.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ip_minimum_tps">
+	<documentation>
+ Sets the minimum TPS value in IP detection criteria (or suspicious IP criteria) of the specified anomaly.
+ 
+ Please see set_ip_tps_increase_rate for more information about IP detection criteria and suspicious IP criteria.
+  - Minimum TPS: Specifies that the system considers an IP address to be an attacker (or treats as suspicious)
+                 if the detected TPS for a specific IP address equals, or is greater than, this number,
+                 and the TPS increase rate was reached. If the detected TPS is lower than this number,
+                 the system does not consider this IP address to be an attacker (or suspicious) even if
+                 the TPS increase rate was reached. The default setting is 40 transactions per second.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ip_minimum_tps">
+	<documentation>
+ Gets the minimum TPS value in IP detection criteria (or suspicious IP criteria) of the specified anomaly.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_url_tps_increase_rate">
+	<documentation>
+ Sets the TPS increase rate value in URL detection criteria (or suspicious URL criteria) of the specified anomaly.
+ 
+ URL detection criteria setting is only available in TPS-based anomaly.
+ It specifies that if at least one of the following criteria is met, the system treats a URL to be under attack.
+ If these numbers are reached, the system prevents further attacks by limiting the number of requests per second to the history interval.
+ The system does not return the blocking response page.
+
+ Suspicious URL criteria setting is only available in Latency-based anomaly.
+ It specifies that if at least one of the following criteria is met, the system treats the URL as suspicious (suspects the URL to be attacked).
+ If an attack was detected according to the detection criteria, URL rate limiting will be done on the suspicious URLs.
+ The system prevents the attack by limiting the number of requests per second to the history interval.
+ The system does not return the blocking response page.
+
+  - TPS increase rate: Specifies that the system considers an IP address to be an attacker (or treats as suspicious)
+                       if the ratio between the transaction rate detection interval and the transaction rate history interval,
+                       for one IP address, is greater than this number. The default setting is 500 percent.
+  - Maximum TPS
+  - Minimum TPS
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_url_tps_increase_rate">
+	<documentation>
+ Gets the TPS increase rate value in URL detection criteria (or suspicious URL criteria) of the specified anomaly.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_url_maximum_tps">
+	<documentation>
+ Sets the maximum TPS value in URL detection criteria (or suspicious URL criteria) of the specified anomaly.
+ 
+ Please see set_url_tps_increase_rate for more information about URL detection criteria and suspicious URL criteria.
+  - Maximum TPS: Specifies that the system considers a URL to be under attack (or treats as suspicious)
+                 if the number of requests sent, per second, for the URL is equal to or greater than this number.
+                 The default setting is 1000 requests per second.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_url_maximum_tps">
+	<documentation>
+ Gets the maximum TPS value in URL detection criteria (or suspicious URL criteria) of the specified anomaly.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_url_minimum_tps">
+	<documentation>
+ Sets the minimum TPS value in URL detection criteria (or suspicious URL criteria) of the specified anomaly.
+ 
+ Please see set_url_tps_increase_rate for more information about URL detection criteria and suspicious URL criteria.
+  - Minimum TPS: Specifies that the system considers a URL to be under attack (or treats as suspicious)
+                 if the detected TPS for a specific URL equals, or is greater than, this number,
+                 and the TPS increase rate was reached. If the detected TPS is lower than this number,
+                 the system does not consider this URL to be under attack (or suspicious) even if
+                 the TPS increase rate was reached. The default setting is 200 transactions per second.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_url_minimum_tps">
+	<documentation>
+ Gets the minimum TPS value in URL detection criteria (or suspicious URL criteria) of the specified anomaly.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_maximum_prevention_duration">
+	<documentation>
+ Sets the maximum prevention duration (in seconds) in the specified anomaly.
+
+ Prevention duration specifies for how long the system prevents attacks against an attacker IP address or an attacked URL.
+ The system prevents attacks by rejecting requests either from the attacking IP address, or for the attacked URL.
+  - Unlimited (zero value): Specifies that after the system detects and stops a DoS attack,
+             it performs attack prevention until it detects the end of the attack. This is the default.
+  - Number of seconds (positive value): Specifies that after the system detects and stops a DoS  attack,
+             it performs attack prevention either for the amount of time configured here even if the system detects
+             that the attack continues, or until the system detects the end of the attack, whichever is earlier.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_maximum_prevention_duration">
+	<documentation>
+ Gets the maximum prevention duration (in seconds) in the specified anomaly.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_latency_increase_rate">
+	<documentation>
+ Sets the latency increase rate value in detection criteria of Latency-based anomaly.
+ 
+ Detection criteria setting is only available in Latency-based anomaly.
+ It specifies the criteria under which the system considers traffic to be an attack.
+ First, the minimum latency must be reached, and then either the latency increase rate or the maximum latency must be reached.
+  - Latency increase rate: Specifies that the system considers traffic to be an attack if
+                           the ratio of the latency detection interval to the latency history interval,
+                           for one URL, is greater than this number. The default setting is 500 percent.
+  - Maximum latency
+  - Minimum latency
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_latency_increase_rate">
+	<documentation>
+ Gets the latency increase rate value in detection criteria of Latency-based anomaly.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_maximum_latency">
+	<documentation>
+ Sets the maximum latency value in detection criteria of Latency-based anomaly.
+ 
+ Please see set_latency_increase_rate for more information about detection criteria.
+  - Maximum latency: Specifies that the system considers traffic to be an attack if
+                     the latency detection interval for a specific URL is greater than this number.
+                     The default setting is 10000 milliseconds.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_maximum_latency">
+	<documentation>
+ Gets the maximum latency value in detection criteria of Latency-based anomaly.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_minimum_latency">
+	<documentation>
+ Sets the minimum latency value in detection criteria of Latency-based anomaly.
+ 
+ Please see set_latency_increase_rate for more information about detection criteria.
+  - Minimum latency: Specifies that the system considers traffic to be an attack if
+                     the detection interval for a specific URL equals, or is greater than, this number,
+                     and at least one of the latency increase rate or maximum latency was reached.
+                     If the detection interval is lower than this number, the system does not consider
+                     this traffic to be an attack even if one of the latency increase rate or maximum latency was reached.
+                     The default setting is 200 milliseconds.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_minimum_latency">
+	<documentation>
+ Gets the minimum latency value in detection criteria of Latency-based anomaly.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_white_ip">
+	<documentation>
+ Gets the entire IP address whitelist of DoS profile Application Security.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_white_ip">
+	<documentation>
+ Adds a list of IP addresses with subnet masks to the whitelist of DoS profile Application Security.
+ 
+ IP address whitelist specifies IP addresses, including subnet masks, that the system considers
+ legitimate and does not examine when performing DoS prevention.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_white_ip">
+	<documentation>
+ Removes specific IP addresses with subnet masks from the whitelist of DoS profile Application Security.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_white_ips">
+	<documentation>
+ Removes the entire IP address whitelist of DoS profile Application Security.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/ProfileDoS"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/ProfileDoS"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Security.ProfileDoS">
+	<documentation>
+ The ProfileDoS interface enables you to manipulate a DoS profile.
+ Use this interface to prevent Denial of Service (DoS) attacks.
+ DoS profile consists of two parts (layers): Application Security and Protocol (DNS) Security.
+ Each part can be enabled or disabled by means of creating or deleting the corresponding sub-profile.
+
+ In Application Security you can configure:
+  - The circumstances under which the system considers traffic to be a DoS attack.
+  - How the system handles a DoS attack.
+
+ The system considers traffic to be an Application DoS attack based on the following calculations:
+  - Transaction rate detection interval: The average number of requests per second sent for a specific URL, or by a specific IP address.
+                                         This number is calculated by the system, by default, every minute and updated every second.
+  - Transaction rate history interval: The average number of requests per second sent for a specific URL, or by a specific IP address.
+                                       This number is calculated by the system, by default, every hour and updated every minute.
+  - Latency detection interval: The average time it takes for the system to respond to a request for a specific URL, over the last minute.
+                                This average is updated every second.
+  - Latency history interval: The average time it takes for the system to respond to a request for a specific URL, over the last hour.
+                              This average is updated every minute.
+
+ In this sub-profile you must select whether the system prevents DoS attacks based on the client side (TPS-based anomaly) or/and the server side (Latency-based anomaly).
+ The system's DoS attack prevention works differently for every anomaly you select.
+  - In TPS-based anomaly: If the ratio of the transaction rate detection interval to the transaction rate history interval is greater than
+                          the specific percentage you configure in this sub-profile (the TPS increase rate),
+                          the system detects the URL to be under attack, or the IP address to be attacking.
+                          In order to stop the attack, the system drops some requests from the detected IP address and/to the attacked URL.
+  - In Latency-based anomaly: If the ratio of the transaction rate detection interval to the transaction rate history interval is greater than
+                              the specific percentage you configure in this sub-profile (the TPS increase rate),
+                              the system suspects the URL to be under attack, or the IP address to be suspicious.
+                              If the ratio of the latency detection interval to the latency history interval is greater than
+                              the specific percentage you configure in this sub-profile (the latency increase rate),
+                              the system detects that this URL is under attack.
+                              In order to stop the attack, the system drops some requests from the suspicious IP address and/or to the suspicious URL.
+
+        	</documentation>
+	<port name="Security.ProfileDoSPort" binding="tns:Security.ProfileDoSBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

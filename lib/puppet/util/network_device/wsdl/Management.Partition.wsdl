@@ -1,0 +1,545 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.Partition"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Management.Partition.AuthZPartition">
+			<xsd:sequence>
+				<xsd:element name="partition_name" type="xsd:string"/>
+				<xsd:element name="description" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.Partition.AuthZPartitionSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.Partition.AuthZPartition[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.Partition.get_partition_listRequest">
+</message>
+<message name="Management.Partition.get_partition_listResponse">
+	<part name="return" type="tns:Management.Partition.AuthZPartitionSequence"/>
+</message>
+
+<message name="Management.Partition.create_partitionRequest">
+	<part name="partitions" type="tns:Management.Partition.AuthZPartitionSequence"/>
+</message>
+<message name="Management.Partition.create_partitionResponse">
+</message>
+
+<message name="Management.Partition.delete_partitionRequest">
+	<part name="partition_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Partition.delete_partitionResponse">
+</message>
+
+<message name="Management.Partition.delete_all_partitionsRequest">
+</message>
+<message name="Management.Partition.delete_all_partitionsResponse">
+</message>
+
+<message name="Management.Partition.set_active_partitionRequest">
+	<part name="active_partition" type="xsd:string"/>
+</message>
+<message name="Management.Partition.set_active_partitionResponse">
+</message>
+
+<message name="Management.Partition.get_active_partitionRequest">
+</message>
+<message name="Management.Partition.get_active_partitionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="Management.Partition.set_default_route_domainRequest">
+	<part name="partitions" type="tns:Common.StringSequence"/>
+	<part name="route_domains" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Management.Partition.set_default_route_domainResponse">
+</message>
+
+<message name="Management.Partition.get_default_route_domainRequest">
+	<part name="partitions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Partition.get_default_route_domainResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Management.Partition.set_descriptionRequest">
+	<part name="partitions" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Partition.set_descriptionResponse">
+</message>
+
+<message name="Management.Partition.get_descriptionRequest">
+	<part name="partitions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Partition.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.Partition.get_versionRequest">
+</message>
+<message name="Management.Partition.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.PartitionPortType">
+	<operation name="get_partition_list">
+    	<documentation>
+ Gets a list of all AuthZ partitions.
+ 
+        	</documentation>
+		<input message="tns:Management.Partition.get_partition_listRequest"/>
+		<output message="tns:Management.Partition.get_partition_listResponse"/>
+	</operation>
+	<operation name="create_partition">
+	<documentation>
+ Creates the specified AuthZ partitions.
+ 
+        	</documentation>
+		<input message="tns:Management.Partition.create_partitionRequest"/>
+		<output message="tns:Management.Partition.create_partitionResponse"/>
+	</operation>
+	<operation name="delete_partition">
+	<documentation>
+ Deletes the specified AuthZ partitions.
+ It's recommended that if a partition to be deleted is also the current
+ active partition, the user should change the active partition to something
+ else first (using set_active_partition).  Otherwise, in the event that the 
+ partition to be deleted is the current active partition, iControl will 
+ automatically default the new active partition to the "Common" partition.
+ 
+        	</documentation>
+		<input message="tns:Management.Partition.delete_partitionRequest"/>
+		<output message="tns:Management.Partition.delete_partitionResponse"/>
+	</operation>
+	<operation name="delete_all_partitions">
+	<documentation>
+ Deletes all AuthZ partitions, except for the "Common" partition.
+ 
+        	</documentation>
+		<input message="tns:Management.Partition.delete_all_partitionsRequest"/>
+		<output message="tns:Management.Partition.delete_all_partitionsResponse"/>
+	</operation>
+	<operation name="set_active_partition">
+	<documentation>
+ This method is deprecated; please use
+ System::Session::set_active_folder instead.
+
+ Sets the active partition for the current user. The active partition
+ is the administrative partition where all configuration will take place
+ until a new active partition is selected. Each user can only be in one
+ active partition at any given time. By default, if not explicitly set,
+ the active partition for a user will be "Common".
+ 
+ Note: Please note that this method is deprecated. If you
+ set the partition to "[All]", this maps to the
+ System::Session interface method set_active_folder("/") and
+ in this case this method automatically performs
+ set_recursive_query_state(STATE_ENABLED) as well. The
+ method uses set_active_folder, so if the partition you
+ specify maps to no existing top-level folder it will tell
+ you the folder doesn't exist and behave in all respects as
+ set_active_folder does.
+
+        	</documentation>
+		<input message="tns:Management.Partition.set_active_partitionRequest"/>
+		<output message="tns:Management.Partition.set_active_partitionResponse"/>
+	</operation>
+	<operation name="get_active_partition">
+	<documentation>
+ Gets the active partition for the current user. The active partition
+ is the administrative partition where all configuration will take place
+ until a new active partition is selected. Each user can only be in one
+ active partition at any given time. By default, if not explicitly set,
+ the active partition for a user will be "Common".
+ 
+        	</documentation>
+		<input message="tns:Management.Partition.get_active_partitionRequest"/>
+		<output message="tns:Management.Partition.get_active_partitionResponse"/>
+	</operation>
+	<operation name="set_default_route_domain">
+	<documentation>
+ Sets the default route domain for a set of partitions.
+ This is the route domain that is associated with IP
+ addresses that are created in the partition.
+
+ (Please note that the system does not supply recommended
+ replacement functionality for the methods
+ {set,get}_default_route_domain yet. Also, the default route
+ domain is keyed by numeric id here rather than string
+ (string, as in RouteDomainV2). The methods here are
+ deprecated but provided for completeness; as soon as
+ replacement functionality exists they may become
+ nonfunctional earlier than normal.)
+
+        	</documentation>
+		<input message="tns:Management.Partition.set_default_route_domainRequest"/>
+		<output message="tns:Management.Partition.set_default_route_domainResponse"/>
+	</operation>
+	<operation name="get_default_route_domain">
+	<documentation>
+ Gets the default route domain for a set of partitions.
+
+        	</documentation>
+		<input message="tns:Management.Partition.get_default_route_domainRequest"/>
+		<output message="tns:Management.Partition.get_default_route_domainResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ This function is supplied for completeness but is
+ deprecated; please use set_description on a top-level
+ folder instead (see Management::Folder).
+
+ Sets the description for a set of partitions. This is an arbitrary
+ field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Management.Partition.set_descriptionRequest"/>
+		<output message="tns:Management.Partition.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the description for a set of partitions.
+
+        	</documentation>
+		<input message="tns:Management.Partition.get_descriptionRequest"/>
+		<output message="tns:Management.Partition.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Management.Partition.get_versionRequest"/>
+		<output message="tns:Management.Partition.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.PartitionBinding" type="tns:Management.PartitionPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_partition_list">
+	<documentation>
+ Gets a list of all AuthZ partitions.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Partition"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Partition"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Partition"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_partition">
+	<documentation>
+ Creates the specified AuthZ partitions.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Partition"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Partition"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Partition"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_partition">
+	<documentation>
+ Deletes the specified AuthZ partitions.
+ It's recommended that if a partition to be deleted is also the current
+ active partition, the user should change the active partition to something
+ else first (using set_active_partition).  Otherwise, in the event that the 
+ partition to be deleted is the current active partition, iControl will 
+ automatically default the new active partition to the "Common" partition.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Partition"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Partition"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Partition"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_partitions">
+	<documentation>
+ Deletes all AuthZ partitions, except for the "Common" partition.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Partition"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Partition"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Partition"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_active_partition">
+	<documentation>
+ This method is deprecated; please use
+ System::Session::set_active_folder instead.
+
+ Sets the active partition for the current user. The active partition
+ is the administrative partition where all configuration will take place
+ until a new active partition is selected. Each user can only be in one
+ active partition at any given time. By default, if not explicitly set,
+ the active partition for a user will be "Common".
+ 
+ Note: Please note that this method is deprecated. If you
+ set the partition to "[All]", this maps to the
+ System::Session interface method set_active_folder("/") and
+ in this case this method automatically performs
+ set_recursive_query_state(STATE_ENABLED) as well. The
+ method uses set_active_folder, so if the partition you
+ specify maps to no existing top-level folder it will tell
+ you the folder doesn't exist and behave in all respects as
+ set_active_folder does.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Partition"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Partition"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Partition"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_active_partition">
+	<documentation>
+ Gets the active partition for the current user. The active partition
+ is the administrative partition where all configuration will take place
+ until a new active partition is selected. Each user can only be in one
+ active partition at any given time. By default, if not explicitly set,
+ the active partition for a user will be "Common".
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Partition"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Partition"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Partition"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_default_route_domain">
+	<documentation>
+ Sets the default route domain for a set of partitions.
+ This is the route domain that is associated with IP
+ addresses that are created in the partition.
+
+ (Please note that the system does not supply recommended
+ replacement functionality for the methods
+ {set,get}_default_route_domain yet. Also, the default route
+ domain is keyed by numeric id here rather than string
+ (string, as in RouteDomainV2). The methods here are
+ deprecated but provided for completeness; as soon as
+ replacement functionality exists they may become
+ nonfunctional earlier than normal.)
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Partition"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Partition"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Partition"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_default_route_domain">
+	<documentation>
+ Gets the default route domain for a set of partitions.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Partition"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Partition"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Partition"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ This function is supplied for completeness but is
+ deprecated; please use set_description on a top-level
+ folder instead (see Management::Folder).
+
+ Sets the description for a set of partitions. This is an arbitrary
+ field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Partition"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Partition"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Partition"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the description for a set of partitions.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Partition"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Partition"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Partition"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Partition"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Partition"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Partition"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.Partition">
+	<documentation>
+ This interface has been deprecated (as of 11.0.0).  Please use
+ Management::Folder and System::Session in its stead.
+ (Please note that the system does not supply recommended
+ replacement functionality for the methods
+ {set,get}_default_route_domain yet.)
+
+ The Partition interface enables you to manage AuthZ Administrative Partitions, as well
+ as relationship between users, roles, and their associated partitions.
+
+        	</documentation>
+	<port name="Management.PartitionPort" binding="tns:Management.PartitionBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

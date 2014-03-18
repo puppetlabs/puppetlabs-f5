@@ -1,0 +1,68 @@
+<E:Envelope
+        xmlns:E="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:A="http://schemas.xmlsoap.org/soap/encoding/"
+        xmlns:s="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:y="http://www.w3.org/2001/XMLSchema"
+        xmlns:iControl="urn:iControl"
+        E:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+<E:Body>
+<m:get_key_listResponse
+        xmlns:m="urn:iControl:Management/KeyCertificate">
+<return
+        s:type="A:Array"
+        A:arrayType="iControl:Management.KeyCertificate.KeyInformation[3]">
+<item>
+<key_info
+        s:type="iControl:Management.KeyCertificate.Key">
+<id
+        s:type="y:string">/Common/test</id>
+<key_type
+        s:type="iControl:Management.KeyCertificate.KeyType">KTYPE_RSA_PRIVATE</key_type>
+<bit_length
+        s:type="y:long">4096</bit_length>
+<security
+        s:type="iControl:Management.KeyCertificate.SecurityType">STYPE_NORMAL</security>
+</key_info>
+<file_name
+        s:type="y:string">/Common/test.key</file_name>
+<flags
+        s:type="y:long">0</flags>
+</item>
+<item>
+<key_info
+        s:type="iControl:Management.KeyCertificate.Key">
+<id
+        s:type="y:string">/Common/default</id>
+<key_type
+        s:type="iControl:Management.KeyCertificate.KeyType">KTYPE_RSA_PRIVATE</key_type>
+<bit_length
+        s:type="y:long">2048</bit_length>
+<security
+        s:type="iControl:Management.KeyCertificate.SecurityType">STYPE_NORMAL</security>
+</key_info>
+<file_name
+        s:type="y:string">/Common/default.key</file_name>
+<flags
+        s:type="y:long">0</flags>
+</item>
+<item>
+<key_info
+        s:type="iControl:Management.KeyCertificate.Key">
+<id
+        s:type="y:string">/Common/ca-key</id>
+<key_type
+        s:type="iControl:Management.KeyCertificate.KeyType">KTYPE_RSA_PRIVATE</key_type>
+<bit_length
+        s:type="y:long">4096</bit_length>
+<security
+        s:type="iControl:Management.KeyCertificate.SecurityType">STYPE_NORMAL</security>
+</key_info>
+<file_name
+        s:type="y:string">/Common/ca-key.key</file_name>
+<flags
+        s:type="y:long">0</flags>
+</item>
+</return>
+</m:get_key_listResponse>
+</E:Body>
+</E:Envelope>

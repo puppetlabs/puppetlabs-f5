@@ -1,0 +1,3047 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Security.FirewallGlobalRuleList"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Common.FirewallRulePlacementType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="FW_RULE_PLACEMENT_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_PLACEMENT_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_RULE_PLACEMENT_BEFORE">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_PLACEMENT_BEFORE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_RULE_PLACEMENT_AFTER">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_PLACEMENT_AFTER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_RULE_PLACEMENT_ORDER">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_PLACEMENT_ORDER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.FirewallRuleICMPTypeCodeSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.FirewallRuleICMPTypeCodeSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.NetAddressSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.NetAddressSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.PortRangeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.PortRange[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.FirewallRuleActionSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.FirewallRuleAction[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.ProtocolType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="PROTOCOL_ANY">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_ANY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_IPV6">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_IPV6</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_ROUTING">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_ROUTING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_NONE">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_FRAGMENT">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_FRAGMENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_DSTOPTS">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_DSTOPTS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_TCP">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_TCP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_UDP">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_UDP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_ICMP">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_ICMP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_ICMPV6">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_ICMPV6</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_OSPF">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_OSPF</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_SCTP">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_SCTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.NetAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.FirewallRuleAction">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="FW_RULE_ACTION_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_ACTION_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_RULE_ACTION_ACCEPT">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_ACTION_ACCEPT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_RULE_ACTION_ACCEPT_DECISIVELY">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_ACTION_ACCEPT_DECISIVELY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_RULE_ACTION_REJECT">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_ACTION_REJECT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_RULE_ACTION_DROP">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_ACTION_DROP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Common.FirewallRuleState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="FW_RULE_STATE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_STATE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_RULE_STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_RULE_STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_RULE_STATE_SCHEDULED">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_STATE_SCHEDULED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_RULE_STATE_INVALID">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_STATE_INVALID</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.FirewallRulePlacement">
+			<xsd:sequence>
+				<xsd:element name="type" type="tns:Common.FirewallRulePlacementType"/>
+				<xsd:element name="target" type="xsd:string"/>
+				<xsd:element name="order" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.FirewallRuleICMPTypeCode">
+			<xsd:sequence>
+				<xsd:element name="type" type="xsd:long"/>
+				<xsd:element name="code" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.FirewallRuleICMPTypeCodeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.FirewallRuleICMPTypeCode[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.FirewallRuleStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.FirewallRuleState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.PortRange">
+			<xsd:sequence>
+				<xsd:element name="begin" type="xsd:long"/>
+				<xsd:element name="end" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.FirewallRulePlacementSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.FirewallRulePlacement[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.PortRangeSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.PortRangeSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ProtocolTypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.ProtocolType[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Security.FirewallGlobalRuleList.set_descriptionRequest">
+	<part name="description" type="xsd:string"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.set_descriptionResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_descriptionRequest">
+</message>
+<message name="Security.FirewallGlobalRuleList.get_descriptionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_ruleRequest">
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_ruleResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.add_fw_ruleRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="placements" type="tns:Common.FirewallRulePlacementSequence"/>
+	<part name="actions" type="tns:Common.FirewallRuleActionSequence"/>
+	<part name="states" type="tns:Common.FirewallRuleStateSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.add_fw_ruleResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.add_fw_rule_with_rule_listRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="placements" type="tns:Common.FirewallRulePlacementSequence"/>
+	<part name="lists" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.FirewallRuleStateSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.add_fw_rule_with_rule_listResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.remove_fw_ruleRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.remove_fw_ruleResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.remove_all_fw_rulesRequest">
+</message>
+<message name="Security.FirewallGlobalRuleList.remove_all_fw_rulesResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_stateRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.FirewallRuleStateSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_stateResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_stateRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_stateResponse">
+	<part name="return" type="tns:Common.FirewallRuleStateSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_orderRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="orders" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_orderResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_orderRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_orderResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_source_address_listRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_source_address_listResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.add_fw_rule_source_address_listRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="lists" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.add_fw_rule_source_address_listResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.remove_fw_rule_source_address_listRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="lists" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.remove_fw_rule_source_address_listResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.remove_all_fw_rule_source_address_listsRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.remove_all_fw_rule_source_address_listsResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_source_addressRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_source_addressResponse">
+	<part name="return" type="tns:Common.NetAddressSequenceSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.add_fw_rule_source_addressRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.NetAddressSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.add_fw_rule_source_addressResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.remove_fw_rule_source_addressRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.NetAddressSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.remove_fw_rule_source_addressResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.remove_all_fw_rule_source_addressesRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.remove_all_fw_rule_source_addressesResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_source_address_descriptionRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.NetAddressSequenceSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_source_address_descriptionResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_source_address_descriptionRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.NetAddressSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_source_address_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_destination_address_listRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_destination_address_listResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.add_fw_rule_destination_address_listRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="lists" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.add_fw_rule_destination_address_listResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.remove_fw_rule_destination_address_listRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="lists" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.remove_fw_rule_destination_address_listResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.remove_all_fw_rule_destination_address_listsRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.remove_all_fw_rule_destination_address_listsResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_destination_addressRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_destination_addressResponse">
+	<part name="return" type="tns:Common.NetAddressSequenceSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.add_fw_rule_destination_addressRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.NetAddressSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.add_fw_rule_destination_addressResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.remove_fw_rule_destination_addressRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.NetAddressSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.remove_fw_rule_destination_addressResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.remove_all_fw_rule_destination_addressesRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.remove_all_fw_rule_destination_addressesResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_destination_address_descriptionRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.NetAddressSequenceSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_destination_address_descriptionResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_destination_address_descriptionRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.NetAddressSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_destination_address_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_source_port_listRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_source_port_listResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.add_fw_rule_source_port_listRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="lists" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.add_fw_rule_source_port_listResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.remove_fw_rule_source_port_listRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="lists" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.remove_fw_rule_source_port_listResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.remove_all_fw_rule_source_port_listsRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.remove_all_fw_rule_source_port_listsResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_source_portRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_source_portResponse">
+	<part name="return" type="tns:Common.PortRangeSequenceSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.add_fw_rule_source_portRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="ports" type="tns:Common.PortRangeSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.add_fw_rule_source_portResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.remove_fw_rule_source_portRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="ports" type="tns:Common.PortRangeSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.remove_fw_rule_source_portResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.remove_all_fw_rule_source_portsRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.remove_all_fw_rule_source_portsResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_source_port_descriptionRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="ports" type="tns:Common.PortRangeSequenceSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_source_port_descriptionResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_source_port_descriptionRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="ports" type="tns:Common.PortRangeSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_source_port_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_destination_port_listRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_destination_port_listResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.add_fw_rule_destination_port_listRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="lists" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.add_fw_rule_destination_port_listResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.remove_fw_rule_destination_port_listRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="lists" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.remove_fw_rule_destination_port_listResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.remove_all_fw_rule_destination_port_listsRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.remove_all_fw_rule_destination_port_listsResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_destination_portRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_destination_portResponse">
+	<part name="return" type="tns:Common.PortRangeSequenceSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.add_fw_rule_destination_portRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="ports" type="tns:Common.PortRangeSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.add_fw_rule_destination_portResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.remove_fw_rule_destination_portRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="ports" type="tns:Common.PortRangeSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.remove_fw_rule_destination_portResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.remove_all_fw_rule_destination_portsRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.remove_all_fw_rule_destination_portsResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_destination_port_descriptionRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="ports" type="tns:Common.PortRangeSequenceSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_destination_port_descriptionResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_destination_port_descriptionRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="ports" type="tns:Common.PortRangeSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_destination_port_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_icmp_typecodeRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_icmp_typecodeResponse">
+	<part name="return" type="tns:Common.FirewallRuleICMPTypeCodeSequenceSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.add_fw_rule_icmp_typecodeRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="typecodes" type="tns:Common.FirewallRuleICMPTypeCodeSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.add_fw_rule_icmp_typecodeResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.remove_fw_rule_icmp_typecodeRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="typecodes" type="tns:Common.FirewallRuleICMPTypeCodeSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.remove_fw_rule_icmp_typecodeResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.remove_all_fw_rule_icmp_typecodesRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.remove_all_fw_rule_icmp_typecodesResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_icmp_typecode_descriptionRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="typecodes" type="tns:Common.FirewallRuleICMPTypeCodeSequenceSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_icmp_typecode_descriptionResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_icmp_typecode_descriptionRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="typecodes" type="tns:Common.FirewallRuleICMPTypeCodeSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_icmp_typecode_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_source_vlanRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_source_vlanResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.add_fw_rule_source_vlanRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="vlans" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.add_fw_rule_source_vlanResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.remove_fw_rule_source_vlanRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="vlans" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.remove_fw_rule_source_vlanResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.remove_all_fw_rule_source_vlansRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.remove_all_fw_rule_source_vlansResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_weekly_scheduleRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="schedules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_weekly_scheduleResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_weekly_scheduleRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_weekly_scheduleResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_protocolRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="protocols" type="tns:Common.ProtocolTypeSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_protocolResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_protocolRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_protocolResponse">
+	<part name="return" type="tns:Common.ProtocolTypeSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_protocol_numericRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="protocols" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_protocol_numericResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_protocol_numericRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_protocol_numericResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_actionRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="actions" type="tns:Common.FirewallRuleActionSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_actionResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_actionRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_actionResponse">
+	<part name="return" type="tns:Common.FirewallRuleActionSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_rule_listRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="lists" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_rule_listResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_rule_listRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_rule_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_descriptionRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.set_fw_rule_descriptionResponse">
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_descriptionRequest">
+	<part name="rules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallGlobalRuleList.get_fw_rule_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Security.FirewallGlobalRuleList.get_versionRequest">
+</message>
+<message name="Security.FirewallGlobalRuleList.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Security.FirewallGlobalRuleListPortType">
+	<operation name="set_description">
+ 	<documentation>
+ Sets the description for the global firewall rule list.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.set_descriptionRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the global firewall rule list.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_descriptionRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule">
+	<documentation>
+ Gets the firewall rules for the global firewall rule list.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_ruleRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_ruleResponse"/>
+	</operation>
+	<operation name="add_fw_rule">
+	<documentation>
+ Adds firewall rules to the global firewall rule list.
+
+ Note that the abilities to add more than one rule or,
+ especially, to add partial rules and to build them up
+ introduce a need for best practices: (1) introduce the rule
+ or rules initially disabled (using the states parameter)
+ and enable them (or set them as scheduled) as a whole when
+ you have them complete or (2) use transactions (see
+ System::Session::start_transaction) to avoid accidentally
+ putting partial rules or incomplete rule sets into place.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.add_fw_ruleRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.add_fw_ruleResponse"/>
+	</operation>
+	<operation name="add_fw_rule_with_rule_list">
+	<documentation>
+ Adds firewall rules to the global firewall rule list,
+ having each of those point to a rule list. This method is
+ intended as a convenience to prevent you from having to add
+ firewall rules as a transaction.
+
+ See the Security::FirewallRuleList interface for more
+ information on rule lists.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.add_fw_rule_with_rule_listRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.add_fw_rule_with_rule_listResponse"/>
+	</operation>
+	<operation name="remove_fw_rule">
+	<documentation>
+ Removes firewall rules from the global firewall rule list.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.remove_fw_ruleRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.remove_fw_ruleResponse"/>
+	</operation>
+	<operation name="remove_all_fw_rules">
+	<documentation>
+ Removes all firewall rules from the global firewall rule list.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.remove_all_fw_rulesRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.remove_all_fw_rulesResponse"/>
+	</operation>
+	<operation name="set_fw_rule_state">
+	<documentation>
+ Sets the state for the specified firewall rules.
+
+ You can add a rule as enabled or disabled initially, build
+ it up, then enable it.  You can temporarily disable a rule
+ with no other effect on it, so that it can be enabled
+ easily later without having to rebuild it.  You can use the
+ state of FW_RULE_STATE_SCHEDULED to enable scheduling for the
+ rule. See add_fw_rule for more information.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.set_fw_rule_stateRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.set_fw_rule_stateResponse"/>
+	</operation>
+	<operation name="get_fw_rule_state">
+	<documentation>
+ Gets the state for the specified firewall rules.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_stateRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_stateResponse"/>
+	</operation>
+	<operation name="set_fw_rule_order">
+	<documentation>
+ Sets the order (numerically) for the specified firewall rules.
+
+ Two rules can't have the same order, so one must manage
+ order carefully if using numeric order to arrange firewall
+ rules. See add_fw_rule for more information.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.set_fw_rule_orderRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.set_fw_rule_orderResponse"/>
+	</operation>
+	<operation name="get_fw_rule_order">
+	<documentation>
+ Gets the order (numerically) for the specified firewall rules.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_orderRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_orderResponse"/>
+	</operation>
+	<operation name="get_fw_rule_source_address_list">
+	<documentation>
+ Gets source address lists for the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_source_address_listRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_source_address_listResponse"/>
+	</operation>
+	<operation name="add_fw_rule_source_address_list">
+	<documentation>
+ Adds source address lists to the specified firewall rules.
+
+ See the Security::FirewallAddressList interface for more
+ information on address lists.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.add_fw_rule_source_address_listRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.add_fw_rule_source_address_listResponse"/>
+	</operation>
+	<operation name="remove_fw_rule_source_address_list">
+	<documentation>
+ Removes source address lists from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.remove_fw_rule_source_address_listRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.remove_fw_rule_source_address_listResponse"/>
+	</operation>
+	<operation name="remove_all_fw_rule_source_address_lists">
+	<documentation>
+ Removes all source address lists from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.remove_all_fw_rule_source_address_listsRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.remove_all_fw_rule_source_address_listsResponse"/>
+	</operation>
+	<operation name="get_fw_rule_source_address">
+	<documentation>
+ Gets (inlined) source addresses for the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_source_addressRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_source_addressResponse"/>
+	</operation>
+	<operation name="add_fw_rule_source_address">
+	<documentation>
+ Adds (inlined) source addresses to the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.add_fw_rule_source_addressRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.add_fw_rule_source_addressResponse"/>
+	</operation>
+	<operation name="remove_fw_rule_source_address">
+	<documentation>
+ Removes (inlined) source addresses from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.remove_fw_rule_source_addressRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.remove_fw_rule_source_addressResponse"/>
+	</operation>
+	<operation name="remove_all_fw_rule_source_addresses">
+	<documentation>
+ Removes all (inlined) source addresses from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.remove_all_fw_rule_source_addressesRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.remove_all_fw_rule_source_addressesResponse"/>
+	</operation>
+	<operation name="set_fw_rule_source_address_description">
+	<documentation>
+ Sets the description for the specified firewall rules' source addresses.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.set_fw_rule_source_address_descriptionRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.set_fw_rule_source_address_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_source_address_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules' source addresses.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_source_address_descriptionRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_source_address_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_destination_address_list">
+	<documentation>
+ Gets destination address lists for the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_destination_address_listRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_destination_address_listResponse"/>
+	</operation>
+	<operation name="add_fw_rule_destination_address_list">
+	<documentation>
+ Adds destination address lists to the specified firewall rules.
+
+ See the Security::FirewallAddressList interface for more
+ information on address lists.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.add_fw_rule_destination_address_listRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.add_fw_rule_destination_address_listResponse"/>
+	</operation>
+	<operation name="remove_fw_rule_destination_address_list">
+	<documentation>
+ Removes destination address lists from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.remove_fw_rule_destination_address_listRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.remove_fw_rule_destination_address_listResponse"/>
+	</operation>
+	<operation name="remove_all_fw_rule_destination_address_lists">
+	<documentation>
+ Removes all destination address lists from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.remove_all_fw_rule_destination_address_listsRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.remove_all_fw_rule_destination_address_listsResponse"/>
+	</operation>
+	<operation name="get_fw_rule_destination_address">
+	<documentation>
+ Gets (inlined) destination addresses for the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_destination_addressRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_destination_addressResponse"/>
+	</operation>
+	<operation name="add_fw_rule_destination_address">
+	<documentation>
+ Adds (inlined) destination addresses to the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.add_fw_rule_destination_addressRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.add_fw_rule_destination_addressResponse"/>
+	</operation>
+	<operation name="remove_fw_rule_destination_address">
+	<documentation>
+ Removes (inlined) destination addresses from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.remove_fw_rule_destination_addressRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.remove_fw_rule_destination_addressResponse"/>
+	</operation>
+	<operation name="remove_all_fw_rule_destination_addresses">
+	<documentation>
+ Removes all (inlined) destination addresses from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.remove_all_fw_rule_destination_addressesRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.remove_all_fw_rule_destination_addressesResponse"/>
+	</operation>
+	<operation name="set_fw_rule_destination_address_description">
+	<documentation>
+ Sets the description for the specified firewall rules' destination addresses.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.set_fw_rule_destination_address_descriptionRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.set_fw_rule_destination_address_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_destination_address_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules' destination addresses.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_destination_address_descriptionRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_destination_address_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_source_port_list">
+	<documentation>
+ Gets source port lists for the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_source_port_listRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_source_port_listResponse"/>
+	</operation>
+	<operation name="add_fw_rule_source_port_list">
+	<documentation>
+ Adds source port lists to the specified firewall rules.
+
+ See the Security::FirewallPortList interface for more
+ information on port lists.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.add_fw_rule_source_port_listRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.add_fw_rule_source_port_listResponse"/>
+	</operation>
+	<operation name="remove_fw_rule_source_port_list">
+	<documentation>
+ Removes source port lists from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.remove_fw_rule_source_port_listRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.remove_fw_rule_source_port_listResponse"/>
+	</operation>
+	<operation name="remove_all_fw_rule_source_port_lists">
+	<documentation>
+ Removes all source port lists from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.remove_all_fw_rule_source_port_listsRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.remove_all_fw_rule_source_port_listsResponse"/>
+	</operation>
+	<operation name="get_fw_rule_source_port">
+	<documentation>
+ Gets (inlined) source ports for the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_source_portRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_source_portResponse"/>
+	</operation>
+	<operation name="add_fw_rule_source_port">
+	<documentation>
+ Adds (inlined) source ports to the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.add_fw_rule_source_portRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.add_fw_rule_source_portResponse"/>
+	</operation>
+	<operation name="remove_fw_rule_source_port">
+	<documentation>
+ Removes (inlined) source ports from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.remove_fw_rule_source_portRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.remove_fw_rule_source_portResponse"/>
+	</operation>
+	<operation name="remove_all_fw_rule_source_ports">
+	<documentation>
+ Removes all (inlined) source ports from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.remove_all_fw_rule_source_portsRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.remove_all_fw_rule_source_portsResponse"/>
+	</operation>
+	<operation name="set_fw_rule_source_port_description">
+	<documentation>
+ Sets the description for the specified firewall rules' (inlined) source ports.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.set_fw_rule_source_port_descriptionRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.set_fw_rule_source_port_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_source_port_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules' (inlined) source ports.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_source_port_descriptionRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_source_port_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_destination_port_list">
+	<documentation>
+ Gets destination port lists for the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_destination_port_listRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_destination_port_listResponse"/>
+	</operation>
+	<operation name="add_fw_rule_destination_port_list">
+	<documentation>
+ Adds destination port lists to the specified firewall rules.
+
+ See the Security::FirewallPortList interface for more
+ information on port lists.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.add_fw_rule_destination_port_listRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.add_fw_rule_destination_port_listResponse"/>
+	</operation>
+	<operation name="remove_fw_rule_destination_port_list">
+	<documentation>
+ Removes destination port lists from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.remove_fw_rule_destination_port_listRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.remove_fw_rule_destination_port_listResponse"/>
+	</operation>
+	<operation name="remove_all_fw_rule_destination_port_lists">
+	<documentation>
+ Removes all destination port lists from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.remove_all_fw_rule_destination_port_listsRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.remove_all_fw_rule_destination_port_listsResponse"/>
+	</operation>
+	<operation name="get_fw_rule_destination_port">
+	<documentation>
+ Gets (inlined) destination ports for the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_destination_portRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_destination_portResponse"/>
+	</operation>
+	<operation name="add_fw_rule_destination_port">
+	<documentation>
+ Adds (inlined) destination ports to the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.add_fw_rule_destination_portRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.add_fw_rule_destination_portResponse"/>
+	</operation>
+	<operation name="remove_fw_rule_destination_port">
+	<documentation>
+ Removes (inlined) destination ports from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.remove_fw_rule_destination_portRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.remove_fw_rule_destination_portResponse"/>
+	</operation>
+	<operation name="remove_all_fw_rule_destination_ports">
+	<documentation>
+ Removes all (inlined) destination ports from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.remove_all_fw_rule_destination_portsRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.remove_all_fw_rule_destination_portsResponse"/>
+	</operation>
+	<operation name="set_fw_rule_destination_port_description">
+	<documentation>
+ Sets the description for the specified firewall rules' (inlined) destination ports.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.set_fw_rule_destination_port_descriptionRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.set_fw_rule_destination_port_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_destination_port_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules' (inlined) destination ports.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_destination_port_descriptionRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_destination_port_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_icmp_typecode">
+	<documentation>
+ Gets (inlined) ICMP type/code values for the specified firewall rules.
+ A value of 255 for either ICMP type or code is a wildcard value.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_icmp_typecodeRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_icmp_typecodeResponse"/>
+	</operation>
+	<operation name="add_fw_rule_icmp_typecode">
+	<documentation>
+ Adds (inlined) ICMP type/code values to the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.add_fw_rule_icmp_typecodeRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.add_fw_rule_icmp_typecodeResponse"/>
+	</operation>
+	<operation name="remove_fw_rule_icmp_typecode">
+	<documentation>
+ Removes (inlined) ICMP type/code values from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.remove_fw_rule_icmp_typecodeRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.remove_fw_rule_icmp_typecodeResponse"/>
+	</operation>
+	<operation name="remove_all_fw_rule_icmp_typecodes">
+	<documentation>
+ Removes all (inlined) ICMP type/code values from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.remove_all_fw_rule_icmp_typecodesRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.remove_all_fw_rule_icmp_typecodesResponse"/>
+	</operation>
+	<operation name="set_fw_rule_icmp_typecode_description">
+	<documentation>
+ Sets the description for the specified firewall rules' (inlined) ICMP type/code values.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.set_fw_rule_icmp_typecode_descriptionRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.set_fw_rule_icmp_typecode_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_icmp_typecode_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules' (inlined) ICMP type/code values.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_icmp_typecode_descriptionRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_icmp_typecode_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_source_vlan">
+	<documentation>
+ Gets source VLANs for the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_source_vlanRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_source_vlanResponse"/>
+	</operation>
+	<operation name="add_fw_rule_source_vlan">
+	<documentation>
+ Adds source VLANs to the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.add_fw_rule_source_vlanRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.add_fw_rule_source_vlanResponse"/>
+	</operation>
+	<operation name="remove_fw_rule_source_vlan">
+	<documentation>
+ Removes source VLANs from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.remove_fw_rule_source_vlanRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.remove_fw_rule_source_vlanResponse"/>
+	</operation>
+	<operation name="remove_all_fw_rule_source_vlans">
+	<documentation>
+ Removes all source VLANs from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.remove_all_fw_rule_source_vlansRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.remove_all_fw_rule_source_vlansResponse"/>
+	</operation>
+	<operation name="set_fw_rule_weekly_schedule">
+	<documentation>
+ Sets a weekly schedule for the specified firewall rules.
+ See Security::FirewallWeeklySchedule for how to create and
+ manipulate weekly schedules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.set_fw_rule_weekly_scheduleRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.set_fw_rule_weekly_scheduleResponse"/>
+	</operation>
+	<operation name="get_fw_rule_weekly_schedule">
+	<documentation>
+ Gets a weekly schedule for the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_weekly_scheduleRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_weekly_scheduleResponse"/>
+	</operation>
+	<operation name="set_fw_rule_protocol">
+	<documentation>
+ Sets the (IP) protocol for the specified firewall rules.
+
+ Note: if the protocol is not one of the supported standard
+ protocols, use set_fw_rule_protocol_numeric.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.set_fw_rule_protocolRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.set_fw_rule_protocolResponse"/>
+	</operation>
+	<operation name="get_fw_rule_protocol">
+	<documentation>
+ Gets the (IP) protocol for the specified firewall rules.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_protocolRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_protocolResponse"/>
+	</operation>
+	<operation name="set_fw_rule_protocol_numeric">
+	<documentation>
+ Sets the IP protocol (numerically) for the specified firewall rules.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.set_fw_rule_protocol_numericRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.set_fw_rule_protocol_numericResponse"/>
+	</operation>
+	<operation name="get_fw_rule_protocol_numeric">
+	<documentation>
+ Gets the IP protocol (numerically) for the specified firewall rules.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_protocol_numericRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_protocol_numericResponse"/>
+	</operation>
+	<operation name="set_fw_rule_action">
+	<documentation>
+ Sets the action for the specified firewall rules.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.set_fw_rule_actionRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.set_fw_rule_actionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_action">
+	<documentation>
+ Gets the action for the specified firewall rules.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_actionRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_actionResponse"/>
+	</operation>
+	<operation name="set_fw_rule_rule_list">
+	<documentation>
+ Sets the rule list for the specified firewall rules.
+
+ If a list is specified then the system will validate that
+ no other properties were specified in the current
+ transaction, and will clear all other match criteria fields
+ (src, dst, ip protocol, et cetera).
+ 
+ The empty string means no rule list.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.set_fw_rule_rule_listRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.set_fw_rule_rule_listResponse"/>
+	</operation>
+	<operation name="get_fw_rule_rule_list">
+	<documentation>
+ Gets the rule list for the specified firewall rules.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_rule_listRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_rule_listResponse"/>
+	</operation>
+	<operation name="set_fw_rule_description">
+	<documentation>
+ Sets the description for the specified firewall rules.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.set_fw_rule_descriptionRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.set_fw_rule_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_fw_rule_descriptionRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_fw_rule_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallGlobalRuleList.get_versionRequest"/>
+		<output message="tns:Security.FirewallGlobalRuleList.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Security.FirewallGlobalRuleListBinding" type="tns:Security.FirewallGlobalRuleListPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for the global firewall rule list.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the global firewall rule list.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule">
+	<documentation>
+ Gets the firewall rules for the global firewall rule list.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule">
+	<documentation>
+ Adds firewall rules to the global firewall rule list.
+
+ Note that the abilities to add more than one rule or,
+ especially, to add partial rules and to build them up
+ introduce a need for best practices: (1) introduce the rule
+ or rules initially disabled (using the states parameter)
+ and enable them (or set them as scheduled) as a whole when
+ you have them complete or (2) use transactions (see
+ System::Session::start_transaction) to avoid accidentally
+ putting partial rules or incomplete rule sets into place.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule_with_rule_list">
+	<documentation>
+ Adds firewall rules to the global firewall rule list,
+ having each of those point to a rule list. This method is
+ intended as a convenience to prevent you from having to add
+ firewall rules as a transaction.
+
+ See the Security::FirewallRuleList interface for more
+ information on rule lists.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_fw_rule">
+	<documentation>
+ Removes firewall rules from the global firewall rule list.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_fw_rules">
+	<documentation>
+ Removes all firewall rules from the global firewall rule list.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_state">
+	<documentation>
+ Sets the state for the specified firewall rules.
+
+ You can add a rule as enabled or disabled initially, build
+ it up, then enable it.  You can temporarily disable a rule
+ with no other effect on it, so that it can be enabled
+ easily later without having to rebuild it.  You can use the
+ state of FW_RULE_STATE_SCHEDULED to enable scheduling for the
+ rule. See add_fw_rule for more information.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_state">
+	<documentation>
+ Gets the state for the specified firewall rules.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_order">
+	<documentation>
+ Sets the order (numerically) for the specified firewall rules.
+
+ Two rules can't have the same order, so one must manage
+ order carefully if using numeric order to arrange firewall
+ rules. See add_fw_rule for more information.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_order">
+	<documentation>
+ Gets the order (numerically) for the specified firewall rules.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_source_address_list">
+	<documentation>
+ Gets source address lists for the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule_source_address_list">
+	<documentation>
+ Adds source address lists to the specified firewall rules.
+
+ See the Security::FirewallAddressList interface for more
+ information on address lists.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_fw_rule_source_address_list">
+	<documentation>
+ Removes source address lists from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_fw_rule_source_address_lists">
+	<documentation>
+ Removes all source address lists from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_source_address">
+	<documentation>
+ Gets (inlined) source addresses for the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule_source_address">
+	<documentation>
+ Adds (inlined) source addresses to the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_fw_rule_source_address">
+	<documentation>
+ Removes (inlined) source addresses from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_fw_rule_source_addresses">
+	<documentation>
+ Removes all (inlined) source addresses from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_source_address_description">
+	<documentation>
+ Sets the description for the specified firewall rules' source addresses.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_source_address_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules' source addresses.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_destination_address_list">
+	<documentation>
+ Gets destination address lists for the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule_destination_address_list">
+	<documentation>
+ Adds destination address lists to the specified firewall rules.
+
+ See the Security::FirewallAddressList interface for more
+ information on address lists.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_fw_rule_destination_address_list">
+	<documentation>
+ Removes destination address lists from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_fw_rule_destination_address_lists">
+	<documentation>
+ Removes all destination address lists from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_destination_address">
+	<documentation>
+ Gets (inlined) destination addresses for the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule_destination_address">
+	<documentation>
+ Adds (inlined) destination addresses to the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_fw_rule_destination_address">
+	<documentation>
+ Removes (inlined) destination addresses from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_fw_rule_destination_addresses">
+	<documentation>
+ Removes all (inlined) destination addresses from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_destination_address_description">
+	<documentation>
+ Sets the description for the specified firewall rules' destination addresses.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_destination_address_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules' destination addresses.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_source_port_list">
+	<documentation>
+ Gets source port lists for the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule_source_port_list">
+	<documentation>
+ Adds source port lists to the specified firewall rules.
+
+ See the Security::FirewallPortList interface for more
+ information on port lists.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_fw_rule_source_port_list">
+	<documentation>
+ Removes source port lists from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_fw_rule_source_port_lists">
+	<documentation>
+ Removes all source port lists from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_source_port">
+	<documentation>
+ Gets (inlined) source ports for the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule_source_port">
+	<documentation>
+ Adds (inlined) source ports to the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_fw_rule_source_port">
+	<documentation>
+ Removes (inlined) source ports from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_fw_rule_source_ports">
+	<documentation>
+ Removes all (inlined) source ports from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_source_port_description">
+	<documentation>
+ Sets the description for the specified firewall rules' (inlined) source ports.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_source_port_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules' (inlined) source ports.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_destination_port_list">
+	<documentation>
+ Gets destination port lists for the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule_destination_port_list">
+	<documentation>
+ Adds destination port lists to the specified firewall rules.
+
+ See the Security::FirewallPortList interface for more
+ information on port lists.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_fw_rule_destination_port_list">
+	<documentation>
+ Removes destination port lists from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_fw_rule_destination_port_lists">
+	<documentation>
+ Removes all destination port lists from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_destination_port">
+	<documentation>
+ Gets (inlined) destination ports for the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule_destination_port">
+	<documentation>
+ Adds (inlined) destination ports to the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_fw_rule_destination_port">
+	<documentation>
+ Removes (inlined) destination ports from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_fw_rule_destination_ports">
+	<documentation>
+ Removes all (inlined) destination ports from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_destination_port_description">
+	<documentation>
+ Sets the description for the specified firewall rules' (inlined) destination ports.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_destination_port_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules' (inlined) destination ports.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_icmp_typecode">
+	<documentation>
+ Gets (inlined) ICMP type/code values for the specified firewall rules.
+ A value of 255 for either ICMP type or code is a wildcard value.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule_icmp_typecode">
+	<documentation>
+ Adds (inlined) ICMP type/code values to the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_fw_rule_icmp_typecode">
+	<documentation>
+ Removes (inlined) ICMP type/code values from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_fw_rule_icmp_typecodes">
+	<documentation>
+ Removes all (inlined) ICMP type/code values from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_icmp_typecode_description">
+	<documentation>
+ Sets the description for the specified firewall rules' (inlined) ICMP type/code values.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_icmp_typecode_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules' (inlined) ICMP type/code values.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_source_vlan">
+	<documentation>
+ Gets source VLANs for the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule_source_vlan">
+	<documentation>
+ Adds source VLANs to the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_fw_rule_source_vlan">
+	<documentation>
+ Removes source VLANs from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_fw_rule_source_vlans">
+	<documentation>
+ Removes all source VLANs from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_weekly_schedule">
+	<documentation>
+ Sets a weekly schedule for the specified firewall rules.
+ See Security::FirewallWeeklySchedule for how to create and
+ manipulate weekly schedules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_weekly_schedule">
+	<documentation>
+ Gets a weekly schedule for the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_protocol">
+	<documentation>
+ Sets the (IP) protocol for the specified firewall rules.
+
+ Note: if the protocol is not one of the supported standard
+ protocols, use set_fw_rule_protocol_numeric.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_protocol">
+	<documentation>
+ Gets the (IP) protocol for the specified firewall rules.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_protocol_numeric">
+	<documentation>
+ Sets the IP protocol (numerically) for the specified firewall rules.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_protocol_numeric">
+	<documentation>
+ Gets the IP protocol (numerically) for the specified firewall rules.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_action">
+	<documentation>
+ Sets the action for the specified firewall rules.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_action">
+	<documentation>
+ Gets the action for the specified firewall rules.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_rule_list">
+	<documentation>
+ Sets the rule list for the specified firewall rules.
+
+ If a list is specified then the system will validate that
+ no other properties were specified in the current
+ transaction, and will clear all other match criteria fields
+ (src, dst, ip protocol, et cetera).
+ 
+ The empty string means no rule list.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_rule_list">
+	<documentation>
+ Gets the rule list for the specified firewall rules.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_description">
+	<documentation>
+ Sets the description for the specified firewall rules.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallGlobalRuleList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallGlobalRuleList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Security.FirewallGlobalRuleList">
+	<documentation>
+ The FirewallGlobalRuleList interface enables you to add rules
+ to the global firewall rule list and modify the rules.
+ You can use this interface to configure network firewall rules
+ that are applied to all traffic except the management
+ interface. IP and ICMP packets are compared to the criteria
+ specified in the rules. If a packet matches the criteria then
+ the system will take the action specified by the rule. If a
+ packet does not match a rule then the packet will be compared
+ against the next rule. If a packet does not match a global
+ rule, depending on the packet content, the packet will either
+ be accepted or passed to the next set of rules (example: the
+ packet will be compared to Networking self IP rules if the
+ packet is destined for a network associated with a self IP that
+ has firewall rules defined).  Rules are evaluated in the order
+ in which they are specified.
+
+ Note that the source and destination addresses in the firewall
+ methods (get_fw_rule and so on) are type Common::NetAddress, a
+ type which allows one to specify a prefix length after the
+ address, e.g., "10.1.1.0/24".
+
+        	</documentation>
+	<port name="Security.FirewallGlobalRuleListPort" binding="tns:Security.FirewallGlobalRuleListBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

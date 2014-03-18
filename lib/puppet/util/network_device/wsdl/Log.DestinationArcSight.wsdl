@@ -1,0 +1,377 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Log.DestinationArcSight"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Log.DestinationArcSight.get_listRequest">
+</message>
+<message name="Log.DestinationArcSight.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Log.DestinationArcSight.createRequest">
+	<part name="destinations" type="tns:Common.StringSequence"/>
+	<part name="forwarding_destinations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.DestinationArcSight.createResponse">
+</message>
+
+<message name="Log.DestinationArcSight.delete_arcsight_destinationRequest">
+	<part name="destinations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.DestinationArcSight.delete_arcsight_destinationResponse">
+</message>
+
+<message name="Log.DestinationArcSight.delete_all_arcsight_destinationsRequest">
+</message>
+<message name="Log.DestinationArcSight.delete_all_arcsight_destinationsResponse">
+</message>
+
+<message name="Log.DestinationArcSight.set_forwarding_destinationRequest">
+	<part name="destinations" type="tns:Common.StringSequence"/>
+	<part name="forwarding_destinations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.DestinationArcSight.set_forwarding_destinationResponse">
+</message>
+
+<message name="Log.DestinationArcSight.get_forwarding_destinationRequest">
+	<part name="destinations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.DestinationArcSight.get_forwarding_destinationResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Log.DestinationArcSight.set_descriptionRequest">
+	<part name="destinations" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.DestinationArcSight.set_descriptionResponse">
+</message>
+
+<message name="Log.DestinationArcSight.get_descriptionRequest">
+	<part name="destinations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.DestinationArcSight.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Log.DestinationArcSight.get_versionRequest">
+</message>
+<message name="Log.DestinationArcSight.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Log.DestinationArcSightPortType">
+	<operation name="get_list">
+ 	<documentation>
+ Gets the list of ArcSight destinations.
+
+        	</documentation>
+		<input message="tns:Log.DestinationArcSight.get_listRequest"/>
+		<output message="tns:Log.DestinationArcSight.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates new ArcSight destinations.
+
+        	</documentation>
+		<input message="tns:Log.DestinationArcSight.createRequest"/>
+		<output message="tns:Log.DestinationArcSight.createResponse"/>
+	</operation>
+	<operation name="delete_arcsight_destination">
+	<documentation>
+ Deletes the specified ArcSight destinations.
+
+        	</documentation>
+		<input message="tns:Log.DestinationArcSight.delete_arcsight_destinationRequest"/>
+		<output message="tns:Log.DestinationArcSight.delete_arcsight_destinationResponse"/>
+	</operation>
+	<operation name="delete_all_arcsight_destinations">
+	<documentation>
+ Deletes all ArcSight destinations.
+
+        	</documentation>
+		<input message="tns:Log.DestinationArcSight.delete_all_arcsight_destinationsRequest"/>
+		<output message="tns:Log.DestinationArcSight.delete_all_arcsight_destinationsResponse"/>
+	</operation>
+	<operation name="set_forwarding_destination">
+	<documentation>
+ Sets the log destination that will be used to forward ArcSight formatted
+ messages for the specified ArcSight destinations.
+
+        	</documentation>
+		<input message="tns:Log.DestinationArcSight.set_forwarding_destinationRequest"/>
+		<output message="tns:Log.DestinationArcSight.set_forwarding_destinationResponse"/>
+	</operation>
+	<operation name="get_forwarding_destination">
+	<documentation>
+ Gets the forwarding destinations attached to the specified ArcSight
+ destinations.
+
+        	</documentation>
+		<input message="tns:Log.DestinationArcSight.get_forwarding_destinationRequest"/>
+		<output message="tns:Log.DestinationArcSight.get_forwarding_destinationResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for the specified ArcSight destinations.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Log.DestinationArcSight.set_descriptionRequest"/>
+		<output message="tns:Log.DestinationArcSight.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the description for the specified ArcSight destinations.
+
+        	</documentation>
+		<input message="tns:Log.DestinationArcSight.get_descriptionRequest"/>
+		<output message="tns:Log.DestinationArcSight.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Log.DestinationArcSight.get_versionRequest"/>
+		<output message="tns:Log.DestinationArcSight.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Log.DestinationArcSightBinding" type="tns:Log.DestinationArcSightPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the list of ArcSight destinations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationArcSight"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationArcSight"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationArcSight"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates new ArcSight destinations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationArcSight"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationArcSight"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationArcSight"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_arcsight_destination">
+	<documentation>
+ Deletes the specified ArcSight destinations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationArcSight"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationArcSight"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationArcSight"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_arcsight_destinations">
+	<documentation>
+ Deletes all ArcSight destinations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationArcSight"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationArcSight"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationArcSight"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_forwarding_destination">
+	<documentation>
+ Sets the log destination that will be used to forward ArcSight formatted
+ messages for the specified ArcSight destinations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationArcSight"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationArcSight"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationArcSight"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_forwarding_destination">
+	<documentation>
+ Gets the forwarding destinations attached to the specified ArcSight
+ destinations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationArcSight"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationArcSight"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationArcSight"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for the specified ArcSight destinations.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationArcSight"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationArcSight"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationArcSight"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the description for the specified ArcSight destinations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationArcSight"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationArcSight"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationArcSight"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationArcSight"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationArcSight"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationArcSight"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Log.DestinationArcSight">
+	<documentation>
+ The DestinationArcSight interface enables you to format log messages
+ into ArcSight format and specify a destination to which to forward
+ those messages.
+
+        	</documentation>
+	<port name="Log.DestinationArcSightPort" binding="tns:Log.DestinationArcSightBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

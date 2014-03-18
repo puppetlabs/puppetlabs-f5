@@ -5,20 +5,7 @@ Puppet::Type.newtype(:f5_monitor) do
   @doc = "Manage F5 monitor."
 
   apply_to_device
-
-  ensurable do
-    desc "F5 monitor resource state. Valid values are present, absent."
-
-    defaultto(:present)
-
-    newvalue(:present) do
-      provider.create
-    end
-
-    newvalue(:absent) do
-      provider.destroy
-    end
-  end
+  ensurable
 
   newparam(:name, :namevar=>true) do
     desc "The monitor name."
@@ -75,11 +62,6 @@ Puppet::Type.newtype(:f5_monitor) do
         end
       end
 
-      # convert to integer values
-      value.each do |k, v|
-        value[k] = v.to_i
-      end
-
       # default integer property value to 0 since all resource have all values
       [ 'ITYPE_INTERVAL',
         'ITYPE_PROBE_INTERVAL',
@@ -129,7 +111,8 @@ Puppet::Type.newtype(:f5_monitor) do
           raise Puppet::Error, "Puppet::Type::F5_Monitor: does not support template_string_property key #{k}"
         end
       end
-      value
+      # Filter out any blank strings.
+      value.select {|key, contents| contents != ''}
     end
 
     def should_to_s(newvalue)
@@ -152,8 +135,4 @@ Puppet::Type.newtype(:f5_monitor) do
 
     newvalues(:true, :false)
   end
-
-  #newproperty(:template_user_defined_string_property) do
-  #  desc "The monitor load balancing method."
-  #end
 end

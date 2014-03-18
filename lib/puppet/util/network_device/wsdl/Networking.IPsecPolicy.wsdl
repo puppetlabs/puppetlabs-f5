@@ -1,0 +1,1123 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.IPsecPolicy"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Networking.IPsecDynSaEncryptAlgorithmSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.IPsecDynSaEncryptAlgorithm[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.IPsecSaAuthAlgorithm">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="IPSEC_DYNAMIC_SA_AUTH_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DYNAMIC_SA_AUTH_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DYNAMIC_SA_AUTH_SHA1">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DYNAMIC_SA_AUTH_SHA1</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DYNAMIC_SA_AUTH_AES_GCM128">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DYNAMIC_SA_AUTH_AES_GCM128</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DYNAMIC_SA_AUTH_AES_GCM192">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DYNAMIC_SA_AUTH_AES_GCM192</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DYNAMIC_SA_AUTH_AES_GCM256">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DYNAMIC_SA_AUTH_AES_GCM256</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DYNAMIC_SA_AUTH_AES_GMAC128">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DYNAMIC_SA_AUTH_AES_GMAC128</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DYNAMIC_SA_AUTH_AES_GMAC192">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DYNAMIC_SA_AUTH_AES_GMAC192</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DYNAMIC_SA_AUTH_AES_GMAC256">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DYNAMIC_SA_AUTH_AES_GMAC256</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Networking.IPsecDiffieHellmanGroupSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.IPsecDiffieHellmanGroup[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.IPsecProtocol">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="IPSEC_PROTOCOL_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_PROTOCOL_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_PROTOCOL_ESP">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_PROTOCOL_ESP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_PROTOCOL_AH">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_PROTOCOL_AH</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Networking.IPsecDynSaEncryptAlgorithm">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="IPSEC_DYNAMIC_ENCR_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DYNAMIC_ENCR_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DYNAMIC_ENCR_NULL">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DYNAMIC_ENCR_NULL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DYNAMIC_ENCR_3DES">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DYNAMIC_ENCR_3DES</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DYNAMIC_ENCR_AES128">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DYNAMIC_ENCR_AES128</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DYNAMIC_ENCR_AES192">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DYNAMIC_ENCR_AES192</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DYNAMIC_ENCR_AES256">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DYNAMIC_ENCR_AES256</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DYNAMIC_ENCR_AES_GCM128">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DYNAMIC_ENCR_AES_GCM128</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DYNAMIC_ENCR_AES_GCM192">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DYNAMIC_ENCR_AES_GCM192</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DYNAMIC_ENCR_AES_GCM256">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DYNAMIC_ENCR_AES_GCM256</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DYNAMIC_ENCR_AES_GMAC128">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DYNAMIC_ENCR_AES_GMAC128</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DYNAMIC_ENCR_AES_GMAC192">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DYNAMIC_ENCR_AES_GMAC192</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DYNAMIC_ENCR_AES_GMAC256">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DYNAMIC_ENCR_AES_GMAC256</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Networking.IPsecMode">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="IPSEC_MODE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_MODE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_MODE_TRANSPORT">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_MODE_TRANSPORT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_MODE_TUNNEL">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_MODE_TUNNEL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_MODE_ISESSION">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_MODE_ISESSION</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Networking.IPsecDiffieHellmanGroup">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="IPSEC_DIFFIE_HELLMAN_GROUP_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DIFFIE_HELLMAN_GROUP_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DIFFIE_HELLMAN_GROUP_MODP768">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DIFFIE_HELLMAN_GROUP_MODP768</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DIFFIE_HELLMAN_GROUP_MODP1024">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DIFFIE_HELLMAN_GROUP_MODP1024</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DIFFIE_HELLMAN_GROUP_MODP1536">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DIFFIE_HELLMAN_GROUP_MODP1536</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DIFFIE_HELLMAN_GROUP_MODP2048">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DIFFIE_HELLMAN_GROUP_MODP2048</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DIFFIE_HELLMAN_GROUP_MODP3072">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DIFFIE_HELLMAN_GROUP_MODP3072</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DIFFIE_HELLMAN_GROUP_MODP4096">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DIFFIE_HELLMAN_GROUP_MODP4096</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DIFFIE_HELLMAN_GROUP_MODP6144">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DIFFIE_HELLMAN_GROUP_MODP6144</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DIFFIE_HELLMAN_GROUP_MODP8192">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DIFFIE_HELLMAN_GROUP_MODP8192</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Networking.IPsecSaAuthAlgorithmSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.IPsecSaAuthAlgorithm[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.IPsecProtocolSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.IPsecProtocol[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.IPsecModeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.IPsecMode[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.IPsecPolicy.get_listRequest">
+</message>
+<message name="Networking.IPsecPolicy.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.IPsecPolicy.createRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecPolicy.createResponse">
+</message>
+
+<message name="Networking.IPsecPolicy.delete_policyRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecPolicy.delete_policyResponse">
+</message>
+
+<message name="Networking.IPsecPolicy.delete_all_policiesRequest">
+</message>
+<message name="Networking.IPsecPolicy.delete_all_policiesResponse">
+</message>
+
+<message name="Networking.IPsecPolicy.set_descriptionRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecPolicy.set_descriptionResponse">
+</message>
+
+<message name="Networking.IPsecPolicy.get_descriptionRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecPolicy.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.IPsecPolicy.set_modeRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="modes" type="tns:Networking.IPsecModeSequence"/>
+</message>
+<message name="Networking.IPsecPolicy.set_modeResponse">
+</message>
+
+<message name="Networking.IPsecPolicy.get_modeRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecPolicy.get_modeResponse">
+	<part name="return" type="tns:Networking.IPsecModeSequence"/>
+</message>
+
+<message name="Networking.IPsecPolicy.set_protocolRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="protocols" type="tns:Networking.IPsecProtocolSequence"/>
+</message>
+<message name="Networking.IPsecPolicy.set_protocolResponse">
+</message>
+
+<message name="Networking.IPsecPolicy.get_protocolRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecPolicy.get_protocolResponse">
+	<part name="return" type="tns:Networking.IPsecProtocolSequence"/>
+</message>
+
+<message name="Networking.IPsecPolicy.set_local_addressRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.IPsecPolicy.set_local_addressResponse">
+</message>
+
+<message name="Networking.IPsecPolicy.get_local_addressRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecPolicy.get_local_addressResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Networking.IPsecPolicy.set_remote_addressRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.IPsecPolicy.set_remote_addressResponse">
+</message>
+
+<message name="Networking.IPsecPolicy.get_remote_addressRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecPolicy.get_remote_addressResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Networking.IPsecPolicy.set_auth_algorithmRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="algorithms" type="tns:Networking.IPsecSaAuthAlgorithmSequence"/>
+</message>
+<message name="Networking.IPsecPolicy.set_auth_algorithmResponse">
+</message>
+
+<message name="Networking.IPsecPolicy.get_auth_algorithmRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecPolicy.get_auth_algorithmResponse">
+	<part name="return" type="tns:Networking.IPsecSaAuthAlgorithmSequence"/>
+</message>
+
+<message name="Networking.IPsecPolicy.set_encrypt_algorithmRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="algorithms" type="tns:Networking.IPsecDynSaEncryptAlgorithmSequence"/>
+</message>
+<message name="Networking.IPsecPolicy.set_encrypt_algorithmResponse">
+</message>
+
+<message name="Networking.IPsecPolicy.get_encrypt_algorithmRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecPolicy.get_encrypt_algorithmResponse">
+	<part name="return" type="tns:Networking.IPsecDynSaEncryptAlgorithmSequence"/>
+</message>
+
+<message name="Networking.IPsecPolicy.set_forward_secrecyRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="secrecies" type="tns:Networking.IPsecDiffieHellmanGroupSequence"/>
+</message>
+<message name="Networking.IPsecPolicy.set_forward_secrecyResponse">
+</message>
+
+<message name="Networking.IPsecPolicy.get_forward_secrecyRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecPolicy.get_forward_secrecyResponse">
+	<part name="return" type="tns:Networking.IPsecDiffieHellmanGroupSequence"/>
+</message>
+
+<message name="Networking.IPsecPolicy.set_lifetimeRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="lifetimes" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.IPsecPolicy.set_lifetimeResponse">
+</message>
+
+<message name="Networking.IPsecPolicy.get_lifetimeRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecPolicy.get_lifetimeResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.IPsecPolicy.get_versionRequest">
+</message>
+<message name="Networking.IPsecPolicy.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.IPsecPolicyPortType">
+	<operation name="get_list">
+  	<documentation>
+ Gets the names for all IPsec policies.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.get_listRequest"/>
+		<output message="tns:Networking.IPsecPolicy.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a set of IPsec policies.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.createRequest"/>
+		<output message="tns:Networking.IPsecPolicy.createResponse"/>
+	</operation>
+	<operation name="delete_policy">
+	<documentation>
+ Deletes a set of IPsec policies.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.delete_policyRequest"/>
+		<output message="tns:Networking.IPsecPolicy.delete_policyResponse"/>
+	</operation>
+	<operation name="delete_all_policies">
+	<documentation>
+ Deletes all IPsec policies.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.delete_all_policiesRequest"/>
+		<output message="tns:Networking.IPsecPolicy.delete_all_policiesResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the descriptions for the specified IPsec policies.
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.set_descriptionRequest"/>
+		<output message="tns:Networking.IPsecPolicy.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the specified IPsec policies.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.get_descriptionRequest"/>
+		<output message="tns:Networking.IPsecPolicy.get_descriptionResponse"/>
+	</operation>
+	<operation name="set_mode">
+	<documentation>
+ Sets IPsec modes for the specified IPsec policies.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.set_modeRequest"/>
+		<output message="tns:Networking.IPsecPolicy.set_modeResponse"/>
+	</operation>
+	<operation name="get_mode">
+	<documentation>
+ Gets IPsec modes for the specified IPsec policies.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.get_modeRequest"/>
+		<output message="tns:Networking.IPsecPolicy.get_modeResponse"/>
+	</operation>
+	<operation name="set_protocol">
+	<documentation>
+ Sets IPsec protocols for the specified IPsec policies.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.set_protocolRequest"/>
+		<output message="tns:Networking.IPsecPolicy.set_protocolResponse"/>
+	</operation>
+	<operation name="get_protocol">
+	<documentation>
+ Gets IPsec protocols for the specified IPsec policies.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.get_protocolRequest"/>
+		<output message="tns:Networking.IPsecPolicy.get_protocolResponse"/>
+	</operation>
+	<operation name="set_local_address">
+	<documentation>
+ Sets IPsec local addresses for the specified IPsec policies.
+ For a policy that uses Tunnel mode, sets the
+ local endpoint IP address of the IPsec tunnel.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.set_local_addressRequest"/>
+		<output message="tns:Networking.IPsecPolicy.set_local_addressResponse"/>
+	</operation>
+	<operation name="get_local_address">
+	<documentation>
+ Gets IPsec local addresses for the specified IPsec policies.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.get_local_addressRequest"/>
+		<output message="tns:Networking.IPsecPolicy.get_local_addressResponse"/>
+	</operation>
+	<operation name="set_remote_address">
+	<documentation>
+ Sets IPsec remote addresses for the specified IPsec policies.
+ For a policy that uses Tunnel mode, sets the
+ remote endpoint IP address of the IPsec tunnel.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.set_remote_addressRequest"/>
+		<output message="tns:Networking.IPsecPolicy.set_remote_addressResponse"/>
+	</operation>
+	<operation name="get_remote_address">
+	<documentation>
+ Gets IPsec remote addresses for the specified IPsec policies.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.get_remote_addressRequest"/>
+		<output message="tns:Networking.IPsecPolicy.get_remote_addressResponse"/>
+	</operation>
+	<operation name="set_auth_algorithm">
+	<documentation>
+ Sets IPsec auth algorithms for the specified IPsec policies.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.set_auth_algorithmRequest"/>
+		<output message="tns:Networking.IPsecPolicy.set_auth_algorithmResponse"/>
+	</operation>
+	<operation name="get_auth_algorithm">
+	<documentation>
+ Gets IPsec auth algorithms for the specified IPsec policies.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.get_auth_algorithmRequest"/>
+		<output message="tns:Networking.IPsecPolicy.get_auth_algorithmResponse"/>
+	</operation>
+	<operation name="set_encrypt_algorithm">
+	<documentation>
+ Sets IPsec encrypt algorithms for the specified IPsec policies.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.set_encrypt_algorithmRequest"/>
+		<output message="tns:Networking.IPsecPolicy.set_encrypt_algorithmResponse"/>
+	</operation>
+	<operation name="get_encrypt_algorithm">
+	<documentation>
+ Gets IPsec encrypt algorithms for the specified IPsec policies.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.get_encrypt_algorithmRequest"/>
+		<output message="tns:Networking.IPsecPolicy.get_encrypt_algorithmResponse"/>
+	</operation>
+	<operation name="set_forward_secrecy">
+	<documentation>
+ Sets IPsec forward secrecies for the specified IPsec policies.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.set_forward_secrecyRequest"/>
+		<output message="tns:Networking.IPsecPolicy.set_forward_secrecyResponse"/>
+	</operation>
+	<operation name="get_forward_secrecy">
+	<documentation>
+ Gets IPsec forward secrecies for the specified IPsec policies.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.get_forward_secrecyRequest"/>
+		<output message="tns:Networking.IPsecPolicy.get_forward_secrecyResponse"/>
+	</operation>
+	<operation name="set_lifetime">
+	<documentation>
+ Sets IPsec lifetimes for the specified IPsec policies.
+ Specifies the lifetime duration for the dynamically
+ negotiated SAs. This attribute is valid only when
+ IKE is used to negotiate Security Associations.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.set_lifetimeRequest"/>
+		<output message="tns:Networking.IPsecPolicy.set_lifetimeResponse"/>
+	</operation>
+	<operation name="get_lifetime">
+	<documentation>
+ Gets IPsec lifetimes for the specified IPsec policies.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.get_lifetimeRequest"/>
+		<output message="tns:Networking.IPsecPolicy.get_lifetimeResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecPolicy.get_versionRequest"/>
+		<output message="tns:Networking.IPsecPolicy.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.IPsecPolicyBinding" type="tns:Networking.IPsecPolicyPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the names for all IPsec policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a set of IPsec policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_policy">
+	<documentation>
+ Deletes a set of IPsec policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_policies">
+	<documentation>
+ Deletes all IPsec policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the descriptions for the specified IPsec policies.
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the specified IPsec policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_mode">
+	<documentation>
+ Sets IPsec modes for the specified IPsec policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_mode">
+	<documentation>
+ Gets IPsec modes for the specified IPsec policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_protocol">
+	<documentation>
+ Sets IPsec protocols for the specified IPsec policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_protocol">
+	<documentation>
+ Gets IPsec protocols for the specified IPsec policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_local_address">
+	<documentation>
+ Sets IPsec local addresses for the specified IPsec policies.
+ For a policy that uses Tunnel mode, sets the
+ local endpoint IP address of the IPsec tunnel.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_local_address">
+	<documentation>
+ Gets IPsec local addresses for the specified IPsec policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_remote_address">
+	<documentation>
+ Sets IPsec remote addresses for the specified IPsec policies.
+ For a policy that uses Tunnel mode, sets the
+ remote endpoint IP address of the IPsec tunnel.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_remote_address">
+	<documentation>
+ Gets IPsec remote addresses for the specified IPsec policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_auth_algorithm">
+	<documentation>
+ Sets IPsec auth algorithms for the specified IPsec policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_auth_algorithm">
+	<documentation>
+ Gets IPsec auth algorithms for the specified IPsec policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_encrypt_algorithm">
+	<documentation>
+ Sets IPsec encrypt algorithms for the specified IPsec policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_encrypt_algorithm">
+	<documentation>
+ Gets IPsec encrypt algorithms for the specified IPsec policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_forward_secrecy">
+	<documentation>
+ Sets IPsec forward secrecies for the specified IPsec policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_forward_secrecy">
+	<documentation>
+ Gets IPsec forward secrecies for the specified IPsec policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_lifetime">
+	<documentation>
+ Sets IPsec lifetimes for the specified IPsec policies.
+ Specifies the lifetime duration for the dynamically
+ negotiated SAs. This attribute is valid only when
+ IKE is used to negotiate Security Associations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_lifetime">
+	<documentation>
+ Gets IPsec lifetimes for the specified IPsec policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.IPsecPolicy">
+	<documentation>
+ This interface configures the IPsec Protocol suite for securing
+ Internet Protocol (IP) communications by authenticating and
+ encrypting each IP packet of a communication session.
+
+        	</documentation>
+	<port name="Networking.IPsecPolicyPort" binding="tns:Networking.IPsecPolicyBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

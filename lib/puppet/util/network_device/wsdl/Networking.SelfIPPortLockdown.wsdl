@@ -1,0 +1,421 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.SelfIPPortLockdown"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Networking.SelfIPPortLockdown.SelfIPAccess">
+			<xsd:sequence>
+				<xsd:element name="self_ip" type="xsd:string"/>
+				<xsd:element name="mode" type="tns:Networking.SelfIPPortLockdown.AllowMode"/>
+				<xsd:element name="protocol_ports" type="tns:Networking.SelfIPPortLockdown.ProtocolPortSequence"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.ProtocolType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="PROTOCOL_ANY">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_ANY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_IPV6">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_IPV6</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_ROUTING">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_ROUTING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_NONE">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_FRAGMENT">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_FRAGMENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_DSTOPTS">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_DSTOPTS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_TCP">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_TCP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_UDP">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_UDP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_ICMP">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_ICMP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_ICMPV6">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_ICMPV6</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_OSPF">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_OSPF</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_SCTP">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_SCTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Networking.SelfIPPortLockdown.SelfIPAccessSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.SelfIPPortLockdown.SelfIPAccess[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.SelfIPPortLockdown.ProtocolPortSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.SelfIPPortLockdown.ProtocolPort[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.SelfIPPortLockdown.ProtocolPort">
+			<xsd:sequence>
+				<xsd:element name="protocol" type="tns:Common.ProtocolType"/>
+				<xsd:element name="port" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.SelfIPPortLockdown.AllowMode">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="ALLOW_MODE_PROTOCOL_PORT">
+					<xsd:annotation>
+						<xsd:documentation>ALLOW_MODE_PROTOCOL_PORT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ALLOW_MODE_NONE">
+					<xsd:annotation>
+						<xsd:documentation>ALLOW_MODE_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ALLOW_MODE_DEFAULTS">
+					<xsd:annotation>
+						<xsd:documentation>ALLOW_MODE_DEFAULTS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ALLOW_MODE_ALL">
+					<xsd:annotation>
+						<xsd:documentation>ALLOW_MODE_ALL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.SelfIPPortLockdown.get_allow_access_listRequest">
+	<part name="self_ips" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.SelfIPPortLockdown.get_allow_access_listResponse">
+	<part name="return" type="tns:Networking.SelfIPPortLockdown.SelfIPAccessSequence"/>
+</message>
+
+<message name="Networking.SelfIPPortLockdown.add_allow_access_listRequest">
+	<part name="access_lists" type="tns:Networking.SelfIPPortLockdown.SelfIPAccessSequence"/>
+</message>
+<message name="Networking.SelfIPPortLockdown.add_allow_access_listResponse">
+</message>
+
+<message name="Networking.SelfIPPortLockdown.delete_allow_access_listRequest">
+	<part name="access_lists" type="tns:Networking.SelfIPPortLockdown.SelfIPAccessSequence"/>
+</message>
+<message name="Networking.SelfIPPortLockdown.delete_allow_access_listResponse">
+</message>
+
+<message name="Networking.SelfIPPortLockdown.get_default_protocol_port_access_listRequest">
+</message>
+<message name="Networking.SelfIPPortLockdown.get_default_protocol_port_access_listResponse">
+	<part name="return" type="tns:Networking.SelfIPPortLockdown.ProtocolPortSequence"/>
+</message>
+
+<message name="Networking.SelfIPPortLockdown.add_default_protocol_port_access_listRequest">
+	<part name="defaults" type="tns:Networking.SelfIPPortLockdown.ProtocolPortSequence"/>
+</message>
+<message name="Networking.SelfIPPortLockdown.add_default_protocol_port_access_listResponse">
+</message>
+
+<message name="Networking.SelfIPPortLockdown.remove_default_protocol_port_access_listRequest">
+	<part name="defaults" type="tns:Networking.SelfIPPortLockdown.ProtocolPortSequence"/>
+</message>
+<message name="Networking.SelfIPPortLockdown.remove_default_protocol_port_access_listResponse">
+</message>
+
+<message name="Networking.SelfIPPortLockdown.get_versionRequest">
+</message>
+<message name="Networking.SelfIPPortLockdown.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.SelfIPPortLockdownPortType">
+	<operation name="get_allow_access_list">
+   	<documentation>
+ Gets the access lists for the specified self IPs.
+
+        	</documentation>
+		<input message="tns:Networking.SelfIPPortLockdown.get_allow_access_listRequest"/>
+		<output message="tns:Networking.SelfIPPortLockdown.get_allow_access_listResponse"/>
+	</operation>
+	<operation name="add_allow_access_list">
+	<documentation>
+ Adds the list of access methods, with optional protocols/ports, for the specified self IPs. 
+
+        	</documentation>
+		<input message="tns:Networking.SelfIPPortLockdown.add_allow_access_listRequest"/>
+		<output message="tns:Networking.SelfIPPortLockdown.add_allow_access_listResponse"/>
+	</operation>
+	<operation name="delete_allow_access_list">
+	<documentation>
+ Deletes protocols and ports from the allow access list for the specified self IPs. 
+
+        	</documentation>
+		<input message="tns:Networking.SelfIPPortLockdown.delete_allow_access_listRequest"/>
+		<output message="tns:Networking.SelfIPPortLockdown.delete_allow_access_listResponse"/>
+	</operation>
+	<operation name="get_default_protocol_port_access_list">
+	<documentation>
+ Gets the default protocol/port access list on which access is allowed.
+
+        	</documentation>
+		<input message="tns:Networking.SelfIPPortLockdown.get_default_protocol_port_access_listRequest"/>
+		<output message="tns:Networking.SelfIPPortLockdown.get_default_protocol_port_access_listResponse"/>
+	</operation>
+	<operation name="add_default_protocol_port_access_list">
+	<documentation>
+ Adds to the default list of protocols/ports on which access is allowed. 
+
+        	</documentation>
+		<input message="tns:Networking.SelfIPPortLockdown.add_default_protocol_port_access_listRequest"/>
+		<output message="tns:Networking.SelfIPPortLockdown.add_default_protocol_port_access_listResponse"/>
+	</operation>
+	<operation name="remove_default_protocol_port_access_list">
+	<documentation>
+ Remove protocols and ports from the default list of protocols/ports on which access is allowed. 
+
+        	</documentation>
+		<input message="tns:Networking.SelfIPPortLockdown.remove_default_protocol_port_access_listRequest"/>
+		<output message="tns:Networking.SelfIPPortLockdown.remove_default_protocol_port_access_listResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.SelfIPPortLockdown.get_versionRequest"/>
+		<output message="tns:Networking.SelfIPPortLockdown.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.SelfIPPortLockdownBinding" type="tns:Networking.SelfIPPortLockdownPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_allow_access_list">
+	<documentation>
+ Gets the access lists for the specified self IPs.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/SelfIPPortLockdown"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/SelfIPPortLockdown"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/SelfIPPortLockdown"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_allow_access_list">
+	<documentation>
+ Adds the list of access methods, with optional protocols/ports, for the specified self IPs. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/SelfIPPortLockdown"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/SelfIPPortLockdown"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/SelfIPPortLockdown"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_allow_access_list">
+	<documentation>
+ Deletes protocols and ports from the allow access list for the specified self IPs. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/SelfIPPortLockdown"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/SelfIPPortLockdown"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/SelfIPPortLockdown"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_default_protocol_port_access_list">
+	<documentation>
+ Gets the default protocol/port access list on which access is allowed.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/SelfIPPortLockdown"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/SelfIPPortLockdown"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/SelfIPPortLockdown"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_default_protocol_port_access_list">
+	<documentation>
+ Adds to the default list of protocols/ports on which access is allowed. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/SelfIPPortLockdown"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/SelfIPPortLockdown"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/SelfIPPortLockdown"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_default_protocol_port_access_list">
+	<documentation>
+ Remove protocols and ports from the default list of protocols/ports on which access is allowed. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/SelfIPPortLockdown"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/SelfIPPortLockdown"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/SelfIPPortLockdown"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/SelfIPPortLockdown"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/SelfIPPortLockdown"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/SelfIPPortLockdown"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.SelfIPPortLockdown">
+	<documentation>
+ *IMPORTANT* This entire interface has been deprecated (as of
+ 11.0.0), since self IP addresses are accessed by name instead
+ of address.  Its functionality has been moved to SelfIPV2
+ interface.
+
+ The SelfIPPortLockdown interface enables you to lock down protocols and ports on self IP addresses.  
+
+        	</documentation>
+	<port name="Networking.SelfIPPortLockdownPort" binding="tns:Networking.SelfIPPortLockdownBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

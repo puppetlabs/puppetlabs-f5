@@ -1,0 +1,735 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.ChangeControl"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Management.ChangeControl.ClassInfoSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.ChangeControl.ClassInfo[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ChangeControl.InstanceInfo">
+			<xsd:sequence>
+				<xsd:element name="name" type="xsd:string"/>
+				<xsd:element name="transaction_id" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.TimeStamp">
+			<xsd:sequence>
+				<xsd:element name="year" type="xsd:long"/>
+				<xsd:element name="month" type="xsd:long"/>
+				<xsd:element name="day" type="xsd:long"/>
+				<xsd:element name="hour" type="xsd:long"/>
+				<xsd:element name="minute" type="xsd:long"/>
+				<xsd:element name="second" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ChangeControl.InstanceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.ChangeControl.Instance[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ChangeControl.DeprecatedClassInfoSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.ChangeControl.DeprecatedClassInfo[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.ChangeControl.InstanceVariableType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="TYPE_DEVICE">
+					<xsd:annotation>
+						<xsd:documentation>TYPE_DEVICE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.ChangeControl.InstanceVariable">
+			<xsd:sequence>
+				<xsd:element name="name" type="xsd:string"/>
+				<xsd:element name="display_name" type="xsd:string"/>
+				<xsd:element name="value" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ChangeControl.DeprecatedClassInfo">
+			<xsd:sequence>
+				<xsd:element name="old_name" type="xsd:string"/>
+				<xsd:element name="new_name" type="xsd:string"/>
+				<xsd:element name="transition_version" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ChangeControl.InstanceInfoSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.ChangeControl.InstanceInfo[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ChangeControl.ModuleInfo">
+			<xsd:sequence>
+				<xsd:element name="name" type="xsd:string"/>
+				<xsd:element name="transaction_id" type="xsd:long"/>
+				<xsd:element name="delete_transaction_id" type="xsd:long"/>
+				<xsd:element name="supports_transaction_id" type="xsd:boolean"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ChangeControl.ClassInfo">
+			<xsd:sequence>
+				<xsd:element name="name" type="xsd:string"/>
+				<xsd:element name="transaction_id" type="xsd:long"/>
+				<xsd:element name="delete_transaction_id" type="xsd:long"/>
+				<xsd:element name="supports_delete" type="xsd:boolean"/>
+				<xsd:element name="supports_transaction_id" type="xsd:boolean"/>
+				<xsd:element name="supports_verify" type="xsd:boolean"/>
+				<xsd:element name="is_singleton" type="xsd:boolean"/>
+				<xsd:element name="header_needs_instance_name" type="xsd:boolean"/>
+				<xsd:element name="is_partitioned" type="xsd:boolean"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ChangeControl.InstanceVariableSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.ChangeControl.InstanceVariableSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.ULong">
+			<xsd:restriction base="xsd:long"/>
+		</xsd:simpleType>
+		<xsd:simpleType name="Management.ChangeControl.InstanceFormatType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="FORMAT_SHELL">
+					<xsd:annotation>
+						<xsd:documentation>FORMAT_SHELL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FORMAT_XML">
+					<xsd:annotation>
+						<xsd:documentation>FORMAT_XML</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ChangeControl.ClassTransactionInfoSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.ChangeControl.ClassTransactionInfo[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ChangeControl.InstanceInfoSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.ChangeControl.InstanceInfoSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ChangeControl.ModuleInfoSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.ChangeControl.ModuleInfo[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ChangeControl.InstanceVariableSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.ChangeControl.InstanceVariable[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ChangeControl.Instance">
+			<xsd:sequence>
+				<xsd:element name="info" type="tns:Management.ChangeControl.InstanceInfo"/>
+				<xsd:element name="format" type="tns:Management.ChangeControl.InstanceFormatType"/>
+				<xsd:element name="data" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ChangeControl.ClassTransactionInfo">
+			<xsd:sequence>
+				<xsd:element name="name" type="xsd:string"/>
+				<xsd:element name="transaction_id" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.ChangeControl.get_last_load_timeRequest">
+</message>
+<message name="Management.ChangeControl.get_last_load_timeResponse">
+	<part name="return" type="tns:Common.TimeStamp"/>
+</message>
+
+<message name="Management.ChangeControl.get_module_infoRequest">
+	<part name="filter" type="xsd:string"/>
+</message>
+<message name="Management.ChangeControl.get_module_infoResponse">
+	<part name="return" type="tns:Management.ChangeControl.ModuleInfoSequence"/>
+</message>
+
+<message name="Management.ChangeControl.get_class_infoRequest">
+	<part name="filter" type="xsd:string"/>
+</message>
+<message name="Management.ChangeControl.get_class_infoResponse">
+	<part name="return" type="tns:Management.ChangeControl.ClassInfoSequence"/>
+</message>
+
+<message name="Management.ChangeControl.get_deprecated_class_infoRequest">
+	<part name="filter" type="xsd:string"/>
+</message>
+<message name="Management.ChangeControl.get_deprecated_class_infoResponse">
+	<part name="return" type="tns:Management.ChangeControl.DeprecatedClassInfoSequence"/>
+</message>
+
+<message name="Management.ChangeControl.get_instance_infoRequest">
+	<part name="classes" type="tns:Management.ChangeControl.ClassTransactionInfoSequence"/>
+</message>
+<message name="Management.ChangeControl.get_instance_infoResponse">
+	<part name="return" type="tns:Management.ChangeControl.InstanceInfoSequenceSequence"/>
+</message>
+
+<message name="Management.ChangeControl.get_instanceRequest">
+	<part name="instance_names" type="tns:Common.StringSequence"/>
+	<part name="instance_format" type="tns:Management.ChangeControl.InstanceFormatType"/>
+</message>
+<message name="Management.ChangeControl.get_instanceResponse">
+	<part name="return" type="tns:Management.ChangeControl.InstanceSequence"/>
+</message>
+
+<message name="Management.ChangeControl.get_instance_variableRequest">
+	<part name="instance_names" type="tns:Common.StringSequence"/>
+	<part name="instance_variable" type="tns:Management.ChangeControl.InstanceVariableType"/>
+</message>
+<message name="Management.ChangeControl.get_instance_variableResponse">
+	<part name="return" type="tns:Management.ChangeControl.InstanceVariableSequenceSequence"/>
+</message>
+
+<message name="Management.ChangeControl.get_instance_dependencyRequest">
+	<part name="instance_names" type="tns:Common.StringSequence"/>
+	<part name="depth" type="xsd:long"/>
+</message>
+<message name="Management.ChangeControl.get_instance_dependencyResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Management.ChangeControl.put_instanceRequest">
+	<part name="instances" type="tns:Management.ChangeControl.InstanceSequence"/>
+</message>
+<message name="Management.ChangeControl.put_instanceResponse">
+</message>
+
+<message name="Management.ChangeControl.put_configRequest">
+	<part name="instance_format" type="tns:Management.ChangeControl.InstanceFormatType"/>
+	<part name="data" type="xsd:string"/>
+</message>
+<message name="Management.ChangeControl.put_configResponse">
+</message>
+
+<message name="Management.ChangeControl.verify_instanceRequest">
+	<part name="instances" type="tns:Management.ChangeControl.InstanceSequence"/>
+</message>
+<message name="Management.ChangeControl.verify_instanceResponse">
+</message>
+
+<message name="Management.ChangeControl.verify_configRequest">
+	<part name="instance_format" type="tns:Management.ChangeControl.InstanceFormatType"/>
+	<part name="data" type="xsd:string"/>
+</message>
+<message name="Management.ChangeControl.verify_configResponse">
+</message>
+
+<message name="Management.ChangeControl.delete_instanceRequest">
+	<part name="instance_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.ChangeControl.delete_instanceResponse">
+</message>
+
+<message name="Management.ChangeControl.get_versionRequest">
+</message>
+<message name="Management.ChangeControl.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.ChangeControlPortType">
+	<operation name="get_last_load_time">
+	<documentation>
+
+ Gets the last time that the configuration was loaded.
+
+        	</documentation>
+		<input message="tns:Management.ChangeControl.get_last_load_timeRequest"/>
+		<output message="tns:Management.ChangeControl.get_last_load_timeResponse"/>
+	</operation>
+	<operation name="get_module_info">
+	<documentation>
+
+ Gets the sequence of module information for the modules available on the system
+
+        	</documentation>
+		<input message="tns:Management.ChangeControl.get_module_infoRequest"/>
+		<output message="tns:Management.ChangeControl.get_module_infoResponse"/>
+	</operation>
+	<operation name="get_class_info">
+	<documentation>
+
+ Gets the sequence of class information for the classes of objects available on the system
+
+        	</documentation>
+		<input message="tns:Management.ChangeControl.get_class_infoRequest"/>
+		<output message="tns:Management.ChangeControl.get_class_infoResponse"/>
+	</operation>
+	<operation name="get_deprecated_class_info">
+	<documentation>
+
+ Gets the sequence of deprecated class information for the classes of objects that have
+ been deprecated
+
+        	</documentation>
+		<input message="tns:Management.ChangeControl.get_deprecated_class_infoRequest"/>
+		<output message="tns:Management.ChangeControl.get_deprecated_class_infoResponse"/>
+	</operation>
+	<operation name="get_instance_info">
+	<documentation>
+
+ Gets the sequence of information for each instance of each class
+
+        	</documentation>
+		<input message="tns:Management.ChangeControl.get_instance_infoRequest"/>
+		<output message="tns:Management.ChangeControl.get_instance_infoResponse"/>
+	</operation>
+	<operation name="get_instance">
+	<documentation>
+
+ Gets the information and contents of each instance requested 
+
+        	</documentation>
+		<input message="tns:Management.ChangeControl.get_instanceRequest"/>
+		<output message="tns:Management.ChangeControl.get_instanceResponse"/>
+	</operation>
+	<operation name="get_instance_variable">
+	<documentation>
+
+ Gets the sequence of variable items for each instance 
+
+        	</documentation>
+		<input message="tns:Management.ChangeControl.get_instance_variableRequest"/>
+		<output message="tns:Management.ChangeControl.get_instance_variableResponse"/>
+	</operation>
+	<operation name="get_instance_dependency">
+	<documentation>
+
+ Gets the sequence of dependencies for each instance
+
+        	</documentation>
+		<input message="tns:Management.ChangeControl.get_instance_dependencyRequest"/>
+		<output message="tns:Management.ChangeControl.get_instance_dependencyResponse"/>
+	</operation>
+	<operation name="put_instance">
+	<documentation>
+
+ Put object instances (native format)
+
+        	</documentation>
+		<input message="tns:Management.ChangeControl.put_instanceRequest"/>
+		<output message="tns:Management.ChangeControl.put_instanceResponse"/>
+	</operation>
+	<operation name="put_config">
+	<documentation>
+
+ Put object configuration (formatted contents) 
+
+        	</documentation>
+		<input message="tns:Management.ChangeControl.put_configRequest"/>
+		<output message="tns:Management.ChangeControl.put_configResponse"/>
+	</operation>
+	<operation name="verify_instance">
+	<documentation>
+
+ Verify that object instances (native format) can be put
+
+        	</documentation>
+		<input message="tns:Management.ChangeControl.verify_instanceRequest"/>
+		<output message="tns:Management.ChangeControl.verify_instanceResponse"/>
+	</operation>
+	<operation name="verify_config">
+	<documentation>
+
+ Verify object configuration (formatted contents) can be put/saved
+
+        	</documentation>
+		<input message="tns:Management.ChangeControl.verify_configRequest"/>
+		<output message="tns:Management.ChangeControl.verify_configResponse"/>
+	</operation>
+	<operation name="delete_instance">
+	<documentation>
+
+ Delete object instances
+
+        	</documentation>
+		<input message="tns:Management.ChangeControl.delete_instanceRequest"/>
+		<output message="tns:Management.ChangeControl.delete_instanceResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Management.ChangeControl.get_versionRequest"/>
+		<output message="tns:Management.ChangeControl.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.ChangeControlBinding" type="tns:Management.ChangeControlPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_last_load_time">
+	<documentation>
+
+ Gets the last time that the configuration was loaded.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ChangeControl"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_module_info">
+	<documentation>
+
+ Gets the sequence of module information for the modules available on the system
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ChangeControl"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_class_info">
+	<documentation>
+
+ Gets the sequence of class information for the classes of objects available on the system
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ChangeControl"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_deprecated_class_info">
+	<documentation>
+
+ Gets the sequence of deprecated class information for the classes of objects that have
+ been deprecated
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ChangeControl"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_instance_info">
+	<documentation>
+
+ Gets the sequence of information for each instance of each class
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ChangeControl"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_instance">
+	<documentation>
+
+ Gets the information and contents of each instance requested 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ChangeControl"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_instance_variable">
+	<documentation>
+
+ Gets the sequence of variable items for each instance 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ChangeControl"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_instance_dependency">
+	<documentation>
+
+ Gets the sequence of dependencies for each instance
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ChangeControl"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="put_instance">
+	<documentation>
+
+ Put object instances (native format)
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ChangeControl"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="put_config">
+	<documentation>
+
+ Put object configuration (formatted contents) 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ChangeControl"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="verify_instance">
+	<documentation>
+
+ Verify that object instances (native format) can be put
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ChangeControl"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="verify_config">
+	<documentation>
+
+ Verify object configuration (formatted contents) can be put/saved
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ChangeControl"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_instance">
+	<documentation>
+
+ Delete object instances
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ChangeControl"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ChangeControl"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ChangeControl"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.ChangeControl">
+	<documentation>
+ The ChangeControl interface is a private interface to support Change Control capabilities.
+
+ This interface does not support transactions.
+
+        	</documentation>
+	<port name="Management.ChangeControlPort" binding="tns:Management.ChangeControlBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

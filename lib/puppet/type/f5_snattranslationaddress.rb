@@ -2,24 +2,14 @@ Puppet::Type.newtype(:f5_snattranslationaddress) do
   @doc = "Manage F5 snat translation address."
 
   apply_to_device
-
-  ensurable do
-    desc "F5 snattranstlationaddress resource state. Valid values are present,
-    absent."
-
-    defaultto(:present)
-
-    newvalue(:present) do
-      provider.create
-    end
-
-    newvalue(:absent) do
-      provider.destroy
-    end
-  end
+  ensurable
 
   newparam(:name, :namevar=>true) do
     desc "The snat translation address name."
+  end
+
+  newparam(:addresses) do
+    desc "The IP addresses of the specified SNAT translation address"
   end
 
   newproperty(:arp_state) do
@@ -55,12 +45,6 @@ Puppet::Type.newtype(:f5_snattranslationaddress) do
 
   newproperty(:udp_timeout) do
     desc "The UDP idle timeouts of the specified SNAT translation addresses."
-
-    newvalues(/^\d+$/)
-  end
-
-  newproperty(:unit_id) do
-    desc "The unit IDs for the specified tranlation SNAT address."
 
     newvalues(/^\d+$/)
   end

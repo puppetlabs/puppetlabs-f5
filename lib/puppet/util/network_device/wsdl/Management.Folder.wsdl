@@ -1,0 +1,635 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.Folder"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.BooleanSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:boolean[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.Folder.get_listRequest">
+</message>
+<message name="Management.Folder.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.Folder.createRequest">
+	<part name="folders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Folder.createResponse">
+</message>
+
+<message name="Management.Folder.delete_folderRequest">
+	<part name="folders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Folder.delete_folderResponse">
+</message>
+
+<message name="Management.Folder.delete_all_foldersRequest">
+</message>
+<message name="Management.Folder.delete_all_foldersResponse">
+</message>
+
+<message name="Management.Folder.set_descriptionRequest">
+	<part name="folders" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Folder.set_descriptionResponse">
+</message>
+
+<message name="Management.Folder.get_descriptionRequest">
+	<part name="folders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Folder.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.Folder.set_device_groupRequest">
+	<part name="folders" type="tns:Common.StringSequence"/>
+	<part name="groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Folder.set_device_groupResponse">
+</message>
+
+<message name="Management.Folder.get_device_groupRequest">
+	<part name="folders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Folder.get_device_groupResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.Folder.is_device_group_inheritedRequest">
+	<part name="folders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Folder.is_device_group_inheritedResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="Management.Folder.set_traffic_groupRequest">
+	<part name="folders" type="tns:Common.StringSequence"/>
+	<part name="groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Folder.set_traffic_groupResponse">
+</message>
+
+<message name="Management.Folder.get_traffic_groupRequest">
+	<part name="folders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Folder.get_traffic_groupResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.Folder.is_traffic_group_inheritedRequest">
+	<part name="folders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Folder.is_traffic_group_inheritedResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="Management.Folder.set_no_reference_check_stateRequest">
+	<part name="folders" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.Folder.set_no_reference_check_stateResponse">
+</message>
+
+<message name="Management.Folder.get_no_reference_check_stateRequest">
+	<part name="folders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Folder.get_no_reference_check_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.Folder.get_versionRequest">
+</message>
+<message name="Management.Folder.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.FolderPortType">
+	<operation name="get_list">
+       	<documentation>
+ Gets the names of all folders.
+
+        	</documentation>
+		<input message="tns:Management.Folder.get_listRequest"/>
+		<output message="tns:Management.Folder.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a set of folders.
+
+        	</documentation>
+		<input message="tns:Management.Folder.createRequest"/>
+		<output message="tns:Management.Folder.createResponse"/>
+	</operation>
+	<operation name="delete_folder">
+	<documentation>
+ Deletes a set of folders.
+
+        	</documentation>
+		<input message="tns:Management.Folder.delete_folderRequest"/>
+		<output message="tns:Management.Folder.delete_folderResponse"/>
+	</operation>
+	<operation name="delete_all_folders">
+	<documentation>
+ Deletes all folders.
+
+        	</documentation>
+		<input message="tns:Management.Folder.delete_all_foldersRequest"/>
+		<output message="tns:Management.Folder.delete_all_foldersResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of folders. This is an
+ arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Management.Folder.set_descriptionRequest"/>
+		<output message="tns:Management.Folder.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the description for a set of folders.
+
+        	</documentation>
+		<input message="tns:Management.Folder.get_descriptionRequest"/>
+		<output message="tns:Management.Folder.get_descriptionResponse"/>
+	</operation>
+	<operation name="set_device_group">
+	<documentation>
+ Sets the device group for a set of folders. The device
+ group specifies the set of devices for which the objects
+ contained in the folder are kept synchronized.
+
+        	</documentation>
+		<input message="tns:Management.Folder.set_device_groupRequest"/>
+		<output message="tns:Management.Folder.set_device_groupResponse"/>
+	</operation>
+	<operation name="get_device_group">
+	<documentation>
+ Gets the device group for a set of folders.
+
+        	</documentation>
+		<input message="tns:Management.Folder.get_device_groupRequest"/>
+		<output message="tns:Management.Folder.get_device_groupResponse"/>
+	</operation>
+	<operation name="is_device_group_inherited">
+	<documentation>
+ Gets whether the value returned by get_device_group was
+ inherited from the parent folder.
+
+        	</documentation>
+		<input message="tns:Management.Folder.is_device_group_inheritedRequest"/>
+		<output message="tns:Management.Folder.is_device_group_inheritedResponse"/>
+	</operation>
+	<operation name="set_traffic_group">
+	<documentation>
+ Sets the traffic group that will be used for failover.
+
+        	</documentation>
+		<input message="tns:Management.Folder.set_traffic_groupRequest"/>
+		<output message="tns:Management.Folder.set_traffic_groupResponse"/>
+	</operation>
+	<operation name="get_traffic_group">
+	<documentation>
+ Gets the name of the folder's traffic group. Note that if
+ the keyword "default" was used to set the traffic group,
+ the value returned here will be the actual name of the
+ traffic group that was inherited.
+
+        	</documentation>
+		<input message="tns:Management.Folder.get_traffic_groupRequest"/>
+		<output message="tns:Management.Folder.get_traffic_groupResponse"/>
+	</operation>
+	<operation name="is_traffic_group_inherited">
+	<documentation>
+ Gets a flag indicating whether the traffic group was
+ inherited from the parent folder.
+
+        	</documentation>
+		<input message="tns:Management.Folder.is_traffic_group_inheritedRequest"/>
+		<output message="tns:Management.Folder.is_traffic_group_inheritedResponse"/>
+	</operation>
+	<operation name="set_no_reference_check_state">
+	<documentation>
+ Sets whether strict device group reference validation is
+ performed during sync behavior on items in this folder.
+
+        	</documentation>
+		<input message="tns:Management.Folder.set_no_reference_check_stateRequest"/>
+		<output message="tns:Management.Folder.set_no_reference_check_stateResponse"/>
+	</operation>
+	<operation name="get_no_reference_check_state">
+	<documentation>
+ Gets whether strict device group reference validation is
+ performed during sync behavior on items in this folder.
+
+        	</documentation>
+		<input message="tns:Management.Folder.get_no_reference_check_stateRequest"/>
+		<output message="tns:Management.Folder.get_no_reference_check_stateResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Management.Folder.get_versionRequest"/>
+		<output message="tns:Management.Folder.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.FolderBinding" type="tns:Management.FolderPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the names of all folders.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Folder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a set of folders.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Folder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_folder">
+	<documentation>
+ Deletes a set of folders.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Folder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_folders">
+	<documentation>
+ Deletes all folders.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Folder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of folders. This is an
+ arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Folder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the description for a set of folders.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Folder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_device_group">
+	<documentation>
+ Sets the device group for a set of folders. The device
+ group specifies the set of devices for which the objects
+ contained in the folder are kept synchronized.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Folder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_device_group">
+	<documentation>
+ Gets the device group for a set of folders.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Folder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="is_device_group_inherited">
+	<documentation>
+ Gets whether the value returned by get_device_group was
+ inherited from the parent folder.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Folder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_traffic_group">
+	<documentation>
+ Sets the traffic group that will be used for failover.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Folder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_traffic_group">
+	<documentation>
+ Gets the name of the folder's traffic group. Note that if
+ the keyword "default" was used to set the traffic group,
+ the value returned here will be the actual name of the
+ traffic group that was inherited.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Folder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="is_traffic_group_inherited">
+	<documentation>
+ Gets a flag indicating whether the traffic group was
+ inherited from the parent folder.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Folder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_no_reference_check_state">
+	<documentation>
+ Sets whether strict device group reference validation is
+ performed during sync behavior on items in this folder.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Folder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_no_reference_check_state">
+	<documentation>
+ Gets whether strict device group reference validation is
+ performed during sync behavior on items in this folder.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Folder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Folder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Folder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.Folder">
+	<documentation>
+ A folder stores an arbitrary set of configuration objects.  The
+ system uses folders to control access to objects and to control
+ synchronization of these objects within a device group.
+ Folders are organized in a tree heirarchy, much like the
+ folders or directories on a computer's file system.  Objects
+ stored in folders are referenced by the name of the individual
+ object, preceded by its folder name, preceded by the names of
+ any parent folders, up to the root folder (/), all separated by
+ slashes (/), e.g., /george/server/virt-a.
+
+ Note: methods to access the active folder for a session are
+ found in the System::Session interface.
+
+        	</documentation>
+	<port name="Management.FolderPort" binding="tns:Management.FolderBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

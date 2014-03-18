@@ -1,0 +1,956 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="System.Cluster"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.ULongSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.ULongSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.HAStateSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.HAStateSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.HAState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="HA_STATE_OFFLINE">
+					<xsd:annotation>
+						<xsd:documentation>HA_STATE_OFFLINE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_STATE_FORCED_OFFLINE">
+					<xsd:annotation>
+						<xsd:documentation>HA_STATE_FORCED_OFFLINE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_STATE_STANDBY">
+					<xsd:annotation>
+						<xsd:documentation>HA_STATE_STANDBY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_STATE_ACTIVE">
+					<xsd:annotation>
+						<xsd:documentation>HA_STATE_ACTIVE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_STATE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>HA_STATE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Common.HAAction">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="HA_ACTION_NONE">
+					<xsd:annotation>
+						<xsd:documentation>HA_ACTION_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_ACTION_REBOOT">
+					<xsd:annotation>
+						<xsd:documentation>HA_ACTION_REBOOT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_ACTION_RESTART">
+					<xsd:annotation>
+						<xsd:documentation>HA_ACTION_RESTART</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_ACTION_FAILOVER">
+					<xsd:annotation>
+						<xsd:documentation>HA_ACTION_FAILOVER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_ACTION_FAILOVER_RESTART">
+					<xsd:annotation>
+						<xsd:documentation>HA_ACTION_FAILOVER_RESTART</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_ACTION_GO_ACTIVE">
+					<xsd:annotation>
+						<xsd:documentation>HA_ACTION_GO_ACTIVE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_ACTION_RESTART_ALL">
+					<xsd:annotation>
+						<xsd:documentation>HA_ACTION_RESTART_ALL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_ACTION_FAILOVER_ABORT_TRAFFIC_MGT">
+					<xsd:annotation>
+						<xsd:documentation>HA_ACTION_FAILOVER_ABORT_TRAFFIC_MGT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_ACTION_GO_OFFLINE">
+					<xsd:annotation>
+						<xsd:documentation>HA_ACTION_GO_OFFLINE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_ACTION_GO_OFFLINE_RESTART">
+					<xsd:annotation>
+						<xsd:documentation>HA_ACTION_GO_OFFLINE_RESTART</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_ACTION_GO_OFFLINE_ABORT_TM">
+					<xsd:annotation>
+						<xsd:documentation>HA_ACTION_GO_OFFLINE_ABORT_TM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_ACTION_GO_OFFLINE_DOWNLINKS">
+					<xsd:annotation>
+						<xsd:documentation>HA_ACTION_GO_OFFLINE_DOWNLINKS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_ACTION_GO_OFFLINE_DOWNLINKS_RESTART">
+					<xsd:annotation>
+						<xsd:documentation>HA_ACTION_GO_OFFLINE_DOWNLINKS_RESTART</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.HAActionSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.HAAction[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.HAStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.HAState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledStateSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="System.Cluster.is_clustered_environmentRequest">
+</message>
+<message name="System.Cluster.is_clustered_environmentResponse">
+	<part name="return" type="xsd:boolean"/>
+</message>
+
+<message name="System.Cluster.get_listRequest">
+</message>
+<message name="System.Cluster.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="System.Cluster.get_slot_idRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.Cluster.get_slot_idResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="System.Cluster.get_current_primary_slotRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.Cluster.get_current_primary_slotResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="System.Cluster.set_current_primary_slotRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+	<part name="primary_slots" type="tns:Common.ULongSequence"/>
+</message>
+<message name="System.Cluster.set_current_primary_slotResponse">
+</message>
+
+<message name="System.Cluster.get_cluster_enabled_stateRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.Cluster.get_cluster_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="System.Cluster.set_cluster_enabled_stateRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+	<part name="cluster_states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="System.Cluster.set_cluster_enabled_stateResponse">
+</message>
+
+<message name="System.Cluster.get_min_up_members_stateRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.Cluster.get_min_up_members_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="System.Cluster.set_min_up_members_stateRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+	<part name="min_up_states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="System.Cluster.set_min_up_members_stateResponse">
+</message>
+
+<message name="System.Cluster.get_min_up_members_actionRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.Cluster.get_min_up_members_actionResponse">
+	<part name="return" type="tns:Common.HAActionSequence"/>
+</message>
+
+<message name="System.Cluster.set_min_up_members_actionRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+	<part name="min_up_actions" type="tns:Common.HAActionSequence"/>
+</message>
+<message name="System.Cluster.set_min_up_members_actionResponse">
+</message>
+
+<message name="System.Cluster.get_min_up_membersRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.Cluster.get_min_up_membersResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="System.Cluster.set_min_up_membersRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+	<part name="min_up_members" type="tns:Common.ULongSequence"/>
+</message>
+<message name="System.Cluster.set_min_up_membersResponse">
+</message>
+
+<message name="System.Cluster.get_cluster_ha_stateRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.Cluster.get_cluster_ha_stateResponse">
+	<part name="return" type="tns:Common.HAStateSequence"/>
+</message>
+
+<message name="System.Cluster.get_member_enabled_stateRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+	<part name="slot_ids" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="System.Cluster.get_member_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+
+<message name="System.Cluster.set_member_enabled_stateRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+	<part name="slot_ids" type="tns:Common.ULongSequenceSequence"/>
+	<part name="member_states" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+<message name="System.Cluster.set_member_enabled_stateResponse">
+</message>
+
+<message name="System.Cluster.get_member_licensed_stateRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+	<part name="slot_ids" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="System.Cluster.get_member_licensed_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+
+<message name="System.Cluster.get_member_ha_stateRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+	<part name="slot_ids" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="System.Cluster.get_member_ha_stateResponse">
+	<part name="return" type="tns:Common.HAStateSequenceSequence"/>
+</message>
+
+<message name="System.Cluster.get_member_priming_stateRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+	<part name="slot_ids" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="System.Cluster.get_member_priming_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+
+<message name="System.Cluster.set_member_priming_stateRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+	<part name="slot_ids" type="tns:Common.ULongSequenceSequence"/>
+	<part name="priming_states" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+<message name="System.Cluster.set_member_priming_stateResponse">
+</message>
+
+<message name="System.Cluster.get_versionRequest">
+</message>
+<message name="System.Cluster.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="System.ClusterPortType">
+	<operation name="is_clustered_environment">
+  	<documentation>
+ Checks to see whether the system is a clustered environment.
+
+        	</documentation>
+		<input message="tns:System.Cluster.is_clustered_environmentRequest"/>
+		<output message="tns:System.Cluster.is_clustered_environmentResponse"/>
+	</operation>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of the cluster names.
+
+        	</documentation>
+		<input message="tns:System.Cluster.get_listRequest"/>
+		<output message="tns:System.Cluster.get_listResponse"/>
+	</operation>
+	<operation name="get_slot_id">
+	<documentation>
+ Get a list of list of slot ids (the size of each list is the number of slots).
+
+        	</documentation>
+		<input message="tns:System.Cluster.get_slot_idRequest"/>
+		<output message="tns:System.Cluster.get_slot_idResponse"/>
+	</operation>
+	<operation name="get_current_primary_slot">
+	<documentation>
+ Gets the primary slot numbers.
+
+        	</documentation>
+		<input message="tns:System.Cluster.get_current_primary_slotRequest"/>
+		<output message="tns:System.Cluster.get_current_primary_slotResponse"/>
+	</operation>
+	<operation name="set_current_primary_slot">
+	<documentation>
+ Currently this is not implemented.
+
+        	</documentation>
+		<input message="tns:System.Cluster.set_current_primary_slotRequest"/>
+		<output message="tns:System.Cluster.set_current_primary_slotResponse"/>
+	</operation>
+	<operation name="get_cluster_enabled_state">
+	<documentation>
+ Gets the cluster enabled states.
+
+        	</documentation>
+		<input message="tns:System.Cluster.get_cluster_enabled_stateRequest"/>
+		<output message="tns:System.Cluster.get_cluster_enabled_stateResponse"/>
+	</operation>
+	<operation name="set_cluster_enabled_state">
+	<documentation>
+ Sets the cluster enabled states.
+
+        	</documentation>
+		<input message="tns:System.Cluster.set_cluster_enabled_stateRequest"/>
+		<output message="tns:System.Cluster.set_cluster_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_min_up_members_state">
+	<documentation>
+ Gets the cluster minimum up members enabled states.
+
+        	</documentation>
+		<input message="tns:System.Cluster.get_min_up_members_stateRequest"/>
+		<output message="tns:System.Cluster.get_min_up_members_stateResponse"/>
+	</operation>
+	<operation name="set_min_up_members_state">
+	<documentation>
+ Sets the cluster minimum up members enabled states.
+
+        	</documentation>
+		<input message="tns:System.Cluster.set_min_up_members_stateRequest"/>
+		<output message="tns:System.Cluster.set_min_up_members_stateResponse"/>
+	</operation>
+	<operation name="get_min_up_members_action">
+	<documentation>
+ Gets the cluster minimum up members actions.
+
+        	</documentation>
+		<input message="tns:System.Cluster.get_min_up_members_actionRequest"/>
+		<output message="tns:System.Cluster.get_min_up_members_actionResponse"/>
+	</operation>
+	<operation name="set_min_up_members_action">
+	<documentation>
+ Sets the cluster minimum up members actions.
+
+        	</documentation>
+		<input message="tns:System.Cluster.set_min_up_members_actionRequest"/>
+		<output message="tns:System.Cluster.set_min_up_members_actionResponse"/>
+	</operation>
+	<operation name="get_min_up_members">
+	<documentation>
+ Gets the minimum up members values.
+
+        	</documentation>
+		<input message="tns:System.Cluster.get_min_up_membersRequest"/>
+		<output message="tns:System.Cluster.get_min_up_membersResponse"/>
+	</operation>
+	<operation name="set_min_up_members">
+	<documentation>
+ Sets the minimum up members values.
+
+        	</documentation>
+		<input message="tns:System.Cluster.set_min_up_membersRequest"/>
+		<output message="tns:System.Cluster.set_min_up_membersResponse"/>
+	</operation>
+	<operation name="get_cluster_ha_state">
+	<documentation>
+ Gets the cluster high-availability states.
+
+        	</documentation>
+		<input message="tns:System.Cluster.get_cluster_ha_stateRequest"/>
+		<output message="tns:System.Cluster.get_cluster_ha_stateResponse"/>
+	</operation>
+	<operation name="get_member_enabled_state">
+	<documentation>
+ Gets the cluster member enabled states.
+
+        	</documentation>
+		<input message="tns:System.Cluster.get_member_enabled_stateRequest"/>
+		<output message="tns:System.Cluster.get_member_enabled_stateResponse"/>
+	</operation>
+	<operation name="set_member_enabled_state">
+	<documentation>
+ Sets the cluster member enabled states.
+
+        	</documentation>
+		<input message="tns:System.Cluster.set_member_enabled_stateRequest"/>
+		<output message="tns:System.Cluster.set_member_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_member_licensed_state">
+	<documentation>
+ Gets the cluster member licensed states.
+
+        	</documentation>
+		<input message="tns:System.Cluster.get_member_licensed_stateRequest"/>
+		<output message="tns:System.Cluster.get_member_licensed_stateResponse"/>
+	</operation>
+	<operation name="get_member_ha_state">
+	<documentation>
+ Gets the cluster member high-availability states.
+
+        	</documentation>
+		<input message="tns:System.Cluster.get_member_ha_stateRequest"/>
+		<output message="tns:System.Cluster.get_member_ha_stateResponse"/>
+	</operation>
+	<operation name="get_member_priming_state">
+	<documentation>
+ Gets the cluster member priming states.
+
+        	</documentation>
+		<input message="tns:System.Cluster.get_member_priming_stateRequest"/>
+		<output message="tns:System.Cluster.get_member_priming_stateResponse"/>
+	</operation>
+	<operation name="set_member_priming_state">
+	<documentation>
+ Sets the cluster member priming states.
+
+        	</documentation>
+		<input message="tns:System.Cluster.set_member_priming_stateRequest"/>
+		<output message="tns:System.Cluster.set_member_priming_stateResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:System.Cluster.get_versionRequest"/>
+		<output message="tns:System.Cluster.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="System.ClusterBinding" type="tns:System.ClusterPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="is_clustered_environment">
+	<documentation>
+ Checks to see whether the system is a clustered environment.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Cluster"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_list">
+	<documentation>
+ Gets a list of the cluster names.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Cluster"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_slot_id">
+	<documentation>
+ Get a list of list of slot ids (the size of each list is the number of slots).
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Cluster"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_current_primary_slot">
+	<documentation>
+ Gets the primary slot numbers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Cluster"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_current_primary_slot">
+	<documentation>
+ Currently this is not implemented.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Cluster"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cluster_enabled_state">
+	<documentation>
+ Gets the cluster enabled states.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Cluster"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_cluster_enabled_state">
+	<documentation>
+ Sets the cluster enabled states.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Cluster"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_min_up_members_state">
+	<documentation>
+ Gets the cluster minimum up members enabled states.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Cluster"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_min_up_members_state">
+	<documentation>
+ Sets the cluster minimum up members enabled states.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Cluster"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_min_up_members_action">
+	<documentation>
+ Gets the cluster minimum up members actions.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Cluster"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_min_up_members_action">
+	<documentation>
+ Sets the cluster minimum up members actions.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Cluster"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_min_up_members">
+	<documentation>
+ Gets the minimum up members values.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Cluster"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_min_up_members">
+	<documentation>
+ Sets the minimum up members values.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Cluster"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cluster_ha_state">
+	<documentation>
+ Gets the cluster high-availability states.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Cluster"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_member_enabled_state">
+	<documentation>
+ Gets the cluster member enabled states.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Cluster"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_member_enabled_state">
+	<documentation>
+ Sets the cluster member enabled states.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Cluster"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_member_licensed_state">
+	<documentation>
+ Gets the cluster member licensed states.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Cluster"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_member_ha_state">
+	<documentation>
+ Gets the cluster member high-availability states.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Cluster"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_member_priming_state">
+	<documentation>
+ Gets the cluster member priming states.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Cluster"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_member_priming_state">
+	<documentation>
+ Sets the cluster member priming states.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Cluster"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Cluster"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Cluster"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="System.Cluster">
+	<documentation>
+ The Cluster interface enables you to work with the definitions and attributes in a clustered device.
+
+        	</documentation>
+	<port name="System.ClusterPort" binding="tns:System.ClusterBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

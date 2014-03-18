@@ -1,0 +1,1467 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="ASM.LoggingProfile"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="ASM.ProtocolType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="HTTP">
+					<xsd:annotation>
+						<xsd:documentation>HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ALL">
+					<xsd:annotation>
+						<xsd:documentation>ALL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.ULongSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.ULongSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.LoggingRemoteFacilitySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.LoggingRemoteFacility[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.ProtocolTypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.ProtocolType[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.LoggingRemoteStorageBaseSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.LoggingRemoteStorageBase[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="ASM.LoggingRemoteStorageType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LOGGING_REMOTE_STORAGE_NONE">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_REMOTE_STORAGE_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOGGING_REMOTE_STORAGE_REMOTE">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_REMOTE_STORAGE_REMOTE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOGGING_REMOTE_STORAGE_REPORTING_SERVER">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_REMOTE_STORAGE_REPORTING_SERVER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOGGING_REMOTE_STORAGE_ARCSIGHT">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_REMOTE_STORAGE_ARCSIGHT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.BooleanSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:boolean[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.LoggingRemoteStorage">
+			<xsd:sequence>
+				<xsd:element name="base" type="tns:ASM.LoggingRemoteStorageBase"/>
+				<xsd:element name="protocol" type="tns:ASM.LoggingRemoteProtocol"/>
+				<xsd:element name="facility" type="tns:ASM.LoggingRemoteFacility"/>
+				<xsd:element name="maximum_request_size" type="xsd:long"/>
+				<xsd:element name="maximum_header_size" type="xsd:long"/>
+				<xsd:element name="maximum_query_size" type="xsd:long"/>
+				<xsd:element name="maximum_entry_length" type="xsd:long"/>
+				<xsd:element name="report_anomalies_flag" type="xsd:boolean"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.LoggingProfileDefinition">
+			<xsd:sequence>
+				<xsd:element name="name" type="xsd:string"/>
+				<xsd:element name="description" type="xsd:string"/>
+				<xsd:element name="local_storage_flag" type="xsd:boolean"/>
+				<xsd:element name="guarantee_logging_flag" type="xsd:boolean"/>
+				<xsd:element name="remote_storage" type="tns:ASM.LoggingRemoteStorage"/>
+				<xsd:element name="storage_filter" type="tns:ASM.LoggingStorageFilter"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPPortDefinitionSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.IPPortDefinition[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPPortDefinitionSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.IPPortDefinitionSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.LoggingRemoteStorageBase">
+			<xsd:sequence>
+				<xsd:element name="type" type="tns:ASM.LoggingRemoteStorageType"/>
+				<xsd:element name="servers" type="tns:Common.IPPortDefinitionSequence"/>
+				<xsd:element name="format" type="tns:ASM.LoggingStorageFormat"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.LoggingStorageFormat">
+			<xsd:sequence>
+				<xsd:element name="type" type="tns:ASM.LoggingStorageFormatType"/>
+				<xsd:element name="csv_delimiter" type="xsd:string"/>
+				<xsd:element name="csv_fields" type="tns:Common.StringSequence"/>
+				<xsd:element name="user_string" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.LoggingRequestTypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.LoggingRequestType[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.LoggingLogicOperationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.LoggingLogicOperation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="ASM.LoggingRequestSearchTarget">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LOGGING_REQUEST_SEARCH_TARGET_REQUEST">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_REQUEST_SEARCH_TARGET_REQUEST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOGGING_REQUEST_SEARCH_TARGET_ALL">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_REQUEST_SEARCH_TARGET_ALL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOGGING_REQUEST_SEARCH_TARGET_URI">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_REQUEST_SEARCH_TARGET_URI</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOGGING_REQUEST_SEARCH_TARGET_QUERY_STRING">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_REQUEST_SEARCH_TARGET_QUERY_STRING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOGGING_REQUEST_SEARCH_TARGET_POST_DATA">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_REQUEST_SEARCH_TARGET_POST_DATA</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOGGING_REQUEST_SEARCH_TARGET_HEADERS">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_REQUEST_SEARCH_TARGET_HEADERS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="ASM.LoggingProfileDefinitionSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.LoggingProfileDefinition[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="ASM.LoggingStorageFormatType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LOGGING_STORAGE_FORMAT_PREDEFINED">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_STORAGE_FORMAT_PREDEFINED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOGGING_STORAGE_FORMAT_USER_DEFINED">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_STORAGE_FORMAT_USER_DEFINED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="ASM.LoggingStorageFilter">
+			<xsd:sequence>
+				<xsd:element name="logic_operation" type="tns:ASM.LoggingLogicOperation"/>
+				<xsd:element name="request_type" type="tns:ASM.LoggingRequestType"/>
+				<xsd:element name="protocol" type="tns:ASM.ProtocolType"/>
+				<xsd:element name="response_codes" type="tns:Common.ULongSequence"/>
+				<xsd:element name="http_methods" type="tns:Common.StringSequence"/>
+				<xsd:element name="request_search" type="tns:ASM.LoggingRequestSearch"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.LoggingStorageFormatSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.LoggingStorageFormat[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.LoggingRequestSearchSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.LoggingRequestSearch[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPPortDefinition">
+			<xsd:sequence>
+				<xsd:element name="address" type="xsd:string"/>
+				<xsd:element name="port" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="ASM.LoggingRemoteFacility">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LOGGING_REMOTE_FACILITY_LOCAL0">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_REMOTE_FACILITY_LOCAL0</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOGGING_REMOTE_FACILITY_LOCAL1">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_REMOTE_FACILITY_LOCAL1</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOGGING_REMOTE_FACILITY_LOCAL2">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_REMOTE_FACILITY_LOCAL2</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOGGING_REMOTE_FACILITY_LOCAL3">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_REMOTE_FACILITY_LOCAL3</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOGGING_REMOTE_FACILITY_LOCAL4">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_REMOTE_FACILITY_LOCAL4</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOGGING_REMOTE_FACILITY_LOCAL5">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_REMOTE_FACILITY_LOCAL5</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOGGING_REMOTE_FACILITY_LOCAL6">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_REMOTE_FACILITY_LOCAL6</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOGGING_REMOTE_FACILITY_LOCAL7">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_REMOTE_FACILITY_LOCAL7</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="ASM.LoggingLogicOperation">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LOGGING_LOGIC_OPERATION_OR">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_LOGIC_OPERATION_OR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOGGING_LOGIC_OPERATION_AND">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_LOGIC_OPERATION_AND</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="ASM.LoggingRequestType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LOGGING_ILLEGAL_REQUESTS_ONLY">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_ILLEGAL_REQUESTS_ONLY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOGGING_ALL_REQUESTS">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_ALL_REQUESTS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="ASM.LoggingRequestSearch">
+			<xsd:sequence>
+				<xsd:element name="target" type="tns:ASM.LoggingRequestSearchTarget"/>
+				<xsd:element name="pattern" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.LoggingRemoteProtocolSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.LoggingRemoteProtocol[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="ASM.LoggingRemoteProtocol">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LOGGING_REMOTE_PROTOCOL_UDP">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_REMOTE_PROTOCOL_UDP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOGGING_REMOTE_PROTOCOL_TCP">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_REMOTE_PROTOCOL_TCP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOGGING_REMOTE_PROTOCOL_TCP_RFC3195">
+					<xsd:annotation>
+						<xsd:documentation>LOGGING_REMOTE_PROTOCOL_TCP_RFC3195</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="ASM.LoggingProfile.get_listRequest">
+</message>
+<message name="ASM.LoggingProfile.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="ASM.LoggingProfile.createRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.LoggingProfile.createResponse">
+</message>
+
+<message name="ASM.LoggingProfile.delete_logprofRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.LoggingProfile.delete_logprofResponse">
+</message>
+
+<message name="ASM.LoggingProfile.renameRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="new_logprof_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.LoggingProfile.renameResponse">
+</message>
+
+<message name="ASM.LoggingProfile.set_descriptionRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.LoggingProfile.set_descriptionResponse">
+</message>
+
+<message name="ASM.LoggingProfile.set_local_storage_flagRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="local_storage_flags" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="ASM.LoggingProfile.set_local_storage_flagResponse">
+</message>
+
+<message name="ASM.LoggingProfile.set_guarantee_logging_flagRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="guarantee_logging_flags" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="ASM.LoggingProfile.set_guarantee_logging_flagResponse">
+</message>
+
+<message name="ASM.LoggingProfile.set_remote_storage_baseRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="remote_storage_bases" type="tns:ASM.LoggingRemoteStorageBaseSequence"/>
+</message>
+<message name="ASM.LoggingProfile.set_remote_storage_baseResponse">
+</message>
+
+<message name="ASM.LoggingProfile.set_remote_protocolRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="remote_protocols" type="tns:ASM.LoggingRemoteProtocolSequence"/>
+</message>
+<message name="ASM.LoggingProfile.set_remote_protocolResponse">
+</message>
+
+<message name="ASM.LoggingProfile.set_remote_serverRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="ip_ports" type="tns:Common.IPPortDefinitionSequence"/>
+</message>
+<message name="ASM.LoggingProfile.set_remote_serverResponse">
+</message>
+
+<message name="ASM.LoggingProfile.add_remote_serverRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="ip_ports" type="tns:Common.IPPortDefinitionSequenceSequence"/>
+</message>
+<message name="ASM.LoggingProfile.add_remote_serverResponse">
+</message>
+
+<message name="ASM.LoggingProfile.remove_remote_serverRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="ip_ports" type="tns:Common.IPPortDefinitionSequenceSequence"/>
+</message>
+<message name="ASM.LoggingProfile.remove_remote_serverResponse">
+</message>
+
+<message name="ASM.LoggingProfile.set_remote_log_facilityRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="remote_log_facilities" type="tns:ASM.LoggingRemoteFacilitySequence"/>
+</message>
+<message name="ASM.LoggingProfile.set_remote_log_facilityResponse">
+</message>
+
+<message name="ASM.LoggingProfile.set_storage_formatRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="storage_formats" type="tns:ASM.LoggingStorageFormatSequence"/>
+</message>
+<message name="ASM.LoggingProfile.set_storage_formatResponse">
+</message>
+
+<message name="ASM.LoggingProfile.set_maximum_request_sizeRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="maximum_request_sizes" type="tns:Common.ULongSequence"/>
+</message>
+<message name="ASM.LoggingProfile.set_maximum_request_sizeResponse">
+</message>
+
+<message name="ASM.LoggingProfile.set_maximum_header_sizeRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="maximum_header_sizes" type="tns:Common.ULongSequence"/>
+</message>
+<message name="ASM.LoggingProfile.set_maximum_header_sizeResponse">
+</message>
+
+<message name="ASM.LoggingProfile.set_maximum_query_sizeRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="maximum_query_sizes" type="tns:Common.ULongSequence"/>
+</message>
+<message name="ASM.LoggingProfile.set_maximum_query_sizeResponse">
+</message>
+
+<message name="ASM.LoggingProfile.set_maximum_entry_lengthRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="maximum_entry_lengths" type="tns:Common.ULongSequence"/>
+</message>
+<message name="ASM.LoggingProfile.set_maximum_entry_lengthResponse">
+</message>
+
+<message name="ASM.LoggingProfile.set_report_anomalies_flagRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="report_anomalies_flags" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="ASM.LoggingProfile.set_report_anomalies_flagResponse">
+</message>
+
+<message name="ASM.LoggingProfile.set_logic_operationRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="logic_operations" type="tns:ASM.LoggingLogicOperationSequence"/>
+</message>
+<message name="ASM.LoggingProfile.set_logic_operationResponse">
+</message>
+
+<message name="ASM.LoggingProfile.set_request_typeRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="request_types" type="tns:ASM.LoggingRequestTypeSequence"/>
+</message>
+<message name="ASM.LoggingProfile.set_request_typeResponse">
+</message>
+
+<message name="ASM.LoggingProfile.set_filter_protocolRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="filter_protocols" type="tns:ASM.ProtocolTypeSequence"/>
+</message>
+<message name="ASM.LoggingProfile.set_filter_protocolResponse">
+</message>
+
+<message name="ASM.LoggingProfile.replace_response_codeRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="response_codes" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="ASM.LoggingProfile.replace_response_codeResponse">
+</message>
+
+<message name="ASM.LoggingProfile.replace_http_methodRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="http_methods" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="ASM.LoggingProfile.replace_http_methodResponse">
+</message>
+
+<message name="ASM.LoggingProfile.set_request_searchRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="request_searches" type="tns:ASM.LoggingRequestSearchSequence"/>
+</message>
+<message name="ASM.LoggingProfile.set_request_searchResponse">
+</message>
+
+<message name="ASM.LoggingProfile.set_search_patternRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+	<part name="search_patterns" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.LoggingProfile.set_search_patternResponse">
+</message>
+
+<message name="ASM.LoggingProfile.apply_logprofRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.LoggingProfile.apply_logprofResponse">
+</message>
+
+<message name="ASM.LoggingProfile.get_logprofRequest">
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.LoggingProfile.get_logprofResponse">
+	<part name="return" type="tns:ASM.LoggingProfileDefinitionSequence"/>
+</message>
+
+<message name="ASM.LoggingProfile.get_versionRequest">
+</message>
+<message name="ASM.LoggingProfile.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="ASM.LoggingProfilePortType">
+	<operation name="get_list">
+      	<documentation>
+ Gets a list of all logging profiles.
+
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.get_listRequest"/>
+		<output message="tns:ASM.LoggingProfile.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a new logging profile.
+
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.createRequest"/>
+		<output message="tns:ASM.LoggingProfile.createResponse"/>
+	</operation>
+	<operation name="delete_logprof">
+	<documentation>
+ Deletes the specified logging profile.
+
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.delete_logprofRequest"/>
+		<output message="tns:ASM.LoggingProfile.delete_logprofResponse"/>
+	</operation>
+	<operation name="rename">
+	<documentation>
+ Renames the existing logging profile.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.renameRequest"/>
+		<output message="tns:ASM.LoggingProfile.renameResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Updates logging profile description.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.set_descriptionRequest"/>
+		<output message="tns:ASM.LoggingProfile.set_descriptionResponse"/>
+	</operation>
+	<operation name="set_local_storage_flag">
+	<documentation>
+ Updates logging profile local storage flag.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.set_local_storage_flagRequest"/>
+		<output message="tns:ASM.LoggingProfile.set_local_storage_flagResponse"/>
+	</operation>
+	<operation name="set_guarantee_logging_flag">
+	<documentation>
+ Updates logging profile guarantee logging flag.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.set_guarantee_logging_flagRequest"/>
+		<output message="tns:ASM.LoggingProfile.set_guarantee_logging_flagResponse"/>
+	</operation>
+	<operation name="set_remote_storage_base">
+	<documentation>
+ Updates logging profile remote storage base.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.set_remote_storage_baseRequest"/>
+		<output message="tns:ASM.LoggingProfile.set_remote_storage_baseResponse"/>
+	</operation>
+	<operation name="set_remote_protocol">
+	<documentation>
+ Updates logging profile remote protocol.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.set_remote_protocolRequest"/>
+		<output message="tns:ASM.LoggingProfile.set_remote_protocolResponse"/>
+	</operation>
+	<operation name="set_remote_server">
+	<documentation>
+ This method has been deprecated, please use add_remote_server / remove_remote_server instead.
+ Updates logging profile remote server IP and port.
+ 
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.set_remote_serverRequest"/>
+		<output message="tns:ASM.LoggingProfile.set_remote_serverResponse"/>
+	</operation>
+	<operation name="add_remote_server">
+	<documentation>
+ Adds remote server addresses to the specified logging profile.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+ 
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.add_remote_serverRequest"/>
+		<output message="tns:ASM.LoggingProfile.add_remote_serverResponse"/>
+	</operation>
+	<operation name="remove_remote_server">
+	<documentation>
+ Removes remote server addresses from the specified logging profile.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+ 
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.remove_remote_serverRequest"/>
+		<output message="tns:ASM.LoggingProfile.remove_remote_serverResponse"/>
+	</operation>
+	<operation name="set_remote_log_facility">
+	<documentation>
+ Updates logging profile remote log facility.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.set_remote_log_facilityRequest"/>
+		<output message="tns:ASM.LoggingProfile.set_remote_log_facilityResponse"/>
+	</operation>
+	<operation name="set_storage_format">
+	<documentation>
+ Updates logging profile storage format.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.set_storage_formatRequest"/>
+		<output message="tns:ASM.LoggingProfile.set_storage_formatResponse"/>
+	</operation>
+	<operation name="set_maximum_request_size">
+	<documentation>
+ Updates logging profile maximum request size.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.set_maximum_request_sizeRequest"/>
+		<output message="tns:ASM.LoggingProfile.set_maximum_request_sizeResponse"/>
+	</operation>
+	<operation name="set_maximum_header_size">
+	<documentation>
+ Updates logging profile maximum header size.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.set_maximum_header_sizeRequest"/>
+		<output message="tns:ASM.LoggingProfile.set_maximum_header_sizeResponse"/>
+	</operation>
+	<operation name="set_maximum_query_size">
+	<documentation>
+ Updates logging profile maximum query size.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.set_maximum_query_sizeRequest"/>
+		<output message="tns:ASM.LoggingProfile.set_maximum_query_sizeResponse"/>
+	</operation>
+	<operation name="set_maximum_entry_length">
+	<documentation>
+ Updates logging profile maximum entry length.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.set_maximum_entry_lengthRequest"/>
+		<output message="tns:ASM.LoggingProfile.set_maximum_entry_lengthResponse"/>
+	</operation>
+	<operation name="set_report_anomalies_flag">
+	<documentation>
+ Updates logging profile Report Detected Anomalies flag.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.set_report_anomalies_flagRequest"/>
+		<output message="tns:ASM.LoggingProfile.set_report_anomalies_flagResponse"/>
+	</operation>
+	<operation name="set_logic_operation">
+	<documentation>
+ Updates logging profile logic operation.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.set_logic_operationRequest"/>
+		<output message="tns:ASM.LoggingProfile.set_logic_operationResponse"/>
+	</operation>
+	<operation name="set_request_type">
+	<documentation>
+ Updates logging profile request type.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.set_request_typeRequest"/>
+		<output message="tns:ASM.LoggingProfile.set_request_typeResponse"/>
+	</operation>
+	<operation name="set_filter_protocol">
+	<documentation>
+ Updates logging profile filtered protocol.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.set_filter_protocolRequest"/>
+		<output message="tns:ASM.LoggingProfile.set_filter_protocolResponse"/>
+	</operation>
+	<operation name="replace_response_code">
+	<documentation>
+ Replaces response status codes for the specified logging profile.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+ 
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.replace_response_codeRequest"/>
+		<output message="tns:ASM.LoggingProfile.replace_response_codeResponse"/>
+	</operation>
+	<operation name="replace_http_method">
+	<documentation>
+ Replaces HTTP methods for the specified logging profile.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+ 
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.replace_http_methodRequest"/>
+		<output message="tns:ASM.LoggingProfile.replace_http_methodResponse"/>
+	</operation>
+	<operation name="set_request_search">
+	<documentation>
+ Updates logging profile request search.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.set_request_searchRequest"/>
+		<output message="tns:ASM.LoggingProfile.set_request_searchResponse"/>
+	</operation>
+	<operation name="set_search_pattern">
+	<documentation>
+ Updates logging profile searched pattern.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.set_search_patternRequest"/>
+		<output message="tns:ASM.LoggingProfile.set_search_patternResponse"/>
+	</operation>
+	<operation name="apply_logprof">
+	<documentation>
+ Applies logging profile settings for all security policies using the specified logging profile.
+ 
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.apply_logprofRequest"/>
+		<output message="tns:ASM.LoggingProfile.apply_logprofResponse"/>
+	</operation>
+	<operation name="get_logprof">
+	<documentation>
+ Returns logging profile settings.
+ 
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.get_logprofRequest"/>
+		<output message="tns:ASM.LoggingProfile.get_logprofResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+
+        	</documentation>
+		<input message="tns:ASM.LoggingProfile.get_versionRequest"/>
+		<output message="tns:ASM.LoggingProfile.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="ASM.LoggingProfileBinding" type="tns:ASM.LoggingProfilePortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a new logging profile.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_logprof">
+	<documentation>
+ Deletes the specified logging profile.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="rename">
+	<documentation>
+ Renames the existing logging profile.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Updates logging profile description.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_local_storage_flag">
+	<documentation>
+ Updates logging profile local storage flag.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_guarantee_logging_flag">
+	<documentation>
+ Updates logging profile guarantee logging flag.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_remote_storage_base">
+	<documentation>
+ Updates logging profile remote storage base.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_remote_protocol">
+	<documentation>
+ Updates logging profile remote protocol.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_remote_server">
+	<documentation>
+ This method has been deprecated, please use add_remote_server / remove_remote_server instead.
+ Updates logging profile remote server IP and port.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_remote_server">
+	<documentation>
+ Adds remote server addresses to the specified logging profile.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_remote_server">
+	<documentation>
+ Removes remote server addresses from the specified logging profile.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_remote_log_facility">
+	<documentation>
+ Updates logging profile remote log facility.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_storage_format">
+	<documentation>
+ Updates logging profile storage format.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_maximum_request_size">
+	<documentation>
+ Updates logging profile maximum request size.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_maximum_header_size">
+	<documentation>
+ Updates logging profile maximum header size.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_maximum_query_size">
+	<documentation>
+ Updates logging profile maximum query size.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_maximum_entry_length">
+	<documentation>
+ Updates logging profile maximum entry length.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_report_anomalies_flag">
+	<documentation>
+ Updates logging profile Report Detected Anomalies flag.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_logic_operation">
+	<documentation>
+ Updates logging profile logic operation.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_request_type">
+	<documentation>
+ Updates logging profile request type.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_filter_protocol">
+	<documentation>
+ Updates logging profile filtered protocol.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="replace_response_code">
+	<documentation>
+ Replaces response status codes for the specified logging profile.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="replace_http_method">
+	<documentation>
+ Replaces HTTP methods for the specified logging profile.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_request_search">
+	<documentation>
+ Updates logging profile request search.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_search_pattern">
+	<documentation>
+ Updates logging profile searched pattern.
+ Note that changes are applied for security policies using this logging profile only after calling the apply_logprof method.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="apply_logprof">
+	<documentation>
+ Applies logging profile settings for all security policies using the specified logging profile.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_logprof">
+	<documentation>
+ Returns logging profile settings.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/LoggingProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/LoggingProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="ASM.LoggingProfile">
+	<documentation>
+ *IMPORTANT* This entire interface has been deprecated. As of v11.3.0,
+ there is separate Security log profile, which is assigned to VS,
+ so logging profile is not associated with ASM directly.
+
+ The LoggingProfile interface enables you to manipulate logging profiles of ASM.
+
+ This interface does not support transactions.
+
+        	</documentation>
+	<port name="ASM.LoggingProfilePort" binding="tns:ASM.LoggingProfileBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

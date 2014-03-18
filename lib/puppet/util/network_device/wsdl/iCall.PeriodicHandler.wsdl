@@ -1,0 +1,751 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="iCall.PeriodicHandler"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.TimeStampSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.TimeStamp[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.TimeStamp">
+			<xsd:sequence>
+				<xsd:element name="year" type="xsd:long"/>
+				<xsd:element name="month" type="xsd:long"/>
+				<xsd:element name="day" type="xsd:long"/>
+				<xsd:element name="hour" type="xsd:long"/>
+				<xsd:element name="minute" type="xsd:long"/>
+				<xsd:element name="second" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="iCall.PeriodicHandlerExpirySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:iCall.PeriodicHandlerExpiry[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="iCall.GeneralHandlerState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="GENERAL_HANDLER_STATE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>GENERAL_HANDLER_STATE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="GENERAL_HANDLER_STATE_ACTIVE">
+					<xsd:annotation>
+						<xsd:documentation>GENERAL_HANDLER_STATE_ACTIVE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="GENERAL_HANDLER_STATE_INACTIVE">
+					<xsd:annotation>
+						<xsd:documentation>GENERAL_HANDLER_STATE_INACTIVE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="iCall.PeriodicHandlerExpiry">
+			<xsd:sequence>
+				<xsd:element name="expires" type="xsd:boolean"/>
+				<xsd:element name="expiry_time" type="tns:Common.TimeStamp"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="iCall.GeneralHandlerStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:iCall.GeneralHandlerState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="iCall.PeriodicHandler.get_listRequest">
+</message>
+<message name="iCall.PeriodicHandler.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="iCall.PeriodicHandler.createRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="scripts" type="tns:Common.StringSequence"/>
+	<part name="intervals" type="tns:Common.ULongSequence"/>
+</message>
+<message name="iCall.PeriodicHandler.createResponse">
+</message>
+
+<message name="iCall.PeriodicHandler.delete_handlerRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+</message>
+<message name="iCall.PeriodicHandler.delete_handlerResponse">
+</message>
+
+<message name="iCall.PeriodicHandler.delete_all_handlersRequest">
+</message>
+<message name="iCall.PeriodicHandler.delete_all_handlersResponse">
+</message>
+
+<message name="iCall.PeriodicHandler.set_descriptionRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="iCall.PeriodicHandler.set_descriptionResponse">
+</message>
+
+<message name="iCall.PeriodicHandler.get_descriptionRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+</message>
+<message name="iCall.PeriodicHandler.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="iCall.PeriodicHandler.set_first_occurrenceRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="occurrences" type="tns:Common.TimeStampSequence"/>
+</message>
+<message name="iCall.PeriodicHandler.set_first_occurrenceResponse">
+</message>
+
+<message name="iCall.PeriodicHandler.get_first_occurrenceRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+</message>
+<message name="iCall.PeriodicHandler.get_first_occurrenceResponse">
+	<part name="return" type="tns:Common.TimeStampSequence"/>
+</message>
+
+<message name="iCall.PeriodicHandler.set_handler_stateRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:iCall.GeneralHandlerStateSequence"/>
+</message>
+<message name="iCall.PeriodicHandler.set_handler_stateResponse">
+</message>
+
+<message name="iCall.PeriodicHandler.get_handler_stateRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+</message>
+<message name="iCall.PeriodicHandler.get_handler_stateResponse">
+	<part name="return" type="tns:iCall.GeneralHandlerStateSequence"/>
+</message>
+
+<message name="iCall.PeriodicHandler.set_intervalRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="intervals" type="tns:Common.ULongSequence"/>
+</message>
+<message name="iCall.PeriodicHandler.set_intervalResponse">
+</message>
+
+<message name="iCall.PeriodicHandler.get_intervalRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+</message>
+<message name="iCall.PeriodicHandler.get_intervalResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="iCall.PeriodicHandler.set_last_occurrenceRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="occurrences" type="tns:iCall.PeriodicHandlerExpirySequence"/>
+</message>
+<message name="iCall.PeriodicHandler.set_last_occurrenceResponse">
+</message>
+
+<message name="iCall.PeriodicHandler.get_last_occurrenceRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+</message>
+<message name="iCall.PeriodicHandler.get_last_occurrenceResponse">
+	<part name="return" type="tns:iCall.PeriodicHandlerExpirySequence"/>
+</message>
+
+<message name="iCall.PeriodicHandler.set_scriptRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="scripts" type="tns:Common.StringSequence"/>
+</message>
+<message name="iCall.PeriodicHandler.set_scriptResponse">
+</message>
+
+<message name="iCall.PeriodicHandler.get_scriptRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+</message>
+<message name="iCall.PeriodicHandler.get_scriptResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="iCall.PeriodicHandler.get_versionRequest">
+</message>
+<message name="iCall.PeriodicHandler.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="iCall.PeriodicHandlerPortType">
+	<operation name="get_list">
+   	<documentation>
+ Gets the list of periodic handlers.
+
+        	</documentation>
+		<input message="tns:iCall.PeriodicHandler.get_listRequest"/>
+		<output message="tns:iCall.PeriodicHandler.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates new periodic handlers.
+
+        	</documentation>
+		<input message="tns:iCall.PeriodicHandler.createRequest"/>
+		<output message="tns:iCall.PeriodicHandler.createResponse"/>
+	</operation>
+	<operation name="delete_handler">
+	<documentation>
+ Deletes the specified periodic handlers.
+
+        	</documentation>
+		<input message="tns:iCall.PeriodicHandler.delete_handlerRequest"/>
+		<output message="tns:iCall.PeriodicHandler.delete_handlerResponse"/>
+	</operation>
+	<operation name="delete_all_handlers">
+	<documentation>
+ Deletes all user-defined (non-root) periodic handlers.  
+
+        	</documentation>
+		<input message="tns:iCall.PeriodicHandler.delete_all_handlersRequest"/>
+		<output message="tns:iCall.PeriodicHandler.delete_all_handlersResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for the specified periodic handlers.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:iCall.PeriodicHandler.set_descriptionRequest"/>
+		<output message="tns:iCall.PeriodicHandler.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the specified periodic handlers.
+
+        	</documentation>
+		<input message="tns:iCall.PeriodicHandler.get_descriptionRequest"/>
+		<output message="tns:iCall.PeriodicHandler.get_descriptionResponse"/>
+	</operation>
+	<operation name="set_first_occurrence">
+	<documentation>
+ Sets the first occurrence for the specified periodic handlers.
+
+ This field tells the first time at which the handler will start
+ its associated script.
+
+        	</documentation>
+		<input message="tns:iCall.PeriodicHandler.set_first_occurrenceRequest"/>
+		<output message="tns:iCall.PeriodicHandler.set_first_occurrenceResponse"/>
+	</operation>
+	<operation name="get_first_occurrence">
+	<documentation>
+ Gets the first occurrences for the specified periodic handlers.
+
+        	</documentation>
+		<input message="tns:iCall.PeriodicHandler.get_first_occurrenceRequest"/>
+		<output message="tns:iCall.PeriodicHandler.get_first_occurrenceResponse"/>
+	</operation>
+	<operation name="set_handler_state">
+	<documentation>
+ Sets the states for the specified periodic handlers.
+
+ This field describes whether the handler is running and accepting
+ events.
+
+        	</documentation>
+		<input message="tns:iCall.PeriodicHandler.set_handler_stateRequest"/>
+		<output message="tns:iCall.PeriodicHandler.set_handler_stateResponse"/>
+	</operation>
+	<operation name="get_handler_state">
+	<documentation>
+ Gets the states for the specified periodic handlers.
+
+        	</documentation>
+		<input message="tns:iCall.PeriodicHandler.get_handler_stateRequest"/>
+		<output message="tns:iCall.PeriodicHandler.get_handler_stateResponse"/>
+	</operation>
+	<operation name="set_interval">
+	<documentation>
+ Sets the interval for the specified periodic handlers.
+
+ This field tells the interval, in seconds, at which the handler
+ will start its associated script.
+
+        	</documentation>
+		<input message="tns:iCall.PeriodicHandler.set_intervalRequest"/>
+		<output message="tns:iCall.PeriodicHandler.set_intervalResponse"/>
+	</operation>
+	<operation name="get_interval">
+	<documentation>
+ Gets the interval for the specified periodic handlers.
+
+        	</documentation>
+		<input message="tns:iCall.PeriodicHandler.get_intervalRequest"/>
+		<output message="tns:iCall.PeriodicHandler.get_intervalResponse"/>
+	</operation>
+	<operation name="set_last_occurrence">
+	<documentation>
+ Sets the last occurrence for the specified periodic handlers.
+
+ This field tells the last time at which the handler will start
+ its associated script.
+
+        	</documentation>
+		<input message="tns:iCall.PeriodicHandler.set_last_occurrenceRequest"/>
+		<output message="tns:iCall.PeriodicHandler.set_last_occurrenceResponse"/>
+	</operation>
+	<operation name="get_last_occurrence">
+	<documentation>
+ Gets the last occurrence for the specified periodic handlers.
+
+        	</documentation>
+		<input message="tns:iCall.PeriodicHandler.get_last_occurrenceRequest"/>
+		<output message="tns:iCall.PeriodicHandler.get_last_occurrenceResponse"/>
+	</operation>
+	<operation name="set_script">
+	<documentation>
+ Sets the script for the specified periodic handlers.
+
+ This is the name of a Tcl script that will be run on the handler's
+ specified interval.
+
+        	</documentation>
+		<input message="tns:iCall.PeriodicHandler.set_scriptRequest"/>
+		<output message="tns:iCall.PeriodicHandler.set_scriptResponse"/>
+	</operation>
+	<operation name="get_script">
+	<documentation>
+ Gets the scripts for the specified periodic handlers.
+
+        	</documentation>
+		<input message="tns:iCall.PeriodicHandler.get_scriptRequest"/>
+		<output message="tns:iCall.PeriodicHandler.get_scriptResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:iCall.PeriodicHandler.get_versionRequest"/>
+		<output message="tns:iCall.PeriodicHandler.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="iCall.PeriodicHandlerBinding" type="tns:iCall.PeriodicHandlerPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the list of periodic handlers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/PeriodicHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates new periodic handlers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/PeriodicHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_handler">
+	<documentation>
+ Deletes the specified periodic handlers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/PeriodicHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_handlers">
+	<documentation>
+ Deletes all user-defined (non-root) periodic handlers.  
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/PeriodicHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for the specified periodic handlers.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/PeriodicHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the specified periodic handlers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/PeriodicHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_first_occurrence">
+	<documentation>
+ Sets the first occurrence for the specified periodic handlers.
+
+ This field tells the first time at which the handler will start
+ its associated script.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/PeriodicHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_first_occurrence">
+	<documentation>
+ Gets the first occurrences for the specified periodic handlers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/PeriodicHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_handler_state">
+	<documentation>
+ Sets the states for the specified periodic handlers.
+
+ This field describes whether the handler is running and accepting
+ events.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/PeriodicHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_handler_state">
+	<documentation>
+ Gets the states for the specified periodic handlers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/PeriodicHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_interval">
+	<documentation>
+ Sets the interval for the specified periodic handlers.
+
+ This field tells the interval, in seconds, at which the handler
+ will start its associated script.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/PeriodicHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_interval">
+	<documentation>
+ Gets the interval for the specified periodic handlers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/PeriodicHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_last_occurrence">
+	<documentation>
+ Sets the last occurrence for the specified periodic handlers.
+
+ This field tells the last time at which the handler will start
+ its associated script.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/PeriodicHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_last_occurrence">
+	<documentation>
+ Gets the last occurrence for the specified periodic handlers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/PeriodicHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_script">
+	<documentation>
+ Sets the script for the specified periodic handlers.
+
+ This is the name of a Tcl script that will be run on the handler's
+ specified interval.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/PeriodicHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_script">
+	<documentation>
+ Gets the scripts for the specified periodic handlers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/PeriodicHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/PeriodicHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/PeriodicHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="iCall.PeriodicHandler">
+	<documentation>
+ The PeriodicHandler interface allows you to create or delete
+ periodic handlers.
+
+ These handlers do not subscribe to events. Rather, they have three
+ parameters: a start and end time, and an interval in seconds. The
+ script attached to the handler will be run on the interval between
+ the start and end times.
+
+        	</documentation>
+	<port name="iCall.PeriodicHandlerPort" binding="tns:iCall.PeriodicHandlerBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

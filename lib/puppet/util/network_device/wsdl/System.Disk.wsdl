@@ -1,0 +1,1442 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="System.Disk"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="System.Disk.LogicalDiskSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.Disk.LogicalDisk[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="System.Disk.APPVOwner">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="APPV_OWNER_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>APPV_OWNER_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="APPV_OWNER_UNASSIGNED">
+					<xsd:annotation>
+						<xsd:documentation>APPV_OWNER_UNASSIGNED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="APPV_OWNER_DATASTOR">
+					<xsd:annotation>
+						<xsd:documentation>APPV_OWNER_DATASTOR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="APPV_OWNER_MYSQL">
+					<xsd:annotation>
+						<xsd:documentation>APPV_OWNER_MYSQL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="APPV_OWNER_VCMP">
+					<xsd:annotation>
+						<xsd:documentation>APPV_OWNER_VCMP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="APPV_OWNER_AVR">
+					<xsd:annotation>
+						<xsd:documentation>APPV_OWNER_AVR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="APPV_OWNER_AFM">
+					<xsd:annotation>
+						<xsd:documentation>APPV_OWNER_AFM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="System.Disk.ApplicationVolumeStatusSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.Disk.ApplicationVolumeStatus[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="System.Disk.LogicalDiskUserModeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.Disk.LogicalDiskUserMode[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="System.Disk.LogicalDisk">
+			<xsd:sequence>
+				<xsd:element name="slot_id" type="xsd:long"/>
+				<xsd:element name="name" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="System.Disk.ApplicationVolume">
+			<xsd:sequence>
+				<xsd:element name="slot_id" type="xsd:long"/>
+				<xsd:element name="name" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="System.Disk.LogicalDiskUserMode">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LD_USER_MODE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>LD_USER_MODE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LD_USER_MODE_NONE">
+					<xsd:annotation>
+						<xsd:documentation>LD_USER_MODE_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LD_USER_MODE_MIXED">
+					<xsd:annotation>
+						<xsd:documentation>LD_USER_MODE_MIXED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LD_USER_MODE_DATASTOR">
+					<xsd:annotation>
+						<xsd:documentation>LD_USER_MODE_DATASTOR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LD_USER_MODE_CONTROL">
+					<xsd:annotation>
+						<xsd:documentation>LD_USER_MODE_CONTROL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="System.Disk.ApplicationVolumeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.Disk.ApplicationVolume[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.BooleanSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:boolean[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="System.Disk.RAIDStatus">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="RAID_STATUS_UNDEFINED">
+					<xsd:annotation>
+						<xsd:documentation>RAID_STATUS_UNDEFINED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="RAID_STATUS_SYNCHRONIZED">
+					<xsd:annotation>
+						<xsd:documentation>RAID_STATUS_SYNCHRONIZED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="RAID_STATUS_REPLICATING">
+					<xsd:annotation>
+						<xsd:documentation>RAID_STATUS_REPLICATING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="RAID_STATUS_MISSING">
+					<xsd:annotation>
+						<xsd:documentation>RAID_STATUS_MISSING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="RAID_STATUS_FAILED">
+					<xsd:annotation>
+						<xsd:documentation>RAID_STATUS_FAILED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="System.Disk.APPVPreservabilityMode">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="APPV_MODE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>APPV_MODE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="APPV_MODE_DISCARDABLE">
+					<xsd:annotation>
+						<xsd:documentation>APPV_MODE_DISCARDABLE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="APPV_MODE_PRECIOUS">
+					<xsd:annotation>
+						<xsd:documentation>APPV_MODE_PRECIOUS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="System.Disk.LogicalDiskSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.Disk.LogicalDiskSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="System.Disk.RAIDStatusSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.Disk.RAIDStatus[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="System.Disk.ApplicationVolumeStatus">
+			<xsd:sequence>
+				<xsd:element name="logical_disk" type="xsd:string"/>
+				<xsd:element name="visibility" type="xsd:string"/>
+				<xsd:element name="size" type="xsd:long"/>
+				<xsd:element name="owner" type="tns:System.Disk.APPVOwner"/>
+				<xsd:element name="resizeable" type="tns:Common.EnabledState"/>
+				<xsd:element name="preservability" type="tns:System.Disk.APPVPreservabilityMode"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="System.Disk.is_raid_capableRequest">
+</message>
+<message name="System.Disk.is_raid_capableResponse">
+	<part name="return" type="xsd:boolean"/>
+</message>
+
+<message name="System.Disk.get_listRequest">
+</message>
+<message name="System.Disk.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="System.Disk.get_slot_idRequest">
+	<part name="serial_numbers" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.Disk.get_slot_idResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="System.Disk.get_nameRequest">
+	<part name="serial_numbers" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.Disk.get_nameResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="System.Disk.is_array_memberRequest">
+	<part name="serial_numbers" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.Disk.is_array_memberResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="System.Disk.get_array_statusRequest">
+	<part name="serial_numbers" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.Disk.get_array_statusResponse">
+	<part name="return" type="tns:System.Disk.RAIDStatusSequence"/>
+</message>
+
+<message name="System.Disk.get_list_of_baysRequest">
+</message>
+<message name="System.Disk.get_list_of_baysResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="System.Disk.get_bay_disk_serial_numberRequest">
+	<part name="ids" type="tns:Common.ULongSequence"/>
+</message>
+<message name="System.Disk.get_bay_disk_serial_numberResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="System.Disk.get_application_volume_listRequest">
+</message>
+<message name="System.Disk.get_application_volume_listResponse">
+	<part name="return" type="tns:System.Disk.ApplicationVolumeSequence"/>
+</message>
+
+<message name="System.Disk.get_application_volume_statusRequest">
+	<part name="appvols" type="tns:System.Disk.ApplicationVolumeSequence"/>
+</message>
+<message name="System.Disk.get_application_volume_statusResponse">
+	<part name="return" type="tns:System.Disk.ApplicationVolumeStatusSequence"/>
+</message>
+
+<message name="System.Disk.delete_application_volumeRequest">
+	<part name="appvols" type="tns:System.Disk.ApplicationVolumeSequence"/>
+</message>
+<message name="System.Disk.delete_application_volumeResponse">
+</message>
+
+<message name="System.Disk.delete_all_application_volumesRequest">
+</message>
+<message name="System.Disk.delete_all_application_volumesResponse">
+</message>
+
+<message name="System.Disk.get_list_of_logical_disksRequest">
+</message>
+<message name="System.Disk.get_list_of_logical_disksResponse">
+	<part name="return" type="tns:System.Disk.LogicalDiskSequence"/>
+</message>
+
+<message name="System.Disk.get_logical_disk_device_nameRequest">
+	<part name="disks" type="tns:System.Disk.LogicalDiskSequence"/>
+</message>
+<message name="System.Disk.get_logical_disk_device_nameResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="System.Disk.get_logical_disk_mediaRequest">
+	<part name="disks" type="tns:System.Disk.LogicalDiskSequence"/>
+</message>
+<message name="System.Disk.get_logical_disk_mediaResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="System.Disk.get_logical_disk_sizeRequest">
+	<part name="disks" type="tns:System.Disk.LogicalDiskSequence"/>
+</message>
+<message name="System.Disk.get_logical_disk_sizeResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="System.Disk.get_logical_disk_formatRequest">
+	<part name="disks" type="tns:System.Disk.LogicalDiskSequence"/>
+</message>
+<message name="System.Disk.get_logical_disk_formatResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="System.Disk.get_logical_disk_space_in_useRequest">
+	<part name="disks" type="tns:System.Disk.LogicalDiskSequence"/>
+</message>
+<message name="System.Disk.get_logical_disk_space_in_useResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="System.Disk.get_logical_disk_space_freeRequest">
+	<part name="disks" type="tns:System.Disk.LogicalDiskSequence"/>
+</message>
+<message name="System.Disk.get_logical_disk_space_freeResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="System.Disk.get_logical_disk_user_modeRequest">
+	<part name="disks" type="tns:System.Disk.LogicalDiskSequence"/>
+</message>
+<message name="System.Disk.get_logical_disk_user_modeResponse">
+	<part name="return" type="tns:System.Disk.LogicalDiskUserModeSequence"/>
+</message>
+
+<message name="System.Disk.set_logical_disk_user_modeRequest">
+	<part name="disks" type="tns:System.Disk.LogicalDiskSequence"/>
+	<part name="modes" type="tns:System.Disk.LogicalDiskUserModeSequence"/>
+</message>
+<message name="System.Disk.set_logical_disk_user_modeResponse">
+</message>
+
+<message name="System.Disk.get_logical_disk_space_reservedRequest">
+	<part name="disks" type="tns:System.Disk.LogicalDiskSequence"/>
+</message>
+<message name="System.Disk.get_logical_disk_space_reservedResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="System.Disk.set_logical_disk_space_reservedRequest">
+	<part name="disks" type="tns:System.Disk.LogicalDiskSequence"/>
+	<part name="values" type="tns:Common.ULongSequence"/>
+</message>
+<message name="System.Disk.set_logical_disk_space_reservedResponse">
+</message>
+
+<message name="System.Disk.get_array_memberRequest">
+	<part name="disks" type="tns:System.Disk.LogicalDiskSequence"/>
+</message>
+<message name="System.Disk.get_array_memberResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="System.Disk.add_array_memberRequest">
+	<part name="disks" type="tns:System.Disk.LogicalDiskSequence"/>
+	<part name="serial_numbers" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="System.Disk.add_array_memberResponse">
+</message>
+
+<message name="System.Disk.add_array_member_by_logical_idRequest">
+	<part name="disks" type="tns:System.Disk.LogicalDiskSequence"/>
+	<part name="names" type="tns:System.Disk.LogicalDiskSequenceSequence"/>
+</message>
+<message name="System.Disk.add_array_member_by_logical_idResponse">
+</message>
+
+<message name="System.Disk.remove_array_memberRequest">
+	<part name="disks" type="tns:System.Disk.LogicalDiskSequence"/>
+	<part name="serial_numbers" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="System.Disk.remove_array_memberResponse">
+</message>
+
+<message name="System.Disk.remove_array_member_by_logical_idRequest">
+	<part name="disks" type="tns:System.Disk.LogicalDiskSequence"/>
+	<part name="names" type="tns:System.Disk.LogicalDiskSequenceSequence"/>
+</message>
+<message name="System.Disk.remove_array_member_by_logical_idResponse">
+</message>
+
+<message name="System.Disk.get_versionRequest">
+</message>
+<message name="System.Disk.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="System.DiskPortType">
+	<operation name="is_raid_capable">
+     	<documentation>
+ Gets an indication of whether the system is capable of
+ RAID operations.
+
+        	</documentation>
+		<input message="tns:System.Disk.is_raid_capableRequest"/>
+		<output message="tns:System.Disk.is_raid_capableResponse"/>
+	</operation>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of physical disks in the system, identified by
+ serial number.
+
+        	</documentation>
+		<input message="tns:System.Disk.get_listRequest"/>
+		<output message="tns:System.Disk.get_listResponse"/>
+	</operation>
+	<operation name="get_slot_id">
+	<documentation>
+ Gets slot identifiers for a set of physical disks.  The slot
+ identifier is part of the physical disk's LogicalDisk identifer.
+
+        	</documentation>
+		<input message="tns:System.Disk.get_slot_idRequest"/>
+		<output message="tns:System.Disk.get_slot_idResponse"/>
+	</operation>
+	<operation name="get_name">
+	<documentation>
+ Gets names for a set of physical disks.  This name is part of the
+ physical disk's LogicalDisk identifier.
+
+        	</documentation>
+		<input message="tns:System.Disk.get_nameRequest"/>
+		<output message="tns:System.Disk.get_nameResponse"/>
+	</operation>
+	<operation name="is_array_member">
+	<documentation>
+ Gets states indicating whether a disk is a member of a RAID disk
+ array for a set of physical disks.
+
+        	</documentation>
+		<input message="tns:System.Disk.is_array_memberRequest"/>
+		<output message="tns:System.Disk.is_array_memberResponse"/>
+	</operation>
+	<operation name="get_array_status">
+	<documentation>
+ Gets RAID disk array statuses for a set of physical disks.
+
+ Note: RAID status will be RAID_STATUS_UNDEFINED if the disk
+ is not a member of a RAID disk array (see
+ get_physical_disk_is_array_member).
+
+        	</documentation>
+		<input message="tns:System.Disk.get_array_statusRequest"/>
+		<output message="tns:System.Disk.get_array_statusResponse"/>
+	</operation>
+	<operation name="get_list_of_bays">
+	<documentation>
+ Gets a list of disk bays in the system.
+
+        	</documentation>
+		<input message="tns:System.Disk.get_list_of_baysRequest"/>
+		<output message="tns:System.Disk.get_list_of_baysResponse"/>
+	</operation>
+	<operation name="get_bay_disk_serial_number">
+	<documentation>
+ Gets a list of serial numbers of disks installed for a set
+ of disk bays.
+
+        	</documentation>
+		<input message="tns:System.Disk.get_bay_disk_serial_numberRequest"/>
+		<output message="tns:System.Disk.get_bay_disk_serial_numberResponse"/>
+	</operation>
+	<operation name="get_application_volume_list">
+	<documentation>
+ Gets the list of application volumes in the system.
+
+        	</documentation>
+		<input message="tns:System.Disk.get_application_volume_listRequest"/>
+		<output message="tns:System.Disk.get_application_volume_listResponse"/>
+	</operation>
+	<operation name="get_application_volume_status">
+	<documentation> 
+ Gets the status for a set of application volumes.
+
+ This provides details about the requested application volumes status.
+
+        	</documentation>
+		<input message="tns:System.Disk.get_application_volume_statusRequest"/>
+		<output message="tns:System.Disk.get_application_volume_statusResponse"/>
+	</operation>
+	<operation name="delete_application_volume">
+	<documentation>
+ Deletes a set of application volumes.
+
+        	</documentation>
+		<input message="tns:System.Disk.delete_application_volumeRequest"/>
+		<output message="tns:System.Disk.delete_application_volumeResponse"/>
+	</operation>
+	<operation name="delete_all_application_volumes">
+	<documentation>
+ Deletes all application volumes.
+
+        	</documentation>
+		<input message="tns:System.Disk.delete_all_application_volumesRequest"/>
+		<output message="tns:System.Disk.delete_all_application_volumesResponse"/>
+	</operation>
+	<operation name="get_list_of_logical_disks">
+	<documentation>
+ Gets a list of logical disks in the system.
+
+        	</documentation>
+		<input message="tns:System.Disk.get_list_of_logical_disksRequest"/>
+		<output message="tns:System.Disk.get_list_of_logical_disksResponse"/>
+	</operation>
+	<operation name="get_logical_disk_device_name">
+	<documentation>
+ Gets device names for a set of logical disks.
+ These are names like hda, hdb, etc.
+ (Note: Currently, the strings are for descriptive
+ purposes and are subject to change).
+
+        	</documentation>
+		<input message="tns:System.Disk.get_logical_disk_device_nameRequest"/>
+		<output message="tns:System.Disk.get_logical_disk_device_nameResponse"/>
+	</operation>
+	<operation name="get_logical_disk_media">
+	<documentation>
+ Gets media types for a set of logical disks.
+ These are strings like hd, cf, cft, etc.
+ (Note: Currently, the strings are for descriptive
+ purposes and are subject to change).
+
+        	</documentation>
+		<input message="tns:System.Disk.get_logical_disk_mediaRequest"/>
+		<output message="tns:System.Disk.get_logical_disk_mediaResponse"/>
+	</operation>
+	<operation name="get_logical_disk_size">
+	<documentation>
+ Gets sizes (in MiB) for a set of logical disks.
+
+        	</documentation>
+		<input message="tns:System.Disk.get_logical_disk_sizeRequest"/>
+		<output message="tns:System.Disk.get_logical_disk_sizeResponse"/>
+	</operation>
+	<operation name="get_logical_disk_format">
+	<documentation>
+ Gets the formats for a set of logical disks.
+ These are strings like multiboot, lvm, etc.
+ (Note: Currently, the strings are for descriptive
+ purposes and are subject to change).
+
+        	</documentation>
+		<input message="tns:System.Disk.get_logical_disk_formatRequest"/>
+		<output message="tns:System.Disk.get_logical_disk_formatResponse"/>
+	</operation>
+	<operation name="get_logical_disk_space_in_use">
+	<documentation>
+ Gets the disk space in use (in MiB) for a set of logical disks.
+
+        	</documentation>
+		<input message="tns:System.Disk.get_logical_disk_space_in_useRequest"/>
+		<output message="tns:System.Disk.get_logical_disk_space_in_useResponse"/>
+	</operation>
+	<operation name="get_logical_disk_space_free">
+	<documentation>
+ Gets the free disk space available (in MiB) for a set of logical disks.
+
+        	</documentation>
+		<input message="tns:System.Disk.get_logical_disk_space_freeRequest"/>
+		<output message="tns:System.Disk.get_logical_disk_space_freeResponse"/>
+	</operation>
+	<operation name="get_logical_disk_user_mode">
+	<documentation>
+ Gets the user mode for a set of logical disks.
+ The user mode defines how the logical disk will be consumed.
+
+        	</documentation>
+		<input message="tns:System.Disk.get_logical_disk_user_modeRequest"/>
+		<output message="tns:System.Disk.get_logical_disk_user_modeResponse"/>
+	</operation>
+	<operation name="set_logical_disk_user_mode">
+	<documentation>
+ Sets the user mode for a set of logical disks.
+
+        	</documentation>
+		<input message="tns:System.Disk.set_logical_disk_user_modeRequest"/>
+		<output message="tns:System.Disk.set_logical_disk_user_modeResponse"/>
+	</operation>
+	<operation name="get_logical_disk_space_reserved">
+	<documentation>
+ Gets the volume group reserved sizes (MiB) for a set of logical disks.
+ Reserved disk space (MiB) is the value set in accordance to the safety 
+ policy goal for a disk. If the free disk space available is at or 
+ below this number, no provision changes are allowed that would reduce 
+ the free space any further.
+
+        	</documentation>
+		<input message="tns:System.Disk.get_logical_disk_space_reservedRequest"/>
+		<output message="tns:System.Disk.get_logical_disk_space_reservedResponse"/>
+	</operation>
+	<operation name="set_logical_disk_space_reserved">
+	<documentation>
+ Sets volume group reserved sizes (in MiB) for a set of logical disks.
+
+        	</documentation>
+		<input message="tns:System.Disk.set_logical_disk_space_reservedRequest"/>
+		<output message="tns:System.Disk.set_logical_disk_space_reservedResponse"/>
+	</operation>
+	<operation name="get_array_member">
+	<documentation>
+ Gets a list of physical disks that are members of a logical disk.
+
+ Note that this can be used for any type of logical disk -- single
+ disk drives or disk arrays.  However, it may not work for all
+ physical disk logical identifiers.
+
+        	</documentation>
+		<input message="tns:System.Disk.get_array_memberRequest"/>
+		<output message="tns:System.Disk.get_array_memberResponse"/>
+	</operation>
+	<operation name="add_array_member">
+	<documentation>
+ Adds physical disks to a set of logical disk arrays.
+
+ For a clustered system, this must be run on the chassis slot
+ holding the disk array.
+
+ This only works for logical disks which represent disk arrays.
+
+        	</documentation>
+		<input message="tns:System.Disk.add_array_memberRequest"/>
+		<output message="tns:System.Disk.add_array_memberResponse"/>
+	</operation>
+	<operation name="add_array_member_by_logical_id">
+	<documentation>
+ Adds physical disks to a set of logical disk arrays.
+
+ For a clustered system, this must be run on the chassis slot
+ holding the disk array.
+
+ This only works for logical disks which represent disk arrays.
+
+ This method does exactly the same thing as "add_array_member",
+ except that the added physical disks are specified by their
+ LogicalDisk identifiers, more convenient for user input than the
+ serial numbers used in "remove_array_member".  It is supplied for
+ convenience purposes only.
+
+        	</documentation>
+		<input message="tns:System.Disk.add_array_member_by_logical_idRequest"/>
+		<output message="tns:System.Disk.add_array_member_by_logical_idResponse"/>
+	</operation>
+	<operation name="remove_array_member">
+	<documentation>
+ Removes phyiscal disks from a set of logical disk arrays.
+
+ For a clustered system, this must be run on the chassis slot
+ holding the disk array.
+
+ This only works for logical disks which represent disk arrays.
+
+        	</documentation>
+		<input message="tns:System.Disk.remove_array_memberRequest"/>
+		<output message="tns:System.Disk.remove_array_memberResponse"/>
+	</operation>
+	<operation name="remove_array_member_by_logical_id">
+	<documentation>
+ Removes physical disks from a set of logical disk arrays.
+
+ For a clustered system, this must be run on the chassis slot
+ holding the disk array.
+
+ This only works for logical disks which represent disk arrays.
+
+ This method does exactly the same thing as "remove_array_member",
+ except that the removed physical disks are specified by their
+ LogicalDisk identifiers, more convenient for user input than the
+ serial numbers used in "remove_array_member".  It is supplied for
+ convenience purposes only.
+
+        	</documentation>
+		<input message="tns:System.Disk.remove_array_member_by_logical_idRequest"/>
+		<output message="tns:System.Disk.remove_array_member_by_logical_idResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:System.Disk.get_versionRequest"/>
+		<output message="tns:System.Disk.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="System.DiskBinding" type="tns:System.DiskPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="is_raid_capable">
+	<documentation>
+ Gets an indication of whether the system is capable of
+ RAID operations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_list">
+	<documentation>
+ Gets a list of physical disks in the system, identified by
+ serial number.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_slot_id">
+	<documentation>
+ Gets slot identifiers for a set of physical disks.  The slot
+ identifier is part of the physical disk's LogicalDisk identifer.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_name">
+	<documentation>
+ Gets names for a set of physical disks.  This name is part of the
+ physical disk's LogicalDisk identifier.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="is_array_member">
+	<documentation>
+ Gets states indicating whether a disk is a member of a RAID disk
+ array for a set of physical disks.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_array_status">
+	<documentation>
+ Gets RAID disk array statuses for a set of physical disks.
+
+ Note: RAID status will be RAID_STATUS_UNDEFINED if the disk
+ is not a member of a RAID disk array (see
+ get_physical_disk_is_array_member).
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_list_of_bays">
+	<documentation>
+ Gets a list of disk bays in the system.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_bay_disk_serial_number">
+	<documentation>
+ Gets a list of serial numbers of disks installed for a set
+ of disk bays.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_volume_list">
+	<documentation>
+ Gets the list of application volumes in the system.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_volume_status">
+	<documentation> 
+ Gets the status for a set of application volumes.
+
+ This provides details about the requested application volumes status.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_application_volume">
+	<documentation>
+ Deletes a set of application volumes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_application_volumes">
+	<documentation>
+ Deletes all application volumes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_list_of_logical_disks">
+	<documentation>
+ Gets a list of logical disks in the system.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_logical_disk_device_name">
+	<documentation>
+ Gets device names for a set of logical disks.
+ These are names like hda, hdb, etc.
+ (Note: Currently, the strings are for descriptive
+ purposes and are subject to change).
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_logical_disk_media">
+	<documentation>
+ Gets media types for a set of logical disks.
+ These are strings like hd, cf, cft, etc.
+ (Note: Currently, the strings are for descriptive
+ purposes and are subject to change).
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_logical_disk_size">
+	<documentation>
+ Gets sizes (in MiB) for a set of logical disks.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_logical_disk_format">
+	<documentation>
+ Gets the formats for a set of logical disks.
+ These are strings like multiboot, lvm, etc.
+ (Note: Currently, the strings are for descriptive
+ purposes and are subject to change).
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_logical_disk_space_in_use">
+	<documentation>
+ Gets the disk space in use (in MiB) for a set of logical disks.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_logical_disk_space_free">
+	<documentation>
+ Gets the free disk space available (in MiB) for a set of logical disks.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_logical_disk_user_mode">
+	<documentation>
+ Gets the user mode for a set of logical disks.
+ The user mode defines how the logical disk will be consumed.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_logical_disk_user_mode">
+	<documentation>
+ Sets the user mode for a set of logical disks.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_logical_disk_space_reserved">
+	<documentation>
+ Gets the volume group reserved sizes (MiB) for a set of logical disks.
+ Reserved disk space (MiB) is the value set in accordance to the safety 
+ policy goal for a disk. If the free disk space available is at or 
+ below this number, no provision changes are allowed that would reduce 
+ the free space any further.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_logical_disk_space_reserved">
+	<documentation>
+ Sets volume group reserved sizes (in MiB) for a set of logical disks.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_array_member">
+	<documentation>
+ Gets a list of physical disks that are members of a logical disk.
+
+ Note that this can be used for any type of logical disk -- single
+ disk drives or disk arrays.  However, it may not work for all
+ physical disk logical identifiers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_array_member">
+	<documentation>
+ Adds physical disks to a set of logical disk arrays.
+
+ For a clustered system, this must be run on the chassis slot
+ holding the disk array.
+
+ This only works for logical disks which represent disk arrays.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_array_member_by_logical_id">
+	<documentation>
+ Adds physical disks to a set of logical disk arrays.
+
+ For a clustered system, this must be run on the chassis slot
+ holding the disk array.
+
+ This only works for logical disks which represent disk arrays.
+
+ This method does exactly the same thing as "add_array_member",
+ except that the added physical disks are specified by their
+ LogicalDisk identifiers, more convenient for user input than the
+ serial numbers used in "remove_array_member".  It is supplied for
+ convenience purposes only.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_array_member">
+	<documentation>
+ Removes phyiscal disks from a set of logical disk arrays.
+
+ For a clustered system, this must be run on the chassis slot
+ holding the disk array.
+
+ This only works for logical disks which represent disk arrays.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_array_member_by_logical_id">
+	<documentation>
+ Removes physical disks from a set of logical disk arrays.
+
+ For a clustered system, this must be run on the chassis slot
+ holding the disk array.
+
+ This only works for logical disks which represent disk arrays.
+
+ This method does exactly the same thing as "remove_array_member",
+ except that the removed physical disks are specified by their
+ LogicalDisk identifiers, more convenient for user input than the
+ serial numbers used in "remove_array_member".  It is supplied for
+ convenience purposes only.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Disk"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Disk"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="System.Disk">
+	<documentation>
+ The Disk interface enables you to manage the disks in the system.
+
+ The disk objects come in two flavors.  "Physical disks" are the actual
+ hardware disk drives, which can be anything from a true hard disk to a
+ compact flash drive to a USB flash drive.  Physical disks are addressed
+ by their serial numbers.  "Logical disks" are the view of the disk
+ drives from the system's point of view, abstracting the disk itself,
+ making all disk drives look the same whether they are a true hard disk,
+ a flash drive, or a full disk array.  In other words, a logical disk
+ can hold one or more physical disks.  Logical disks are addressed by
+ the LogicalDisk identifier, which includes their logical name (e.g.,
+ "HD2", "CF1", "MD1") and their chassis slot identifier.
+
+ It is important to note the potentially confusing relationship between
+ logical and physical disks and their identifiers.  All physical disks
+ can be addressed by a LogicalDisk identifier, though it is not
+ guaranteed that all physical disks have an entry in the logical disk
+ table.  The logical disk
+ identifier for a physical disk is dependent on the connection of the
+ disk drive to the system, so can change if the system's disk drive
+ configuration changes.  On the other hand, all logical disks hold one
+ or more physical disks, which can have a direct one-to-one mapping for a
+ single disk drive or a one-to-many mapping for a disk array.  To avoid
+ problems, physical disks should be ideally addressed only by their
+ serial numbers and logical disks only by their LogicalDisk identifiers.
+ Addressing physical disks by their LogicalDisk identifier is supported
+ as a convenience for any user-generated input.  Be careful with these
+ distinctions as you use this interface.
+
+ The application volume component provides better granularity for managing 
+ disks. A logical disk can be logically segmented into several application 
+ volumes. An application volume belongs to only one logical disk and can 
+ never be shared. The visibility of the application volume can be confined
+ to a particular software volume set or it can be made global to make it 
+ visible across all control planes. Once set, the volume set visibility 
+ property cannot be modified. 
+
+ Application volumes are created during the provisioning of disk-using 
+ application modules (e.g., "DATASTOR", "VCMP" etc.). The application
+ volumes may be discarded by the software(e.g. during module provisioning) 
+ unless its preservability property is changed to precious.
+ 
+        	</documentation>
+	<port name="System.DiskPort" binding="tns:System.DiskBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

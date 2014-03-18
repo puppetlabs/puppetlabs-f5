@@ -3,26 +3,18 @@ Puppet::Type.newtype(:f5_certificate) do
 
   apply_to_device
 
-  ensurable do
-    desc "F5 certificate resource state. Valid values are present, absent."
-
-    defaultto(:present)
-
-    newvalue(:present) do
-      provider.create
-    end
-
-    newvalue(:absent) do
-      provider.destroy
-    end
-  end
+  ensurable
 
   newparam(:name, :namevar=>true) do
     desc "The certificate name."
+
+    validate do |value|
+      raise(ArgumentError, "v11.0+ requires a folder or partition in the name, such as /Common/rule") unless value =~ /^\/.*\//
+    end
   end
 
   newproperty(:content) do
-    desc "The cerficate content in PEM format (sha1 fingerprint)."
+    desc "The certificate content in PEM format (sha1 fingerprint)."
 
     munge do |value|
       resource[:real_content] = value

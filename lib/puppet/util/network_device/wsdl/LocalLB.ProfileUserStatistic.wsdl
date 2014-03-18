@@ -1,0 +1,916 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="LocalLB.ProfileUserStatistic"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="LocalLB.ProfileUserStatistic.ProfileUserStatisticStatistics">
+			<xsd:sequence>
+				<xsd:element name="statistics" type="tns:LocalLB.ProfileUserStatistic.ProfileUserStatisticStatisticEntrySequence"/>
+				<xsd:element name="time_stamp" type="tns:Common.TimeStamp"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfileUserStatistic.UserStatisticKeySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.ProfileUserStatistic.UserStatisticKey[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfileUserStatistic.UserStatisticKeySequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.ProfileUserStatistic.UserStatisticKeySequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULong64">
+			<xsd:sequence>
+				<xsd:element name="high" type="xsd:long"/>
+				<xsd:element name="low" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.TimeStamp">
+			<xsd:sequence>
+				<xsd:element name="year" type="xsd:long"/>
+				<xsd:element name="month" type="xsd:long"/>
+				<xsd:element name="day" type="xsd:long"/>
+				<xsd:element name="hour" type="xsd:long"/>
+				<xsd:element name="minute" type="xsd:long"/>
+				<xsd:element name="second" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfileUserStatistic.UserStatistic">
+			<xsd:sequence>
+				<xsd:element name="statistic_key" type="tns:LocalLB.ProfileUserStatistic.UserStatisticKey"/>
+				<xsd:element name="value" type="tns:Common.ULong64"/>
+				<xsd:element name="time_stamp" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfileUserStatistic.UserStatisticNameSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.ProfileUserStatistic.UserStatisticName[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.BooleanSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:boolean[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfileUserStatistic.UserStatisticNameSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.ProfileUserStatistic.UserStatisticNameSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="LocalLB.ProfileUserStatistic.UserStatisticKey">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="USER_STATISTIC_UNDEFINED">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_UNDEFINED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_1">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_1</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_2">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_2</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_3">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_3</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_4">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_4</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_5">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_5</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_6">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_6</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_7">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_7</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_8">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_8</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_9">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_9</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_10">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_10</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_11">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_11</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_12">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_12</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_13">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_13</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_14">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_14</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_15">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_15</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_16">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_16</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_17">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_17</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_18">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_18</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_19">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_19</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_20">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_20</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_21">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_21</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_22">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_22</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_23">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_23</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_24">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_24</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_25">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_25</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_26">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_26</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_27">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_27</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_28">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_28</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_29">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_29</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_30">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_30</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_31">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_31</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_STATISTIC_32">
+					<xsd:annotation>
+						<xsd:documentation>USER_STATISTIC_32</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="LocalLB.ProfileUserStatistic.UserStatisticName">
+			<xsd:sequence>
+				<xsd:element name="statistic_key" type="tns:LocalLB.ProfileUserStatistic.UserStatisticKey"/>
+				<xsd:element name="statistic_name" type="tns:LocalLB.ProfileString"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfileString">
+			<xsd:sequence>
+				<xsd:element name="value" type="xsd:string"/>
+				<xsd:element name="default_flag" type="xsd:boolean"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfileUserStatistic.ProfileUserStatisticStatisticEntrySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.ProfileUserStatistic.ProfileUserStatisticStatisticEntry[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfileUserStatistic.UserStatisticSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.ProfileUserStatistic.UserStatistic[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfileUserStatistic.ProfileUserStatisticStatisticEntry">
+			<xsd:sequence>
+				<xsd:element name="profile_name" type="xsd:string"/>
+				<xsd:element name="statistics" type="tns:LocalLB.ProfileUserStatistic.UserStatisticSequence"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="LocalLB.ProfileUserStatistic.get_listRequest">
+</message>
+<message name="LocalLB.ProfileUserStatistic.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.ProfileUserStatistic.createRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileUserStatistic.createResponse">
+</message>
+
+<message name="LocalLB.ProfileUserStatistic.delete_profileRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileUserStatistic.delete_profileResponse">
+</message>
+
+<message name="LocalLB.ProfileUserStatistic.delete_all_profilesRequest">
+</message>
+<message name="LocalLB.ProfileUserStatistic.delete_all_profilesResponse">
+</message>
+
+<message name="LocalLB.ProfileUserStatistic.is_base_profileRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileUserStatistic.is_base_profileResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="LocalLB.ProfileUserStatistic.is_system_profileRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileUserStatistic.is_system_profileResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="LocalLB.ProfileUserStatistic.set_default_profileRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="defaults" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileUserStatistic.set_default_profileResponse">
+</message>
+
+<message name="LocalLB.ProfileUserStatistic.get_default_profileRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileUserStatistic.get_default_profileResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.ProfileUserStatistic.set_statistic_nameRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="statistic_names" type="tns:LocalLB.ProfileUserStatistic.UserStatisticNameSequenceSequence"/>
+</message>
+<message name="LocalLB.ProfileUserStatistic.set_statistic_nameResponse">
+</message>
+
+<message name="LocalLB.ProfileUserStatistic.get_statistic_nameRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="statistic_keys" type="tns:LocalLB.ProfileUserStatistic.UserStatisticKeySequenceSequence"/>
+</message>
+<message name="LocalLB.ProfileUserStatistic.get_statistic_nameResponse">
+	<part name="return" type="tns:LocalLB.ProfileUserStatistic.UserStatisticNameSequenceSequence"/>
+</message>
+
+<message name="LocalLB.ProfileUserStatistic.set_descriptionRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileUserStatistic.set_descriptionResponse">
+</message>
+
+<message name="LocalLB.ProfileUserStatistic.get_descriptionRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileUserStatistic.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.ProfileUserStatistic.reset_statisticsRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileUserStatistic.reset_statisticsResponse">
+</message>
+
+<message name="LocalLB.ProfileUserStatistic.get_all_statisticsRequest">
+</message>
+<message name="LocalLB.ProfileUserStatistic.get_all_statisticsResponse">
+	<part name="return" type="tns:LocalLB.ProfileUserStatistic.ProfileUserStatisticStatistics"/>
+</message>
+
+<message name="LocalLB.ProfileUserStatistic.get_statisticsRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileUserStatistic.get_statisticsResponse">
+	<part name="return" type="tns:LocalLB.ProfileUserStatistic.ProfileUserStatisticStatistics"/>
+</message>
+
+<message name="LocalLB.ProfileUserStatistic.get_versionRequest">
+</message>
+<message name="LocalLB.ProfileUserStatistic.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="LocalLB.ProfileUserStatisticPortType">
+	<operation name="get_list">
+    	<documentation>
+ Gets a list of all user-defined statistic profiles.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.ProfileUserStatistic.get_listRequest"/>
+		<output message="tns:LocalLB.ProfileUserStatistic.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates the specified user-defined statistic profiles.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.ProfileUserStatistic.createRequest"/>
+		<output message="tns:LocalLB.ProfileUserStatistic.createResponse"/>
+	</operation>
+	<operation name="delete_profile">
+	<documentation>
+ Deletes the specified user-defined statistic profiles.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.ProfileUserStatistic.delete_profileRequest"/>
+		<output message="tns:LocalLB.ProfileUserStatistic.delete_profileResponse"/>
+	</operation>
+	<operation name="delete_all_profiles">
+	<documentation>
+ Deletes all user-defined statistic profiles.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.ProfileUserStatistic.delete_all_profilesRequest"/>
+		<output message="tns:LocalLB.ProfileUserStatistic.delete_all_profilesResponse"/>
+	</operation>
+	<operation name="is_base_profile">
+	<documentation>
+ Determines whether the specified statistics profiles are base
+ profiles.  A base profile sits at the base of the profile's
+ inheritance tree, supplying the defaults for every profile derived
+ from it.  (See also is_system_profile).
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileUserStatistic.is_base_profileRequest"/>
+		<output message="tns:LocalLB.ProfileUserStatistic.is_base_profileResponse"/>
+	</operation>
+	<operation name="is_system_profile">
+	<documentation>
+ Determines whether the specified statistics profiles are system
+ profiles.  A system profile is a profile pre-configured on the
+ system, ready for use.  Non-system profiles are profiles created or
+ modified by a user.  Note that if a system profile is modified, it
+ is no longer considered a system profile.  (See also
+ is_base_profile).
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileUserStatistic.is_system_profileRequest"/>
+		<output message="tns:LocalLB.ProfileUserStatistic.is_system_profileResponse"/>
+	</operation>
+	<operation name="set_default_profile">
+	<documentation>
+ Sets the names of the default profiles from which the specified profiles will derive
+ default values for its attributes.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.ProfileUserStatistic.set_default_profileRequest"/>
+		<output message="tns:LocalLB.ProfileUserStatistic.set_default_profileResponse"/>
+	</operation>
+	<operation name="get_default_profile">
+	<documentation>
+ Gets the names of the default profiles from which the specified profiles will derive
+ default values for its attributes.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.ProfileUserStatistic.get_default_profileRequest"/>
+		<output message="tns:LocalLB.ProfileUserStatistic.get_default_profileResponse"/>
+	</operation>
+	<operation name="set_statistic_name">
+	<documentation>
+ Sets the user-defined statistic names in the specified profiles.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.ProfileUserStatistic.set_statistic_nameRequest"/>
+		<output message="tns:LocalLB.ProfileUserStatistic.set_statistic_nameResponse"/>
+	</operation>
+	<operation name="get_statistic_name">
+	<documentation>
+ Gets the user-defined statistic names in the specified profiles.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.ProfileUserStatistic.get_statistic_nameRequest"/>
+		<output message="tns:LocalLB.ProfileUserStatistic.get_statistic_nameResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of statistics profiles.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileUserStatistic.set_descriptionRequest"/>
+		<output message="tns:LocalLB.ProfileUserStatistic.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of statistics profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileUserStatistic.get_descriptionRequest"/>
+		<output message="tns:LocalLB.ProfileUserStatistic.get_descriptionResponse"/>
+	</operation>
+	<operation name="reset_statistics">
+	<documentation>
+ Resets the statistics for the specified user-defined statistic profiles.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.ProfileUserStatistic.reset_statisticsRequest"/>
+		<output message="tns:LocalLB.ProfileUserStatistic.reset_statisticsResponse"/>
+	</operation>
+	<operation name="get_all_statistics">
+	<documentation>
+ Gets the statistics for all the user-defined statistic profiles.
+ Only the statistic values of the user-defined statistics will be returned,
+ i.e. even though there are up to 32 custom statistics in any given profile,
+ but if only 3 of those custom statistics have been defined by the user,
+ then only the values of those 3 statistics will be returned.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.ProfileUserStatistic.get_all_statisticsRequest"/>
+		<output message="tns:LocalLB.ProfileUserStatistic.get_all_statisticsResponse"/>
+	</operation>
+	<operation name="get_statistics">
+	<documentation>
+ Gets the statistics for the specified user-defined statistic profiles.
+ Only the statistic values of the user-defined statistics will be returned,
+ i.e. even though there are up to 32 custom statistics in any given profile,
+ but if only 3 of those custom statistics have been defined by the user,
+ then only the values of those 3 statistics will be returned.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.ProfileUserStatistic.get_statisticsRequest"/>
+		<output message="tns:LocalLB.ProfileUserStatistic.get_statisticsResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileUserStatistic.get_versionRequest"/>
+		<output message="tns:LocalLB.ProfileUserStatistic.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="LocalLB.ProfileUserStatisticBinding" type="tns:LocalLB.ProfileUserStatisticPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all user-defined statistic profiles.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileUserStatistic"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates the specified user-defined statistic profiles.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileUserStatistic"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_profile">
+	<documentation>
+ Deletes the specified user-defined statistic profiles.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileUserStatistic"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_profiles">
+	<documentation>
+ Deletes all user-defined statistic profiles.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileUserStatistic"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="is_base_profile">
+	<documentation>
+ Determines whether the specified statistics profiles are base
+ profiles.  A base profile sits at the base of the profile's
+ inheritance tree, supplying the defaults for every profile derived
+ from it.  (See also is_system_profile).
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileUserStatistic"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="is_system_profile">
+	<documentation>
+ Determines whether the specified statistics profiles are system
+ profiles.  A system profile is a profile pre-configured on the
+ system, ready for use.  Non-system profiles are profiles created or
+ modified by a user.  Note that if a system profile is modified, it
+ is no longer considered a system profile.  (See also
+ is_base_profile).
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileUserStatistic"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_default_profile">
+	<documentation>
+ Sets the names of the default profiles from which the specified profiles will derive
+ default values for its attributes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileUserStatistic"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_default_profile">
+	<documentation>
+ Gets the names of the default profiles from which the specified profiles will derive
+ default values for its attributes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileUserStatistic"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_statistic_name">
+	<documentation>
+ Sets the user-defined statistic names in the specified profiles.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileUserStatistic"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_statistic_name">
+	<documentation>
+ Gets the user-defined statistic names in the specified profiles.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileUserStatistic"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of statistics profiles.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileUserStatistic"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of statistics profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileUserStatistic"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="reset_statistics">
+	<documentation>
+ Resets the statistics for the specified user-defined statistic profiles.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileUserStatistic"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_all_statistics">
+	<documentation>
+ Gets the statistics for all the user-defined statistic profiles.
+ Only the statistic values of the user-defined statistics will be returned,
+ i.e. even though there are up to 32 custom statistics in any given profile,
+ but if only 3 of those custom statistics have been defined by the user,
+ then only the values of those 3 statistics will be returned.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileUserStatistic"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_statistics">
+	<documentation>
+ Gets the statistics for the specified user-defined statistic profiles.
+ Only the statistic values of the user-defined statistics will be returned,
+ i.e. even though there are up to 32 custom statistics in any given profile,
+ but if only 3 of those custom statistics have been defined by the user,
+ then only the values of those 3 statistics will be returned.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileUserStatistic"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileUserStatistic"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileUserStatistic"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="LocalLB.ProfileUserStatistic">
+	<documentation>
+ The ProfileUserStatistic interface enables you to manage user-defined statistics in a profile.
+ The user can define up to 32 user-defined statistics in each profile.
+
+        	</documentation>
+	<port name="LocalLB.ProfileUserStatisticPort" binding="tns:LocalLB.ProfileUserStatisticBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

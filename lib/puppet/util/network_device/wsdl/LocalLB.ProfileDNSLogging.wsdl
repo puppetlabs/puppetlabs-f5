@@ -1,0 +1,852 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="LocalLB.ProfileDNSLogging"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="LocalLB.ProfileDNSLogging.get_listRequest">
+</message>
+<message name="LocalLB.ProfileDNSLogging.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.ProfileDNSLogging.createRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="publishers" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileDNSLogging.createResponse">
+</message>
+
+<message name="LocalLB.ProfileDNSLogging.delete_profileRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileDNSLogging.delete_profileResponse">
+</message>
+
+<message name="LocalLB.ProfileDNSLogging.delete_all_profilesRequest">
+</message>
+<message name="LocalLB.ProfileDNSLogging.delete_all_profilesResponse">
+</message>
+
+<message name="LocalLB.ProfileDNSLogging.set_query_logging_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="LocalLB.ProfileDNSLogging.set_query_logging_stateResponse">
+</message>
+
+<message name="LocalLB.ProfileDNSLogging.get_query_logging_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileDNSLogging.get_query_logging_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.ProfileDNSLogging.set_response_logging_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="LocalLB.ProfileDNSLogging.set_response_logging_stateResponse">
+</message>
+
+<message name="LocalLB.ProfileDNSLogging.get_response_logging_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileDNSLogging.get_response_logging_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.ProfileDNSLogging.set_dns_log_publisherRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="publishers" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileDNSLogging.set_dns_log_publisherResponse">
+</message>
+
+<message name="LocalLB.ProfileDNSLogging.get_dns_log_publisherRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileDNSLogging.get_dns_log_publisherResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.ProfileDNSLogging.set_query_id_enabled_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="LocalLB.ProfileDNSLogging.set_query_id_enabled_stateResponse">
+</message>
+
+<message name="LocalLB.ProfileDNSLogging.get_query_id_enabled_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileDNSLogging.get_query_id_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.ProfileDNSLogging.set_source_enabled_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="LocalLB.ProfileDNSLogging.set_source_enabled_stateResponse">
+</message>
+
+<message name="LocalLB.ProfileDNSLogging.get_source_enabled_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileDNSLogging.get_source_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.ProfileDNSLogging.set_timestamp_enabled_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="LocalLB.ProfileDNSLogging.set_timestamp_enabled_stateResponse">
+</message>
+
+<message name="LocalLB.ProfileDNSLogging.get_timestamp_enabled_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileDNSLogging.get_timestamp_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.ProfileDNSLogging.set_view_enabled_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="LocalLB.ProfileDNSLogging.set_view_enabled_stateResponse">
+</message>
+
+<message name="LocalLB.ProfileDNSLogging.get_view_enabled_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileDNSLogging.get_view_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.ProfileDNSLogging.set_complete_answer_enabled_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="LocalLB.ProfileDNSLogging.set_complete_answer_enabled_stateResponse">
+</message>
+
+<message name="LocalLB.ProfileDNSLogging.get_complete_answer_enabled_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileDNSLogging.get_complete_answer_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.ProfileDNSLogging.get_versionRequest">
+</message>
+<message name="LocalLB.ProfileDNSLogging.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="LocalLB.ProfileDNSLoggingPortType">
+	<operation name="get_list">
+       	<documentation>
+ Gets a list of DNS Logging profiles.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.ProfileDNSLogging.get_listRequest"/>
+		<output message="tns:LocalLB.ProfileDNSLogging.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates the specified DNS Logging profiles.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.ProfileDNSLogging.createRequest"/>
+		<output message="tns:LocalLB.ProfileDNSLogging.createResponse"/>
+	</operation>
+	<operation name="delete_profile">
+	<documentation>
+ Deletes the specified DNS Logging profiles.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.ProfileDNSLogging.delete_profileRequest"/>
+		<output message="tns:LocalLB.ProfileDNSLogging.delete_profileResponse"/>
+	</operation>
+	<operation name="delete_all_profiles">
+	<documentation>
+ Deletes all DNS Logging profiles.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.ProfileDNSLogging.delete_all_profilesRequest"/>
+		<output message="tns:LocalLB.ProfileDNSLogging.delete_all_profilesResponse"/>
+	</operation>
+	<operation name="set_query_logging_state">
+	<documentation>
+ Sets the query logging enabled state for a set of DNS Logging profiles. 
+
+ If enabled on a DNS profile, it logs all the DNS queries provided
+ the DNS profile is configured with a DNS Logging profile. By default this
+ option is enabled. 
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileDNSLogging.set_query_logging_stateRequest"/>
+		<output message="tns:LocalLB.ProfileDNSLogging.set_query_logging_stateResponse"/>
+	</operation>
+	<operation name="get_query_logging_state">
+	<documentation>
+ Gets the query logging enabled state for a set of DNS Logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileDNSLogging.get_query_logging_stateRequest"/>
+		<output message="tns:LocalLB.ProfileDNSLogging.get_query_logging_stateResponse"/>
+	</operation>
+	<operation name="set_response_logging_state">
+	<documentation>
+ Sets the response logging enabled state for a set of DNS Logging profiles. 
+
+ If enabled on a DNS profile, it logs all the DNS responses provided
+ the DNS profile is configured with a logging profile. By default this
+ option is disabled. 
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileDNSLogging.set_response_logging_stateRequest"/>
+		<output message="tns:LocalLB.ProfileDNSLogging.set_response_logging_stateResponse"/>
+	</operation>
+	<operation name="get_response_logging_state">
+	<documentation>
+ Gets the response logging enabled state for a set of DNS Logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileDNSLogging.get_response_logging_stateRequest"/>
+		<output message="tns:LocalLB.ProfileDNSLogging.get_response_logging_stateResponse"/>
+	</operation>
+	<operation name="set_dns_log_publisher">
+	<documentation>
+ Sets the Log Publishers for a set of DNS Logging profiles. 
+ This is a mandatory attribute while creating a DNS Logging profile.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileDNSLogging.set_dns_log_publisherRequest"/>
+		<output message="tns:LocalLB.ProfileDNSLogging.set_dns_log_publisherResponse"/>
+	</operation>
+	<operation name="get_dns_log_publisher">
+	<documentation>
+ Gets the Log Publishers for a set of DNS Logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileDNSLogging.get_dns_log_publisherRequest"/>
+		<output message="tns:LocalLB.ProfileDNSLogging.get_dns_log_publisherResponse"/>
+	</operation>
+	<operation name="set_query_id_enabled_state">
+	<documentation>
+ Sets query ID enabled state. Enabling this will include the query ID 
+ field of queries and/or responses in the log.  
+ By default, this option is disabled. 
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileDNSLogging.set_query_id_enabled_stateRequest"/>
+		<output message="tns:LocalLB.ProfileDNSLogging.set_query_id_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_query_id_enabled_state">
+	<documentation>
+ Gets the query ID enabled state for a set of DNS Logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileDNSLogging.get_query_id_enabled_stateRequest"/>
+		<output message="tns:LocalLB.ProfileDNSLogging.get_query_id_enabled_stateResponse"/>
+	</operation>
+	<operation name="set_source_enabled_state">
+	<documentation>
+ Sets source enabled state. Enabling this will include the source 
+ field of queries and/or responses in the log.  
+ By default, this option is enabled. 
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileDNSLogging.set_source_enabled_stateRequest"/>
+		<output message="tns:LocalLB.ProfileDNSLogging.set_source_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_source_enabled_state">
+	<documentation>
+ Gets source enabled state for a set of DNS Logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileDNSLogging.get_source_enabled_stateRequest"/>
+		<output message="tns:LocalLB.ProfileDNSLogging.get_source_enabled_stateResponse"/>
+	</operation>
+	<operation name="set_timestamp_enabled_state">
+	<documentation>
+ Sets timestamp enabled state. Enabling this will include the timestamp 
+ field of queries and/or responses in the log.  
+ By default, this option is enabled.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileDNSLogging.set_timestamp_enabled_stateRequest"/>
+		<output message="tns:LocalLB.ProfileDNSLogging.set_timestamp_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_timestamp_enabled_state">
+	<documentation>
+ Gets timestamp enabled state for a set of DNS Logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileDNSLogging.get_timestamp_enabled_stateRequest"/>
+		<output message="tns:LocalLB.ProfileDNSLogging.get_timestamp_enabled_stateResponse"/>
+	</operation>
+	<operation name="set_view_enabled_state">
+	<documentation>
+ Sets view enabled state. Enabling this will include the view 
+ field of queries in the log.  
+ By default, this option is enabled.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileDNSLogging.set_view_enabled_stateRequest"/>
+		<output message="tns:LocalLB.ProfileDNSLogging.set_view_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_view_enabled_state">
+	<documentation>
+ Gets view enabled state for a set of DNS Logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileDNSLogging.get_view_enabled_stateRequest"/>
+		<output message="tns:LocalLB.ProfileDNSLogging.get_view_enabled_stateResponse"/>
+	</operation>
+	<operation name="set_complete_answer_enabled_state">
+	<documentation>
+ Sets complete answer enabled state. By enabling this option, response log messages 
+ will include all resource records in the the answer section.
+ By default this option is enabled. 
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileDNSLogging.set_complete_answer_enabled_stateRequest"/>
+		<output message="tns:LocalLB.ProfileDNSLogging.set_complete_answer_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_complete_answer_enabled_state">
+	<documentation>
+ Gets complete answer enable state for a set of DNS Logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileDNSLogging.get_complete_answer_enabled_stateRequest"/>
+		<output message="tns:LocalLB.ProfileDNSLogging.get_complete_answer_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Get the version information for this interface.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileDNSLogging.get_versionRequest"/>
+		<output message="tns:LocalLB.ProfileDNSLogging.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="LocalLB.ProfileDNSLoggingBinding" type="tns:LocalLB.ProfileDNSLoggingPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of DNS Logging profiles.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileDNSLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates the specified DNS Logging profiles.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileDNSLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_profile">
+	<documentation>
+ Deletes the specified DNS Logging profiles.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileDNSLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_profiles">
+	<documentation>
+ Deletes all DNS Logging profiles.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileDNSLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_query_logging_state">
+	<documentation>
+ Sets the query logging enabled state for a set of DNS Logging profiles. 
+
+ If enabled on a DNS profile, it logs all the DNS queries provided
+ the DNS profile is configured with a DNS Logging profile. By default this
+ option is enabled. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileDNSLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_query_logging_state">
+	<documentation>
+ Gets the query logging enabled state for a set of DNS Logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileDNSLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_response_logging_state">
+	<documentation>
+ Sets the response logging enabled state for a set of DNS Logging profiles. 
+
+ If enabled on a DNS profile, it logs all the DNS responses provided
+ the DNS profile is configured with a logging profile. By default this
+ option is disabled. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileDNSLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_response_logging_state">
+	<documentation>
+ Gets the response logging enabled state for a set of DNS Logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileDNSLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_dns_log_publisher">
+	<documentation>
+ Sets the Log Publishers for a set of DNS Logging profiles. 
+ This is a mandatory attribute while creating a DNS Logging profile.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileDNSLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_dns_log_publisher">
+	<documentation>
+ Gets the Log Publishers for a set of DNS Logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileDNSLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_query_id_enabled_state">
+	<documentation>
+ Sets query ID enabled state. Enabling this will include the query ID 
+ field of queries and/or responses in the log.  
+ By default, this option is disabled. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileDNSLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_query_id_enabled_state">
+	<documentation>
+ Gets the query ID enabled state for a set of DNS Logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileDNSLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_source_enabled_state">
+	<documentation>
+ Sets source enabled state. Enabling this will include the source 
+ field of queries and/or responses in the log.  
+ By default, this option is enabled. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileDNSLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_source_enabled_state">
+	<documentation>
+ Gets source enabled state for a set of DNS Logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileDNSLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_timestamp_enabled_state">
+	<documentation>
+ Sets timestamp enabled state. Enabling this will include the timestamp 
+ field of queries and/or responses in the log.  
+ By default, this option is enabled.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileDNSLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_timestamp_enabled_state">
+	<documentation>
+ Gets timestamp enabled state for a set of DNS Logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileDNSLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_view_enabled_state">
+	<documentation>
+ Sets view enabled state. Enabling this will include the view 
+ field of queries in the log.  
+ By default, this option is enabled.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileDNSLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_view_enabled_state">
+	<documentation>
+ Gets view enabled state for a set of DNS Logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileDNSLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_complete_answer_enabled_state">
+	<documentation>
+ Sets complete answer enabled state. By enabling this option, response log messages 
+ will include all resource records in the the answer section.
+ By default this option is enabled. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileDNSLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_complete_answer_enabled_state">
+	<documentation>
+ Gets complete answer enable state for a set of DNS Logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileDNSLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Get the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileDNSLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileDNSLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="LocalLB.ProfileDNSLogging">
+	<documentation>
+ The DNS Logging interface allows you to manage DNS Logging profiles.
+ There are two components of DNS Logging profiles, Query Logging and Response
+ logging. You may configure a logging profile with either or both
+ of them enabled. The format of logs can be configured by enabling/disabling 
+ log parameters. 
+ Note: You attach a DNS Logging Profile to a DNS Profile, not to a 
+ Virtual Server.
+
+        	</documentation>
+	<port name="LocalLB.ProfileDNSLoggingPort" binding="tns:LocalLB.ProfileDNSLoggingBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

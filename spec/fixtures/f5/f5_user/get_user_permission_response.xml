@@ -1,0 +1,26 @@
+<E:Envelope
+        xmlns:E="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:A="http://schemas.xmlsoap.org/soap/encoding/"
+        xmlns:s="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:y="http://www.w3.org/2001/XMLSchema"
+        xmlns:iControl="urn:iControl"
+        E:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+<E:Body>
+<m:get_user_permissionResponse
+        xmlns:m="urn:iControl:Management/UserManagement">
+<return
+        s:type="A:Array"
+        A:arrayType="iControl:Management.UserManagement.UserPermission[][1]">
+<item
+        A:arrayType="iControl:Management.UserManagement.UserPermission[1]">
+<item>
+<role
+        s:type="iControl:Management.UserManagement.UserRole">USER_ROLE_ADMINISTRATOR</role>
+<partition
+        s:type="y:string">[All]</partition>
+</item>
+</item>
+</return>
+</m:get_user_permissionResponse>
+</E:Body>
+</E:Envelope>

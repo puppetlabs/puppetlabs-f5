@@ -1,0 +1,825 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Security.FirewallWeeklySchedule"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.TimeStampSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.TimeStamp[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.TimeStamp">
+			<xsd:sequence>
+				<xsd:element name="year" type="xsd:long"/>
+				<xsd:element name="month" type="xsd:long"/>
+				<xsd:element name="day" type="xsd:long"/>
+				<xsd:element name="hour" type="xsd:long"/>
+				<xsd:element name="minute" type="xsd:long"/>
+				<xsd:element name="second" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Security.FirewallWeeklySchedule.DailyTimeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Security.FirewallWeeklySchedule.DailyTime[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Security.FirewallWeeklySchedule.FWWeekDay">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="FW_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>FW_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_SUNDAY">
+					<xsd:annotation>
+						<xsd:documentation>FW_SUNDAY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_MONDAY">
+					<xsd:annotation>
+						<xsd:documentation>FW_MONDAY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_TUESDAY">
+					<xsd:annotation>
+						<xsd:documentation>FW_TUESDAY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_WEDNESDAY">
+					<xsd:annotation>
+						<xsd:documentation>FW_WEDNESDAY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_THURSDAY">
+					<xsd:annotation>
+						<xsd:documentation>FW_THURSDAY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_FRIDAY">
+					<xsd:annotation>
+						<xsd:documentation>FW_FRIDAY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_SATURDAY">
+					<xsd:annotation>
+						<xsd:documentation>FW_SATURDAY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_ALL_DAYS">
+					<xsd:annotation>
+						<xsd:documentation>FW_ALL_DAYS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.TimeStampExpirySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.TimeStampExpiry[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Security.FirewallWeeklySchedule.FWWeekDaySequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Security.FirewallWeeklySchedule.FWWeekDaySequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.TimeStampExpiry">
+			<xsd:sequence>
+				<xsd:element name="expires" type="xsd:boolean"/>
+				<xsd:element name="expiry_time" type="tns:Common.TimeStamp"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Security.FirewallWeeklySchedule.FWWeekDaySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Security.FirewallWeeklySchedule.FWWeekDay[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Security.FirewallWeeklySchedule.DailyTime">
+			<xsd:sequence>
+				<xsd:element name="hour" type="xsd:long"/>
+				<xsd:element name="minute" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Security.FirewallWeeklySchedule.get_listRequest">
+</message>
+<message name="Security.FirewallWeeklySchedule.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Security.FirewallWeeklySchedule.createRequest">
+	<part name="schedules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallWeeklySchedule.createResponse">
+</message>
+
+<message name="Security.FirewallWeeklySchedule.delete_weekly_scheduleRequest">
+	<part name="schedules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallWeeklySchedule.delete_weekly_scheduleResponse">
+</message>
+
+<message name="Security.FirewallWeeklySchedule.delete_all_weekly_schedulesRequest">
+</message>
+<message name="Security.FirewallWeeklySchedule.delete_all_weekly_schedulesResponse">
+</message>
+
+<message name="Security.FirewallWeeklySchedule.set_date_valid_startRequest">
+	<part name="schedules" type="tns:Common.StringSequence"/>
+	<part name="dates" type="tns:Common.TimeStampSequence"/>
+</message>
+<message name="Security.FirewallWeeklySchedule.set_date_valid_startResponse">
+</message>
+
+<message name="Security.FirewallWeeklySchedule.get_date_valid_startRequest">
+	<part name="schedules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallWeeklySchedule.get_date_valid_startResponse">
+	<part name="return" type="tns:Common.TimeStampSequence"/>
+</message>
+
+<message name="Security.FirewallWeeklySchedule.set_date_valid_endRequest">
+	<part name="schedules" type="tns:Common.StringSequence"/>
+	<part name="dates" type="tns:Common.TimeStampExpirySequence"/>
+</message>
+<message name="Security.FirewallWeeklySchedule.set_date_valid_endResponse">
+</message>
+
+<message name="Security.FirewallWeeklySchedule.get_date_valid_endRequest">
+	<part name="schedules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallWeeklySchedule.get_date_valid_endResponse">
+	<part name="return" type="tns:Common.TimeStampExpirySequence"/>
+</message>
+
+<message name="Security.FirewallWeeklySchedule.set_daily_hour_startRequest">
+	<part name="schedules" type="tns:Common.StringSequence"/>
+	<part name="times" type="tns:Security.FirewallWeeklySchedule.DailyTimeSequence"/>
+</message>
+<message name="Security.FirewallWeeklySchedule.set_daily_hour_startResponse">
+</message>
+
+<message name="Security.FirewallWeeklySchedule.get_daily_hour_startRequest">
+	<part name="schedules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallWeeklySchedule.get_daily_hour_startResponse">
+	<part name="return" type="tns:Security.FirewallWeeklySchedule.DailyTimeSequence"/>
+</message>
+
+<message name="Security.FirewallWeeklySchedule.set_daily_hour_endRequest">
+	<part name="schedules" type="tns:Common.StringSequence"/>
+	<part name="times" type="tns:Security.FirewallWeeklySchedule.DailyTimeSequence"/>
+</message>
+<message name="Security.FirewallWeeklySchedule.set_daily_hour_endResponse">
+</message>
+
+<message name="Security.FirewallWeeklySchedule.get_daily_hour_endRequest">
+	<part name="schedules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallWeeklySchedule.get_daily_hour_endResponse">
+	<part name="return" type="tns:Security.FirewallWeeklySchedule.DailyTimeSequence"/>
+</message>
+
+<message name="Security.FirewallWeeklySchedule.set_days_of_weekRequest">
+	<part name="schedules" type="tns:Common.StringSequence"/>
+	<part name="days" type="tns:Security.FirewallWeeklySchedule.FWWeekDaySequenceSequence"/>
+</message>
+<message name="Security.FirewallWeeklySchedule.set_days_of_weekResponse">
+</message>
+
+<message name="Security.FirewallWeeklySchedule.get_days_of_weekRequest">
+	<part name="schedules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallWeeklySchedule.get_days_of_weekResponse">
+	<part name="return" type="tns:Security.FirewallWeeklySchedule.FWWeekDaySequenceSequence"/>
+</message>
+
+<message name="Security.FirewallWeeklySchedule.set_descriptionRequest">
+	<part name="schedules" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallWeeklySchedule.set_descriptionResponse">
+</message>
+
+<message name="Security.FirewallWeeklySchedule.get_descriptionRequest">
+	<part name="schedules" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallWeeklySchedule.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Security.FirewallWeeklySchedule.get_versionRequest">
+</message>
+<message name="Security.FirewallWeeklySchedule.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Security.FirewallWeeklySchedulePortType">
+	<operation name="get_list">
+ 	<documentation>
+ Gets the list of firewall weekly schedules on this device.
+
+        	</documentation>
+		<input message="tns:Security.FirewallWeeklySchedule.get_listRequest"/>
+		<output message="tns:Security.FirewallWeeklySchedule.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a firewall weekly schedule.
+
+        	</documentation>
+		<input message="tns:Security.FirewallWeeklySchedule.createRequest"/>
+		<output message="tns:Security.FirewallWeeklySchedule.createResponse"/>
+	</operation>
+	<operation name="delete_weekly_schedule">
+	<documentation>
+ Deletes a set of firewall weekly schedules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallWeeklySchedule.delete_weekly_scheduleRequest"/>
+		<output message="tns:Security.FirewallWeeklySchedule.delete_weekly_scheduleResponse"/>
+	</operation>
+	<operation name="delete_all_weekly_schedules">
+	<documentation>
+ Deletes all firewall weekly schedules on this device.
+
+        	</documentation>
+		<input message="tns:Security.FirewallWeeklySchedule.delete_all_weekly_schedulesRequest"/>
+		<output message="tns:Security.FirewallWeeklySchedule.delete_all_weekly_schedulesResponse"/>
+	</operation>
+	<operation name="set_date_valid_start">
+	<documentation>
+ Sets the start dates at which the specified firewall weekly
+ schedules are valid, as a TimeStamp. This is the date and
+ time at which the specified wekly schedule will begin to be
+ valid.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallWeeklySchedule.set_date_valid_startRequest"/>
+		<output message="tns:Security.FirewallWeeklySchedule.set_date_valid_startResponse"/>
+	</operation>
+	<operation name="get_date_valid_start">
+	<documentation>
+ Gets the start dates at which the specified firewall weekly
+ schedules are valid.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallWeeklySchedule.get_date_valid_startRequest"/>
+		<output message="tns:Security.FirewallWeeklySchedule.get_date_valid_startResponse"/>
+	</operation>
+	<operation name="set_date_valid_end">
+	<documentation>
+ Sets the dates at which the specified firewall weekly
+ schedules are no longer valid, as a TimeStampExpiry.
+ If the expires flag in the TimeStampExpiry is set to false,
+ the weekly schedule does not expire. Otherwise, the
+ expiry_time field specifies the date and time at which the
+ specified weekly schedules will cease to be valid.
+ Note that if expires is set to false, any value held in
+ expiry_time will be lost.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallWeeklySchedule.set_date_valid_endRequest"/>
+		<output message="tns:Security.FirewallWeeklySchedule.set_date_valid_endResponse"/>
+	</operation>
+	<operation name="get_date_valid_end">
+	<documentation>
+ Gets the dates at which the specified firewall weekly
+ schedules are no longer valid.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallWeeklySchedule.get_date_valid_endRequest"/>
+		<output message="tns:Security.FirewallWeeklySchedule.get_date_valid_endResponse"/>
+	</operation>
+	<operation name="set_daily_hour_start">
+	<documentation>
+ Sets the time of day, in hours and minutes, that the
+ specified firewall weekly schedules begin to be active. It
+ becomes active at this time on all days of the week
+ specified in get/set_days_of_week; if you would like to
+ have certain days active at different times than others, you will need
+ to create a separate weekly schedule.
+ Note that daily_hour_start cannot be set to later than
+ daily_hour_end, so daily_hour_end must be set first.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallWeeklySchedule.set_daily_hour_startRequest"/>
+		<output message="tns:Security.FirewallWeeklySchedule.set_daily_hour_startResponse"/>
+	</operation>
+	<operation name="get_daily_hour_start">
+	<documentation>
+ Gets the time of day, in hours and minutes, that the
+ specified firewall weekly schedules begin to be active.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallWeeklySchedule.get_daily_hour_startRequest"/>
+		<output message="tns:Security.FirewallWeeklySchedule.get_daily_hour_startResponse"/>
+	</operation>
+	<operation name="set_daily_hour_end">
+	<documentation>
+ Sets the time of day, in hours and minutes, that the
+ specified firewall weekly schedules cease to be active. It
+ ceases to be active at this time on all days of the week
+ specified in get/set_days_of_week; if you would like to
+ have certain days active at different times, you will need
+ to create a separate weekly schedule.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallWeeklySchedule.set_daily_hour_endRequest"/>
+		<output message="tns:Security.FirewallWeeklySchedule.set_daily_hour_endResponse"/>
+	</operation>
+	<operation name="get_daily_hour_end">
+	<documentation>
+ Gets the time of day, in hours and minutes, that the
+ specified firewall weekly schedules cease to be active.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallWeeklySchedule.get_daily_hour_endRequest"/>
+		<output message="tns:Security.FirewallWeeklySchedule.get_daily_hour_endResponse"/>
+	</operation>
+	<operation name="set_days_of_week">
+	<documentation>
+ Sets the days of the week that the specified firewall
+ weekly schedules are active. If a sequence of FWWeekDays
+ contains duplicates (eg. ['FW_SUNDAY', 'FW_SUNDAY']) these
+ will be deduplicated. You must set at least one weekday for
+ the schedule to be valid; 'none' or no days is not acceptable.
+ Note also that if setting FW_ALL_DAYS, a subsequent query
+ will return all seven days, rather than one FW_ALL_DAYS value.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallWeeklySchedule.set_days_of_weekRequest"/>
+		<output message="tns:Security.FirewallWeeklySchedule.set_days_of_weekResponse"/>
+	</operation>
+	<operation name="get_days_of_week">
+	<documentation>
+ Gets the days of the week that the specified firewall
+ weekly schedules are active.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallWeeklySchedule.get_days_of_weekRequest"/>
+		<output message="tns:Security.FirewallWeeklySchedule.get_days_of_weekResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of firewall weekly schedules.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Security.FirewallWeeklySchedule.set_descriptionRequest"/>
+		<output message="tns:Security.FirewallWeeklySchedule.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of firewall weekly schedules.
+
+        	</documentation>
+		<input message="tns:Security.FirewallWeeklySchedule.get_descriptionRequest"/>
+		<output message="tns:Security.FirewallWeeklySchedule.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallWeeklySchedule.get_versionRequest"/>
+		<output message="tns:Security.FirewallWeeklySchedule.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Security.FirewallWeeklyScheduleBinding" type="tns:Security.FirewallWeeklySchedulePortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the list of firewall weekly schedules on this device.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallWeeklySchedule"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a firewall weekly schedule.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallWeeklySchedule"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_weekly_schedule">
+	<documentation>
+ Deletes a set of firewall weekly schedules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallWeeklySchedule"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_weekly_schedules">
+	<documentation>
+ Deletes all firewall weekly schedules on this device.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallWeeklySchedule"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_date_valid_start">
+	<documentation>
+ Sets the start dates at which the specified firewall weekly
+ schedules are valid, as a TimeStamp. This is the date and
+ time at which the specified wekly schedule will begin to be
+ valid.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallWeeklySchedule"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_date_valid_start">
+	<documentation>
+ Gets the start dates at which the specified firewall weekly
+ schedules are valid.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallWeeklySchedule"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_date_valid_end">
+	<documentation>
+ Sets the dates at which the specified firewall weekly
+ schedules are no longer valid, as a TimeStampExpiry.
+ If the expires flag in the TimeStampExpiry is set to false,
+ the weekly schedule does not expire. Otherwise, the
+ expiry_time field specifies the date and time at which the
+ specified weekly schedules will cease to be valid.
+ Note that if expires is set to false, any value held in
+ expiry_time will be lost.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallWeeklySchedule"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_date_valid_end">
+	<documentation>
+ Gets the dates at which the specified firewall weekly
+ schedules are no longer valid.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallWeeklySchedule"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_daily_hour_start">
+	<documentation>
+ Sets the time of day, in hours and minutes, that the
+ specified firewall weekly schedules begin to be active. It
+ becomes active at this time on all days of the week
+ specified in get/set_days_of_week; if you would like to
+ have certain days active at different times than others, you will need
+ to create a separate weekly schedule.
+ Note that daily_hour_start cannot be set to later than
+ daily_hour_end, so daily_hour_end must be set first.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallWeeklySchedule"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_daily_hour_start">
+	<documentation>
+ Gets the time of day, in hours and minutes, that the
+ specified firewall weekly schedules begin to be active.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallWeeklySchedule"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_daily_hour_end">
+	<documentation>
+ Sets the time of day, in hours and minutes, that the
+ specified firewall weekly schedules cease to be active. It
+ ceases to be active at this time on all days of the week
+ specified in get/set_days_of_week; if you would like to
+ have certain days active at different times, you will need
+ to create a separate weekly schedule.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallWeeklySchedule"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_daily_hour_end">
+	<documentation>
+ Gets the time of day, in hours and minutes, that the
+ specified firewall weekly schedules cease to be active.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallWeeklySchedule"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_days_of_week">
+	<documentation>
+ Sets the days of the week that the specified firewall
+ weekly schedules are active. If a sequence of FWWeekDays
+ contains duplicates (eg. ['FW_SUNDAY', 'FW_SUNDAY']) these
+ will be deduplicated. You must set at least one weekday for
+ the schedule to be valid; 'none' or no days is not acceptable.
+ Note also that if setting FW_ALL_DAYS, a subsequent query
+ will return all seven days, rather than one FW_ALL_DAYS value.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallWeeklySchedule"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_days_of_week">
+	<documentation>
+ Gets the days of the week that the specified firewall
+ weekly schedules are active.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallWeeklySchedule"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of firewall weekly schedules.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallWeeklySchedule"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of firewall weekly schedules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallWeeklySchedule"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallWeeklySchedule"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallWeeklySchedule"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Security.FirewallWeeklySchedule">
+	<documentation>
+ The FirewallWeeklySchedule interface enables you to set a
+ schedule at which firewall rules are active, based on days of
+ the week as well as times of day. You can also set a date and
+ time at which the schedule begins and ceases to be valid.
+
+        	</documentation>
+	<port name="Security.FirewallWeeklySchedulePort" binding="tns:Security.FirewallWeeklyScheduleBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

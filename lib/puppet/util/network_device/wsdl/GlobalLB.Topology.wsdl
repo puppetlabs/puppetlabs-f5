@@ -1,0 +1,548 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="GlobalLB.Topology"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="GlobalLB.Topology.TopologyRecordSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:GlobalLB.Topology.TopologyRecord[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="GlobalLB.Topology.TopologyEndpoint">
+			<xsd:sequence>
+				<xsd:element name="type" type="tns:GlobalLB.RegionType"/>
+				<xsd:element name="content" type="xsd:string"/>
+				<xsd:element name="negate" type="xsd:boolean"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="GlobalLB.Topology.TopologyRecord">
+			<xsd:sequence>
+				<xsd:element name="server" type="tns:GlobalLB.Topology.TopologyEndpoint"/>
+				<xsd:element name="ldns" type="tns:GlobalLB.Topology.TopologyEndpoint"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="GlobalLB.RegionType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="REGION_TYPE_CIDR">
+					<xsd:annotation>
+						<xsd:documentation>REGION_TYPE_CIDR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REGION_TYPE_REGION">
+					<xsd:annotation>
+						<xsd:documentation>REGION_TYPE_REGION</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REGION_TYPE_CONTINENT">
+					<xsd:annotation>
+						<xsd:documentation>REGION_TYPE_CONTINENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REGION_TYPE_COUNTRY">
+					<xsd:annotation>
+						<xsd:documentation>REGION_TYPE_COUNTRY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REGION_TYPE_STATE">
+					<xsd:annotation>
+						<xsd:documentation>REGION_TYPE_STATE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REGION_TYPE_POOL">
+					<xsd:annotation>
+						<xsd:documentation>REGION_TYPE_POOL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REGION_TYPE_DATA_CENTER">
+					<xsd:annotation>
+						<xsd:documentation>REGION_TYPE_DATA_CENTER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REGION_TYPE_ISP_REGION">
+					<xsd:annotation>
+						<xsd:documentation>REGION_TYPE_ISP_REGION</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REGION_TYPE_GEOIP_ISP">
+					<xsd:annotation>
+						<xsd:documentation>REGION_TYPE_GEOIP_ISP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="GlobalLB.Topology.get_listRequest">
+</message>
+<message name="GlobalLB.Topology.get_listResponse">
+	<part name="return" type="tns:GlobalLB.Topology.TopologyRecordSequence"/>
+</message>
+
+<message name="GlobalLB.Topology.createRequest">
+	<part name="records" type="tns:GlobalLB.Topology.TopologyRecordSequence"/>
+	<part name="weights" type="tns:Common.ULongSequence"/>
+	<part name="orders" type="tns:Common.ULongSequence"/>
+</message>
+<message name="GlobalLB.Topology.createResponse">
+</message>
+
+<message name="GlobalLB.Topology.delete_topology_recordRequest">
+	<part name="records" type="tns:GlobalLB.Topology.TopologyRecordSequence"/>
+</message>
+<message name="GlobalLB.Topology.delete_topology_recordResponse">
+</message>
+
+<message name="GlobalLB.Topology.delete_all_topology_recordsRequest">
+</message>
+<message name="GlobalLB.Topology.delete_all_topology_recordsResponse">
+</message>
+
+<message name="GlobalLB.Topology.set_descriptionRequest">
+	<part name="records" type="tns:GlobalLB.Topology.TopologyRecordSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Topology.set_descriptionResponse">
+</message>
+
+<message name="GlobalLB.Topology.get_descriptionRequest">
+	<part name="records" type="tns:GlobalLB.Topology.TopologyRecordSequence"/>
+</message>
+<message name="GlobalLB.Topology.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="GlobalLB.Topology.set_weightRequest">
+	<part name="records" type="tns:GlobalLB.Topology.TopologyRecordSequence"/>
+	<part name="weights" type="tns:Common.ULongSequence"/>
+</message>
+<message name="GlobalLB.Topology.set_weightResponse">
+</message>
+
+<message name="GlobalLB.Topology.get_weightRequest">
+	<part name="records" type="tns:GlobalLB.Topology.TopologyRecordSequence"/>
+</message>
+<message name="GlobalLB.Topology.get_weightResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="GlobalLB.Topology.set_orderRequest">
+	<part name="records" type="tns:GlobalLB.Topology.TopologyRecordSequence"/>
+	<part name="orders" type="tns:Common.ULongSequence"/>
+</message>
+<message name="GlobalLB.Topology.set_orderResponse">
+</message>
+
+<message name="GlobalLB.Topology.get_orderRequest">
+	<part name="records" type="tns:GlobalLB.Topology.TopologyRecordSequence"/>
+</message>
+<message name="GlobalLB.Topology.get_orderResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="GlobalLB.Topology.get_versionRequest">
+</message>
+<message name="GlobalLB.Topology.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="GlobalLB.TopologyPortType">
+	<operation name="get_list">
+       	<documentation>
+ Gets a list of of topology records.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Topology.get_listRequest"/>
+		<output message="tns:GlobalLB.Topology.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Adds or creates the specified topology records.
+ 
+
+        	</documentation>
+		<input message="tns:GlobalLB.Topology.createRequest"/>
+		<output message="tns:GlobalLB.Topology.createResponse"/>
+	</operation>
+	<operation name="delete_topology_record">
+	<documentation>
+ Deletes the specified topology records.
+ 
+
+        	</documentation>
+		<input message="tns:GlobalLB.Topology.delete_topology_recordRequest"/>
+		<output message="tns:GlobalLB.Topology.delete_topology_recordResponse"/>
+	</operation>
+	<operation name="delete_all_topology_records">
+	<documentation>
+ Deletes all topology records.
+ 
+
+        	</documentation>
+		<input message="tns:GlobalLB.Topology.delete_all_topology_recordsRequest"/>
+		<output message="tns:GlobalLB.Topology.delete_all_topology_recordsResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description of the given topology records.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Topology.set_descriptionRequest"/>
+		<output message="tns:GlobalLB.Topology.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the description of the given topology records.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Topology.get_descriptionRequest"/>
+		<output message="tns:GlobalLB.Topology.get_descriptionResponse"/>
+	</operation>
+	<operation name="set_weight">
+	<documentation>   
+ Sets the weights for the specified topology records.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Topology.set_weightRequest"/>
+		<output message="tns:GlobalLB.Topology.set_weightResponse"/>
+	</operation>
+	<operation name="get_weight">
+	<documentation>   
+ Gets the weights for the specified links.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Topology.get_weightRequest"/>
+		<output message="tns:GlobalLB.Topology.get_weightResponse"/>
+	</operation>
+	<operation name="set_order">
+	<documentation>   
+ Sets the sort orders used when longest match sorting is not available for the specified topology records.
+
+ Note: As of version 11.0.0, the system computes the sort
+ orders automatically, overriding any setting made here,
+ when longest match sorting is enabled (and it is enabled by
+ default; see GlobalLB::Globals). In previous releases, the
+ orders set here were ignored then, but not recomputed.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Topology.set_orderRequest"/>
+		<output message="tns:GlobalLB.Topology.set_orderResponse"/>
+	</operation>
+	<operation name="get_order">
+	<documentation>   
+ Gets the sort orders for the specified topology records.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Topology.get_orderRequest"/>
+		<output message="tns:GlobalLB.Topology.get_orderResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Topology.get_versionRequest"/>
+		<output message="tns:GlobalLB.Topology.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="GlobalLB.TopologyBinding" type="tns:GlobalLB.TopologyPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of of topology records.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Topology"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Topology"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Topology"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Adds or creates the specified topology records.
+ 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Topology"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Topology"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Topology"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_topology_record">
+	<documentation>
+ Deletes the specified topology records.
+ 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Topology"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Topology"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Topology"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_topology_records">
+	<documentation>
+ Deletes all topology records.
+ 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Topology"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Topology"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Topology"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description of the given topology records.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Topology"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Topology"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Topology"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the description of the given topology records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Topology"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Topology"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Topology"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_weight">
+	<documentation>   
+ Sets the weights for the specified topology records.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Topology"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Topology"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Topology"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_weight">
+	<documentation>   
+ Gets the weights for the specified links.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Topology"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Topology"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Topology"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_order">
+	<documentation>   
+ Sets the sort orders used when longest match sorting is not available for the specified topology records.
+
+ Note: As of version 11.0.0, the system computes the sort
+ orders automatically, overriding any setting made here,
+ when longest match sorting is enabled (and it is enabled by
+ default; see GlobalLB::Globals). In previous releases, the
+ orders set here were ignored then, but not recomputed.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Topology"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Topology"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Topology"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_order">
+	<documentation>   
+ Gets the sort orders for the specified topology records.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Topology"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Topology"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Topology"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Topology"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Topology"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Topology"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="GlobalLB.Topology">
+	<documentation>
+ The Topology interface enables you to work with topology attributes.  For example, you can create and 
+ delete a topology.  You can also use the Topology interface to add virtual server entries to, 
+ or remove virtual server entries from, a topology.
+
+        	</documentation>
+	<port name="GlobalLB.TopologyPort" binding="tns:GlobalLB.TopologyBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

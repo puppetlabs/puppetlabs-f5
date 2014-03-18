@@ -9,74 +9,107 @@ Puppet::Type.type(:f5_string_class).provide(:f5_string_class, :parent => Puppet:
   def self.wsdl
     'LocalLB.Class'
   end
-
   def wsdl
     self.class.wsdl
   end
 
   def self.instances
-    transport[wsdl].get_string_class_list.collect do |name|
-      new(:name => name)
+    Array(transport[wsdl].get(:get_string_class_list)).collect do |name|
+      new(:name => name, :ensure => :present)
     end
   end
 
-  def string_class
-    return @string_class if @string_class
-
-    @string_class = {}
-    key = transport[wsdl].get_string_class([resource[:name]]).first
-    value = transport[wsdl].get_string_class_member_data_value([key]).first
-    key.members.zip(value) {|zipped| @string_class[zipped[0]] = zipped[1]}
-    @string_class
+  def self.prefetch(resources)
+    string_class = instances
+    resources.keys.each do |name|
+      if provider = string_class.find { |string| string.name == name }
+        resources[name].provider = provider
+      end
+    end
   end
 
   def members
+    string_class = {}
+
+    key = transport[wsdl].get(:get_string_class, { class_names: { items: resource[:name] } })
+    message = { class_members: { items: { name: key[:name], members: { items: key[:members][:item] }}}}
+    values = transport[wsdl].get(:get_string_class_member_data_value, message)
+
+    items = Array(key[:members][:item])
+    vals  = Array(values)
+
+    items.zip(vals) do |zipped|
+      zipped[1] == nil ? string_class[zipped[0]] = '' : string_class[zipped[0]] = zipped[1]
+    end
     string_class
   end
 
   def members=(value)
-    # F5 modify_string_class only changes the members and not the member value,
-    # hence the much more complicated implimentation below.
-    # transport[wsdl].modify_string_class( [{ :name => resource[:name], :members => resource[:members] }] )
-    new_members     = value.keys - string_class.keys
-    current_members = value.keys & string_class.keys
-    remove_members  = string_class.keys - value.keys
+    new_members = value.reject {|k,v| members.has_key?(k) }
+    current_members = value.select {|k,v| members.has_key?(k) }
+    remove_members  = members.reject {|k,v| value.has_key?(k) }
 
-    new_members.each do |member|
-      Puppet.debug("Puppet::Provider::F5_String_Class: adding members #{new_members.join(', ')}")
+    if ! new_members.empty?
+      message = { class_members: { items: { name: resource[:name], members: { items: new_members.keys }}}}
+      transport[wsdl].call(:add_string_class_member, message: message)
 
-      transport[wsdl].add_string_class_member( [{ :name => resource[:name], :members => [member]}] )
-      transport[wsdl].set_string_class_member_data_value( [{ :name => resource[:name], :members => [member] }], [value[member]])
-    end
-
-    current_members.each do |member|
-      if value[member] != string_class[member]
-        Puppet.debug("Puppet::Provider::F5_String_Class: modifying members #{new_members.join(', ')}")
-        transport[wsdl].set_string_class_member_data_value( [{ :name => resource[:name], :members => [member] }], [value[member]])
+      new_members.each do |member, content|
+        message = {
+          class_members: {
+            items: {
+              name: resource[:name], members: { items: member }
+            }
+          },
+          values: {
+            items: {
+              items: content
+            }
+          }
+        }
+        transport[wsdl].call(:set_string_class_member_data_value, message: message)
       end
     end
 
-    unless remove_members.empty?
-      Puppet.debug("Puppet::Provider::F5_String_Class: removing members #{remove_members.join(', ')}")
-      transport[wsdl].delete_string_class_member( [{ :name => resource[:name], :members => remove_members }] )
+    if ! current_members.empty?
+      current_members.each do |member, content|
+        if value[member] != members[member]
+          message = {
+            class_members: {
+              items: {
+                name: resource[:name], members: { items: member }
+              }
+            },
+            values: {
+              items: {
+                items: content
+              }
+            }
+          }
+          transport[wsdl].call(:set_string_class_member_data_value, message: message)
+        end
+      end
+    end
+
+    if ! remove_members.empty?
+      message = { class_members: { items: { name: resource[:name], members: { items: remove_members.keys }}}}
+      transport[wsdl].call(:delete_string_class_member, message: message)
     end
   end
 
   def create
-    Puppet.debug("Puppet::Provider::F5_String_Class: creating F5 string class #{resource[:name]}")
-
     @string_class = {}
-    transport[wsdl].create_string_class([{:name => resource[:name], :members => []}])
+    message = { classes: { items: { name: resource[:name], members: { items: [] }}}}
+    transport[wsdl].call(:create_string_class, message: message)
     self.members = resource[:members]
+    @property_hash[:ensure] = :present
   end
 
   def destroy
-    Puppet.debug("Puppet::Provider::F5_String_Class: deleting F5 string class #{resource[:name]}")
-
-    transport[wsdl].delete_class(resource[:name])
+    transport[wsdl].call(:delete_class, message: { classes: { items: resource[:name] }})
+    @property_hash[:ensure] = :absent
   end
 
   def exists?
-    transport[wsdl].get_string_class_list.include?(resource[:name])
+    @property_hash[:ensure] == :present
   end
 end

@@ -15,92 +15,76 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
   end
 
   def self.instances
-    transport[wsdl].get_list.collect do |name|
+    Array(transport[wsdl].get(:get_list)).collect do |name|
       new(:name => name)
     end
   end
 
-  methods = [
-    'action_on_service_down',
-    'allow_nat_state',
-    'allow_snat_state',
-    'client_ip_tos',                      # Array
-    'client_link_qos',                    # Array
-    'gateway_failsafe_device',
-    'gateway_failsafe_unit_id',           # Array
-    'lb_method',
-    'minimum_active_member',              # Array
-    'minimum_up_member',                  # Array
-    'minimum_up_member_action',
-    'minimum_up_member_enabled_state',
-    'server_ip_tos',
-    'server_link_qos',
-    'simple_timeout',
-    'slow_ramp_time'
-  ]
+  methods = {
+    'action_on_service_down'          => 'actions',
+    'allow_nat_state'                 => 'states',
+    'allow_snat_state'                => 'states',
+    'client_ip_tos'                   => 'values',
+    'client_link_qos'                 => 'values',
+    'gateway_failsafe_device'         => 'devices',
+    'lb_method'                       => 'lb_methods',
+    'minimum_active_member'           => 'values',
+    'minimum_up_member'               => 'values',
+    'minimum_up_member_action'        => 'actions',
+    'minimum_up_member_enabled_state' => 'states',
+    'server_ip_tos'                   => 'values',
+    'server_link_qos'                 => 'values',
+    'simple_timeout'                  => 'simple_timeouts',
+    'slow_ramp_time'                  => 'values'
+  }
 
-  methods.each do |method|
+  methods.each do |method, message|
     define_method(method.to_sym) do
-      if transport[wsdl].respond_to?("get_#{method}".to_sym)
-        transport[wsdl].send("get_#{method}", resource[:name]).first.to_s
-      end
+      transport[wsdl].get("get_#{method}".to_sym, { pool_names: { item: resource[:name] }})
     end
-  end
-
-  methods.each do |method|
     define_method("#{method}=") do |value|
-      if transport[wsdl].respond_to?("set_#{method}".to_sym)
-        transport[wsdl].send("set_#{method}", resource[:name], resource[method.to_sym])
-      end
+      message = { pool_names: { item: resource[:name] }, message => { item: resource[method.to_sym] }}
+      transport[wsdl].call("set_#{method}".to_sym, message: message)
     end
   end
 
   def member
     result = {}
+    addressport = []
+    members = []
 
-    members = transport[wsdl].get_member(resource[:name]).first
-    members.each { |system|
-      result["#{system.address}:#{system.port}"] = {}
-    }
+    members << transport[wsdl].get(:get_member_v2, { pool_names: { item: resource[:name] }})
 
-    # does not support v11 wsdl
-    wsdl = 'LocalLB.PoolMember'
+    members.flatten.each do |hash|
+      # If no members are set, you get back a hash with an array in it.
+      next unless hash[:address]
+      address = hash[:address]
+      port    = hash[:port]
 
-    methods = [
-      'connection_limit',
-      'dynamic_ratio',
-      'priority',
-      'ratio',
-    ]
+      result["#{address}:#{port}"] = {}
+      addressport = { address: address, port: port }
 
-    methods.each do |method|
-      value = transport[wsdl].send("get_#{method}", resource[:name]).first
-      value.each do |val|
-
-        # F5 A.B.C.D%ID routing domain requires special handling.
-        #   If we don't detect a routine domain in get_member, we ignore %ID.
-        #   If we detect routine domain in get_member, we provide %ID.
-        address = val.member.address
-        noroute = address.split("%").first
-        port    = val.member.port
-
-        if result.member?("#{address}:#{port}")
-          result["#{address}:#{port}"][method] = val.send(method).to_s
-        elsif result.member?("#{noroute}:#{port}")
-          result["#{noroute}:#{port}"][method] = val.send(method).to_s
-        else
-          raise Puppet::Error, "Puppet::Provider::F5_Pool: LocalLB.PoolMember get_#{method} returned #{address}:#{port} that does not exist in get_member."
-         end
+      [
+        'connection_limit',
+        'dynamic_ratio',
+        'priority',
+        'ratio',
+      ].each do |method|
+        message = { pool_names: { items: resource[:name] }, members: { items: { items: addressport}}}
+        response = transport[wsdl].get("get_member_#{method}".to_sym, message)
+        result["#{address}:#{port}"][method] = response
       end
     end
-
     result
   end
 
   def member=(value)
-    current_members = transport[wsdl].get_member(resource[:name]).first
-    current_members = current_members.collect { |system|
-      "#{system.address}:#{system.port}"
+    response = []
+    response << transport[wsdl].get(:get_member_v2, { pool_names: { item: resource[:name]}})
+
+    current_members = response.flatten.collect { |system|
+      next unless system[:address]
+      "#{system[:address]}:#{system[:port]}"
     }
 
     members = resource[:member].keys
@@ -108,80 +92,74 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
     # Should add new members first to avoid removing all members of the pool.
     (members - current_members).each do |node|
       Puppet.debug "Puppet::Provider::F5_Pool: adding member #{node}"
-      transport[wsdl].add_member(resource[:name],
-        [[{:address => network_address(node),
-           :port    => network_port(node)}]])
+      message = { pool_names: { items: resource[:name] }, members: { items: { items: { address: network_address(node), port: network_port(node) }}}}
+      transport[wsdl].call(:add_member_v2, message: message)
     end
 
-    (current_members - members).each do |node|
-      Puppet.debug "Puppet::Provider::F5_Pool: removing member #{node}"
-      transport[wsdl].remove_member(resource[:name],
-        [[{:address => network_address(node),
-           :port    => network_port(node)}]])
-    end
-
-    # using PoolMember since we do not use v11.0 API.
-    wsdl = 'LocalLB.PoolMember'
-
-    methods = [
-      'connection_limit',
-      'dynamic_ratio',
-      'priority',
-      'ratio',
-    ]
-
-    methods.each do |m|
-
-      # We store the list of PoolMember interfaces in the f5_pool resource as
-      # an attribute in the data structure of hash of hashes.  This allows
-      # purging of members on a per pool basis.
-      #
-      # Example of f5_pool member attribute hash entry:
-      # ip:netmask => { 'priority' => '1', 'ratio' => '1' }
-      # Resulting hash transformation used by F5:
-      # { :member   => {:address => ip, :port => port},
-      #   :priority => '1' }
-      # { :member   => {:address => ip, :port => port},
-      #   :ratio    => '1' }
-      r = Hash[*resource[:member].select {|k,v| v.include?(m)}.flatten]
-      r = r.collect do |k,v|
-        {:member => {:address => network_address(k), :port => network_port(k)}, m.to_s => v[m]}
+    # When provisioning a new pool we won't have members.
+    if current_members =! [nil]
+      (current_members - members).each do |node|
+        Puppet.debug "Puppet::Provider::F5_Pool: removing member #{node}"
+        message = { pool_names: { items: resource[:name] }, members: { items: { items: {address: network_address(node), port: network_port(node)}}} }
+        transport[wsdl].call(:remove_member_v2, message: message)
       end
+    end
 
-      value = transport[wsdl].send("set_#{m}", [resource[:name]], [r]) unless r.empty?
+    properties = {
+      'connection_limit' => 'limits',
+      'dynamic_ratio'    => 'dynamic_ratios',
+      'priority'         => 'priorities',
+      'ratio'            => 'ratios',
+    }
+
+    properties.each do |name, message_name|
+      value.each do |address,hash|
+        address, port = address.split(':')
+        message = { pool_names: {items: resource[:name] }, members: {items: { items: { address: address, port: port }}}, message_name => { items: { items: hash[name]}}}
+        transport[wsdl].call("set_member_#{name}".to_sym, message: message)
+      end
     end
   end
 
   def monitor_association
-    monitor = transport[wsdl].get_monitor_association(resource[:name]).first.monitor_rule
+    association = nil
+    monitor = transport[wsdl].get(:get_monitor_association, { pool_names: { item: resource[:name] }})
 
-    {
-      'type'              => monitor['type'],
-      'quorum'            => monitor['quorum'].to_s,
-      'monitor_templates' => monitor['monitor_templates']
-    }
+    if monitor
+      association = {
+        'type'              => monitor[:monitor_rule][:type],
+        'quorum'            => monitor[:monitor_rule][:quorum],
+      }
+      if monitor[:monitor_rule][:monitor_templates][:item]
+        association['monitor_templates'] = monitor[:monitor_rule][:monitor_templates][:item]
+      end
+    end
+    association
   end
 
   def monitor_association=(value)
     monitor = resource[:monitor_association]
 
     if monitor.empty? then
-      transport[wsdl].remove_monitor_association(resource[:name])
+      transport[wsdl].call(:remove_monitor_association, message: { pool_names: { item: resource[:name]}})
     else
-      newval = { :pool_name    => resource[:name],
-                 :monitor_rule => { :type              => monitor['type'],
-                                    :quorum            => monitor['quorum'],
-                                    :monitor_templates => monitor['monitor_templates'] }
-               }
+      newval = { :pool_name => resource[:name],
+        :monitor_rule => {
+          :type              => monitor['type'],
+          :quorum            => monitor['quorum'],
+          :monitor_templates => { items: monitor['monitor_templates'] }
+        }
+      }
 
-      transport[wsdl].set_monitor_association([newval])
+      transport[wsdl].call(:set_monitor_association, message: { monitor_associations: { items: newval }})
     end
   end
 
   def create
     Puppet.debug("Puppet::Provider::F5_Pool: creating F5 pool #{resource[:name]}")
     # [[]] because we will add members later using member=...
-    transport[wsdl].create(resource[:name], resource[:lb_method], [[]])
+    message = { pool_names: { item: resource[:name] }, lb_methods: { item: resource[:lb_method] }, members: {}}
+    transport[wsdl].call(:create_v2, message: message)
 
     methods = [
       'action_on_service_down',
@@ -190,7 +168,6 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
       'client_ip_tos',                      # Array
       'client_link_qos',                    # Array
       'gateway_failsafe_device',
-      'gateway_failsafe_unit_id',           # Array
       'lb_method',
       'minimum_active_member',              # Array
       'minimum_up_member',                  # Array
@@ -211,10 +188,10 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
 
   def destroy
     Puppet.debug("Puppet::Provider::F5_Pool: destroying F5 pool #{resource[:name]}")
-    transport[wsdl].delete_pool(resource[:name])
+    transport[wsdl].call(:delete_pool, message: { pool_names: { item: resource[:name]}})
   end
 
   def exists?
-    transport[wsdl].get_list.include?(resource[:name])
+    transport[wsdl].get(:get_list).include?(resource[:name])
   end
 end

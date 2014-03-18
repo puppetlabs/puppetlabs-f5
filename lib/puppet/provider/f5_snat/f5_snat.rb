@@ -15,53 +15,54 @@ Puppet::Type.type(:f5_snat).provide(:f5_snat, :parent => Puppet::Provider::F5) d
   end
 
   def self.instances
-    transport[wsdl].get_list.collect do |name|
+    Array(transport[wsdl].get(:get_list)).collect do |name|
       new(:name => name)
     end
   end
 
-  methods = [ 'connection_mirror_state',
-    'description',
-    'source_port_behavior',
-    'vlan']
-
-  methods.each do |method|
+  {
+    'connection_mirror_state' => 'states',
+    'description'             => 'descriptions',
+    'source_port_behavior'    => 'source_port_behaviors',
+    'vlan'                    => 'vlans',
+  }.each do |method, type|
     define_method(method.to_sym) do
-      if transport[wsdl].respond_to?("get_#{method}".to_sym)
-        transport[wsdl].send("get_#{method}", resource[:name]).first
-      end
+      transport[wsdl].get("get_#{method}".to_sym, { snats: { item: resource[:name] }})
     end
-  end
-
-  methods.each do |method|
     define_method("#{method}=") do |value|
-      if transport[wsdl].respond_to?("set_#{method}".to_sym)
-        transport[wsdl].send("set_#{method}", resource[:name], resource[method.to_sym])
-      end
+      message = { snats: { item: resource[:name] }, type => resource[method.to_sym]}
+      transport[wsdl].call("set_#{method}".to_sym, message: message)
     end
   end
 
   def original_address
-    val = transport[wsdl].get_original_address(resource[:name]).first
-    [val.first.original_address, val.first.wildmask]
+    val = transport[wsdl].get(:get_original_address, { snats: { item: resource[:name] }})
+    Array(val)
   end
 
   def translation_target
-    val = transport[wsdl].get_translation_target(resource[:name]).first
-    [val.type, val.translation_object]
+    val = transport[wsdl].get(:get_translation_target, { snats: { item: resource[:name] }})
+    { type: val[:type], translation_object: val[:translation_object] }
   end
 
   def translation_target=(value)
-    transport[wsdl].set_translation_target(resource[:name], resource[:translation_target])
+    message = { snats: { items: resource[:name] }, targets: { items: { type: value[:type], translation_object: value[:translation_target] }}}
+    transport[wsdl].call(:set_translation_target, message: message)
   end
 
   def vlan
-    val = transport[wsdl].get_vlan(resource[:name]).first
-    { 'state' => val.state, 'vlans' => val.vlans }
+    val = transport[wsdl].get(:get_vlan, { snats: { item: resource[:name] }})
+    result = { 'state' => val[:state] }
+    # Skip if we don't have a state in the return.
+    if val[:vlans][:state]
+      result['vlans'] = val[:vlans]
+    end
+    result
   end
 
   def vlan=(value)
-    transport[wsdl].set_vlan(resource[:name], [resource[:vlan]])
+    message = { snats: { items: resource[:name] }, vlans: { items: resource[:vlan] }}
+    transport[wsdl].call(:set_vlan, message: message)
   end
 
   def create
@@ -69,17 +70,35 @@ Puppet::Type.type(:f5_snat).provide(:f5_snat, :parent => Puppet::Provider::F5) d
     resource[:original_address] ||= ['0.0.0.0', '0.0.0.0']
     resource[:vlan] ||= ['STATE_DISABLED', '']
 
-    transport[wsdl].create([resource[:name], resource[:translation_target]],
-                           resource[:original_address],
-                           resource[:vlan])
+    message = {
+      snats: {
+        items: {
+          name: resource[:name], target: resource[:translation_target]
+        }
+      },
+      original_addresses: {
+        items: {
+          items: resource[:original_address]
+        },
+      },
+      vlans: {
+        items: {
+          # Elements in the subhash are strings, not symbols.
+          state: resource[:vlan]['state'],
+          vlans: resource[:vlan]['vlans'],
+        }
+      }
+    }
+
+    transport[wsdl].call(:create, message: message)
   end
 
   def destroy
     Puppet.debug("Puppet::Provider::F5_Snat: destroying F5 snat #{resource[:name]}")
-    transport[wsdl].delete_snat(resource[:name])
+    transport[wsdl].call(:delete_snat, messages: { snats: { item: resource[:name] }})
   end
 
   def exists?
-    transport[wsdl].get_list.include?(resource[:name])
+    transport[wsdl].get(:get_list).include?(resource[:name])
   end
 end

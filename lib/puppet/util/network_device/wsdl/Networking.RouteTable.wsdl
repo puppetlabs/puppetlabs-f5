@@ -1,0 +1,1209 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.RouteTable"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Networking.RouteTable.RouteTableMetricStatistics">
+			<xsd:sequence>
+				<xsd:element name="statistics" type="tns:Networking.RouteTable.RouteTableMetricEntrySequence"/>
+				<xsd:element name="time_stamp" type="tns:Common.TimeStamp"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.TimeStamp">
+			<xsd:sequence>
+				<xsd:element name="year" type="xsd:long"/>
+				<xsd:element name="month" type="xsd:long"/>
+				<xsd:element name="day" type="xsd:long"/>
+				<xsd:element name="hour" type="xsd:long"/>
+				<xsd:element name="minute" type="xsd:long"/>
+				<xsd:element name="second" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.RouteEntryTypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.RouteEntryType[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.RouteTable.RouteDefinition">
+			<xsd:sequence>
+				<xsd:element name="destination" type="xsd:string"/>
+				<xsd:element name="netmask" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.RouteTable.RouteDefinitionSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.RouteTable.RouteDefinition[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.RouteTable.DynamicRouteSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.RouteTable.DynamicRoute[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.RouteTable.RouteTableMetricStatisticsSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.RouteTable.RouteTableMetricStatistics[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.RouteEntryType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="ROUTE_TYPE_GATEWAY">
+					<xsd:annotation>
+						<xsd:documentation>ROUTE_TYPE_GATEWAY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ROUTE_TYPE_POOL">
+					<xsd:annotation>
+						<xsd:documentation>ROUTE_TYPE_POOL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ROUTE_TYPE_INTERFACE">
+					<xsd:annotation>
+						<xsd:documentation>ROUTE_TYPE_INTERFACE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ROUTE_TYPE_REJECT">
+					<xsd:annotation>
+						<xsd:documentation>ROUTE_TYPE_REJECT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.RouteTable.DynamicRouteStatisticsSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.RouteTable.DynamicRouteStatistics[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.RouteTable.RouteTableMetricEntrySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.RouteTable.RouteTableMetricEntry[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.RouteTable.RouteTableMetricEntry">
+			<xsd:sequence>
+				<xsd:element name="destination" type="xsd:string"/>
+				<xsd:element name="mac_address" type="xsd:string"/>
+				<xsd:element name="rtt" type="xsd:long"/>
+				<xsd:element name="rtt_variance" type="xsd:long"/>
+				<xsd:element name="mtu" type="xsd:long"/>
+				<xsd:element name="expiration" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.RouteTable.DynamicRoute">
+			<xsd:sequence>
+				<xsd:element name="destination" type="xsd:string"/>
+				<xsd:element name="netmask" type="xsd:string"/>
+				<xsd:element name="gateway" type="xsd:string"/>
+				<xsd:element name="vlan_name" type="xsd:string"/>
+				<xsd:element name="pool_name" type="xsd:string"/>
+				<xsd:element name="mtu" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.RouteTable.RouteAttributeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.RouteTable.RouteAttribute[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.RouteTable.DynamicRouteStatistics">
+			<xsd:sequence>
+				<xsd:element name="statistics" type="tns:Networking.RouteTable.DynamicRouteSequence"/>
+				<xsd:element name="time_stamp" type="tns:Common.TimeStamp"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.RouteTable.RouteAttribute">
+			<xsd:sequence>
+				<xsd:element name="gateway" type="xsd:string"/>
+				<xsd:element name="vlan_name" type="xsd:string"/>
+				<xsd:element name="pool_name" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.RouteTable.get_static_routeRequest">
+</message>
+<message name="Networking.RouteTable.get_static_routeResponse">
+	<part name="return" type="tns:Networking.RouteTable.RouteDefinitionSequence"/>
+</message>
+
+<message name="Networking.RouteTable.add_static_routeRequest">
+	<part name="routes" type="tns:Networking.RouteTable.RouteDefinitionSequence"/>
+	<part name="attributes" type="tns:Networking.RouteTable.RouteAttributeSequence"/>
+</message>
+<message name="Networking.RouteTable.add_static_routeResponse">
+</message>
+
+<message name="Networking.RouteTable.delete_static_routeRequest">
+	<part name="routes" type="tns:Networking.RouteTable.RouteDefinitionSequence"/>
+</message>
+<message name="Networking.RouteTable.delete_static_routeResponse">
+</message>
+
+<message name="Networking.RouteTable.delete_all_static_routesRequest">
+</message>
+<message name="Networking.RouteTable.delete_all_static_routesResponse">
+</message>
+
+<message name="Networking.RouteTable.get_static_route_typeRequest">
+	<part name="routes" type="tns:Networking.RouteTable.RouteDefinitionSequence"/>
+</message>
+<message name="Networking.RouteTable.get_static_route_typeResponse">
+	<part name="return" type="tns:Networking.RouteEntryTypeSequence"/>
+</message>
+
+<message name="Networking.RouteTable.set_static_route_rejectRequest">
+	<part name="routes" type="tns:Networking.RouteTable.RouteDefinitionSequence"/>
+</message>
+<message name="Networking.RouteTable.set_static_route_rejectResponse">
+</message>
+
+<message name="Networking.RouteTable.set_static_route_vlanRequest">
+	<part name="routes" type="tns:Networking.RouteTable.RouteDefinitionSequence"/>
+	<part name="vlans" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouteTable.set_static_route_vlanResponse">
+</message>
+
+<message name="Networking.RouteTable.get_static_route_vlanRequest">
+	<part name="routes" type="tns:Networking.RouteTable.RouteDefinitionSequence"/>
+</message>
+<message name="Networking.RouteTable.get_static_route_vlanResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.RouteTable.set_static_route_gatewayRequest">
+	<part name="routes" type="tns:Networking.RouteTable.RouteDefinitionSequence"/>
+	<part name="gateways" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.RouteTable.set_static_route_gatewayResponse">
+</message>
+
+<message name="Networking.RouteTable.get_static_route_gatewayRequest">
+	<part name="routes" type="tns:Networking.RouteTable.RouteDefinitionSequence"/>
+</message>
+<message name="Networking.RouteTable.get_static_route_gatewayResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Networking.RouteTable.set_static_route_poolRequest">
+	<part name="routes" type="tns:Networking.RouteTable.RouteDefinitionSequence"/>
+	<part name="pools" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouteTable.set_static_route_poolResponse">
+</message>
+
+<message name="Networking.RouteTable.get_static_route_poolRequest">
+	<part name="routes" type="tns:Networking.RouteTable.RouteDefinitionSequence"/>
+</message>
+<message name="Networking.RouteTable.get_static_route_poolResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.RouteTable.set_static_route_mtuRequest">
+	<part name="routes" type="tns:Networking.RouteTable.RouteDefinitionSequence"/>
+	<part name="mtus" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.RouteTable.set_static_route_mtuResponse">
+</message>
+
+<message name="Networking.RouteTable.get_static_route_mtuRequest">
+	<part name="routes" type="tns:Networking.RouteTable.RouteDefinitionSequence"/>
+</message>
+<message name="Networking.RouteTable.get_static_route_mtuResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.RouteTable.get_management_routeRequest">
+</message>
+<message name="Networking.RouteTable.get_management_routeResponse">
+	<part name="return" type="tns:Networking.RouteTable.RouteDefinitionSequence"/>
+</message>
+
+<message name="Networking.RouteTable.add_management_routeRequest">
+	<part name="routes" type="tns:Networking.RouteTable.RouteDefinitionSequence"/>
+	<part name="attributes" type="tns:Networking.RouteTable.RouteAttributeSequence"/>
+</message>
+<message name="Networking.RouteTable.add_management_routeResponse">
+</message>
+
+<message name="Networking.RouteTable.delete_management_routeRequest">
+	<part name="routes" type="tns:Networking.RouteTable.RouteDefinitionSequence"/>
+</message>
+<message name="Networking.RouteTable.delete_management_routeResponse">
+</message>
+
+<message name="Networking.RouteTable.delete_all_management_routesRequest">
+</message>
+<message name="Networking.RouteTable.delete_all_management_routesResponse">
+</message>
+
+<message name="Networking.RouteTable.get_management_route_typeRequest">
+	<part name="routes" type="tns:Networking.RouteTable.RouteDefinitionSequence"/>
+</message>
+<message name="Networking.RouteTable.get_management_route_typeResponse">
+	<part name="return" type="tns:Networking.RouteEntryTypeSequence"/>
+</message>
+
+<message name="Networking.RouteTable.set_management_route_rejectRequest">
+	<part name="routes" type="tns:Networking.RouteTable.RouteDefinitionSequence"/>
+</message>
+<message name="Networking.RouteTable.set_management_route_rejectResponse">
+</message>
+
+<message name="Networking.RouteTable.set_management_route_gatewayRequest">
+	<part name="routes" type="tns:Networking.RouteTable.RouteDefinitionSequence"/>
+	<part name="gateways" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.RouteTable.set_management_route_gatewayResponse">
+</message>
+
+<message name="Networking.RouteTable.get_management_route_gatewayRequest">
+	<part name="routes" type="tns:Networking.RouteTable.RouteDefinitionSequence"/>
+</message>
+<message name="Networking.RouteTable.get_management_route_gatewayResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Networking.RouteTable.set_management_route_mtuRequest">
+	<part name="routes" type="tns:Networking.RouteTable.RouteDefinitionSequence"/>
+	<part name="mtus" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.RouteTable.set_management_route_mtuResponse">
+</message>
+
+<message name="Networking.RouteTable.get_management_route_mtuRequest">
+	<part name="routes" type="tns:Networking.RouteTable.RouteDefinitionSequence"/>
+</message>
+<message name="Networking.RouteTable.get_management_route_mtuResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.RouteTable.get_dynamic_routeRequest">
+	<part name="destinations" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.RouteTable.get_dynamic_routeResponse">
+	<part name="return" type="tns:Networking.RouteTable.DynamicRouteStatisticsSequence"/>
+</message>
+
+<message name="Networking.RouteTable.get_route_table_metric_statistics_for_destinationRequest">
+	<part name="destinations" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.RouteTable.get_route_table_metric_statistics_for_destinationResponse">
+	<part name="return" type="tns:Networking.RouteTable.RouteTableMetricStatisticsSequence"/>
+</message>
+
+<message name="Networking.RouteTable.get_route_table_metric_statistics_for_macRequest">
+	<part name="mac_addresses" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouteTable.get_route_table_metric_statistics_for_macResponse">
+	<part name="return" type="tns:Networking.RouteTable.RouteTableMetricStatisticsSequence"/>
+</message>
+
+<message name="Networking.RouteTable.reset_all_route_table_metric_statisticsRequest">
+</message>
+<message name="Networking.RouteTable.reset_all_route_table_metric_statisticsResponse">
+</message>
+
+<message name="Networking.RouteTable.get_versionRequest">
+</message>
+<message name="Networking.RouteTable.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.RouteTablePortType">
+	<operation name="get_static_route">
+   	<documentation>
+ Gets a list of all static route entries.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.get_static_routeRequest"/>
+		<output message="tns:Networking.RouteTable.get_static_routeResponse"/>
+	</operation>
+	<operation name="add_static_route">
+	<documentation>
+ Adds the specified static route entries to the route table.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.add_static_routeRequest"/>
+		<output message="tns:Networking.RouteTable.add_static_routeResponse"/>
+	</operation>
+	<operation name="delete_static_route">
+	<documentation>
+ Deletes the specified static route entries from the route table.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.delete_static_routeRequest"/>
+		<output message="tns:Networking.RouteTable.delete_static_routeResponse"/>
+	</operation>
+	<operation name="delete_all_static_routes">
+	<documentation>
+ Deletes all static route entries from the route table.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.delete_all_static_routesRequest"/>
+		<output message="tns:Networking.RouteTable.delete_all_static_routesResponse"/>
+	</operation>
+	<operation name="get_static_route_type">
+	<documentation>
+ Gets the route type for the specified static routes.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.get_static_route_typeRequest"/>
+		<output message="tns:Networking.RouteTable.get_static_route_typeResponse"/>
+	</operation>
+	<operation name="set_static_route_reject">
+	<documentation>
+ Sets the state that rejects all requests for the specified static routes.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.set_static_route_rejectRequest"/>
+		<output message="tns:Networking.RouteTable.set_static_route_rejectResponse"/>
+	</operation>
+	<operation name="set_static_route_vlan">
+	<documentation>
+ Sets the VLAN names for the specified static routes.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.set_static_route_vlanRequest"/>
+		<output message="tns:Networking.RouteTable.set_static_route_vlanResponse"/>
+	</operation>
+	<operation name="get_static_route_vlan">
+	<documentation>
+ Gets the VLAN names for the specified static routes.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.get_static_route_vlanRequest"/>
+		<output message="tns:Networking.RouteTable.get_static_route_vlanResponse"/>
+	</operation>
+	<operation name="set_static_route_gateway">
+	<documentation>
+ Sets the gateways for the specified static routes.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.set_static_route_gatewayRequest"/>
+		<output message="tns:Networking.RouteTable.set_static_route_gatewayResponse"/>
+	</operation>
+	<operation name="get_static_route_gateway">
+	<documentation>
+ Gets the gateways for the specified static routes.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.get_static_route_gatewayRequest"/>
+		<output message="tns:Networking.RouteTable.get_static_route_gatewayResponse"/>
+	</operation>
+	<operation name="set_static_route_pool">
+	<documentation>
+ Sets the pool names for the specified static routes. The pool name allow the destination
+ to select the nexthop router from a pool.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.set_static_route_poolRequest"/>
+		<output message="tns:Networking.RouteTable.set_static_route_poolResponse"/>
+	</operation>
+	<operation name="get_static_route_pool">
+	<documentation>
+ Gets the pool names for the specified static routes. The pool name allow the destination
+ to select the nexthop router from a pool.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.get_static_route_poolRequest"/>
+		<output message="tns:Networking.RouteTable.get_static_route_poolResponse"/>
+	</operation>
+	<operation name="set_static_route_mtu">
+	<documentation>
+ Sets the MTUs for the specified static routes.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.set_static_route_mtuRequest"/>
+		<output message="tns:Networking.RouteTable.set_static_route_mtuResponse"/>
+	</operation>
+	<operation name="get_static_route_mtu">
+	<documentation>
+ Gets the MTUs for the specified static routes.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.get_static_route_mtuRequest"/>
+		<output message="tns:Networking.RouteTable.get_static_route_mtuResponse"/>
+	</operation>
+	<operation name="get_management_route">
+	<documentation>
+ Gets a list of all management route entries.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.get_management_routeRequest"/>
+		<output message="tns:Networking.RouteTable.get_management_routeResponse"/>
+	</operation>
+	<operation name="add_management_route">
+	<documentation>
+ Adds the specified management route entries to the route table.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.add_management_routeRequest"/>
+		<output message="tns:Networking.RouteTable.add_management_routeResponse"/>
+	</operation>
+	<operation name="delete_management_route">
+	<documentation>
+ Deletes the specified management route entries from the route table.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.delete_management_routeRequest"/>
+		<output message="tns:Networking.RouteTable.delete_management_routeResponse"/>
+	</operation>
+	<operation name="delete_all_management_routes">
+	<documentation>
+ Deletes all management route entries from the route table.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.delete_all_management_routesRequest"/>
+		<output message="tns:Networking.RouteTable.delete_all_management_routesResponse"/>
+	</operation>
+	<operation name="get_management_route_type">
+	<documentation>
+ Gets the route type for the specified management routes.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.get_management_route_typeRequest"/>
+		<output message="tns:Networking.RouteTable.get_management_route_typeResponse"/>
+	</operation>
+	<operation name="set_management_route_reject">
+	<documentation>
+ Sets the state that rejects all requests for the specified management routes.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.set_management_route_rejectRequest"/>
+		<output message="tns:Networking.RouteTable.set_management_route_rejectResponse"/>
+	</operation>
+	<operation name="set_management_route_gateway">
+	<documentation>
+ Sets the gateways for the specified management routes.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.set_management_route_gatewayRequest"/>
+		<output message="tns:Networking.RouteTable.set_management_route_gatewayResponse"/>
+	</operation>
+	<operation name="get_management_route_gateway">
+	<documentation>
+ Gets the gateways for the specified management routes.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.get_management_route_gatewayRequest"/>
+		<output message="tns:Networking.RouteTable.get_management_route_gatewayResponse"/>
+	</operation>
+	<operation name="set_management_route_mtu">
+	<documentation>
+ Sets the MTUs for the specified management routes.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.set_management_route_mtuRequest"/>
+		<output message="tns:Networking.RouteTable.set_management_route_mtuResponse"/>
+	</operation>
+	<operation name="get_management_route_mtu">
+	<documentation>
+ Gets the MTUs for the specified management routes.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.get_management_route_mtuRequest"/>
+		<output message="tns:Networking.RouteTable.get_management_route_mtuResponse"/>
+	</operation>
+	<operation name="get_dynamic_route">
+	<documentation>
+ Gets the dynamic routes for the specified destination IP addresses.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.get_dynamic_routeRequest"/>
+		<output message="tns:Networking.RouteTable.get_dynamic_routeResponse"/>
+	</operation>
+	<operation name="get_route_table_metric_statistics_for_destination">
+	<documentation>
+ Gets the route metric statistics for the specified destination IP addresses.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.get_route_table_metric_statistics_for_destinationRequest"/>
+		<output message="tns:Networking.RouteTable.get_route_table_metric_statistics_for_destinationResponse"/>
+	</operation>
+	<operation name="get_route_table_metric_statistics_for_mac">
+	<documentation>
+ Gets the route metric statistics for the specified MAC addresses of the gateways.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.get_route_table_metric_statistics_for_macRequest"/>
+		<output message="tns:Networking.RouteTable.get_route_table_metric_statistics_for_macResponse"/>
+	</operation>
+	<operation name="reset_all_route_table_metric_statistics">
+	<documentation>
+ Resets or flushes all route metric statistics.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteTable.reset_all_route_table_metric_statisticsRequest"/>
+		<output message="tns:Networking.RouteTable.reset_all_route_table_metric_statisticsResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.RouteTable.get_versionRequest"/>
+		<output message="tns:Networking.RouteTable.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.RouteTableBinding" type="tns:Networking.RouteTablePortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_static_route">
+	<documentation>
+ Gets a list of all static route entries.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_static_route">
+	<documentation>
+ Adds the specified static route entries to the route table.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_static_route">
+	<documentation>
+ Deletes the specified static route entries from the route table.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_static_routes">
+	<documentation>
+ Deletes all static route entries from the route table.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_static_route_type">
+	<documentation>
+ Gets the route type for the specified static routes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_static_route_reject">
+	<documentation>
+ Sets the state that rejects all requests for the specified static routes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_static_route_vlan">
+	<documentation>
+ Sets the VLAN names for the specified static routes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_static_route_vlan">
+	<documentation>
+ Gets the VLAN names for the specified static routes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_static_route_gateway">
+	<documentation>
+ Sets the gateways for the specified static routes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_static_route_gateway">
+	<documentation>
+ Gets the gateways for the specified static routes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_static_route_pool">
+	<documentation>
+ Sets the pool names for the specified static routes. The pool name allow the destination
+ to select the nexthop router from a pool.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_static_route_pool">
+	<documentation>
+ Gets the pool names for the specified static routes. The pool name allow the destination
+ to select the nexthop router from a pool.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_static_route_mtu">
+	<documentation>
+ Sets the MTUs for the specified static routes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_static_route_mtu">
+	<documentation>
+ Gets the MTUs for the specified static routes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_management_route">
+	<documentation>
+ Gets a list of all management route entries.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_management_route">
+	<documentation>
+ Adds the specified management route entries to the route table.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_management_route">
+	<documentation>
+ Deletes the specified management route entries from the route table.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_management_routes">
+	<documentation>
+ Deletes all management route entries from the route table.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_management_route_type">
+	<documentation>
+ Gets the route type for the specified management routes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_management_route_reject">
+	<documentation>
+ Sets the state that rejects all requests for the specified management routes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_management_route_gateway">
+	<documentation>
+ Sets the gateways for the specified management routes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_management_route_gateway">
+	<documentation>
+ Gets the gateways for the specified management routes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_management_route_mtu">
+	<documentation>
+ Sets the MTUs for the specified management routes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_management_route_mtu">
+	<documentation>
+ Gets the MTUs for the specified management routes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_dynamic_route">
+	<documentation>
+ Gets the dynamic routes for the specified destination IP addresses.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_route_table_metric_statistics_for_destination">
+	<documentation>
+ Gets the route metric statistics for the specified destination IP addresses.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_route_table_metric_statistics_for_mac">
+	<documentation>
+ Gets the route metric statistics for the specified MAC addresses of the gateways.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="reset_all_route_table_metric_statistics">
+	<documentation>
+ Resets or flushes all route metric statistics.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteTable"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteTable"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.RouteTable">
+	<documentation>
+ *IMPORTANT* This entire interface has been deprecated (as of
+ 11.0.0), since all table entries are now accessed by name.
+ Please use the RouteTableV2 interface.
+
+ The RouteTable interface enables you to work with the Route table and entries.  
+
+        	</documentation>
+	<port name="Networking.RouteTablePort" binding="tns:Networking.RouteTableBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

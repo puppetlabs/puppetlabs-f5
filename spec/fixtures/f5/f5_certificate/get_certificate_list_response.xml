@@ -1,0 +1,197 @@
+<E:Envelope
+        xmlns:E="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:A="http://schemas.xmlsoap.org/soap/encoding/"
+        xmlns:s="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:y="http://www.w3.org/2001/XMLSchema"
+        xmlns:iControl="urn:iControl"
+        E:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+<E:Body>
+<m:get_certificate_listResponse
+        xmlns:m="urn:iControl:Management/KeyCertificate">
+<return
+        s:type="A:Array"
+        A:arrayType="iControl:Management.KeyCertificate.CertificateInformation[3]">
+<item>
+<is_bundled
+        s:type="y:boolean">false</is_bundled>
+<file_name
+        s:type="y:string">/Common/default.crt</file_name>
+<certificate
+        s:type="iControl:Management.KeyCertificate.CertificateDetail">
+<cert_info
+        s:type="iControl:Management.KeyCertificate.Certificate">
+<id
+        s:type="y:string">/Common/default</id>
+<email
+        s:type="y:string">root@localhost.localdomain</email>
+</cert_info>
+<cert_type
+        s:type="iControl:Management.KeyCertificate.CertificateType">CTYPE_CA_SIGNED_UNKNOWN</cert_type>
+<key_type
+        s:type="iControl:Management.KeyCertificate.KeyType">KTYPE_RSA_PUBLIC</key_type>
+<bit_length
+        s:type="y:long">2048</bit_length>
+<version
+        s:type="y:long">3</version>
+<serial_number
+        s:type="y:string">1538</serial_number>
+<expiration_string
+        s:type="y:string">Mar 16 19:28:37 2024 GMT</expiration_string>
+<expiration_date
+        s:type="y:long">1710617317</expiration_date>
+<subject
+        s:type="iControl:Management.KeyCertificate.X509Data">
+<common_name
+        s:type="y:string">localhost.localdomain/emailAddress=root@localhost.localdomain</common_name>
+<country_name
+        s:type="y:string">US</country_name>
+<state_name
+        s:type="y:string">WA</state_name>
+<locality_name
+        s:type="y:string">Seattle</locality_name>
+<organization_name
+        s:type="y:string">MyCompany</organization_name>
+<division_name
+        s:type="y:string">IT</division_name>
+</subject>
+<issuer
+        s:type="iControl:Management.KeyCertificate.X509Data">
+<common_name
+        s:type="y:string">localhost.localdomain/emailAddress=root@localhost.localdomain</common_name>
+<country_name
+        s:type="y:string">US</country_name>
+<state_name
+        s:type="y:string">WA</state_name>
+<locality_name
+        s:type="y:string">Seattle</locality_name>
+<organization_name
+        s:type="y:string">MyCompany</organization_name>
+<division_name
+        s:type="y:string">IT</division_name>
+</issuer>
+</certificate>
+</item>
+<item>
+<is_bundled
+        s:type="y:boolean">true</is_bundled>
+<file_name
+        s:type="y:string">/Common/ca-bundle.crt</file_name>
+<certificate
+        s:type="iControl:Management.KeyCertificate.CertificateDetail">
+<cert_info
+        s:type="iControl:Management.KeyCertificate.Certificate">
+<id
+        s:type="y:string">/Common/ca-bundle</id>
+<email
+        s:type="y:string"></email>
+</cert_info>
+<cert_type
+        s:type="iControl:Management.KeyCertificate.CertificateType">CTYPE_CA_SIGNED_UNKNOWN</cert_type>
+<key_type
+        s:type="iControl:Management.KeyCertificate.KeyType">KTYPE_RSA_PUBLIC</key_type>
+<bit_length
+        s:type="y:long">1024</bit_length>
+<version
+        s:type="y:long">1</version>
+<serial_number
+        s:type="y:string">421</serial_number>
+<expiration_string
+        s:type="y:string">Aug 13 23:59:00 2018 GMT</expiration_string>
+<expiration_date
+        s:type="y:long">1534204740</expiration_date>
+<subject
+        s:type="iControl:Management.KeyCertificate.X509Data">
+<common_name
+        s:type="y:string">GTE CyberTrust Global Root</common_name>
+<country_name
+        s:type="y:string">US</country_name>
+<state_name
+        s:type="y:string"></state_name>
+<locality_name
+        s:type="y:string"></locality_name>
+<organization_name
+        s:type="y:string">GTE Corporation</organization_name>
+<division_name
+        s:type="y:string">GTE CyberTrust Solutions, Inc.</division_name>
+</subject>
+<issuer
+        s:type="iControl:Management.KeyCertificate.X509Data">
+<common_name
+        s:type="y:string">GTE CyberTrust Global Root</common_name>
+<country_name
+        s:type="y:string">US</country_name>
+<state_name
+        s:type="y:string"></state_name>
+<locality_name
+        s:type="y:string"></locality_name>
+<organization_name
+        s:type="y:string">GTE Corporation</organization_name>
+<division_name
+        s:type="y:string">GTE CyberTrust Solutions, Inc.</division_name>
+</issuer>
+</certificate>
+</item>
+<item>
+<is_bundled
+        s:type="y:boolean">false</is_bundled>
+<file_name
+        s:type="y:string">/Common/test.crt</file_name>
+<certificate
+        s:type="iControl:Management.KeyCertificate.CertificateDetail">
+<cert_info
+        s:type="iControl:Management.KeyCertificate.Certificate">
+<id
+        s:type="y:string">/Common/test</id>
+<email
+        s:type="y:string"></email>
+</cert_info>
+<cert_type
+        s:type="iControl:Management.KeyCertificate.CertificateType">CTYPE_CA_SIGNED_NO</cert_type>
+<key_type
+        s:type="iControl:Management.KeyCertificate.KeyType">KTYPE_RSA_PUBLIC</key_type>
+<bit_length
+        s:type="y:long">4096</bit_length>
+<version
+        s:type="y:long">3</version>
+<serial_number
+        s:type="y:string">3</serial_number>
+<expiration_string
+        s:type="y:string">Mar 19 21:15:05 2019 GMT</expiration_string>
+<expiration_date
+        s:type="y:long">1553030105</expiration_date>
+<subject
+        s:type="iControl:Management.KeyCertificate.X509Data">
+<common_name
+        s:type="y:string">f5.puppetlabs.lan</common_name>
+<country_name
+        s:type="y:string"></country_name>
+<state_name
+        s:type="y:string"></state_name>
+<locality_name
+        s:type="y:string"></locality_name>
+<organization_name
+        s:type="y:string"></organization_name>
+<division_name
+        s:type="y:string"></division_name>
+</subject>
+<issuer
+        s:type="iControl:Management.KeyCertificate.X509Data">
+<common_name
+        s:type="y:string">Puppet CA: vagrant.vm</common_name>
+<country_name
+        s:type="y:string"></country_name>
+<state_name
+        s:type="y:string"></state_name>
+<locality_name
+        s:type="y:string"></locality_name>
+<organization_name
+        s:type="y:string"></organization_name>
+<division_name
+        s:type="y:string"></division_name>
+</issuer>
+</certificate>
+</item>
+</return>
+</m:get_certificate_listResponse>
+</E:Body>
+</E:Envelope>

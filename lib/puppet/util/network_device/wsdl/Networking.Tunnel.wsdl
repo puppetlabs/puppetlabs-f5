@@ -1,0 +1,1082 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.Tunnel"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.Tunnel.TunnelDirection">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="TUNNEL_DIRECTION_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>TUNNEL_DIRECTION_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TUNNEL_DIRECTION_INBOUND">
+					<xsd:annotation>
+						<xsd:documentation>TUNNEL_DIRECTION_INBOUND</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TUNNEL_DIRECTION_OUTBOUND">
+					<xsd:annotation>
+						<xsd:documentation>TUNNEL_DIRECTION_OUTBOUND</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TUNNEL_DIRECTION_BIDIRECTIONAL">
+					<xsd:annotation>
+						<xsd:documentation>TUNNEL_DIRECTION_BIDIRECTIONAL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.Tunnel.TunnelDirectionSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.Tunnel.TunnelDirection[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.Tunnel.get_listRequest">
+</message>
+<message name="Networking.Tunnel.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.Tunnel.createRequest">
+	<part name="tunnels" type="tns:Common.StringSequence"/>
+	<part name="local_addresses" type="tns:Common.IPAddressSequence"/>
+	<part name="remote_addresses" type="tns:Common.IPAddressSequence"/>
+	<part name="profiles" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.Tunnel.createResponse">
+</message>
+
+<message name="Networking.Tunnel.delete_tunnelRequest">
+	<part name="tunnels" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.Tunnel.delete_tunnelResponse">
+</message>
+
+<message name="Networking.Tunnel.delete_all_tunnelsRequest">
+</message>
+<message name="Networking.Tunnel.delete_all_tunnelsResponse">
+</message>
+
+<message name="Networking.Tunnel.set_local_addressRequest">
+	<part name="tunnels" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.Tunnel.set_local_addressResponse">
+</message>
+
+<message name="Networking.Tunnel.get_local_addressRequest">
+	<part name="tunnels" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.Tunnel.get_local_addressResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Networking.Tunnel.set_remote_addressRequest">
+	<part name="tunnels" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.Tunnel.set_remote_addressResponse">
+</message>
+
+<message name="Networking.Tunnel.get_remote_addressRequest">
+	<part name="tunnels" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.Tunnel.get_remote_addressResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Networking.Tunnel.set_directionRequest">
+	<part name="tunnels" type="tns:Common.StringSequence"/>
+	<part name="directions" type="tns:Networking.Tunnel.TunnelDirectionSequence"/>
+</message>
+<message name="Networking.Tunnel.set_directionResponse">
+</message>
+
+<message name="Networking.Tunnel.get_directionRequest">
+	<part name="tunnels" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.Tunnel.get_directionResponse">
+	<part name="return" type="tns:Networking.Tunnel.TunnelDirectionSequence"/>
+</message>
+
+<message name="Networking.Tunnel.set_profileRequest">
+	<part name="tunnels" type="tns:Common.StringSequence"/>
+	<part name="profiles" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.Tunnel.set_profileResponse">
+</message>
+
+<message name="Networking.Tunnel.get_profileRequest">
+	<part name="tunnels" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.Tunnel.get_profileResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.Tunnel.set_mtuRequest">
+	<part name="tunnels" type="tns:Common.StringSequence"/>
+	<part name="mtus" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.Tunnel.set_mtuResponse">
+</message>
+
+<message name="Networking.Tunnel.get_mtuRequest">
+	<part name="tunnels" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.Tunnel.get_mtuResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.Tunnel.set_tosRequest">
+	<part name="tunnels" type="tns:Common.StringSequence"/>
+	<part name="values" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.Tunnel.set_tosResponse">
+</message>
+
+<message name="Networking.Tunnel.get_tosRequest">
+	<part name="tunnels" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.Tunnel.get_tosResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.Tunnel.set_descriptionRequest">
+	<part name="tunnels" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.Tunnel.set_descriptionResponse">
+</message>
+
+<message name="Networking.Tunnel.get_descriptionRequest">
+	<part name="tunnels" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.Tunnel.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.Tunnel.set_transparent_stateRequest">
+	<part name="tunnels" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.Tunnel.set_transparent_stateResponse">
+</message>
+
+<message name="Networking.Tunnel.get_transparent_stateRequest">
+	<part name="tunnels" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.Tunnel.get_transparent_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.Tunnel.set_idle_timeoutRequest">
+	<part name="tunnels" type="tns:Common.StringSequence"/>
+	<part name="timeouts" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.Tunnel.set_idle_timeoutResponse">
+</message>
+
+<message name="Networking.Tunnel.get_idle_timeoutRequest">
+	<part name="tunnels" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.Tunnel.get_idle_timeoutResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.Tunnel.create_with_transparent_stateRequest">
+	<part name="tunnels" type="tns:Common.StringSequence"/>
+	<part name="local_addresses" type="tns:Common.IPAddressSequence"/>
+	<part name="remote_addresses" type="tns:Common.IPAddressSequence"/>
+	<part name="profiles" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.Tunnel.create_with_transparent_stateResponse">
+</message>
+
+<message name="Networking.Tunnel.set_local_address_with_transparent_stateRequest">
+	<part name="tunnels" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.Tunnel.set_local_address_with_transparent_stateResponse">
+</message>
+
+<message name="Networking.Tunnel.get_versionRequest">
+</message>
+<message name="Networking.Tunnel.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.TunnelPortType">
+	<operation name="get_list">
+       	<documentation>
+ Gets the names of all tunnels.
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.get_listRequest"/>
+		<output message="tns:Networking.Tunnel.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a set of tunnels.
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.createRequest"/>
+		<output message="tns:Networking.Tunnel.createResponse"/>
+	</operation>
+	<operation name="delete_tunnel">
+	<documentation>
+ Deletes a set of tunnels.
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.delete_tunnelRequest"/>
+		<output message="tns:Networking.Tunnel.delete_tunnelResponse"/>
+	</operation>
+	<operation name="delete_all_tunnels">
+	<documentation>
+ Deletes all tunnels.
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.delete_all_tunnelsRequest"/>
+		<output message="tns:Networking.Tunnel.delete_all_tunnelsResponse"/>
+	</operation>
+	<operation name="set_local_address">
+	<documentation>
+ Sets the IP address for the local end of the tunnel for a set of
+ tunnels
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.set_local_addressRequest"/>
+		<output message="tns:Networking.Tunnel.set_local_addressResponse"/>
+	</operation>
+	<operation name="get_local_address">
+	<documentation>
+ Gets the IP address for the local end of a set of tunnels.
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.get_local_addressRequest"/>
+		<output message="tns:Networking.Tunnel.get_local_addressResponse"/>
+	</operation>
+	<operation name="set_remote_address">
+	<documentation>
+ Sets the IP address for the remote end of a set of tunnels.
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.set_remote_addressRequest"/>
+		<output message="tns:Networking.Tunnel.set_remote_addressResponse"/>
+	</operation>
+	<operation name="get_remote_address">
+	<documentation>
+ Gets the IP address for the remote end for a set of tunnels.
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.get_remote_addressRequest"/>
+		<output message="tns:Networking.Tunnel.get_remote_addressResponse"/>
+	</operation>
+	<operation name="set_direction">
+	<documentation>
+ Sets the direction for traffic flow within a set of tunnels.
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.set_directionRequest"/>
+		<output message="tns:Networking.Tunnel.set_directionResponse"/>
+	</operation>
+	<operation name="get_direction">
+	<documentation>
+ Gets the direction for traffic flow within a set of tunnels.
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.get_directionRequest"/>
+		<output message="tns:Networking.Tunnel.get_directionResponse"/>
+	</operation>
+	<operation name="set_profile">
+	<documentation>
+ Sets the profile specifying the tunneling protocol for a set of
+ tunnels.
+
+ This profile may be an IPIP, GRE, or WCCP-GRE profile type.
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.set_profileRequest"/>
+		<output message="tns:Networking.Tunnel.set_profileResponse"/>
+	</operation>
+	<operation name="get_profile">
+	<documentation>
+ Gets the profile specifying the tunneling protocol for a set of
+ tunnels.
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.get_profileRequest"/>
+		<output message="tns:Networking.Tunnel.get_profileResponse"/>
+	</operation>
+	<operation name="set_mtu">
+	<documentation>
+ Sets the maximum transmission unit (MTU) for a set of tunnels.
+
+ If zero, the tunnel's MTU is automatically set to the MTU of the
+ tunnel's underlying interface minus the encapsulation overhead
+ introduced by the tunneling protocol in use for the tunnel.
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.set_mtuRequest"/>
+		<output message="tns:Networking.Tunnel.set_mtuResponse"/>
+	</operation>
+	<operation name="get_mtu">
+	<documentation>
+ Gets the maximum transmission unit (MTU) for a set of tunnels.
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.get_mtuRequest"/>
+		<output message="tns:Networking.Tunnel.get_mtuResponse"/>
+	</operation>
+	<operation name="set_tos">
+	<documentation>
+ Sets the Type of Service (ToS) value for the encapsulating packet's
+ IP header.  The valid range is zero to 255.  The special value
+ 65535 specifies that the encapsulating packet's IP header ToS value
+ is set to the encapsulated packet's IP header ToS value.
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.set_tosRequest"/>
+		<output message="tns:Networking.Tunnel.set_tosResponse"/>
+	</operation>
+	<operation name="get_tos">
+	<documentation>
+ Gets the Type of Service (ToS) value for the encapsulating packet's
+ IP header.
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.get_tosRequest"/>
+		<output message="tns:Networking.Tunnel.get_tosResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of tunnels.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.set_descriptionRequest"/>
+		<output message="tns:Networking.Tunnel.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of tunnels.
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.get_descriptionRequest"/>
+		<output message="tns:Networking.Tunnel.get_descriptionResponse"/>
+	</operation>
+	<operation name="set_transparent_state">
+	<documentation>
+ Sets the transparent property for a set of tunnels.
+
+ Enables or disables the tunnel to be transparent. If enabled, the
+ user can inspect and/or manipulate the encapsulated traffic flowing
+ through the BIG-IP. A transparent tunnel terminates a tunnel while
+ presenting the illusion that the tunnel transits the device
+ unperturbed i.e. the BIG-IP appears like an intermediate router
+ that simply routes IP traffic through the device. The default value
+ is disabled.
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.set_transparent_stateRequest"/>
+		<output message="tns:Networking.Tunnel.set_transparent_stateResponse"/>
+	</operation>
+	<operation name="get_transparent_state">
+	<documentation>
+ Gets the transparent property for a set of tunnels.
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.get_transparent_stateRequest"/>
+		<output message="tns:Networking.Tunnel.get_transparent_stateResponse"/>
+	</operation>
+	<operation name="set_idle_timeout">
+	<documentation>
+ Sets the idle timeout for a set of tunnels.
+
+ Specifies an idle timeout for wildcard tunnels (i.e. tunnels with
+ remote address 0.0.0.0) in seconds. This setting specifies the 
+ number of seconds that a wildcard tunnel connection is idle before 
+ the connection is eligible for deletion. If zero, the tunnel's 
+ idle timeout is automatically set to the default of 300.
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.set_idle_timeoutRequest"/>
+		<output message="tns:Networking.Tunnel.set_idle_timeoutResponse"/>
+	</operation>
+	<operation name="get_idle_timeout">
+	<documentation>
+ Gets the idle timeout values for a set of tunnels.
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.get_idle_timeoutRequest"/>
+		<output message="tns:Networking.Tunnel.get_idle_timeoutResponse"/>
+	</operation>
+	<operation name="create_with_transparent_state">
+	<documentation>
+ Creates a set of tunnels with transparent states.
+
+ It is for convenience to allow you to avoid using a transaction,
+ because you can specify a 0.0.0.0 local address only if 
+ transparent is enabled. (Either a transaction or this method are
+ good ways of satisfying this validation).
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.create_with_transparent_stateRequest"/>
+		<output message="tns:Networking.Tunnel.create_with_transparent_stateResponse"/>
+	</operation>
+	<operation name="set_local_address_with_transparent_state">
+	<documentation>
+ Sets the IP address for the local end of the tunnel along with the 
+ transparent state of the tunnel for a set of tunnels.
+ 
+ It is for convenience to allow you to avoid using a transaction,
+ because you can specify a 0.0.0.0 local address only if 
+ transparent is enabled. (Either a transaction or this method are
+ good ways of satisfying this validation).
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.set_local_address_with_transparent_stateRequest"/>
+		<output message="tns:Networking.Tunnel.set_local_address_with_transparent_stateResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.Tunnel.get_versionRequest"/>
+		<output message="tns:Networking.Tunnel.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.TunnelBinding" type="tns:Networking.TunnelPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the names of all tunnels.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a set of tunnels.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_tunnel">
+	<documentation>
+ Deletes a set of tunnels.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_tunnels">
+	<documentation>
+ Deletes all tunnels.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_local_address">
+	<documentation>
+ Sets the IP address for the local end of the tunnel for a set of
+ tunnels
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_local_address">
+	<documentation>
+ Gets the IP address for the local end of a set of tunnels.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_remote_address">
+	<documentation>
+ Sets the IP address for the remote end of a set of tunnels.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_remote_address">
+	<documentation>
+ Gets the IP address for the remote end for a set of tunnels.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_direction">
+	<documentation>
+ Sets the direction for traffic flow within a set of tunnels.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_direction">
+	<documentation>
+ Gets the direction for traffic flow within a set of tunnels.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_profile">
+	<documentation>
+ Sets the profile specifying the tunneling protocol for a set of
+ tunnels.
+
+ This profile may be an IPIP, GRE, or WCCP-GRE profile type.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_profile">
+	<documentation>
+ Gets the profile specifying the tunneling protocol for a set of
+ tunnels.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_mtu">
+	<documentation>
+ Sets the maximum transmission unit (MTU) for a set of tunnels.
+
+ If zero, the tunnel's MTU is automatically set to the MTU of the
+ tunnel's underlying interface minus the encapsulation overhead
+ introduced by the tunneling protocol in use for the tunnel.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_mtu">
+	<documentation>
+ Gets the maximum transmission unit (MTU) for a set of tunnels.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_tos">
+	<documentation>
+ Sets the Type of Service (ToS) value for the encapsulating packet's
+ IP header.  The valid range is zero to 255.  The special value
+ 65535 specifies that the encapsulating packet's IP header ToS value
+ is set to the encapsulated packet's IP header ToS value.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_tos">
+	<documentation>
+ Gets the Type of Service (ToS) value for the encapsulating packet's
+ IP header.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of tunnels.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of tunnels.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_transparent_state">
+	<documentation>
+ Sets the transparent property for a set of tunnels.
+
+ Enables or disables the tunnel to be transparent. If enabled, the
+ user can inspect and/or manipulate the encapsulated traffic flowing
+ through the BIG-IP. A transparent tunnel terminates a tunnel while
+ presenting the illusion that the tunnel transits the device
+ unperturbed i.e. the BIG-IP appears like an intermediate router
+ that simply routes IP traffic through the device. The default value
+ is disabled.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_transparent_state">
+	<documentation>
+ Gets the transparent property for a set of tunnels.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_idle_timeout">
+	<documentation>
+ Sets the idle timeout for a set of tunnels.
+
+ Specifies an idle timeout for wildcard tunnels (i.e. tunnels with
+ remote address 0.0.0.0) in seconds. This setting specifies the 
+ number of seconds that a wildcard tunnel connection is idle before 
+ the connection is eligible for deletion. If zero, the tunnel's 
+ idle timeout is automatically set to the default of 300.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_idle_timeout">
+	<documentation>
+ Gets the idle timeout values for a set of tunnels.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_with_transparent_state">
+	<documentation>
+ Creates a set of tunnels with transparent states.
+
+ It is for convenience to allow you to avoid using a transaction,
+ because you can specify a 0.0.0.0 local address only if 
+ transparent is enabled. (Either a transaction or this method are
+ good ways of satisfying this validation).
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_local_address_with_transparent_state">
+	<documentation>
+ Sets the IP address for the local end of the tunnel along with the 
+ transparent state of the tunnel for a set of tunnels.
+ 
+ It is for convenience to allow you to avoid using a transaction,
+ because you can specify a 0.0.0.0 local address only if 
+ transparent is enabled. (Either a transaction or this method are
+ good ways of satisfying this validation).
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/Tunnel"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/Tunnel"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.Tunnel">
+	<documentation>
+ The Tunnel interface manages a virtual network interface that allows a
+ network protocol to carry packets of another protocol between two
+ endpoints.  Once created, it can be used just like a VLAN in BIG-IP
+ configurations.
+
+        	</documentation>
+	<port name="Networking.TunnelPort" binding="tns:Networking.TunnelBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

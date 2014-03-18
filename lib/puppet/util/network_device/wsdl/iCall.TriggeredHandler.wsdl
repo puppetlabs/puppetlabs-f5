@@ -1,0 +1,1071 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="iCall.TriggeredHandler"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="iCall.MatchAlgorithmSequenceSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:iCall.MatchAlgorithmSequenceSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="iCall.GeneralHandlerState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="GENERAL_HANDLER_STATE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>GENERAL_HANDLER_STATE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="GENERAL_HANDLER_STATE_ACTIVE">
+					<xsd:annotation>
+						<xsd:documentation>GENERAL_HANDLER_STATE_ACTIVE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="GENERAL_HANDLER_STATE_INACTIVE">
+					<xsd:annotation>
+						<xsd:documentation>GENERAL_HANDLER_STATE_INACTIVE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequenceSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequenceSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="iCall.MatchAlgorithmSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:iCall.MatchAlgorithm[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="iCall.GeneralHandlerStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:iCall.GeneralHandlerState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="iCall.MatchAlgorithm">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="MATCH_ALGORITHM_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>MATCH_ALGORITHM_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="MATCH_ALGORITHM_EXACT">
+					<xsd:annotation>
+						<xsd:documentation>MATCH_ALGORITHM_EXACT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="MATCH_ALGORITHM_GLOB">
+					<xsd:annotation>
+						<xsd:documentation>MATCH_ALGORITHM_GLOB</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="MATCH_ALGORITHM_REGEX">
+					<xsd:annotation>
+						<xsd:documentation>MATCH_ALGORITHM_REGEX</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="MATCH_ALGORITHM_SUBNET">
+					<xsd:annotation>
+						<xsd:documentation>MATCH_ALGORITHM_SUBNET</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="MATCH_ALGORITHM_ACCEPT_ALL">
+					<xsd:annotation>
+						<xsd:documentation>MATCH_ALGORITHM_ACCEPT_ALL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="iCall.MatchAlgorithmSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:iCall.MatchAlgorithmSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="iCall.TriggeredHandler.get_listRequest">
+</message>
+<message name="iCall.TriggeredHandler.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="iCall.TriggeredHandler.createRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="scripts" type="tns:Common.StringSequence"/>
+</message>
+<message name="iCall.TriggeredHandler.createResponse">
+</message>
+
+<message name="iCall.TriggeredHandler.delete_handlerRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+</message>
+<message name="iCall.TriggeredHandler.delete_handlerResponse">
+</message>
+
+<message name="iCall.TriggeredHandler.delete_all_handlersRequest">
+</message>
+<message name="iCall.TriggeredHandler.delete_all_handlersResponse">
+</message>
+
+<message name="iCall.TriggeredHandler.set_descriptionRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="iCall.TriggeredHandler.set_descriptionResponse">
+</message>
+
+<message name="iCall.TriggeredHandler.get_descriptionRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+</message>
+<message name="iCall.TriggeredHandler.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="iCall.TriggeredHandler.set_handler_stateRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:iCall.GeneralHandlerStateSequence"/>
+</message>
+<message name="iCall.TriggeredHandler.set_handler_stateResponse">
+</message>
+
+<message name="iCall.TriggeredHandler.get_handler_stateRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+</message>
+<message name="iCall.TriggeredHandler.get_handler_stateResponse">
+	<part name="return" type="tns:iCall.GeneralHandlerStateSequence"/>
+</message>
+
+<message name="iCall.TriggeredHandler.set_scriptRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="scripts" type="tns:Common.StringSequence"/>
+</message>
+<message name="iCall.TriggeredHandler.set_scriptResponse">
+</message>
+
+<message name="iCall.TriggeredHandler.get_scriptRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+</message>
+<message name="iCall.TriggeredHandler.get_scriptResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="iCall.TriggeredHandler.get_subscriptionRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+</message>
+<message name="iCall.TriggeredHandler.get_subscriptionResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="iCall.TriggeredHandler.add_subscriptionRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="subscriptions" type="tns:Common.StringSequenceSequence"/>
+	<part name="events" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="iCall.TriggeredHandler.add_subscriptionResponse">
+</message>
+
+<message name="iCall.TriggeredHandler.remove_subscriptionRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="subscriptions" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="iCall.TriggeredHandler.remove_subscriptionResponse">
+</message>
+
+<message name="iCall.TriggeredHandler.remove_all_subscriptionsRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+</message>
+<message name="iCall.TriggeredHandler.remove_all_subscriptionsResponse">
+</message>
+
+<message name="iCall.TriggeredHandler.set_subscription_eventRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="subscriptions" type="tns:Common.StringSequenceSequence"/>
+	<part name="events" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="iCall.TriggeredHandler.set_subscription_eventResponse">
+</message>
+
+<message name="iCall.TriggeredHandler.get_subscription_eventRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="subscriptions" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="iCall.TriggeredHandler.get_subscription_eventResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="iCall.TriggeredHandler.get_filterRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="subscriptions" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="iCall.TriggeredHandler.get_filterResponse">
+	<part name="return" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+
+<message name="iCall.TriggeredHandler.add_filterRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="subscriptions" type="tns:Common.StringSequenceSequence"/>
+	<part name="filters" type="tns:Common.StringSequenceSequenceSequence"/>
+	<part name="values" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="iCall.TriggeredHandler.add_filterResponse">
+</message>
+
+<message name="iCall.TriggeredHandler.remove_filterRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="subscriptions" type="tns:Common.StringSequenceSequence"/>
+	<part name="filters" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="iCall.TriggeredHandler.remove_filterResponse">
+</message>
+
+<message name="iCall.TriggeredHandler.remove_all_filtersRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="subscriptions" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="iCall.TriggeredHandler.remove_all_filtersResponse">
+</message>
+
+<message name="iCall.TriggeredHandler.set_filter_valueRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="subscriptions" type="tns:Common.StringSequenceSequence"/>
+	<part name="filters" type="tns:Common.StringSequenceSequenceSequence"/>
+	<part name="values" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="iCall.TriggeredHandler.set_filter_valueResponse">
+</message>
+
+<message name="iCall.TriggeredHandler.get_filter_valueRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="subscriptions" type="tns:Common.StringSequenceSequence"/>
+	<part name="filters" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="iCall.TriggeredHandler.get_filter_valueResponse">
+	<part name="return" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+
+<message name="iCall.TriggeredHandler.set_filter_match_algorithmRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="subscriptions" type="tns:Common.StringSequenceSequence"/>
+	<part name="filters" type="tns:Common.StringSequenceSequenceSequence"/>
+	<part name="algorithms" type="tns:iCall.MatchAlgorithmSequenceSequenceSequence"/>
+</message>
+<message name="iCall.TriggeredHandler.set_filter_match_algorithmResponse">
+</message>
+
+<message name="iCall.TriggeredHandler.get_filter_match_algorithmRequest">
+	<part name="handlers" type="tns:Common.StringSequence"/>
+	<part name="subscriptions" type="tns:Common.StringSequenceSequence"/>
+	<part name="filters" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="iCall.TriggeredHandler.get_filter_match_algorithmResponse">
+	<part name="return" type="tns:iCall.MatchAlgorithmSequenceSequenceSequence"/>
+</message>
+
+<message name="iCall.TriggeredHandler.get_versionRequest">
+</message>
+<message name="iCall.TriggeredHandler.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="iCall.TriggeredHandlerPortType">
+	<operation name="get_list">
+  	<documentation>
+ Gets the list of triggered handlers.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.get_listRequest"/>
+		<output message="tns:iCall.TriggeredHandler.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates new triggered handlers.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.createRequest"/>
+		<output message="tns:iCall.TriggeredHandler.createResponse"/>
+	</operation>
+	<operation name="delete_handler">
+	<documentation>
+ Deletes the specified triggered handlers.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.delete_handlerRequest"/>
+		<output message="tns:iCall.TriggeredHandler.delete_handlerResponse"/>
+	</operation>
+	<operation name="delete_all_handlers">
+	<documentation>
+ Deletes all user-defined (non-root) triggered handlers.  
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.delete_all_handlersRequest"/>
+		<output message="tns:iCall.TriggeredHandler.delete_all_handlersResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for the specified triggered handlers.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.set_descriptionRequest"/>
+		<output message="tns:iCall.TriggeredHandler.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the specified triggered handlers.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.get_descriptionRequest"/>
+		<output message="tns:iCall.TriggeredHandler.get_descriptionResponse"/>
+	</operation>
+	<operation name="set_handler_state">
+	<documentation>
+ Sets the states for the specified triggered handlers.
+
+ This field describes whether the handler is running and accepting
+ events.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.set_handler_stateRequest"/>
+		<output message="tns:iCall.TriggeredHandler.set_handler_stateResponse"/>
+	</operation>
+	<operation name="get_handler_state">
+	<documentation>
+ Gets the states for the specified triggered handlers.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.get_handler_stateRequest"/>
+		<output message="tns:iCall.TriggeredHandler.get_handler_stateResponse"/>
+	</operation>
+	<operation name="set_script">
+	<documentation>
+ Sets the script for the specified triggered handlers.
+
+ This is the name of a Tcl script that will be run when an event
+ to which this handler subscribes fires.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.set_scriptRequest"/>
+		<output message="tns:iCall.TriggeredHandler.set_scriptResponse"/>
+	</operation>
+	<operation name="get_script">
+	<documentation>
+ Gets the scripts for the specified triggered handlers.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.get_scriptRequest"/>
+		<output message="tns:iCall.TriggeredHandler.get_scriptResponse"/>
+	</operation>
+	<operation name="get_subscription">
+	<documentation>
+ Gets a list of subscriptions.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.get_subscriptionRequest"/>
+		<output message="tns:iCall.TriggeredHandler.get_subscriptionResponse"/>
+	</operation>
+	<operation name="add_subscription">
+	<documentation>
+ Add new subscriptions to triggered handlers.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.add_subscriptionRequest"/>
+		<output message="tns:iCall.TriggeredHandler.add_subscriptionResponse"/>
+	</operation>
+	<operation name="remove_subscription">
+	<documentation>
+ Remove subscriptions from triggered handlers.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.remove_subscriptionRequest"/>
+		<output message="tns:iCall.TriggeredHandler.remove_subscriptionResponse"/>
+	</operation>
+	<operation name="remove_all_subscriptions">
+	<documentation>
+ Remove all subscriptions from triggered handlers.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.remove_all_subscriptionsRequest"/>
+		<output message="tns:iCall.TriggeredHandler.remove_all_subscriptionsResponse"/>
+	</operation>
+	<operation name="set_subscription_event">
+	<documentation>
+ Set the event names for the specified subscriptions.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.set_subscription_eventRequest"/>
+		<output message="tns:iCall.TriggeredHandler.set_subscription_eventResponse"/>
+	</operation>
+	<operation name="get_subscription_event">
+	<documentation>
+ Get the event names from the specified subscriptions.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.get_subscription_eventRequest"/>
+		<output message="tns:iCall.TriggeredHandler.get_subscription_eventResponse"/>
+	</operation>
+	<operation name="get_filter">
+	<documentation>
+ Gets a list of filter names for the specified subscriptions.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.get_filterRequest"/>
+		<output message="tns:iCall.TriggeredHandler.get_filterResponse"/>
+	</operation>
+	<operation name="add_filter">
+	<documentation>
+ Add the specified filters to the specified subscriptions.
+
+ The initial match algorithms for these filters will all be
+ MATCH_ALGORITHM_EXACT.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.add_filterRequest"/>
+		<output message="tns:iCall.TriggeredHandler.add_filterResponse"/>
+	</operation>
+	<operation name="remove_filter">
+	<documentation>
+ Remove filters from the given subscriptions.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.remove_filterRequest"/>
+		<output message="tns:iCall.TriggeredHandler.remove_filterResponse"/>
+	</operation>
+	<operation name="remove_all_filters">
+	<documentation>
+ Remove all filters from the given subscriptions.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.remove_all_filtersRequest"/>
+		<output message="tns:iCall.TriggeredHandler.remove_all_filtersResponse"/>
+	</operation>
+	<operation name="set_filter_value">
+	<documentation>
+ Set the values for the specified filters.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.set_filter_valueRequest"/>
+		<output message="tns:iCall.TriggeredHandler.set_filter_valueResponse"/>
+	</operation>
+	<operation name="get_filter_value">
+	<documentation>
+ Get the values for the specified filters.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.get_filter_valueRequest"/>
+		<output message="tns:iCall.TriggeredHandler.get_filter_valueResponse"/>
+	</operation>
+	<operation name="set_filter_match_algorithm">
+	<documentation>
+ Set the match algorithms for the specified filters.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.set_filter_match_algorithmRequest"/>
+		<output message="tns:iCall.TriggeredHandler.set_filter_match_algorithmResponse"/>
+	</operation>
+	<operation name="get_filter_match_algorithm">
+	<documentation>
+ Get the match algorithms for the specified filters.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.get_filter_match_algorithmRequest"/>
+		<output message="tns:iCall.TriggeredHandler.get_filter_match_algorithmResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:iCall.TriggeredHandler.get_versionRequest"/>
+		<output message="tns:iCall.TriggeredHandler.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="iCall.TriggeredHandlerBinding" type="tns:iCall.TriggeredHandlerPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the list of triggered handlers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates new triggered handlers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_handler">
+	<documentation>
+ Deletes the specified triggered handlers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_handlers">
+	<documentation>
+ Deletes all user-defined (non-root) triggered handlers.  
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for the specified triggered handlers.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the specified triggered handlers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_handler_state">
+	<documentation>
+ Sets the states for the specified triggered handlers.
+
+ This field describes whether the handler is running and accepting
+ events.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_handler_state">
+	<documentation>
+ Gets the states for the specified triggered handlers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_script">
+	<documentation>
+ Sets the script for the specified triggered handlers.
+
+ This is the name of a Tcl script that will be run when an event
+ to which this handler subscribes fires.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_script">
+	<documentation>
+ Gets the scripts for the specified triggered handlers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_subscription">
+	<documentation>
+ Gets a list of subscriptions.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_subscription">
+	<documentation>
+ Add new subscriptions to triggered handlers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_subscription">
+	<documentation>
+ Remove subscriptions from triggered handlers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_subscriptions">
+	<documentation>
+ Remove all subscriptions from triggered handlers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_subscription_event">
+	<documentation>
+ Set the event names for the specified subscriptions.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_subscription_event">
+	<documentation>
+ Get the event names from the specified subscriptions.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_filter">
+	<documentation>
+ Gets a list of filter names for the specified subscriptions.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_filter">
+	<documentation>
+ Add the specified filters to the specified subscriptions.
+
+ The initial match algorithms for these filters will all be
+ MATCH_ALGORITHM_EXACT.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_filter">
+	<documentation>
+ Remove filters from the given subscriptions.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_filters">
+	<documentation>
+ Remove all filters from the given subscriptions.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_filter_value">
+	<documentation>
+ Set the values for the specified filters.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_filter_value">
+	<documentation>
+ Get the values for the specified filters.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_filter_match_algorithm">
+	<documentation>
+ Set the match algorithms for the specified filters.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_filter_match_algorithm">
+	<documentation>
+ Get the match algorithms for the specified filters.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:iCall/TriggeredHandler"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:iCall/TriggeredHandler"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="iCall.TriggeredHandler">
+	<documentation>
+ The TriggeredHandler interface allows you to create or delete
+ event-triggered handlers.
+
+ These handlers contain a set of objects called subscriptions; a
+ subscription registers interest in an event of a certain name. Each
+ subscription also may optionally include a list of filters to further
+ reduce the set of events that come in. For example, if a subscription
+ exists to an event indicating that a pool member goes down, then the
+ filters might be set up to restrict interest to pool members in a
+ certain subnet.
+
+ Triggered handlers do not keep state between instances of their
+ scripts running. If you would like state to be saved, see the
+ PerpetualHandler interface.
+
+        	</documentation>
+	<port name="iCall.TriggeredHandlerPort" binding="tns:iCall.TriggeredHandlerBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

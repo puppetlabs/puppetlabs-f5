@@ -17,7 +17,7 @@ Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::P
   end
 
   def self.instances
-    f5certs = Array.new
+    f5certs = []
 
     modes = [ "MANAGEMENT_MODE_DEFAULT",
               "MANAGEMENT_MODE_WEBSERVER",
@@ -27,11 +27,11 @@ Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::P
 
     modes.each do |mode|
       begin
-        transport[wsdl].get_certificate_list(mode).each do |cert|
+        transport[wsdl].call(:get_certificate_list, message: {mode: mode}).body[:get_certificate_list_response][:return][:item].each do |cert|
           # F5 certificate bundles have a single cert id so we can't manage
           # them individually, only as a single bundle.
           cert = {
-            :name   => cert.certificate.cert_info.id,
+            :name   => cert[:certificate][:cert_info][:id],
             :ensure => :present,
             :mode   => mode
           }
@@ -39,8 +39,6 @@ Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::P
         end
       rescue Exception => e
         # We simply treat this as no certificates.
-        # SOAP::FaultError: Exception caught in Management::urn:iControl:Management/KeyCertificate::get_certificate_list()
-        #      error_string         : No such file or directory
         Puppet.debug("Puppet::Provider::F5_Certificate: ignoring get_certificate_list exception \n #{e.message}")
       end
     end
@@ -50,20 +48,18 @@ Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::P
 
   # Modify each key to have its instance as the provider
   def self.prefetch(resources)
-    instances.each do |prov|
-      if resource = resources[prov.name]
-        resource.provider = prov
+    certs = instances
+    resources.keys.each do |name|
+      if provider = certs.find {|cert| cert.name == name}
+        resources[name].provider = provider
       end
     end
   end
 
-  def flush
-    @property_hash.clear
-  end
-
   def content
     # Fetch and calculate all certificate sha1
-    value = transport[wsdl].certificate_export_to_pem(@property_hash[:mode], @property_hash[:name]).first
+    message = { mode: @resource[:mode], cert_ids: {item: self.name}}
+    value = transport[wsdl].call(:certificate_export_to_pem, message: message).body[:certificate_export_to_pem_response][:return][:item]
     certs = value.scan(/([-| ]*BEGIN CERTIFICATE[-| ]*.*?[-| ]*END CERTIFICATE[-| ]*)/m).flatten
 
     certs_sha1 = certs.collect { |cert|
@@ -78,32 +74,29 @@ Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::P
 
     # Replace key/cert altogether in one step if they are bundled.
     if resource[:real_content].match(/([-| ]*BEGIN [R|D]SA (?:PRIVATE|PUBLIC) KEY[-| ]*.*?[-| ]*END [R|D]SA (?:PRIVATE|PUBLIC) KEY[-| ]*)/m)
-      transport[wsdl].key_delete(resource[:mode], [resource[:name]])
-      transport[wsdl].certificate_delete(resource[:mode], [resource[:name]])
-      transport[wsdl].key_import_from_pem(resource[:mode], [resource[:name]], [ resource[:real_content] ], true)
-      transport[wsdl].certificate_import_from_pem(resource[:mode], [resource[:name]], [ resource[:real_content] ], true)
+      transport[wsdl].call(:key_delete, message: { mode: resource[:mode], key_ids: { item: resource[:name] }})
+      transport[wsdl].call(:certificate_delete, message: { mode: resource[:mode], cert_ids: { item: resource[:name] }})
+      transport[wsdl].call(:key_import_from_pem, message: { mode: resource[:mode], key_ids: { item: resource[:name] }, pem_data: { item: resource[:real_content] }, overwrite: true})
+      transport[wsdl].call(:certificate_import_from_pem, message: { mode: resource[:mode], cert_ids: { item: resource[:name] }, pem_data: { item: resource[:real_content] }, overwrite: true})
     else
-      transport[wsdl].certificate_import_from_pem(resource[:mode], [resource[:name]], [ resource[:real_content] ], true)
+      # If not bundled.
+      transport[wsdl].call(:certificate_import_from_pem, message: { mode: resource[:mode], cert_ids: { item: resource[:name] }, pem_data: { item: resource[:real_content] }, overwrite: true})
     end
   end
 
   def create
+    content= @resource.should(:content)
     @property_hash[:ensure] = :present
-    self.class.resource_type.validproperties.each do |property|
-      if val = resource.should(property)
-        @property_hash[property] = val
-      end
-    end
-    transport[wsdl].certificate_import_from_pem(resource[:mode], [resource[:name]], [ resource[:real_content] ], true)
   end
 
   def destroy
+    message = { mode: resource[:mode], cert_ids: { item: resource[:name] } }
+    transport[wsdl].call(:certificate_delete, message: message)
     @property_hash[:ensure] = :absent
-    transport[wsdl].certificate_delete(resource[:mode], [ resource[:name] ])
   end
 
   def exists?
-    Puppet.debug("Puppet::Provider::F5_certificate::Ensure for #{@property_hash[:name]}: #{@property_hash[:ensure]}")
     @property_hash[:ensure] == :present
   end
+
 end

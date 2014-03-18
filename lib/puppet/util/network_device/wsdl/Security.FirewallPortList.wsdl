@@ -1,0 +1,544 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Security.FirewallPortList"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.PortRangeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.PortRange[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.PortRange">
+			<xsd:sequence>
+				<xsd:element name="begin" type="xsd:long"/>
+				<xsd:element name="end" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.PortRangeSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.PortRangeSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Security.FirewallPortList.get_listRequest">
+</message>
+<message name="Security.FirewallPortList.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Security.FirewallPortList.createRequest">
+	<part name="lists" type="tns:Common.StringSequence"/>
+	<part name="ports" type="tns:Common.PortRangeSequenceSequence"/>
+</message>
+<message name="Security.FirewallPortList.createResponse">
+</message>
+
+<message name="Security.FirewallPortList.delete_port_listRequest">
+	<part name="lists" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallPortList.delete_port_listResponse">
+</message>
+
+<message name="Security.FirewallPortList.delete_all_port_listsRequest">
+</message>
+<message name="Security.FirewallPortList.delete_all_port_listsResponse">
+</message>
+
+<message name="Security.FirewallPortList.set_descriptionRequest">
+	<part name="lists" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallPortList.set_descriptionResponse">
+</message>
+
+<message name="Security.FirewallPortList.get_descriptionRequest">
+	<part name="lists" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallPortList.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Security.FirewallPortList.get_portRequest">
+	<part name="lists" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallPortList.get_portResponse">
+	<part name="return" type="tns:Common.PortRangeSequenceSequence"/>
+</message>
+
+<message name="Security.FirewallPortList.add_portRequest">
+	<part name="lists" type="tns:Common.StringSequence"/>
+	<part name="ports" type="tns:Common.PortRangeSequenceSequence"/>
+</message>
+<message name="Security.FirewallPortList.add_portResponse">
+</message>
+
+<message name="Security.FirewallPortList.remove_portRequest">
+	<part name="lists" type="tns:Common.StringSequence"/>
+	<part name="ports" type="tns:Common.PortRangeSequenceSequence"/>
+</message>
+<message name="Security.FirewallPortList.remove_portResponse">
+</message>
+
+<message name="Security.FirewallPortList.remove_all_portsRequest">
+	<part name="lists" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.FirewallPortList.remove_all_portsResponse">
+</message>
+
+<message name="Security.FirewallPortList.set_port_descriptionRequest">
+	<part name="lists" type="tns:Common.StringSequence"/>
+	<part name="ports" type="tns:Common.PortRangeSequenceSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.FirewallPortList.set_port_descriptionResponse">
+</message>
+
+<message name="Security.FirewallPortList.get_port_descriptionRequest">
+	<part name="lists" type="tns:Common.StringSequence"/>
+	<part name="ports" type="tns:Common.PortRangeSequenceSequence"/>
+</message>
+<message name="Security.FirewallPortList.get_port_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Security.FirewallPortList.get_versionRequest">
+</message>
+<message name="Security.FirewallPortList.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Security.FirewallPortListPortType">
+	<operation name="get_list">
+       	<documentation>
+ Gets the list of firewall port lists on this device.
+
+        	</documentation>
+		<input message="tns:Security.FirewallPortList.get_listRequest"/>
+		<output message="tns:Security.FirewallPortList.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a firewall port list.
+
+        	</documentation>
+		<input message="tns:Security.FirewallPortList.createRequest"/>
+		<output message="tns:Security.FirewallPortList.createResponse"/>
+	</operation>
+	<operation name="delete_port_list">
+	<documentation>
+ Deletes a set of firewall port lists.
+
+        	</documentation>
+		<input message="tns:Security.FirewallPortList.delete_port_listRequest"/>
+		<output message="tns:Security.FirewallPortList.delete_port_listResponse"/>
+	</operation>
+	<operation name="delete_all_port_lists">
+	<documentation>
+ Deletes all firewall port lists on this device.
+
+        	</documentation>
+		<input message="tns:Security.FirewallPortList.delete_all_port_listsRequest"/>
+		<output message="tns:Security.FirewallPortList.delete_all_port_listsResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of firewall port lists.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Security.FirewallPortList.set_descriptionRequest"/>
+		<output message="tns:Security.FirewallPortList.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of firewall port lists.
+
+        	</documentation>
+		<input message="tns:Security.FirewallPortList.get_descriptionRequest"/>
+		<output message="tns:Security.FirewallPortList.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_port">
+	<documentation>
+ Gets the entries of the specified firewall port lists.
+
+        	</documentation>
+		<input message="tns:Security.FirewallPortList.get_portRequest"/>
+		<output message="tns:Security.FirewallPortList.get_portResponse"/>
+	</operation>
+	<operation name="add_port">
+	<documentation>
+ Adds a set of port ranges to the specified firewall port lists.
+
+        	</documentation>
+		<input message="tns:Security.FirewallPortList.add_portRequest"/>
+		<output message="tns:Security.FirewallPortList.add_portResponse"/>
+	</operation>
+	<operation name="remove_port">
+	<documentation>
+ Removes a set of entries from the specified firewall port lists.
+
+        	</documentation>
+		<input message="tns:Security.FirewallPortList.remove_portRequest"/>
+		<output message="tns:Security.FirewallPortList.remove_portResponse"/>
+	</operation>
+	<operation name="remove_all_ports">
+	<documentation>
+ Removes all entries from the specified firewall port lists.
+
+        	</documentation>
+		<input message="tns:Security.FirewallPortList.remove_all_portsRequest"/>
+		<output message="tns:Security.FirewallPortList.remove_all_portsResponse"/>
+	</operation>
+	<operation name="set_port_description">
+	<documentation>
+ Sets the description for a set of firewall port list entries.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Security.FirewallPortList.set_port_descriptionRequest"/>
+		<output message="tns:Security.FirewallPortList.set_port_descriptionResponse"/>
+	</operation>
+	<operation name="get_port_description">
+	<documentation>
+ Gets the descriptions for a set of firewall port list entries.
+
+        	</documentation>
+		<input message="tns:Security.FirewallPortList.get_port_descriptionRequest"/>
+		<output message="tns:Security.FirewallPortList.get_port_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+ 
+        	</documentation>
+		<input message="tns:Security.FirewallPortList.get_versionRequest"/>
+		<output message="tns:Security.FirewallPortList.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Security.FirewallPortListBinding" type="tns:Security.FirewallPortListPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the list of firewall port lists on this device.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallPortList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a firewall port list.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallPortList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_port_list">
+	<documentation>
+ Deletes a set of firewall port lists.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallPortList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_port_lists">
+	<documentation>
+ Deletes all firewall port lists on this device.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallPortList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of firewall port lists.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallPortList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of firewall port lists.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallPortList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_port">
+	<documentation>
+ Gets the entries of the specified firewall port lists.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallPortList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_port">
+	<documentation>
+ Adds a set of port ranges to the specified firewall port lists.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallPortList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_port">
+	<documentation>
+ Removes a set of entries from the specified firewall port lists.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallPortList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_ports">
+	<documentation>
+ Removes all entries from the specified firewall port lists.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallPortList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_port_description">
+	<documentation>
+ Sets the description for a set of firewall port list entries.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallPortList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_port_description">
+	<documentation>
+ Gets the descriptions for a set of firewall port list entries.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallPortList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/FirewallPortList"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/FirewallPortList"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Security.FirewallPortList">
+	<documentation>
+ The FirewallPortList interface enables you to create and modify
+ port lists on which to perform firewall security actions.
+
+        	</documentation>
+	<port name="Security.FirewallPortListPort" binding="tns:Security.FirewallPortListBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

@@ -1,0 +1,469 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Log.DestinationLocalSyslog"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Log.SyslogLevel">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LOG_LEVEL_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>LOG_LEVEL_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_LEVEL_EMERG">
+					<xsd:annotation>
+						<xsd:documentation>LOG_LEVEL_EMERG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_LEVEL_ALERT">
+					<xsd:annotation>
+						<xsd:documentation>LOG_LEVEL_ALERT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_LEVEL_CRIT">
+					<xsd:annotation>
+						<xsd:documentation>LOG_LEVEL_CRIT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_LEVEL_ERR">
+					<xsd:annotation>
+						<xsd:documentation>LOG_LEVEL_ERR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_LEVEL_WARNING">
+					<xsd:annotation>
+						<xsd:documentation>LOG_LEVEL_WARNING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_LEVEL_NOTICE">
+					<xsd:annotation>
+						<xsd:documentation>LOG_LEVEL_NOTICE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_LEVEL_INFO">
+					<xsd:annotation>
+						<xsd:documentation>LOG_LEVEL_INFO</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_LEVEL_DEBUG">
+					<xsd:annotation>
+						<xsd:documentation>LOG_LEVEL_DEBUG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Log.SyslogLevelSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Log.SyslogLevel[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Log.SyslogFacility">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LOG_FACILITY_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>LOG_FACILITY_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_FACILITY_LOCAL0">
+					<xsd:annotation>
+						<xsd:documentation>LOG_FACILITY_LOCAL0</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_FACILITY_LOCAL1">
+					<xsd:annotation>
+						<xsd:documentation>LOG_FACILITY_LOCAL1</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_FACILITY_LOCAL2">
+					<xsd:annotation>
+						<xsd:documentation>LOG_FACILITY_LOCAL2</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_FACILITY_LOCAL3">
+					<xsd:annotation>
+						<xsd:documentation>LOG_FACILITY_LOCAL3</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_FACILITY_LOCAL4">
+					<xsd:annotation>
+						<xsd:documentation>LOG_FACILITY_LOCAL4</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_FACILITY_LOCAL5">
+					<xsd:annotation>
+						<xsd:documentation>LOG_FACILITY_LOCAL5</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_FACILITY_LOCAL6">
+					<xsd:annotation>
+						<xsd:documentation>LOG_FACILITY_LOCAL6</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_FACILITY_LOCAL7">
+					<xsd:annotation>
+						<xsd:documentation>LOG_FACILITY_LOCAL7</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Log.SyslogFacilitySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Log.SyslogFacility[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Log.DestinationLocalSyslog.get_listRequest">
+</message>
+<message name="Log.DestinationLocalSyslog.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Log.DestinationLocalSyslog.set_default_facilityRequest">
+	<part name="destinations" type="tns:Common.StringSequence"/>
+	<part name="facilities" type="tns:Log.SyslogFacilitySequence"/>
+</message>
+<message name="Log.DestinationLocalSyslog.set_default_facilityResponse">
+</message>
+
+<message name="Log.DestinationLocalSyslog.get_default_facilityRequest">
+	<part name="destinations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.DestinationLocalSyslog.get_default_facilityResponse">
+	<part name="return" type="tns:Log.SyslogFacilitySequence"/>
+</message>
+
+<message name="Log.DestinationLocalSyslog.set_default_severityRequest">
+	<part name="destinations" type="tns:Common.StringSequence"/>
+	<part name="levels" type="tns:Log.SyslogLevelSequence"/>
+</message>
+<message name="Log.DestinationLocalSyslog.set_default_severityResponse">
+</message>
+
+<message name="Log.DestinationLocalSyslog.get_default_severityRequest">
+	<part name="destinations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.DestinationLocalSyslog.get_default_severityResponse">
+	<part name="return" type="tns:Log.SyslogLevelSequence"/>
+</message>
+
+<message name="Log.DestinationLocalSyslog.set_descriptionRequest">
+	<part name="destinations" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.DestinationLocalSyslog.set_descriptionResponse">
+</message>
+
+<message name="Log.DestinationLocalSyslog.get_descriptionRequest">
+	<part name="destinations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.DestinationLocalSyslog.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Log.DestinationLocalSyslog.get_versionRequest">
+</message>
+<message name="Log.DestinationLocalSyslog.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Log.DestinationLocalSyslogPortType">
+	<operation name="get_list">
+      	<documentation>
+ Gets the name of the local syslog destination. It is "local-syslog"
+ by default.
+
+        	</documentation>
+		<input message="tns:Log.DestinationLocalSyslog.get_listRequest"/>
+		<output message="tns:Log.DestinationLocalSyslog.get_listResponse"/>
+	</operation>
+	<operation name="set_default_facility">
+	<documentation>
+ Sets the default facility for the specified local syslog
+ destination. Syslog messages that come in without a 
+ facility specified are given the default facility. See
+ Log::SyslogFacility for more details.
+
+        	</documentation>
+		<input message="tns:Log.DestinationLocalSyslog.set_default_facilityRequest"/>
+		<output message="tns:Log.DestinationLocalSyslog.set_default_facilityResponse"/>
+	</operation>
+	<operation name="get_default_facility">
+	<documentation>
+ Gets the default facility for the specified local syslog
+ destination.
+
+        	</documentation>
+		<input message="tns:Log.DestinationLocalSyslog.get_default_facilityRequest"/>
+		<output message="tns:Log.DestinationLocalSyslog.get_default_facilityResponse"/>
+	</operation>
+	<operation name="set_default_severity">
+	<documentation>
+ Sets the default severity for messages sent to the local syslog
+ destinations. The default severity is the severity given to
+ syslog messages without a severity given.
+
+        	</documentation>
+		<input message="tns:Log.DestinationLocalSyslog.set_default_severityRequest"/>
+		<output message="tns:Log.DestinationLocalSyslog.set_default_severityResponse"/>
+	</operation>
+	<operation name="get_default_severity">
+	<documentation>
+ Gets the default severity for the local syslog destination.
+
+        	</documentation>
+		<input message="tns:Log.DestinationLocalSyslog.get_default_severityRequest"/>
+		<output message="tns:Log.DestinationLocalSyslog.get_default_severityResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for the local syslog destination.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Log.DestinationLocalSyslog.set_descriptionRequest"/>
+		<output message="tns:Log.DestinationLocalSyslog.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the specified local syslog destination.
+
+        	</documentation>
+		<input message="tns:Log.DestinationLocalSyslog.get_descriptionRequest"/>
+		<output message="tns:Log.DestinationLocalSyslog.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Log.DestinationLocalSyslog.get_versionRequest"/>
+		<output message="tns:Log.DestinationLocalSyslog.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Log.DestinationLocalSyslogBinding" type="tns:Log.DestinationLocalSyslogPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the name of the local syslog destination. It is "local-syslog"
+ by default.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationLocalSyslog"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationLocalSyslog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationLocalSyslog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_default_facility">
+	<documentation>
+ Sets the default facility for the specified local syslog
+ destination. Syslog messages that come in without a 
+ facility specified are given the default facility. See
+ Log::SyslogFacility for more details.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationLocalSyslog"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationLocalSyslog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationLocalSyslog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_default_facility">
+	<documentation>
+ Gets the default facility for the specified local syslog
+ destination.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationLocalSyslog"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationLocalSyslog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationLocalSyslog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_default_severity">
+	<documentation>
+ Sets the default severity for messages sent to the local syslog
+ destinations. The default severity is the severity given to
+ syslog messages without a severity given.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationLocalSyslog"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationLocalSyslog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationLocalSyslog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_default_severity">
+	<documentation>
+ Gets the default severity for the local syslog destination.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationLocalSyslog"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationLocalSyslog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationLocalSyslog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for the local syslog destination.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationLocalSyslog"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationLocalSyslog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationLocalSyslog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the specified local syslog destination.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationLocalSyslog"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationLocalSyslog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationLocalSyslog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationLocalSyslog"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationLocalSyslog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationLocalSyslog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Log.DestinationLocalSyslog">
+	<documentation>
+ The DestinationLocalSyslog interface enables you to modify the local
+ syslog destination. This destination will format messages to be logged
+ on the system. There will be only one local syslog destination, and it
+ cannot be created or deleted. The local syslog destination is named
+ "local-syslog". Supply this key to the methods in the interface.
+
+        	</documentation>
+	<port name="Log.DestinationLocalSyslogPort" binding="tns:Log.DestinationLocalSyslogBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

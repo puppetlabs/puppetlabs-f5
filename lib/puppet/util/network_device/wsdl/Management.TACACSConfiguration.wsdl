@@ -1,0 +1,943 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.TACACSConfiguration"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.TACACSConfiguration.get_listRequest">
+</message>
+<message name="Management.TACACSConfiguration.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.TACACSConfiguration.createRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="secrets" type="tns:Common.StringSequence"/>
+	<part name="service_names" type="tns:Common.StringSequence"/>
+	<part name="protocol_names" type="tns:Common.StringSequence"/>
+	<part name="servers" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.TACACSConfiguration.createResponse">
+</message>
+
+<message name="Management.TACACSConfiguration.delete_configurationRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TACACSConfiguration.delete_configurationResponse">
+</message>
+
+<message name="Management.TACACSConfiguration.delete_all_configurationsRequest">
+</message>
+<message name="Management.TACACSConfiguration.delete_all_configurationsResponse">
+</message>
+
+<message name="Management.TACACSConfiguration.set_debug_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.TACACSConfiguration.set_debug_stateResponse">
+</message>
+
+<message name="Management.TACACSConfiguration.get_debug_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TACACSConfiguration.get_debug_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.TACACSConfiguration.set_encryption_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.TACACSConfiguration.set_encryption_stateResponse">
+</message>
+
+<message name="Management.TACACSConfiguration.get_encryption_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TACACSConfiguration.get_encryption_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.TACACSConfiguration.set_secretRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="secrets" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TACACSConfiguration.set_secretResponse">
+</message>
+
+<message name="Management.TACACSConfiguration.get_secretRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TACACSConfiguration.get_secretResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.TACACSConfiguration.set_first_hit_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.TACACSConfiguration.set_first_hit_stateResponse">
+</message>
+
+<message name="Management.TACACSConfiguration.get_first_hit_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TACACSConfiguration.get_first_hit_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.TACACSConfiguration.set_accounting_to_all_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.TACACSConfiguration.set_accounting_to_all_stateResponse">
+</message>
+
+<message name="Management.TACACSConfiguration.get_accounting_to_all_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TACACSConfiguration.get_accounting_to_all_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.TACACSConfiguration.set_service_nameRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="service_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TACACSConfiguration.set_service_nameResponse">
+</message>
+
+<message name="Management.TACACSConfiguration.get_service_nameRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TACACSConfiguration.get_service_nameResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.TACACSConfiguration.set_protocol_nameRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="protocol_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TACACSConfiguration.set_protocol_nameResponse">
+</message>
+
+<message name="Management.TACACSConfiguration.get_protocol_nameRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TACACSConfiguration.get_protocol_nameResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.TACACSConfiguration.get_serverRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TACACSConfiguration.get_serverResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Management.TACACSConfiguration.add_serverRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="servers" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.TACACSConfiguration.add_serverResponse">
+</message>
+
+<message name="Management.TACACSConfiguration.remove_serverRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="servers" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.TACACSConfiguration.remove_serverResponse">
+</message>
+
+<message name="Management.TACACSConfiguration.set_descriptionRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TACACSConfiguration.set_descriptionResponse">
+</message>
+
+<message name="Management.TACACSConfiguration.get_descriptionRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TACACSConfiguration.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.TACACSConfiguration.get_versionRequest">
+</message>
+<message name="Management.TACACSConfiguration.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.TACACSConfigurationPortType">
+	<operation name="get_list">
+  	<documentation>
+ Gets a list of all TACACS configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.get_listRequest"/>
+		<output message="tns:Management.TACACSConfiguration.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates the specified TACACS configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.createRequest"/>
+		<output message="tns:Management.TACACSConfiguration.createResponse"/>
+	</operation>
+	<operation name="delete_configuration">
+	<documentation>
+ Deletes the specified TACACS configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.delete_configurationRequest"/>
+		<output message="tns:Management.TACACSConfiguration.delete_configurationResponse"/>
+	</operation>
+	<operation name="delete_all_configurations">
+	<documentation>
+ Deletes all TACACS configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.delete_all_configurationsRequest"/>
+		<output message="tns:Management.TACACSConfiguration.delete_all_configurationsResponse"/>
+	</operation>
+	<operation name="set_debug_state">
+	<documentation>
+ Sets the states indicating whether syslog debugging is enabled/disabled.
+ 
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.set_debug_stateRequest"/>
+		<output message="tns:Management.TACACSConfiguration.set_debug_stateResponse"/>
+	</operation>
+	<operation name="get_debug_state">
+	<documentation>
+ Gets the states indicating whether syslog debugging is enabled/disabled.
+ 
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.get_debug_stateRequest"/>
+		<output message="tns:Management.TACACSConfiguration.get_debug_stateResponse"/>
+	</operation>
+	<operation name="set_encryption_state">
+	<documentation>
+ Sets the states indicating whether encryption on TACACS+ packets is enabled/disabled.
+ 
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.set_encryption_stateRequest"/>
+		<output message="tns:Management.TACACSConfiguration.set_encryption_stateResponse"/>
+	</operation>
+	<operation name="get_encryption_state">
+	<documentation>
+ Gets the states indicating whether encryption on TACACS+ packets is enabled/disabled.
+ 
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.get_encryption_stateRequest"/>
+		<output message="tns:Management.TACACSConfiguration.get_encryption_stateResponse"/>
+	</operation>
+	<operation name="set_secret">
+	<documentation>
+ Sets the secret keys used to encrypt/decrypt packets sent/received from the server.
+ 
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.set_secretRequest"/>
+		<output message="tns:Management.TACACSConfiguration.set_secretResponse"/>
+	</operation>
+	<operation name="get_secret">
+	<documentation>
+ Gets the secret keys used to encrypt/decrypt packets sent/received from the server.
+ 
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.get_secretRequest"/>
+		<output message="tns:Management.TACACSConfiguration.get_secretResponse"/>
+	</operation>
+	<operation name="set_first_hit_state">
+	<documentation>
+ Sets the states such that if enabled and if multiple servers are defined, try to authenticate the 
+ user on all servers until the first authentication succeeds, or until all servers have been queried.  
+ The first success response results in the auth succeeding.
+ 
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.set_first_hit_stateRequest"/>
+		<output message="tns:Management.TACACSConfiguration.set_first_hit_stateResponse"/>
+	</operation>
+	<operation name="get_first_hit_state">
+	<documentation>
+ Gets the states such that if enabled and if multiple servers are defined, try to authenticate the 
+ user on all servers until the first authentication succeeds, or until all servers have been queried.  
+ The first success response results in the auth succeeding.
+ 
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.get_first_hit_stateRequest"/>
+		<output message="tns:Management.TACACSConfiguration.get_first_hit_stateResponse"/>
+	</operation>
+	<operation name="set_accounting_to_all_state">
+	<documentation>
+ Sets the states such that if enabled and if multiple servers are defined, send accounting 
+ start/stop packets to all servers (if session accounting has been enabled in the PAM service 
+ configuration).
+ 
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.set_accounting_to_all_stateRequest"/>
+		<output message="tns:Management.TACACSConfiguration.set_accounting_to_all_stateResponse"/>
+	</operation>
+	<operation name="get_accounting_to_all_state">
+	<documentation>
+ Gets the states such that if enabled and if multiple servers are defined, send accounting 
+ start/stop packets to all servers (if session accounting has been enabled in the PAM service 
+ configuration).
+ 
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.get_accounting_to_all_stateRequest"/>
+		<output message="tns:Management.TACACSConfiguration.get_accounting_to_all_stateResponse"/>
+	</operation>
+	<operation name="set_service_name">
+	<documentation>
+ Sets the names of the TACACS+ servers' listening services used by the configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.set_service_nameRequest"/>
+		<output message="tns:Management.TACACSConfiguration.set_service_nameResponse"/>
+	</operation>
+	<operation name="get_service_name">
+	<documentation>
+ Gets the names of the TACACS+ servers' listening services used by the configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.get_service_nameRequest"/>
+		<output message="tns:Management.TACACSConfiguration.get_service_nameResponse"/>
+	</operation>
+	<operation name="set_protocol_name">
+	<documentation>
+ Sets the names of the TACACS+ servers' listening protocols used by the configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.set_protocol_nameRequest"/>
+		<output message="tns:Management.TACACSConfiguration.set_protocol_nameResponse"/>
+	</operation>
+	<operation name="get_protocol_name">
+	<documentation>
+ Gets the names of the TACACS+ servers' listening protocols used by the configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.get_protocol_nameRequest"/>
+		<output message="tns:Management.TACACSConfiguration.get_protocol_nameResponse"/>
+	</operation>
+	<operation name="get_server">
+	<documentation>
+ Gets the lists of servers the specified TACACS configurations are associated with.
+
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.get_serverRequest"/>
+		<output message="tns:Management.TACACSConfiguration.get_serverResponse"/>
+	</operation>
+	<operation name="add_server">
+	<documentation>
+ Adds/associates servers to the specified TACACS configurations.
+
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.add_serverRequest"/>
+		<output message="tns:Management.TACACSConfiguration.add_serverResponse"/>
+	</operation>
+	<operation name="remove_server">
+	<documentation>
+ Removes servers from the specified TACACS configurations.
+
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.remove_serverRequest"/>
+		<output message="tns:Management.TACACSConfiguration.remove_serverResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of TACACS configurations.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.set_descriptionRequest"/>
+		<output message="tns:Management.TACACSConfiguration.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of TACACS configurations.
+
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.get_descriptionRequest"/>
+		<output message="tns:Management.TACACSConfiguration.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Management.TACACSConfiguration.get_versionRequest"/>
+		<output message="tns:Management.TACACSConfiguration.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.TACACSConfigurationBinding" type="tns:Management.TACACSConfigurationPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all TACACS configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates the specified TACACS configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_configuration">
+	<documentation>
+ Deletes the specified TACACS configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_configurations">
+	<documentation>
+ Deletes all TACACS configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_debug_state">
+	<documentation>
+ Sets the states indicating whether syslog debugging is enabled/disabled.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_debug_state">
+	<documentation>
+ Gets the states indicating whether syslog debugging is enabled/disabled.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_encryption_state">
+	<documentation>
+ Sets the states indicating whether encryption on TACACS+ packets is enabled/disabled.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_encryption_state">
+	<documentation>
+ Gets the states indicating whether encryption on TACACS+ packets is enabled/disabled.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_secret">
+	<documentation>
+ Sets the secret keys used to encrypt/decrypt packets sent/received from the server.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_secret">
+	<documentation>
+ Gets the secret keys used to encrypt/decrypt packets sent/received from the server.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_first_hit_state">
+	<documentation>
+ Sets the states such that if enabled and if multiple servers are defined, try to authenticate the 
+ user on all servers until the first authentication succeeds, or until all servers have been queried.  
+ The first success response results in the auth succeeding.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_first_hit_state">
+	<documentation>
+ Gets the states such that if enabled and if multiple servers are defined, try to authenticate the 
+ user on all servers until the first authentication succeeds, or until all servers have been queried.  
+ The first success response results in the auth succeeding.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_accounting_to_all_state">
+	<documentation>
+ Sets the states such that if enabled and if multiple servers are defined, send accounting 
+ start/stop packets to all servers (if session accounting has been enabled in the PAM service 
+ configuration).
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_accounting_to_all_state">
+	<documentation>
+ Gets the states such that if enabled and if multiple servers are defined, send accounting 
+ start/stop packets to all servers (if session accounting has been enabled in the PAM service 
+ configuration).
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_service_name">
+	<documentation>
+ Sets the names of the TACACS+ servers' listening services used by the configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_service_name">
+	<documentation>
+ Gets the names of the TACACS+ servers' listening services used by the configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_protocol_name">
+	<documentation>
+ Sets the names of the TACACS+ servers' listening protocols used by the configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_protocol_name">
+	<documentation>
+ Gets the names of the TACACS+ servers' listening protocols used by the configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_server">
+	<documentation>
+ Gets the lists of servers the specified TACACS configurations are associated with.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_server">
+	<documentation>
+ Adds/associates servers to the specified TACACS configurations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_server">
+	<documentation>
+ Removes servers from the specified TACACS configurations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of TACACS configurations.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of TACACS configurations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TACACSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TACACSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.TACACSConfiguration">
+	<documentation>
+ The TACACSConfiguration interface enables you to manage TACACS PAM configuration.
+
+        	</documentation>
+	<port name="Management.TACACSConfigurationPort" binding="tns:Management.TACACSConfigurationBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

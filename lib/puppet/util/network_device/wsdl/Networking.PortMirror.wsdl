@@ -1,0 +1,373 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.PortMirror"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.PortMirror.get_listRequest">
+</message>
+<message name="Networking.PortMirror.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.PortMirror.createRequest">
+	<part name="pmirrors" type="tns:Common.StringSequence"/>
+	<part name="interfaces" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.PortMirror.createResponse">
+</message>
+
+<message name="Networking.PortMirror.get_interfaceRequest">
+	<part name="pmirrors" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.PortMirror.get_interfaceResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Networking.PortMirror.add_interfaceRequest">
+	<part name="pmirrors" type="tns:Common.StringSequence"/>
+	<part name="interfaces" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.PortMirror.add_interfaceResponse">
+</message>
+
+<message name="Networking.PortMirror.remove_interfaceRequest">
+	<part name="pmirrors" type="tns:Common.StringSequence"/>
+	<part name="interfaces" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.PortMirror.remove_interfaceResponse">
+</message>
+
+<message name="Networking.PortMirror.remove_all_interfacesRequest">
+	<part name="pmirrors" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.PortMirror.remove_all_interfacesResponse">
+</message>
+
+<message name="Networking.PortMirror.delete_port_mirrorRequest">
+	<part name="pmirrors" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.PortMirror.delete_port_mirrorResponse">
+</message>
+
+<message name="Networking.PortMirror.delete_all_port_mirrorsRequest">
+</message>
+<message name="Networking.PortMirror.delete_all_port_mirrorsResponse">
+</message>
+
+<message name="Networking.PortMirror.get_versionRequest">
+</message>
+<message name="Networking.PortMirror.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.PortMirrorPortType">
+	<operation name="get_list">
+   	<documentation>
+ Gets a list of all port mirrors (mirrored-to interfaces) on this device.
+ 
+        	</documentation>
+		<input message="tns:Networking.PortMirror.get_listRequest"/>
+		<output message="tns:Networking.PortMirror.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates the specified port mirrors (mirrored-to interfaces) from the list of specified interfaces (mirrored-from interfaces).
+ 
+        	</documentation>
+		<input message="tns:Networking.PortMirror.createRequest"/>
+		<output message="tns:Networking.PortMirror.createResponse"/>
+	</operation>
+	<operation name="get_interface">
+	<documentation>
+ Gets the lists of mirrored-from interfaces associated with the specified port mirrors.
+ 
+        	</documentation>
+		<input message="tns:Networking.PortMirror.get_interfaceRequest"/>
+		<output message="tns:Networking.PortMirror.get_interfaceResponse"/>
+	</operation>
+	<operation name="add_interface">
+	<documentation>
+ Adds the lists of mirrored-from interfaces to the specified port mirrors (mirrored-to interfaces).
+ 
+        	</documentation>
+		<input message="tns:Networking.PortMirror.add_interfaceRequest"/>
+		<output message="tns:Networking.PortMirror.add_interfaceResponse"/>
+	</operation>
+	<operation name="remove_interface">
+	<documentation>
+ Removes the lists of mirrored-from interfaces from the specified port mirrors (mirrored-to interfaces).
+ 
+        	</documentation>
+		<input message="tns:Networking.PortMirror.remove_interfaceRequest"/>
+		<output message="tns:Networking.PortMirror.remove_interfaceResponse"/>
+	</operation>
+	<operation name="remove_all_interfaces">
+	<documentation>
+ Removes all mirrored-from interfaces from the specified port mirrors (mirrored-to interfaces).
+ 
+        	</documentation>
+		<input message="tns:Networking.PortMirror.remove_all_interfacesRequest"/>
+		<output message="tns:Networking.PortMirror.remove_all_interfacesResponse"/>
+	</operation>
+	<operation name="delete_port_mirror">
+	<documentation>
+ Deletes the specified port mirrors (mirrored-to interfaces).
+ 
+        	</documentation>
+		<input message="tns:Networking.PortMirror.delete_port_mirrorRequest"/>
+		<output message="tns:Networking.PortMirror.delete_port_mirrorResponse"/>
+	</operation>
+	<operation name="delete_all_port_mirrors">
+	<documentation>
+ Deletes all port mirrors (mirrored-to interfaces).
+ 
+        	</documentation>
+		<input message="tns:Networking.PortMirror.delete_all_port_mirrorsRequest"/>
+		<output message="tns:Networking.PortMirror.delete_all_port_mirrorsResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.PortMirror.get_versionRequest"/>
+		<output message="tns:Networking.PortMirror.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.PortMirrorBinding" type="tns:Networking.PortMirrorPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all port mirrors (mirrored-to interfaces) on this device.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PortMirror"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PortMirror"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PortMirror"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates the specified port mirrors (mirrored-to interfaces) from the list of specified interfaces (mirrored-from interfaces).
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PortMirror"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PortMirror"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PortMirror"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_interface">
+	<documentation>
+ Gets the lists of mirrored-from interfaces associated with the specified port mirrors.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PortMirror"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PortMirror"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PortMirror"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_interface">
+	<documentation>
+ Adds the lists of mirrored-from interfaces to the specified port mirrors (mirrored-to interfaces).
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PortMirror"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PortMirror"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PortMirror"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_interface">
+	<documentation>
+ Removes the lists of mirrored-from interfaces from the specified port mirrors (mirrored-to interfaces).
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PortMirror"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PortMirror"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PortMirror"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_interfaces">
+	<documentation>
+ Removes all mirrored-from interfaces from the specified port mirrors (mirrored-to interfaces).
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PortMirror"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PortMirror"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PortMirror"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_port_mirror">
+	<documentation>
+ Deletes the specified port mirrors (mirrored-to interfaces).
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PortMirror"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PortMirror"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PortMirror"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_port_mirrors">
+	<documentation>
+ Deletes all port mirrors (mirrored-to interfaces).
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PortMirror"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PortMirror"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PortMirror"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/PortMirror"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PortMirror"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/PortMirror"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.PortMirror">
+	<documentation>
+ The PortMirror interface enables you to work with the definitions and attributes of port mirroring.  
+
+        	</documentation>
+	<port name="Networking.PortMirrorPort" binding="tns:Networking.PortMirrorBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

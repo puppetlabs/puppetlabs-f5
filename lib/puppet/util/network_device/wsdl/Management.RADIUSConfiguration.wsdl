@@ -1,0 +1,951 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.RADIUSConfiguration"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Management.RadiusServiceTypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.RadiusServiceType[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.RadiusServiceType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="AUTH_RADIUS_SERVICE_TYPE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>AUTH_RADIUS_SERVICE_TYPE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AUTH_RADIUS_SERVICE_TYPE_DEFAULT">
+					<xsd:annotation>
+						<xsd:documentation>AUTH_RADIUS_SERVICE_TYPE_DEFAULT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AUTH_RADIUS_SERVICE_TYPE_LOGIN">
+					<xsd:annotation>
+						<xsd:documentation>AUTH_RADIUS_SERVICE_TYPE_LOGIN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AUTH_RADIUS_SERVICE_TYPE_FRAMED">
+					<xsd:annotation>
+						<xsd:documentation>AUTH_RADIUS_SERVICE_TYPE_FRAMED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AUTH_RADIUS_SERVICE_TYPE_CALLBACK_LOGIN">
+					<xsd:annotation>
+						<xsd:documentation>AUTH_RADIUS_SERVICE_TYPE_CALLBACK_LOGIN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AUTH_RADIUS_SERVICE_TYPE_CALLBACK_FRAMED">
+					<xsd:annotation>
+						<xsd:documentation>AUTH_RADIUS_SERVICE_TYPE_CALLBACK_FRAMED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AUTH_RADIUS_SERVICE_TYPE_OUTBOUND">
+					<xsd:annotation>
+						<xsd:documentation>AUTH_RADIUS_SERVICE_TYPE_OUTBOUND</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AUTH_RADIUS_SERVICE_TYPE_ADMINISTRATIVE">
+					<xsd:annotation>
+						<xsd:documentation>AUTH_RADIUS_SERVICE_TYPE_ADMINISTRATIVE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AUTH_RADIUS_SERVICE_TYPE_NAS_PROMPT">
+					<xsd:annotation>
+						<xsd:documentation>AUTH_RADIUS_SERVICE_TYPE_NAS_PROMPT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AUTH_RADIUS_SERVICE_TYPE_AUTHENTICATE_ONLY">
+					<xsd:annotation>
+						<xsd:documentation>AUTH_RADIUS_SERVICE_TYPE_AUTHENTICATE_ONLY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AUTH_RADIUS_SERVICE_TYPE_CALLBACK_NAS_PROMPT">
+					<xsd:annotation>
+						<xsd:documentation>AUTH_RADIUS_SERVICE_TYPE_CALLBACK_NAS_PROMPT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AUTH_RADIUS_SERVICE_TYPE_CALL_CHECK">
+					<xsd:annotation>
+						<xsd:documentation>AUTH_RADIUS_SERVICE_TYPE_CALL_CHECK</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AUTH_RADIUS_SERVICE_TYPE_CALLBACK_ADMINISTRATIVE">
+					<xsd:annotation>
+						<xsd:documentation>AUTH_RADIUS_SERVICE_TYPE_CALLBACK_ADMINISTRATIVE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.RADIUSConfiguration.get_listRequest">
+</message>
+<message name="Management.RADIUSConfiguration.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.RADIUSConfiguration.createRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="servers" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.RADIUSConfiguration.createResponse">
+</message>
+
+<message name="Management.RADIUSConfiguration.create_default_authentication_radius_configurationRequest">
+	<part name="servers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.RADIUSConfiguration.create_default_authentication_radius_configurationResponse">
+</message>
+
+<message name="Management.RADIUSConfiguration.delete_configurationRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.RADIUSConfiguration.delete_configurationResponse">
+</message>
+
+<message name="Management.RADIUSConfiguration.delete_all_configurationsRequest">
+</message>
+<message name="Management.RADIUSConfiguration.delete_all_configurationsResponse">
+</message>
+
+<message name="Management.RADIUSConfiguration.set_debug_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.RADIUSConfiguration.set_debug_stateResponse">
+</message>
+
+<message name="Management.RADIUSConfiguration.get_debug_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.RADIUSConfiguration.get_debug_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.RADIUSConfiguration.set_accounting_validation_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.RADIUSConfiguration.set_accounting_validation_stateResponse">
+</message>
+
+<message name="Management.RADIUSConfiguration.get_accounting_validation_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.RADIUSConfiguration.get_accounting_validation_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.RADIUSConfiguration.set_retryRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="retries" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Management.RADIUSConfiguration.set_retryResponse">
+</message>
+
+<message name="Management.RADIUSConfiguration.get_retryRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.RADIUSConfiguration.get_retryResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Management.RADIUSConfiguration.set_service_typeRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="service_types" type="tns:Management.RadiusServiceTypeSequence"/>
+</message>
+<message name="Management.RADIUSConfiguration.set_service_typeResponse">
+</message>
+
+<message name="Management.RADIUSConfiguration.get_service_typeRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.RADIUSConfiguration.get_service_typeResponse">
+	<part name="return" type="tns:Management.RadiusServiceTypeSequence"/>
+</message>
+
+<message name="Management.RADIUSConfiguration.set_client_idRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="client_ids" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.RADIUSConfiguration.set_client_idResponse">
+</message>
+
+<message name="Management.RADIUSConfiguration.get_client_idRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.RADIUSConfiguration.get_client_idResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.RADIUSConfiguration.get_serverRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.RADIUSConfiguration.get_serverResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Management.RADIUSConfiguration.add_serverRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="servers" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.RADIUSConfiguration.add_serverResponse">
+</message>
+
+<message name="Management.RADIUSConfiguration.remove_serverRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="servers" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.RADIUSConfiguration.remove_serverResponse">
+</message>
+
+<message name="Management.RADIUSConfiguration.remove_all_serversRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.RADIUSConfiguration.remove_all_serversResponse">
+</message>
+
+<message name="Management.RADIUSConfiguration.set_descriptionRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.RADIUSConfiguration.set_descriptionResponse">
+</message>
+
+<message name="Management.RADIUSConfiguration.get_descriptionRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.RADIUSConfiguration.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.RADIUSConfiguration.get_versionRequest">
+</message>
+<message name="Management.RADIUSConfiguration.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.RADIUSConfigurationPortType">
+	<operation name="get_list">
+  	<documentation>
+ Gets a list of all RADIUS configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.RADIUSConfiguration.get_listRequest"/>
+		<output message="tns:Management.RADIUSConfiguration.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates the specified RADIUS configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.RADIUSConfiguration.createRequest"/>
+		<output message="tns:Management.RADIUSConfiguration.createResponse"/>
+	</operation>
+	<operation name="create_default_authentication_radius_configuration">
+	<documentation>
+ Creates the default authentication RADIUS configuration.
+
+        	</documentation>
+		<input message="tns:Management.RADIUSConfiguration.create_default_authentication_radius_configurationRequest"/>
+		<output message="tns:Management.RADIUSConfiguration.create_default_authentication_radius_configurationResponse"/>
+	</operation>
+	<operation name="delete_configuration">
+	<documentation>
+ Deletes the specified RADIUS configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.RADIUSConfiguration.delete_configurationRequest"/>
+		<output message="tns:Management.RADIUSConfiguration.delete_configurationResponse"/>
+	</operation>
+	<operation name="delete_all_configurations">
+	<documentation>
+ Deletes all RADIUS configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.RADIUSConfiguration.delete_all_configurationsRequest"/>
+		<output message="tns:Management.RADIUSConfiguration.delete_all_configurationsResponse"/>
+	</operation>
+	<operation name="set_debug_state">
+	<documentation>
+ Sets the states indicating whether syslog debugging is enabled/disabled.
+ 
+        	</documentation>
+		<input message="tns:Management.RADIUSConfiguration.set_debug_stateRequest"/>
+		<output message="tns:Management.RADIUSConfiguration.set_debug_stateResponse"/>
+	</operation>
+	<operation name="get_debug_state">
+	<documentation>
+ Gets the states indicating whether syslog debugging is enabled/disabled.
+ 
+        	</documentation>
+		<input message="tns:Management.RADIUSConfiguration.get_debug_stateRequest"/>
+		<output message="tns:Management.RADIUSConfiguration.get_debug_stateResponse"/>
+	</operation>
+	<operation name="set_accounting_validation_state">
+	<documentation>
+ Sets the states indicating whether to enable/disable validation of the accounting response vector.
+ This option should only be set necessary for older servers, i.e. Livingston 1.16.
+ 
+        	</documentation>
+		<input message="tns:Management.RADIUSConfiguration.set_accounting_validation_stateRequest"/>
+		<output message="tns:Management.RADIUSConfiguration.set_accounting_validation_stateResponse"/>
+	</operation>
+	<operation name="get_accounting_validation_state">
+	<documentation>
+ Gets the states indicating whether to enable/disable validation of the accounting response vector.
+ This option should only be set necessary for older servers, i.e. Livingston 1.16.
+ 
+        	</documentation>
+		<input message="tns:Management.RADIUSConfiguration.get_accounting_validation_stateRequest"/>
+		<output message="tns:Management.RADIUSConfiguration.get_accounting_validation_stateResponse"/>
+	</operation>
+	<operation name="set_retry">
+	<documentation>
+ Sets the number of attempts to communicate with the server before concluding that
+ the server has failed.
+ 
+        	</documentation>
+		<input message="tns:Management.RADIUSConfiguration.set_retryRequest"/>
+		<output message="tns:Management.RADIUSConfiguration.set_retryResponse"/>
+	</operation>
+	<operation name="get_retry">
+	<documentation>
+ Gets the number of attempts to communicate with the server before concluding that
+ the server has failed.
+ 
+        	</documentation>
+		<input message="tns:Management.RADIUSConfiguration.get_retryRequest"/>
+		<output message="tns:Management.RADIUSConfiguration.get_retryResponse"/>
+	</operation>
+	<operation name="set_service_type">
+	<documentation>
+ Sets the service-type attribute in the RADIUS request that is made
+ to the server.  
+
+        	</documentation>
+		<input message="tns:Management.RADIUSConfiguration.set_service_typeRequest"/>
+		<output message="tns:Management.RADIUSConfiguration.set_service_typeResponse"/>
+	</operation>
+	<operation name="get_service_type">
+	<documentation>
+ Gets the service-type attribute used in the RADIUS request that is
+ made when communicating with a RADIUS server.
+
+        	</documentation>
+		<input message="tns:Management.RADIUSConfiguration.get_service_typeRequest"/>
+		<output message="tns:Management.RADIUSConfiguration.get_service_typeResponse"/>
+	</operation>
+	<operation name="set_client_id">
+	<documentation>
+ Sets the NAS-Identifier RADIUS attribute with client_ids.  If the client_id option is not specified, 
+ the PAM service type is used instead.  This feature may be disabled by using empty strings for client_ids.
+
+        	</documentation>
+		<input message="tns:Management.RADIUSConfiguration.set_client_idRequest"/>
+		<output message="tns:Management.RADIUSConfiguration.set_client_idResponse"/>
+	</operation>
+	<operation name="get_client_id">
+	<documentation>
+ Gets the the NAS-Identifier RADIUS attribute with client_ids.  If the client_id option is not specified, 
+ the PAM service type is used instead.  This feature may be disabled by using empty strings for client_ids.
+ 
+        	</documentation>
+		<input message="tns:Management.RADIUSConfiguration.get_client_idRequest"/>
+		<output message="tns:Management.RADIUSConfiguration.get_client_idResponse"/>
+	</operation>
+	<operation name="get_server">
+	<documentation>
+ Gets the lists of servers the specified RADIUS configurations are associated with.
+
+        	</documentation>
+		<input message="tns:Management.RADIUSConfiguration.get_serverRequest"/>
+		<output message="tns:Management.RADIUSConfiguration.get_serverResponse"/>
+	</operation>
+	<operation name="add_server">
+	<documentation>
+ Adds/associates servers to the specified RADIUS configurations.
+
+        	</documentation>
+		<input message="tns:Management.RADIUSConfiguration.add_serverRequest"/>
+		<output message="tns:Management.RADIUSConfiguration.add_serverResponse"/>
+	</operation>
+	<operation name="remove_server">
+	<documentation>
+ Removes servers from the specified RADIUS configurations.
+
+        	</documentation>
+		<input message="tns:Management.RADIUSConfiguration.remove_serverRequest"/>
+		<output message="tns:Management.RADIUSConfiguration.remove_serverResponse"/>
+	</operation>
+	<operation name="remove_all_servers">
+	<documentation>
+ Removes all servers from the specified RADIUS configurations.
+
+        	</documentation>
+		<input message="tns:Management.RADIUSConfiguration.remove_all_serversRequest"/>
+		<output message="tns:Management.RADIUSConfiguration.remove_all_serversResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of RADIUS configurations.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Management.RADIUSConfiguration.set_descriptionRequest"/>
+		<output message="tns:Management.RADIUSConfiguration.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of RADIUS configurations.
+
+        	</documentation>
+		<input message="tns:Management.RADIUSConfiguration.get_descriptionRequest"/>
+		<output message="tns:Management.RADIUSConfiguration.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Management.RADIUSConfiguration.get_versionRequest"/>
+		<output message="tns:Management.RADIUSConfiguration.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.RADIUSConfigurationBinding" type="tns:Management.RADIUSConfigurationPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all RADIUS configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/RADIUSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates the specified RADIUS configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/RADIUSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_default_authentication_radius_configuration">
+	<documentation>
+ Creates the default authentication RADIUS configuration.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/RADIUSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_configuration">
+	<documentation>
+ Deletes the specified RADIUS configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/RADIUSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_configurations">
+	<documentation>
+ Deletes all RADIUS configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/RADIUSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_debug_state">
+	<documentation>
+ Sets the states indicating whether syslog debugging is enabled/disabled.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/RADIUSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_debug_state">
+	<documentation>
+ Gets the states indicating whether syslog debugging is enabled/disabled.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/RADIUSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_accounting_validation_state">
+	<documentation>
+ Sets the states indicating whether to enable/disable validation of the accounting response vector.
+ This option should only be set necessary for older servers, i.e. Livingston 1.16.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/RADIUSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_accounting_validation_state">
+	<documentation>
+ Gets the states indicating whether to enable/disable validation of the accounting response vector.
+ This option should only be set necessary for older servers, i.e. Livingston 1.16.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/RADIUSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_retry">
+	<documentation>
+ Sets the number of attempts to communicate with the server before concluding that
+ the server has failed.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/RADIUSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_retry">
+	<documentation>
+ Gets the number of attempts to communicate with the server before concluding that
+ the server has failed.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/RADIUSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_service_type">
+	<documentation>
+ Sets the service-type attribute in the RADIUS request that is made
+ to the server.  
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/RADIUSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_service_type">
+	<documentation>
+ Gets the service-type attribute used in the RADIUS request that is
+ made when communicating with a RADIUS server.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/RADIUSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_client_id">
+	<documentation>
+ Sets the NAS-Identifier RADIUS attribute with client_ids.  If the client_id option is not specified, 
+ the PAM service type is used instead.  This feature may be disabled by using empty strings for client_ids.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/RADIUSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_client_id">
+	<documentation>
+ Gets the the NAS-Identifier RADIUS attribute with client_ids.  If the client_id option is not specified, 
+ the PAM service type is used instead.  This feature may be disabled by using empty strings for client_ids.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/RADIUSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_server">
+	<documentation>
+ Gets the lists of servers the specified RADIUS configurations are associated with.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/RADIUSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_server">
+	<documentation>
+ Adds/associates servers to the specified RADIUS configurations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/RADIUSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_server">
+	<documentation>
+ Removes servers from the specified RADIUS configurations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/RADIUSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_servers">
+	<documentation>
+ Removes all servers from the specified RADIUS configurations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/RADIUSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of RADIUS configurations.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/RADIUSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of RADIUS configurations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/RADIUSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/RADIUSConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/RADIUSConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.RADIUSConfiguration">
+	<documentation>
+ The RADIUSConfiguration interface enables you to manage RADIUS PAM configuration.
+
+        	</documentation>
+	<port name="Management.RADIUSConfigurationPort" binding="tns:Management.RADIUSConfigurationBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

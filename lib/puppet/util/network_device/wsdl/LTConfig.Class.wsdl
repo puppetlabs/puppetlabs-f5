@@ -1,0 +1,656 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="LTConfig.Class"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="LTConfig.ClassInstanceKey">
+			<xsd:sequence>
+				<xsd:element name="container" type="xsd:string"/>
+				<xsd:element name="container_class" type="xsd:string"/>
+				<xsd:element name="class_name" type="xsd:string"/>
+				<xsd:element name="name" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LTConfig.ClassInstanceKeySequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LTConfig.ClassInstanceKeySequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LTConfig.ClassInstanceKeySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LTConfig.ClassInstanceKey[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="LTConfig.Class.get_listRequest">
+</message>
+<message name="LTConfig.Class.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LTConfig.Class.get_categoryRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LTConfig.Class.get_categoryResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LTConfig.Class.get_statisticsRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LTConfig.Class.get_statisticsResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="LTConfig.Class.get_constraintsRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LTConfig.Class.get_constraintsResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="LTConfig.Class.get_field_countRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LTConfig.Class.get_field_countResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="LTConfig.Class.get_clustered_stateRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LTConfig.Class.get_clustered_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="LTConfig.Class.get_configsyncd_stateRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LTConfig.Class.get_configsyncd_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="LTConfig.Class.get_toplevelcmd_stateRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LTConfig.Class.get_toplevelcmd_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="LTConfig.Class.get_partitioned_stateRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LTConfig.Class.get_partitioned_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="LTConfig.Class.get_singleton_stateRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LTConfig.Class.get_singleton_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="LTConfig.Class.get_nested_classesRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LTConfig.Class.get_nested_classesResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="LTConfig.Class.get_list_of_instancesRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LTConfig.Class.get_list_of_instancesResponse">
+	<part name="return" type="tns:LTConfig.ClassInstanceKeySequenceSequence"/>
+</message>
+
+<message name="LTConfig.Class.create_instanceRequest">
+	<part name="class_instance_keys" type="tns:LTConfig.ClassInstanceKeySequence"/>
+</message>
+<message name="LTConfig.Class.create_instanceResponse">
+</message>
+
+<message name="LTConfig.Class.delete_instanceRequest">
+	<part name="class_instance_keys" type="tns:LTConfig.ClassInstanceKeySequence"/>
+</message>
+<message name="LTConfig.Class.delete_instanceResponse">
+</message>
+
+<message name="LTConfig.Class.get_versionRequest">
+</message>
+<message name="LTConfig.Class.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="LTConfig.ClassPortType">
+	<operation name="get_list">
+  	<documentation>
+ Gets a list of loosely-typed configuration classes.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Class.get_listRequest"/>
+		<output message="tns:LTConfig.Class.get_listResponse"/>
+	</operation>
+	<operation name="get_category">
+	<documentation>
+ Gets the category for the specified loosely-typed
+ configuration classes.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Class.get_categoryRequest"/>
+		<output message="tns:LTConfig.Class.get_categoryResponse"/>
+	</operation>
+	<operation name="get_statistics">
+	<documentation>
+ Gets the statistics for the specified loosely-typed
+ configuration classes.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Class.get_statisticsRequest"/>
+		<output message="tns:LTConfig.Class.get_statisticsResponse"/>
+	</operation>
+	<operation name="get_constraints">
+	<documentation>
+ Gets the constraints for the specified loosely-typed
+ configuration classes.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Class.get_constraintsRequest"/>
+		<output message="tns:LTConfig.Class.get_constraintsResponse"/>
+	</operation>
+	<operation name="get_field_count">
+	<documentation>
+ Gets the field count for the specified loosely-typed configuration
+ classes.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Class.get_field_countRequest"/>
+		<output message="tns:LTConfig.Class.get_field_countResponse"/>
+	</operation>
+	<operation name="get_clustered_state">
+	<documentation>
+ Gets the clustered state for the specified loosely-typed
+ configuration classes.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Class.get_clustered_stateRequest"/>
+		<output message="tns:LTConfig.Class.get_clustered_stateResponse"/>
+	</operation>
+	<operation name="get_configsyncd_state">
+	<documentation>
+ Gets the configsyncd state for the specified loosely-typed
+ configuration classes.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Class.get_configsyncd_stateRequest"/>
+		<output message="tns:LTConfig.Class.get_configsyncd_stateResponse"/>
+	</operation>
+	<operation name="get_toplevelcmd_state">
+	<documentation>
+ Gets the toplevelcmd state for the specified loosely-typed
+ configuration classes.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Class.get_toplevelcmd_stateRequest"/>
+		<output message="tns:LTConfig.Class.get_toplevelcmd_stateResponse"/>
+	</operation>
+	<operation name="get_partitioned_state">
+	<documentation>
+ Gets the partitioned state for the specified loosely-typed
+ configuration classes.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Class.get_partitioned_stateRequest"/>
+		<output message="tns:LTConfig.Class.get_partitioned_stateResponse"/>
+	</operation>
+	<operation name="get_singleton_state">
+	<documentation>
+ Gets the singleton state for the specified loosely-typed
+ configuration classes.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Class.get_singleton_stateRequest"/>
+		<output message="tns:LTConfig.Class.get_singleton_stateResponse"/>
+	</operation>
+	<operation name="get_nested_classes">
+	<documentation>
+ Gets the nested classes for the specified loosely-typed
+ configuration classes.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Class.get_nested_classesRequest"/>
+		<output message="tns:LTConfig.Class.get_nested_classesResponse"/>
+	</operation>
+	<operation name="get_list_of_instances">
+	<documentation>
+ Gets a list of loosely-typed configuration class instances.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Class.get_list_of_instancesRequest"/>
+		<output message="tns:LTConfig.Class.get_list_of_instancesResponse"/>
+	</operation>
+	<operation name="create_instance">
+	<documentation>
+ Creates a loosely-typed configuration class instance.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Class.create_instanceRequest"/>
+		<output message="tns:LTConfig.Class.create_instanceResponse"/>
+	</operation>
+	<operation name="delete_instance">
+	<documentation>
+ Deletes a loosely-typed configuration class instance.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Class.delete_instanceRequest"/>
+		<output message="tns:LTConfig.Class.delete_instanceResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:LTConfig.Class.get_versionRequest"/>
+		<output message="tns:LTConfig.Class.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="LTConfig.ClassBinding" type="tns:LTConfig.ClassPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of loosely-typed configuration classes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_category">
+	<documentation>
+ Gets the category for the specified loosely-typed
+ configuration classes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_statistics">
+	<documentation>
+ Gets the statistics for the specified loosely-typed
+ configuration classes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_constraints">
+	<documentation>
+ Gets the constraints for the specified loosely-typed
+ configuration classes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_field_count">
+	<documentation>
+ Gets the field count for the specified loosely-typed configuration
+ classes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_clustered_state">
+	<documentation>
+ Gets the clustered state for the specified loosely-typed
+ configuration classes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_configsyncd_state">
+	<documentation>
+ Gets the configsyncd state for the specified loosely-typed
+ configuration classes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_toplevelcmd_state">
+	<documentation>
+ Gets the toplevelcmd state for the specified loosely-typed
+ configuration classes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_partitioned_state">
+	<documentation>
+ Gets the partitioned state for the specified loosely-typed
+ configuration classes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_singleton_state">
+	<documentation>
+ Gets the singleton state for the specified loosely-typed
+ configuration classes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_nested_classes">
+	<documentation>
+ Gets the nested classes for the specified loosely-typed
+ configuration classes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_list_of_instances">
+	<documentation>
+ Gets a list of loosely-typed configuration class instances.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_instance">
+	<documentation>
+ Creates a loosely-typed configuration class instance.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_instance">
+	<documentation>
+ Deletes a loosely-typed configuration class instance.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="LTConfig.Class">
+	<documentation>
+ The Class interface enables you to manage classes and class
+ instances in the Loosely-Typed Configuration system.
+
+        	</documentation>
+	<port name="LTConfig.ClassPort" binding="tns:LTConfig.ClassBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

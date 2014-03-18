@@ -1,0 +1,497 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="System.Connections"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="System.Connections.ActiveConnectionV2Sequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.Connections.ActiveConnectionV2[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="System.Connections.ConnectionID">
+			<xsd:sequence>
+				<xsd:element name="clientside_client" type="tns:Common.IPPortDefinition"/>
+				<xsd:element name="clientside_server" type="tns:Common.IPPortDefinition"/>
+				<xsd:element name="serverside_server" type="tns:Common.IPPortDefinition"/>
+				<xsd:element name="protocol" type="tns:Common.ProtocolType"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="System.Connections.ActiveConnectionSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.Connections.ActiveConnection[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULong64">
+			<xsd:sequence>
+				<xsd:element name="high" type="xsd:long"/>
+				<xsd:element name="low" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.ProtocolType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="PROTOCOL_ANY">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_ANY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_IPV6">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_IPV6</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_ROUTING">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_ROUTING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_NONE">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_FRAGMENT">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_FRAGMENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_DSTOPTS">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_DSTOPTS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_TCP">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_TCP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_UDP">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_UDP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_ICMP">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_ICMP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_ICMPV6">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_ICMPV6</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_OSPF">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_OSPF</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_SCTP">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_SCTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="System.Connections.ConnectionIDSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.Connections.ConnectionID[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPPortDefinition">
+			<xsd:sequence>
+				<xsd:element name="address" type="xsd:string"/>
+				<xsd:element name="port" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="System.Connections.ActiveConnectionV2">
+			<xsd:sequence>
+				<xsd:element name="connection_id" type="tns:System.Connections.ConnectionID"/>
+				<xsd:element name="serverside_client" type="tns:Common.IPPortDefinition"/>
+				<xsd:element name="virtual_path" type="tns:Common.IPPortDefinition"/>
+				<xsd:element name="traffic_group" type="xsd:string"/>
+				<xsd:element name="clientside_bytes_in" type="tns:Common.ULong64"/>
+				<xsd:element name="clientside_bytes_out" type="tns:Common.ULong64"/>
+				<xsd:element name="clientside_packets_in" type="tns:Common.ULong64"/>
+				<xsd:element name="clientside_packets_out" type="tns:Common.ULong64"/>
+				<xsd:element name="serverside_bytes_in" type="tns:Common.ULong64"/>
+				<xsd:element name="serverside_bytes_out" type="tns:Common.ULong64"/>
+				<xsd:element name="serverside_packets_in" type="tns:Common.ULong64"/>
+				<xsd:element name="serverside_packets_out" type="tns:Common.ULong64"/>
+				<xsd:element name="idle_time" type="xsd:long"/>
+				<xsd:element name="idle_timeout" type="xsd:long"/>
+				<xsd:element name="lasthop_info" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="System.Connections.ActiveConnection">
+			<xsd:sequence>
+				<xsd:element name="connection_id" type="tns:System.Connections.ConnectionID"/>
+				<xsd:element name="serverside_client" type="tns:Common.IPPortDefinition"/>
+				<xsd:element name="virtual_path" type="tns:Common.IPPortDefinition"/>
+				<xsd:element name="unit_id" type="xsd:long"/>
+				<xsd:element name="clientside_bytes_in" type="tns:Common.ULong64"/>
+				<xsd:element name="clientside_bytes_out" type="tns:Common.ULong64"/>
+				<xsd:element name="clientside_packets_in" type="tns:Common.ULong64"/>
+				<xsd:element name="clientside_packets_out" type="tns:Common.ULong64"/>
+				<xsd:element name="serverside_bytes_in" type="tns:Common.ULong64"/>
+				<xsd:element name="serverside_bytes_out" type="tns:Common.ULong64"/>
+				<xsd:element name="serverside_packets_in" type="tns:Common.ULong64"/>
+				<xsd:element name="serverside_packets_out" type="tns:Common.ULong64"/>
+				<xsd:element name="idle_time" type="xsd:long"/>
+				<xsd:element name="idle_timeout" type="xsd:long"/>
+				<xsd:element name="lasthop_info" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="System.Connections.get_listRequest">
+</message>
+<message name="System.Connections.get_listResponse">
+	<part name="return" type="tns:System.Connections.ConnectionIDSequence"/>
+</message>
+
+<message name="System.Connections.delete_active_connectionRequest">
+	<part name="connections" type="tns:System.Connections.ConnectionIDSequence"/>
+</message>
+<message name="System.Connections.delete_active_connectionResponse">
+</message>
+
+<message name="System.Connections.delete_all_active_connectionsRequest">
+</message>
+<message name="System.Connections.delete_all_active_connectionsResponse">
+</message>
+
+<message name="System.Connections.get_active_connectionRequest">
+	<part name="connections" type="tns:System.Connections.ConnectionIDSequence"/>
+</message>
+<message name="System.Connections.get_active_connectionResponse">
+	<part name="return" type="tns:System.Connections.ActiveConnectionSequence"/>
+</message>
+
+<message name="System.Connections.get_all_active_connectionsRequest">
+</message>
+<message name="System.Connections.get_all_active_connectionsResponse">
+	<part name="return" type="tns:System.Connections.ActiveConnectionSequence"/>
+</message>
+
+<message name="System.Connections.get_active_connection_v2Request">
+	<part name="connections" type="tns:System.Connections.ConnectionIDSequence"/>
+</message>
+<message name="System.Connections.get_active_connection_v2Response">
+	<part name="return" type="tns:System.Connections.ActiveConnectionV2Sequence"/>
+</message>
+
+<message name="System.Connections.get_all_active_connections_v2Request">
+</message>
+<message name="System.Connections.get_all_active_connections_v2Response">
+	<part name="return" type="tns:System.Connections.ActiveConnectionV2Sequence"/>
+</message>
+
+<message name="System.Connections.get_versionRequest">
+</message>
+<message name="System.Connections.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="System.ConnectionsPortType">
+	<operation name="get_list">
+      	<documentation>
+ Gets the list of active connections.
+
+        	</documentation>
+		<input message="tns:System.Connections.get_listRequest"/>
+		<output message="tns:System.Connections.get_listResponse"/>
+	</operation>
+	<operation name="delete_active_connection">
+	<documentation>
+ Deletes the specified connections from the connection table.
+
+        	</documentation>
+		<input message="tns:System.Connections.delete_active_connectionRequest"/>
+		<output message="tns:System.Connections.delete_active_connectionResponse"/>
+	</operation>
+	<operation name="delete_all_active_connections">
+	<documentation>
+ Deletes all active connections from the connection table.
+
+        	</documentation>
+		<input message="tns:System.Connections.delete_all_active_connectionsRequest"/>
+		<output message="tns:System.Connections.delete_all_active_connectionsResponse"/>
+	</operation>
+	<operation name="get_active_connection">
+	<documentation>
+ Gets the active connections in detail for the specified connections.
+
+ If some of the connections requested no longer exist (or
+ never existed), the system skips them and returns the
+ entries it can, in which case the result sequence will be
+ shorter than the input sequence and you can check the key
+ fields in the result to see which connections exist.
+
+        	</documentation>
+		<input message="tns:System.Connections.get_active_connectionRequest"/>
+		<output message="tns:System.Connections.get_active_connectionResponse"/>
+	</operation>
+	<operation name="get_all_active_connections">
+	<documentation>
+ Gets all active connections in details on the local load balancer.
+
+        	</documentation>
+		<input message="tns:System.Connections.get_all_active_connectionsRequest"/>
+		<output message="tns:System.Connections.get_all_active_connectionsResponse"/>
+	</operation>
+	<operation name="get_active_connection_v2">
+	<documentation>
+ Gets the active connections in detail for the specified connections.
+
+ If some of the connections requested no longer exist (or
+ never existed), the system skips them and returns the
+ entries it can, in which case the result sequence will be
+ shorter than the input sequence and you can check the key
+ fields in the result to see which connections exist.
+
+        	</documentation>
+		<input message="tns:System.Connections.get_active_connection_v2Request"/>
+		<output message="tns:System.Connections.get_active_connection_v2Response"/>
+	</operation>
+	<operation name="get_all_active_connections_v2">
+	<documentation>
+ Gets all active connections in details on the local load balancer.
+
+        	</documentation>
+		<input message="tns:System.Connections.get_all_active_connections_v2Request"/>
+		<output message="tns:System.Connections.get_all_active_connections_v2Response"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:System.Connections.get_versionRequest"/>
+		<output message="tns:System.Connections.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="System.ConnectionsBinding" type="tns:System.ConnectionsPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the list of active connections.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Connections"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Connections"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Connections"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_active_connection">
+	<documentation>
+ Deletes the specified connections from the connection table.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Connections"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Connections"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Connections"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_active_connections">
+	<documentation>
+ Deletes all active connections from the connection table.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Connections"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Connections"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Connections"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_active_connection">
+	<documentation>
+ Gets the active connections in detail for the specified connections.
+
+ If some of the connections requested no longer exist (or
+ never existed), the system skips them and returns the
+ entries it can, in which case the result sequence will be
+ shorter than the input sequence and you can check the key
+ fields in the result to see which connections exist.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Connections"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Connections"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Connections"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_all_active_connections">
+	<documentation>
+ Gets all active connections in details on the local load balancer.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Connections"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Connections"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Connections"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_active_connection_v2">
+	<documentation>
+ Gets the active connections in detail for the specified connections.
+
+ If some of the connections requested no longer exist (or
+ never existed), the system skips them and returns the
+ entries it can, in which case the result sequence will be
+ shorter than the input sequence and you can check the key
+ fields in the result to see which connections exist.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Connections"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Connections"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Connections"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_all_active_connections_v2">
+	<documentation>
+ Gets all active connections in details on the local load balancer.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Connections"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Connections"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Connections"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Connections"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Connections"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Connections"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="System.Connections">
+	<documentation>
+ The Connections interface enables you to get information about a device's connections.
+ For example, use Connection interface to get a list of all active connections or to get
+ a list of all active connections for a specific client.
+
+        	</documentation>
+	<port name="System.ConnectionsPort" binding="tns:System.ConnectionsBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

@@ -1,0 +1,854 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.SMTPConfiguration"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.SMTPConfiguration.EncryptedConnectionType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="SMTP_ENCRYPTED_CONNECTION_TYPE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>SMTP_ENCRYPTED_CONNECTION_TYPE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SMTP_ENCRYPTED_CONNECTION_TYPE_NONE">
+					<xsd:annotation>
+						<xsd:documentation>SMTP_ENCRYPTED_CONNECTION_TYPE_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SMTP_ENCRYPTED_CONNECTION_TYPE_TLS">
+					<xsd:annotation>
+						<xsd:documentation>SMTP_ENCRYPTED_CONNECTION_TYPE_TLS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SMTP_ENCRYPTED_CONNECTION_TYPE_SSL">
+					<xsd:annotation>
+						<xsd:documentation>SMTP_ENCRYPTED_CONNECTION_TYPE_SSL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.SMTPConfiguration.EncryptedConnectionTypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SMTPConfiguration.EncryptedConnectionType[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.PortSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.SMTPConfiguration.get_listRequest">
+</message>
+<message name="Management.SMTPConfiguration.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.SMTPConfiguration.createRequest">
+	<part name="configs" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.SMTPConfiguration.createResponse">
+</message>
+
+<message name="Management.SMTPConfiguration.delete_smtp_configRequest">
+	<part name="configs" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.SMTPConfiguration.delete_smtp_configResponse">
+</message>
+
+<message name="Management.SMTPConfiguration.delete_all_smtp_configsRequest">
+</message>
+<message name="Management.SMTPConfiguration.delete_all_smtp_configsResponse">
+</message>
+
+<message name="Management.SMTPConfiguration.set_auth_enabled_stateRequest">
+	<part name="configs" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.SMTPConfiguration.set_auth_enabled_stateResponse">
+</message>
+
+<message name="Management.SMTPConfiguration.get_auth_enabled_stateRequest">
+	<part name="configs" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.SMTPConfiguration.get_auth_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.SMTPConfiguration.set_encrypted_connection_typeRequest">
+	<part name="configs" type="tns:Common.StringSequence"/>
+	<part name="encryption_types" type="tns:Management.SMTPConfiguration.EncryptedConnectionTypeSequence"/>
+</message>
+<message name="Management.SMTPConfiguration.set_encrypted_connection_typeResponse">
+</message>
+
+<message name="Management.SMTPConfiguration.get_encrypted_connection_typeRequest">
+	<part name="configs" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.SMTPConfiguration.get_encrypted_connection_typeResponse">
+	<part name="return" type="tns:Management.SMTPConfiguration.EncryptedConnectionTypeSequence"/>
+</message>
+
+<message name="Management.SMTPConfiguration.set_from_addressRequest">
+	<part name="configs" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.SMTPConfiguration.set_from_addressResponse">
+</message>
+
+<message name="Management.SMTPConfiguration.get_from_addressRequest">
+	<part name="configs" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.SMTPConfiguration.get_from_addressResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.SMTPConfiguration.set_local_host_nameRequest">
+	<part name="configs" type="tns:Common.StringSequence"/>
+	<part name="values" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.SMTPConfiguration.set_local_host_nameResponse">
+</message>
+
+<message name="Management.SMTPConfiguration.get_local_host_nameRequest">
+	<part name="configs" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.SMTPConfiguration.get_local_host_nameResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.SMTPConfiguration.set_smtp_server_host_nameRequest">
+	<part name="configs" type="tns:Common.StringSequence"/>
+	<part name="values" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.SMTPConfiguration.set_smtp_server_host_nameResponse">
+</message>
+
+<message name="Management.SMTPConfiguration.get_smtp_server_host_nameRequest">
+	<part name="configs" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.SMTPConfiguration.get_smtp_server_host_nameResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.SMTPConfiguration.set_smtp_server_portRequest">
+	<part name="configs" type="tns:Common.StringSequence"/>
+	<part name="ports" type="tns:Common.PortSequence"/>
+</message>
+<message name="Management.SMTPConfiguration.set_smtp_server_portResponse">
+</message>
+
+<message name="Management.SMTPConfiguration.get_smtp_server_portRequest">
+	<part name="configs" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.SMTPConfiguration.get_smtp_server_portResponse">
+	<part name="return" type="tns:Common.PortSequence"/>
+</message>
+
+<message name="Management.SMTPConfiguration.set_user_nameRequest">
+	<part name="configs" type="tns:Common.StringSequence"/>
+	<part name="values" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.SMTPConfiguration.set_user_nameResponse">
+</message>
+
+<message name="Management.SMTPConfiguration.get_user_nameRequest">
+	<part name="configs" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.SMTPConfiguration.get_user_nameResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.SMTPConfiguration.set_passwordRequest">
+	<part name="configs" type="tns:Common.StringSequence"/>
+	<part name="passwords" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.SMTPConfiguration.set_passwordResponse">
+</message>
+
+<message name="Management.SMTPConfiguration.get_passwordRequest">
+	<part name="configs" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.SMTPConfiguration.get_passwordResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.SMTPConfiguration.get_versionRequest">
+</message>
+<message name="Management.SMTPConfiguration.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.SMTPConfigurationPortType">
+	<operation name="get_list">
+    	<documentation>
+ Gets a list of all SMTP configuration objects.
+
+        	</documentation>
+		<input message="tns:Management.SMTPConfiguration.get_listRequest"/>
+		<output message="tns:Management.SMTPConfiguration.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates the specified SMTP configuration object.
+
+        	</documentation>
+		<input message="tns:Management.SMTPConfiguration.createRequest"/>
+		<output message="tns:Management.SMTPConfiguration.createResponse"/>
+	</operation>
+	<operation name="delete_smtp_config">
+	<documentation>
+ Deletes specified SMTP configuration objects.
+ 
+        	</documentation>
+		<input message="tns:Management.SMTPConfiguration.delete_smtp_configRequest"/>
+		<output message="tns:Management.SMTPConfiguration.delete_smtp_configResponse"/>
+	</operation>
+	<operation name="delete_all_smtp_configs">
+	<documentation>
+ Deletes all SMTP configuration objects.
+ 
+        	</documentation>
+		<input message="tns:Management.SMTPConfiguration.delete_all_smtp_configsRequest"/>
+		<output message="tns:Management.SMTPConfiguration.delete_all_smtp_configsResponse"/>
+	</operation>
+	<operation name="set_auth_enabled_state">
+	<documentation>
+ Sets the authentication enabled flag for the specified SMTP configuration object.
+ Specify this only if the SMTP server requires authentication.
+ 
+        	</documentation>
+		<input message="tns:Management.SMTPConfiguration.set_auth_enabled_stateRequest"/>
+		<output message="tns:Management.SMTPConfiguration.set_auth_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_auth_enabled_state">
+	<documentation>
+ Gets the authentication enabled flag for the specified SMTP configuration object.
+ 
+        	</documentation>
+		<input message="tns:Management.SMTPConfiguration.get_auth_enabled_stateRequest"/>
+		<output message="tns:Management.SMTPConfiguration.get_auth_enabled_stateResponse"/>
+	</operation>
+	<operation name="set_encrypted_connection_type">
+	<documentation>
+ Sets the encrypted connection type for the specified SMTP configuration object.
+ 
+        	</documentation>
+		<input message="tns:Management.SMTPConfiguration.set_encrypted_connection_typeRequest"/>
+		<output message="tns:Management.SMTPConfiguration.set_encrypted_connection_typeResponse"/>
+	</operation>
+	<operation name="get_encrypted_connection_type">
+	<documentation>
+ Get the encrypted connection type for the specified SMTP configuration object.
+ 
+        	</documentation>
+		<input message="tns:Management.SMTPConfiguration.get_encrypted_connection_typeRequest"/>
+		<output message="tns:Management.SMTPConfiguration.get_encrypted_connection_typeResponse"/>
+	</operation>
+	<operation name="set_from_address">
+	<documentation>
+ Sets the email address that the eMail items will be sent from. This is the "Reply-to" address that the recipient sees.
+ 
+        	</documentation>
+		<input message="tns:Management.SMTPConfiguration.set_from_addressRequest"/>
+		<output message="tns:Management.SMTPConfiguration.set_from_addressResponse"/>
+	</operation>
+	<operation name="get_from_address">
+	<documentation>
+ Gets the email address that the eMail items will be sent from.
+ 
+        	</documentation>
+		<input message="tns:Management.SMTPConfiguration.get_from_addressRequest"/>
+		<output message="tns:Management.SMTPConfiguration.get_from_addressResponse"/>
+	</operation>
+	<operation name="set_local_host_name">
+	<documentation>
+ Sets the host name used in SMTP headers in the format of a fully qualified domain name. 
+ This setting does not refer to the BIG-IP system's Hostname.
+ 
+        	</documentation>
+		<input message="tns:Management.SMTPConfiguration.set_local_host_nameRequest"/>
+		<output message="tns:Management.SMTPConfiguration.set_local_host_nameResponse"/>
+	</operation>
+	<operation name="get_local_host_name">
+	<documentation>
+ Get the host name used in SMTP headers. 
+ 
+        	</documentation>
+		<input message="tns:Management.SMTPConfiguration.get_local_host_nameRequest"/>
+		<output message="tns:Management.SMTPConfiguration.get_local_host_nameResponse"/>
+	</operation>
+	<operation name="set_smtp_server_host_name">
+	<documentation>
+ Sets the SMTP server host name in the format of a fully qualified domain name.
+ 
+        	</documentation>
+		<input message="tns:Management.SMTPConfiguration.set_smtp_server_host_nameRequest"/>
+		<output message="tns:Management.SMTPConfiguration.set_smtp_server_host_nameResponse"/>
+	</operation>
+	<operation name="get_smtp_server_host_name">
+	<documentation>
+ Gets the SMTP server host name.
+ 
+        	</documentation>
+		<input message="tns:Management.SMTPConfiguration.get_smtp_server_host_nameRequest"/>
+		<output message="tns:Management.SMTPConfiguration.get_smtp_server_host_nameResponse"/>
+	</operation>
+	<operation name="set_smtp_server_port">
+	<documentation>
+ Sets the SMTP server port number.
+ 
+        	</documentation>
+		<input message="tns:Management.SMTPConfiguration.set_smtp_server_portRequest"/>
+		<output message="tns:Management.SMTPConfiguration.set_smtp_server_portResponse"/>
+	</operation>
+	<operation name="get_smtp_server_port">
+	<documentation>
+ Gets the SMTP server port number.
+ 
+        	</documentation>
+		<input message="tns:Management.SMTPConfiguration.get_smtp_server_portRequest"/>
+		<output message="tns:Management.SMTPConfiguration.get_smtp_server_portResponse"/>
+	</operation>
+	<operation name="set_user_name">
+	<documentation>
+ Sets the user name that the SMTP server requires when validating a user.
+ 
+        	</documentation>
+		<input message="tns:Management.SMTPConfiguration.set_user_nameRequest"/>
+		<output message="tns:Management.SMTPConfiguration.set_user_nameResponse"/>
+	</operation>
+	<operation name="get_user_name">
+	<documentation>
+ Gets the user name that the SMTP server requires when validating a user.
+ 
+        	</documentation>
+		<input message="tns:Management.SMTPConfiguration.get_user_nameRequest"/>
+		<output message="tns:Management.SMTPConfiguration.get_user_nameResponse"/>
+	</operation>
+	<operation name="set_password">
+	<documentation>
+ Sets the password that the SMTP server requires when validating a user.
+ 
+        	</documentation>
+		<input message="tns:Management.SMTPConfiguration.set_passwordRequest"/>
+		<output message="tns:Management.SMTPConfiguration.set_passwordResponse"/>
+	</operation>
+	<operation name="get_password">
+	<documentation>
+ Gets the password that the SMTP server requires when validating a user.
+ 
+        	</documentation>
+		<input message="tns:Management.SMTPConfiguration.get_passwordRequest"/>
+		<output message="tns:Management.SMTPConfiguration.get_passwordResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+ 
+        	</documentation>
+		<input message="tns:Management.SMTPConfiguration.get_versionRequest"/>
+		<output message="tns:Management.SMTPConfiguration.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.SMTPConfigurationBinding" type="tns:Management.SMTPConfigurationPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all SMTP configuration objects.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SMTPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates the specified SMTP configuration object.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SMTPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_smtp_config">
+	<documentation>
+ Deletes specified SMTP configuration objects.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SMTPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_smtp_configs">
+	<documentation>
+ Deletes all SMTP configuration objects.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SMTPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_auth_enabled_state">
+	<documentation>
+ Sets the authentication enabled flag for the specified SMTP configuration object.
+ Specify this only if the SMTP server requires authentication.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SMTPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_auth_enabled_state">
+	<documentation>
+ Gets the authentication enabled flag for the specified SMTP configuration object.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SMTPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_encrypted_connection_type">
+	<documentation>
+ Sets the encrypted connection type for the specified SMTP configuration object.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SMTPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_encrypted_connection_type">
+	<documentation>
+ Get the encrypted connection type for the specified SMTP configuration object.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SMTPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_from_address">
+	<documentation>
+ Sets the email address that the eMail items will be sent from. This is the "Reply-to" address that the recipient sees.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SMTPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_from_address">
+	<documentation>
+ Gets the email address that the eMail items will be sent from.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SMTPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_local_host_name">
+	<documentation>
+ Sets the host name used in SMTP headers in the format of a fully qualified domain name. 
+ This setting does not refer to the BIG-IP system's Hostname.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SMTPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_local_host_name">
+	<documentation>
+ Get the host name used in SMTP headers. 
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SMTPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_smtp_server_host_name">
+	<documentation>
+ Sets the SMTP server host name in the format of a fully qualified domain name.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SMTPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_smtp_server_host_name">
+	<documentation>
+ Gets the SMTP server host name.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SMTPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_smtp_server_port">
+	<documentation>
+ Sets the SMTP server port number.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SMTPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_smtp_server_port">
+	<documentation>
+ Gets the SMTP server port number.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SMTPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_user_name">
+	<documentation>
+ Sets the user name that the SMTP server requires when validating a user.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SMTPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_user_name">
+	<documentation>
+ Gets the user name that the SMTP server requires when validating a user.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SMTPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_password">
+	<documentation>
+ Sets the password that the SMTP server requires when validating a user.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SMTPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_password">
+	<documentation>
+ Gets the password that the SMTP server requires when validating a user.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SMTPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SMTPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SMTPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.SMTPConfiguration">
+	<documentation>
+ The SMTPConfiguration interface enables you to create, delete and modify different 
+ SMTP configurations on the BIG-IP. Each SMTP configuration item can be used
+ in several different profiles (such as Analytics and Classification).
+ For example:
+      1. Alert notifications in Analytics.
+      2. Reports exporting in both Analytics and Classification.
+
+        	</documentation>
+	<port name="Management.SMTPConfigurationPort" binding="tns:Management.SMTPConfigurationBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

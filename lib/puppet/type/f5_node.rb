@@ -3,24 +3,12 @@ Puppet::Type.newtype(:f5_node) do
 
   apply_to_device
 
-  ensurable do
-    desc "F5 node resource state. Valid values are present, absent."
-
-    defaultto(:present)
-
-    newvalue(:present) do
-      provider.create
-    end
-
-    newvalue(:absent) do
-      provider.destroy
-    end
-  end
+  ensurable
 
   newparam(:name, :namevar=>true) do
     desc "The node name. v9.0 API uses IP addresses, v11.0 API uses names."
 
-    newvalues(/^[[:alpha:][:digit:]\.]+$/)
+    newvalues(/^[[:alpha:][:digit:]\/]+$/)
   end
 
   newproperty(:connection_limit) do
@@ -31,7 +19,12 @@ Puppet::Type.newtype(:f5_node) do
 
   newproperty(:dynamic_ratio) do
     desc "The dynamic ratios of a node addresses."
+
     newvalues(/^\d+$/)
+  end
+
+  newparam(:addresses) do
+    desc "The IP addresses of the specified node addresses."
   end
 
   # Current iControl gem get_monitor_association is broken:
@@ -45,10 +38,6 @@ Puppet::Type.newtype(:f5_node) do
     desc "The ratios for the specified node addresses."
 
     newvalues(/^\d+$/)
-  end
-
-  newproperty(:screen_name) do
-    desc "The screen names for the specified node addresses."
   end
 
   newproperty(:session_enabled_state) do

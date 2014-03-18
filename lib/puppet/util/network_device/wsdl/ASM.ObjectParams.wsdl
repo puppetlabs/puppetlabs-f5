@@ -1,0 +1,198 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="ASM.ObjectParams"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="ASM.ObjectParams.ObjectParamCategory">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="WH_OBJECT_PARAM_SQL_INJECTION">
+					<xsd:annotation>
+						<xsd:documentation>WH_OBJECT_PARAM_SQL_INJECTION</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="WH_OBJECT_PARAM_XSS">
+					<xsd:annotation>
+						<xsd:documentation>WH_OBJECT_PARAM_XSS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="WH_OBJECT_PARAM_COMMAND_INJECTION">
+					<xsd:annotation>
+						<xsd:documentation>WH_OBJECT_PARAM_COMMAND_INJECTION</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="WH_OBJECT_PARAM_XPATH_INJECTION">
+					<xsd:annotation>
+						<xsd:documentation>WH_OBJECT_PARAM_XPATH_INJECTION</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="ASM.ObjectParams.ObjectParamCategorySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.ObjectParams.ObjectParamCategory[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="ASM.ObjectParams.add_or_update_object_param_with_characteristicsRequest">
+	<part name="policy_name" type="xsd:string"/>
+	<part name="uri" type="xsd:string"/>
+	<part name="param_name" type="xsd:string"/>
+	<part name="setting_categories" type="tns:ASM.ObjectParams.ObjectParamCategorySequence"/>
+</message>
+<message name="ASM.ObjectParams.add_or_update_object_param_with_characteristicsResponse">
+	<part name="return" type="xsd:boolean"/>
+</message>
+
+<message name="ASM.ObjectParams.set_parameter_staging_flagRequest">
+	<part name="policy_name" type="xsd:string"/>
+	<part name="uri" type="xsd:string"/>
+	<part name="param_name" type="xsd:string"/>
+	<part name="flg_is_staging" type="xsd:boolean"/>
+</message>
+<message name="ASM.ObjectParams.set_parameter_staging_flagResponse">
+	<part name="return" type="xsd:boolean"/>
+</message>
+
+<message name="ASM.ObjectParams.get_versionRequest">
+</message>
+<message name="ASM.ObjectParams.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="ASM.ObjectParamsPortType">
+	<operation name="add_or_update_object_param_with_characteristics">
+	<documentation>
+ This method has been deprecated; Please use ASM GUI instead.
+ Adds (if doesn't exists) or updates (if exists) URL parameter in a policy.
+
+        	</documentation>
+		<input message="tns:ASM.ObjectParams.add_or_update_object_param_with_characteristicsRequest"/>
+		<output message="tns:ASM.ObjectParams.add_or_update_object_param_with_characteristicsResponse"/>
+	</operation>
+	<operation name="set_parameter_staging_flag">
+	<documentation>
+ This method has been deprecated; Please use ASM GUI instead.
+ Set or unset staging for URL parameter in a policy.
+
+        	</documentation>
+		<input message="tns:ASM.ObjectParams.set_parameter_staging_flagRequest"/>
+		<output message="tns:ASM.ObjectParams.set_parameter_staging_flagResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:ASM.ObjectParams.get_versionRequest"/>
+		<output message="tns:ASM.ObjectParams.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="ASM.ObjectParamsBinding" type="tns:ASM.ObjectParamsPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="add_or_update_object_param_with_characteristics">
+	<documentation>
+ This method has been deprecated; Please use ASM GUI instead.
+ Adds (if doesn't exists) or updates (if exists) URL parameter in a policy.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/ObjectParams"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/ObjectParams"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/ObjectParams"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_parameter_staging_flag">
+	<documentation>
+ This method has been deprecated; Please use ASM GUI instead.
+ Set or unset staging for URL parameter in a policy.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/ObjectParams"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/ObjectParams"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/ObjectParams"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/ObjectParams"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/ObjectParams"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/ObjectParams"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="ASM.ObjectParams">
+	<documentation>
+ The ObjectParams interface enables you to manipulate  
+ Object Parameters
+
+ This interface does not support transactions.
+
+        	</documentation>
+	<port name="ASM.ObjectParamsPort" binding="tns:ASM.ObjectParamsBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

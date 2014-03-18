@@ -1,0 +1,12 @@
+<E:Envelope
+        xmlns:E="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:A="http://schemas.xmlsoap.org/soap/encoding/"
+        xmlns:s="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:y="http://www.w3.org/2001/XMLSchema"
+        xmlns:iControl="urn:iControl"
+        E:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+<E:Body>
+<m:certificate_import_from_pemResponse
+        xmlns:m="urn:iControl:Management/KeyCertificate"></m:certificate_import_from_pemResponse>
+</E:Body>
+</E:Envelope>

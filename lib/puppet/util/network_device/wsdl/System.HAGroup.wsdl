@@ -1,0 +1,1983 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="System.HAGroup"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="System.HAGroup.HAGroupClusterAttributeSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.HAGroup.HAGroupClusterAttributeSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.ULongSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="System.HAGroup.HAGroupClusterAttribute">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="HA_GROUP_CLUSTER_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>HA_GROUP_CLUSTER_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_GROUP_CLUSTER_PERCENT_MEMBERS_UP">
+					<xsd:annotation>
+						<xsd:documentation>HA_GROUP_CLUSTER_PERCENT_MEMBERS_UP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="System.HAGroup.HAGroupClusterAttributeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.HAGroup.HAGroupClusterAttribute[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="System.HAGroup.HAGroupTrunkAttributeSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.HAGroup.HAGroupTrunkAttributeSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="System.HAGroup.HAGroupPoolAttribute">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="HA_GROUP_POOL_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>HA_GROUP_POOL_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_GROUP_POOL_PERCENT_MEMBERS_UP">
+					<xsd:annotation>
+						<xsd:documentation>HA_GROUP_POOL_PERCENT_MEMBERS_UP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="System.HAGroup.HAGroupTrunkAttributeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.HAGroup.HAGroupTrunkAttribute[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="System.HAGroup.HAGroupTrunkAttribute">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="HA_GROUP_TRUNK_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>HA_GROUP_TRUNK_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_GROUP_TRUNK_PERCENT_MEMBERS_UP">
+					<xsd:annotation>
+						<xsd:documentation>HA_GROUP_TRUNK_PERCENT_MEMBERS_UP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="System.HAGroup.HAGroupPoolAttributeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.HAGroup.HAGroupPoolAttribute[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="System.HAGroup.HAGroupPoolAttributeSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.HAGroup.HAGroupPoolAttributeSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="System.HAGroup.get_listRequest">
+</message>
+<message name="System.HAGroup.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="System.HAGroup.createRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.HAGroup.createResponse">
+</message>
+
+<message name="System.HAGroup.delete_high_availability_groupRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.HAGroup.delete_high_availability_groupResponse">
+</message>
+
+<message name="System.HAGroup.delete_all_high_availability_groupsRequest">
+</message>
+<message name="System.HAGroup.delete_all_high_availability_groupsResponse">
+</message>
+
+<message name="System.HAGroup.set_enabled_stateRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="System.HAGroup.set_enabled_stateResponse">
+</message>
+
+<message name="System.HAGroup.get_enabled_stateRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.HAGroup.get_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="System.HAGroup.set_active_scoreRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="scores" type="tns:Common.ULongSequence"/>
+</message>
+<message name="System.HAGroup.set_active_scoreResponse">
+</message>
+
+<message name="System.HAGroup.get_active_scoreRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.HAGroup.get_active_scoreResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="System.HAGroup.get_total_scoreRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.HAGroup.get_total_scoreResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="System.HAGroup.set_descriptionRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.HAGroup.set_descriptionResponse">
+</message>
+
+<message name="System.HAGroup.get_descriptionRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.HAGroup.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="System.HAGroup.add_poolRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="pools" type="tns:Common.StringSequenceSequence"/>
+	<part name="weights" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="System.HAGroup.add_poolResponse">
+</message>
+
+<message name="System.HAGroup.remove_poolRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="pools" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="System.HAGroup.remove_poolResponse">
+</message>
+
+<message name="System.HAGroup.remove_all_poolsRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.HAGroup.remove_all_poolsResponse">
+</message>
+
+<message name="System.HAGroup.get_poolRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.HAGroup.get_poolResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="System.HAGroup.set_pool_attributeRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="pools" type="tns:Common.StringSequenceSequence"/>
+	<part name="attributes" type="tns:System.HAGroup.HAGroupPoolAttributeSequenceSequence"/>
+</message>
+<message name="System.HAGroup.set_pool_attributeResponse">
+</message>
+
+<message name="System.HAGroup.get_pool_attributeRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="pools" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="System.HAGroup.get_pool_attributeResponse">
+	<part name="return" type="tns:System.HAGroup.HAGroupPoolAttributeSequenceSequence"/>
+</message>
+
+<message name="System.HAGroup.set_pool_weightRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="pools" type="tns:Common.StringSequenceSequence"/>
+	<part name="weights" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="System.HAGroup.set_pool_weightResponse">
+</message>
+
+<message name="System.HAGroup.get_pool_weightRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="pools" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="System.HAGroup.get_pool_weightResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="System.HAGroup.set_pool_attribute_thresholdRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="pools" type="tns:Common.StringSequenceSequence"/>
+	<part name="thresholds" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="System.HAGroup.set_pool_attribute_thresholdResponse">
+</message>
+
+<message name="System.HAGroup.get_pool_attribute_thresholdRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="pools" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="System.HAGroup.get_pool_attribute_thresholdResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="System.HAGroup.get_pool_attribute_valueRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="pools" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="System.HAGroup.get_pool_attribute_valueResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="System.HAGroup.get_pool_scoreRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="pools" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="System.HAGroup.get_pool_scoreResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="System.HAGroup.add_trunkRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="trunks" type="tns:Common.StringSequenceSequence"/>
+	<part name="weights" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="System.HAGroup.add_trunkResponse">
+</message>
+
+<message name="System.HAGroup.remove_trunkRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="trunks" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="System.HAGroup.remove_trunkResponse">
+</message>
+
+<message name="System.HAGroup.remove_all_trunksRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.HAGroup.remove_all_trunksResponse">
+</message>
+
+<message name="System.HAGroup.get_trunkRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.HAGroup.get_trunkResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="System.HAGroup.set_trunk_attributeRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="trunks" type="tns:Common.StringSequenceSequence"/>
+	<part name="attributes" type="tns:System.HAGroup.HAGroupTrunkAttributeSequenceSequence"/>
+</message>
+<message name="System.HAGroup.set_trunk_attributeResponse">
+</message>
+
+<message name="System.HAGroup.get_trunk_attributeRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="trunks" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="System.HAGroup.get_trunk_attributeResponse">
+	<part name="return" type="tns:System.HAGroup.HAGroupTrunkAttributeSequenceSequence"/>
+</message>
+
+<message name="System.HAGroup.set_trunk_weightRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="trunks" type="tns:Common.StringSequenceSequence"/>
+	<part name="weights" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="System.HAGroup.set_trunk_weightResponse">
+</message>
+
+<message name="System.HAGroup.get_trunk_weightRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="trunks" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="System.HAGroup.get_trunk_weightResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="System.HAGroup.set_trunk_attribute_thresholdRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="trunks" type="tns:Common.StringSequenceSequence"/>
+	<part name="thresholds" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="System.HAGroup.set_trunk_attribute_thresholdResponse">
+</message>
+
+<message name="System.HAGroup.get_trunk_attribute_thresholdRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="trunks" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="System.HAGroup.get_trunk_attribute_thresholdResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="System.HAGroup.get_trunk_attribute_valueRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="trunks" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="System.HAGroup.get_trunk_attribute_valueResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="System.HAGroup.get_trunk_scoreRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="trunks" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="System.HAGroup.get_trunk_scoreResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="System.HAGroup.add_clusterRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="clusters" type="tns:Common.StringSequenceSequence"/>
+	<part name="weights" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="System.HAGroup.add_clusterResponse">
+</message>
+
+<message name="System.HAGroup.remove_clusterRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="clusters" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="System.HAGroup.remove_clusterResponse">
+</message>
+
+<message name="System.HAGroup.remove_all_clustersRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.HAGroup.remove_all_clustersResponse">
+</message>
+
+<message name="System.HAGroup.get_clusterRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.HAGroup.get_clusterResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="System.HAGroup.set_cluster_attributeRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="clusters" type="tns:Common.StringSequenceSequence"/>
+	<part name="attributes" type="tns:System.HAGroup.HAGroupClusterAttributeSequenceSequence"/>
+</message>
+<message name="System.HAGroup.set_cluster_attributeResponse">
+</message>
+
+<message name="System.HAGroup.get_cluster_attributeRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="clusters" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="System.HAGroup.get_cluster_attributeResponse">
+	<part name="return" type="tns:System.HAGroup.HAGroupClusterAttributeSequenceSequence"/>
+</message>
+
+<message name="System.HAGroup.set_cluster_weightRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="clusters" type="tns:Common.StringSequenceSequence"/>
+	<part name="weights" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="System.HAGroup.set_cluster_weightResponse">
+</message>
+
+<message name="System.HAGroup.get_cluster_weightRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="clusters" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="System.HAGroup.get_cluster_weightResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="System.HAGroup.set_cluster_attribute_thresholdRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="clusters" type="tns:Common.StringSequenceSequence"/>
+	<part name="thresholds" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="System.HAGroup.set_cluster_attribute_thresholdResponse">
+</message>
+
+<message name="System.HAGroup.get_cluster_attribute_thresholdRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="clusters" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="System.HAGroup.get_cluster_attribute_thresholdResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="System.HAGroup.get_cluster_attribute_valueRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="clusters" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="System.HAGroup.get_cluster_attribute_valueResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="System.HAGroup.get_cluster_scoreRequest">
+	<part name="ha_groups" type="tns:Common.StringSequence"/>
+	<part name="clusters" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="System.HAGroup.get_cluster_scoreResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="System.HAGroup.get_versionRequest">
+</message>
+<message name="System.HAGroup.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="System.HAGroupPortType">
+	<operation name="get_list">
+  	<documentation>
+ Gets the names of all high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_listRequest"/>
+		<output message="tns:System.HAGroup.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.createRequest"/>
+		<output message="tns:System.HAGroup.createResponse"/>
+	</operation>
+	<operation name="delete_high_availability_group">
+	<documentation>
+ Deletes a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.delete_high_availability_groupRequest"/>
+		<output message="tns:System.HAGroup.delete_high_availability_groupResponse"/>
+	</operation>
+	<operation name="delete_all_high_availability_groups">
+	<documentation>
+ Deletes all high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.delete_all_high_availability_groupsRequest"/>
+		<output message="tns:System.HAGroup.delete_all_high_availability_groupsResponse"/>
+	</operation>
+	<operation name="set_enabled_state">
+	<documentation>
+ Sets whether the score for a group is enabled for use to determine
+ system failover for a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.set_enabled_stateRequest"/>
+		<output message="tns:System.HAGroup.set_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_enabled_state">
+	<documentation>
+ Gets whether the score for a group is enabled for use to determine
+ system failover for a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_enabled_stateRequest"/>
+		<output message="tns:System.HAGroup.get_enabled_stateResponse"/>
+	</operation>
+	<operation name="set_active_score">
+	<documentation>
+ Sets the value added to the total score if the system is active for
+ a set of high availability groups.  If zero, the active system
+ scoring is disabled.  Otherwise, this value must range between 0
+ and 100.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.set_active_scoreRequest"/>
+		<output message="tns:System.HAGroup.set_active_scoreResponse"/>
+	</operation>
+	<operation name="get_active_score">
+	<documentation>
+ Gets the value added to the total score if the system is active for
+ a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_active_scoreRequest"/>
+		<output message="tns:System.HAGroup.get_active_scoreResponse"/>
+	</operation>
+	<operation name="get_total_score">
+	<documentation>
+ Gets the current total score for a set of high availablity groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_total_scoreRequest"/>
+		<output message="tns:System.HAGroup.get_total_scoreResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of high availability groups.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.set_descriptionRequest"/>
+		<output message="tns:System.HAGroup.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_descriptionRequest"/>
+		<output message="tns:System.HAGroup.get_descriptionResponse"/>
+	</operation>
+	<operation name="add_pool">
+	<documentation>
+ Adds pools to a set of high availability groups.  Each pool's score
+ contributes to the total score for its high availability group.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.add_poolRequest"/>
+		<output message="tns:System.HAGroup.add_poolResponse"/>
+	</operation>
+	<operation name="remove_pool">
+	<documentation>
+ Removes pools from a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.remove_poolRequest"/>
+		<output message="tns:System.HAGroup.remove_poolResponse"/>
+	</operation>
+	<operation name="remove_all_pools">
+	<documentation>
+ Removes all pools from a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.remove_all_poolsRequest"/>
+		<output message="tns:System.HAGroup.remove_all_poolsResponse"/>
+	</operation>
+	<operation name="get_pool">
+	<documentation>
+ Gets the pools in a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_poolRequest"/>
+		<output message="tns:System.HAGroup.get_poolResponse"/>
+	</operation>
+	<operation name="set_pool_attribute">
+	<documentation>
+ Sets the attribute used for scoring a set of pools in a set of high
+ availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.set_pool_attributeRequest"/>
+		<output message="tns:System.HAGroup.set_pool_attributeResponse"/>
+	</operation>
+	<operation name="get_pool_attribute">
+	<documentation>
+ Gets the attribute used for scoring a set of pools in a set of high
+ availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_pool_attributeRequest"/>
+		<output message="tns:System.HAGroup.get_pool_attributeResponse"/>
+	</operation>
+	<operation name="set_pool_weight">
+	<documentation>
+ Sets the proportional weight of a pool's score in the total score
+ for a set of pools in a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.set_pool_weightRequest"/>
+		<output message="tns:System.HAGroup.set_pool_weightResponse"/>
+	</operation>
+	<operation name="get_pool_weight">
+	<documentation>
+ Gets the proportional weight of a pool's score in the total score
+ for a set of pools in a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_pool_weightRequest"/>
+		<output message="tns:System.HAGroup.get_pool_weightResponse"/>
+	</operation>
+	<operation name="set_pool_attribute_threshold">
+	<documentation>
+ Sets the value of the scoring attribute below which a pool's
+ contribution to the total score is zero for a set of pools in a set
+ of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.set_pool_attribute_thresholdRequest"/>
+		<output message="tns:System.HAGroup.set_pool_attribute_thresholdResponse"/>
+	</operation>
+	<operation name="get_pool_attribute_threshold">
+	<documentation>
+ Gets the value of the scoring attribute below which a pools'
+ contribution to the total score is zero for a set of pool in a set
+ of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_pool_attribute_thresholdRequest"/>
+		<output message="tns:System.HAGroup.get_pool_attribute_thresholdResponse"/>
+	</operation>
+	<operation name="get_pool_attribute_value">
+	<documentation>
+ Gets the current value of the scoring attribute for a set of pools
+ in a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_pool_attribute_valueRequest"/>
+		<output message="tns:System.HAGroup.get_pool_attribute_valueResponse"/>
+	</operation>
+	<operation name="get_pool_score">
+	<documentation>
+ Gets the current score for a set of pools for a set of high
+ availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_pool_scoreRequest"/>
+		<output message="tns:System.HAGroup.get_pool_scoreResponse"/>
+	</operation>
+	<operation name="add_trunk">
+	<documentation>
+ Adds trunks to a set of high availability groups.  Each trunk's
+ score contributes to the total score for its high availability
+ group.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.add_trunkRequest"/>
+		<output message="tns:System.HAGroup.add_trunkResponse"/>
+	</operation>
+	<operation name="remove_trunk">
+	<documentation>
+ Removes trunks from a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.remove_trunkRequest"/>
+		<output message="tns:System.HAGroup.remove_trunkResponse"/>
+	</operation>
+	<operation name="remove_all_trunks">
+	<documentation>
+ Removes all trunks from a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.remove_all_trunksRequest"/>
+		<output message="tns:System.HAGroup.remove_all_trunksResponse"/>
+	</operation>
+	<operation name="get_trunk">
+	<documentation>
+ Gets the trunks in a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_trunkRequest"/>
+		<output message="tns:System.HAGroup.get_trunkResponse"/>
+	</operation>
+	<operation name="set_trunk_attribute">
+	<documentation>
+ Sets the attribute used for scoring a set of trunks in a set of
+ high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.set_trunk_attributeRequest"/>
+		<output message="tns:System.HAGroup.set_trunk_attributeResponse"/>
+	</operation>
+	<operation name="get_trunk_attribute">
+	<documentation>
+ Gets the attribute used for scoring a set of trunks in a set of
+ high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_trunk_attributeRequest"/>
+		<output message="tns:System.HAGroup.get_trunk_attributeResponse"/>
+	</operation>
+	<operation name="set_trunk_weight">
+	<documentation>
+ Sets the proportional weight of a trunk's score in the total score
+ for a set of trunks in a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.set_trunk_weightRequest"/>
+		<output message="tns:System.HAGroup.set_trunk_weightResponse"/>
+	</operation>
+	<operation name="get_trunk_weight">
+	<documentation>
+ Gets the proportional weight of a trunk's score in the total score
+ for a set of trunks in a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_trunk_weightRequest"/>
+		<output message="tns:System.HAGroup.get_trunk_weightResponse"/>
+	</operation>
+	<operation name="set_trunk_attribute_threshold">
+	<documentation>
+ Sets the value of the scoring attribute below which a trunk's
+ contribution to the total score is zero for a set of trunks in a
+ set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.set_trunk_attribute_thresholdRequest"/>
+		<output message="tns:System.HAGroup.set_trunk_attribute_thresholdResponse"/>
+	</operation>
+	<operation name="get_trunk_attribute_threshold">
+	<documentation>
+ Gets the value of the scoring attribute below which a trunk's
+ contribution to the total score is zero for a set of trunks in a
+ set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_trunk_attribute_thresholdRequest"/>
+		<output message="tns:System.HAGroup.get_trunk_attribute_thresholdResponse"/>
+	</operation>
+	<operation name="get_trunk_attribute_value">
+	<documentation>
+ Gets the current value of the scoring attribute for a set of trunks
+ for a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_trunk_attribute_valueRequest"/>
+		<output message="tns:System.HAGroup.get_trunk_attribute_valueResponse"/>
+	</operation>
+	<operation name="get_trunk_score">
+	<documentation>
+ Gets the current score for a set of trunks for a set of high
+ availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_trunk_scoreRequest"/>
+		<output message="tns:System.HAGroup.get_trunk_scoreResponse"/>
+	</operation>
+	<operation name="add_cluster">
+	<documentation>
+ Adds clusters to a set of high availability groups.  Each cluster's
+ score contributes to the total score for its high availability
+ group.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.add_clusterRequest"/>
+		<output message="tns:System.HAGroup.add_clusterResponse"/>
+	</operation>
+	<operation name="remove_cluster">
+	<documentation>
+ Removes clusters from a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.remove_clusterRequest"/>
+		<output message="tns:System.HAGroup.remove_clusterResponse"/>
+	</operation>
+	<operation name="remove_all_clusters">
+	<documentation>
+ Removes all clusters from a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.remove_all_clustersRequest"/>
+		<output message="tns:System.HAGroup.remove_all_clustersResponse"/>
+	</operation>
+	<operation name="get_cluster">
+	<documentation>
+ Gets the clusters used to contribute to the score of a set of high
+ availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_clusterRequest"/>
+		<output message="tns:System.HAGroup.get_clusterResponse"/>
+	</operation>
+	<operation name="set_cluster_attribute">
+	<documentation>
+ Sets the attribute used for scoring a set of clusters in a set of
+ high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.set_cluster_attributeRequest"/>
+		<output message="tns:System.HAGroup.set_cluster_attributeResponse"/>
+	</operation>
+	<operation name="get_cluster_attribute">
+	<documentation>
+ Gets the attribute used for scoring a set of clusters in a set of
+ high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_cluster_attributeRequest"/>
+		<output message="tns:System.HAGroup.get_cluster_attributeResponse"/>
+	</operation>
+	<operation name="set_cluster_weight">
+	<documentation>
+ Sets the proportional weight of a cluster's score in the total
+ score for a set of clusters in a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.set_cluster_weightRequest"/>
+		<output message="tns:System.HAGroup.set_cluster_weightResponse"/>
+	</operation>
+	<operation name="get_cluster_weight">
+	<documentation>
+ Gets the proportional weight of a cluster's score in the total
+ score for a set of clusters in a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_cluster_weightRequest"/>
+		<output message="tns:System.HAGroup.get_cluster_weightResponse"/>
+	</operation>
+	<operation name="set_cluster_attribute_threshold">
+	<documentation>
+ Sets the value of the scoring attribute below which a cluster's
+ contribution to the total score is zero for a set of cluster in a
+ set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.set_cluster_attribute_thresholdRequest"/>
+		<output message="tns:System.HAGroup.set_cluster_attribute_thresholdResponse"/>
+	</operation>
+	<operation name="get_cluster_attribute_threshold">
+	<documentation>
+ Gets the value of the scoring attribute below which a cluster's
+ contribution to the total score is zero for a set of clusters in a
+ set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_cluster_attribute_thresholdRequest"/>
+		<output message="tns:System.HAGroup.get_cluster_attribute_thresholdResponse"/>
+	</operation>
+	<operation name="get_cluster_attribute_value">
+	<documentation>
+ Gets the current value of the scoring attribute for a set of
+ clusters for a set of high availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_cluster_attribute_valueRequest"/>
+		<output message="tns:System.HAGroup.get_cluster_attribute_valueResponse"/>
+	</operation>
+	<operation name="get_cluster_score">
+	<documentation>
+ Gets the current score for a set of clusters for a set of high
+ availability groups.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_cluster_scoreRequest"/>
+		<output message="tns:System.HAGroup.get_cluster_scoreResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:System.HAGroup.get_versionRequest"/>
+		<output message="tns:System.HAGroup.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="System.HAGroupBinding" type="tns:System.HAGroupPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the names of all high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_high_availability_group">
+	<documentation>
+ Deletes a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_high_availability_groups">
+	<documentation>
+ Deletes all high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_enabled_state">
+	<documentation>
+ Sets whether the score for a group is enabled for use to determine
+ system failover for a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_enabled_state">
+	<documentation>
+ Gets whether the score for a group is enabled for use to determine
+ system failover for a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_active_score">
+	<documentation>
+ Sets the value added to the total score if the system is active for
+ a set of high availability groups.  If zero, the active system
+ scoring is disabled.  Otherwise, this value must range between 0
+ and 100.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_active_score">
+	<documentation>
+ Gets the value added to the total score if the system is active for
+ a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_total_score">
+	<documentation>
+ Gets the current total score for a set of high availablity groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of high availability groups.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_pool">
+	<documentation>
+ Adds pools to a set of high availability groups.  Each pool's score
+ contributes to the total score for its high availability group.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_pool">
+	<documentation>
+ Removes pools from a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_pools">
+	<documentation>
+ Removes all pools from a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_pool">
+	<documentation>
+ Gets the pools in a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_pool_attribute">
+	<documentation>
+ Sets the attribute used for scoring a set of pools in a set of high
+ availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_pool_attribute">
+	<documentation>
+ Gets the attribute used for scoring a set of pools in a set of high
+ availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_pool_weight">
+	<documentation>
+ Sets the proportional weight of a pool's score in the total score
+ for a set of pools in a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_pool_weight">
+	<documentation>
+ Gets the proportional weight of a pool's score in the total score
+ for a set of pools in a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_pool_attribute_threshold">
+	<documentation>
+ Sets the value of the scoring attribute below which a pool's
+ contribution to the total score is zero for a set of pools in a set
+ of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_pool_attribute_threshold">
+	<documentation>
+ Gets the value of the scoring attribute below which a pools'
+ contribution to the total score is zero for a set of pool in a set
+ of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_pool_attribute_value">
+	<documentation>
+ Gets the current value of the scoring attribute for a set of pools
+ in a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_pool_score">
+	<documentation>
+ Gets the current score for a set of pools for a set of high
+ availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_trunk">
+	<documentation>
+ Adds trunks to a set of high availability groups.  Each trunk's
+ score contributes to the total score for its high availability
+ group.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_trunk">
+	<documentation>
+ Removes trunks from a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_trunks">
+	<documentation>
+ Removes all trunks from a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_trunk">
+	<documentation>
+ Gets the trunks in a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_trunk_attribute">
+	<documentation>
+ Sets the attribute used for scoring a set of trunks in a set of
+ high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_trunk_attribute">
+	<documentation>
+ Gets the attribute used for scoring a set of trunks in a set of
+ high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_trunk_weight">
+	<documentation>
+ Sets the proportional weight of a trunk's score in the total score
+ for a set of trunks in a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_trunk_weight">
+	<documentation>
+ Gets the proportional weight of a trunk's score in the total score
+ for a set of trunks in a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_trunk_attribute_threshold">
+	<documentation>
+ Sets the value of the scoring attribute below which a trunk's
+ contribution to the total score is zero for a set of trunks in a
+ set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_trunk_attribute_threshold">
+	<documentation>
+ Gets the value of the scoring attribute below which a trunk's
+ contribution to the total score is zero for a set of trunks in a
+ set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_trunk_attribute_value">
+	<documentation>
+ Gets the current value of the scoring attribute for a set of trunks
+ for a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_trunk_score">
+	<documentation>
+ Gets the current score for a set of trunks for a set of high
+ availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_cluster">
+	<documentation>
+ Adds clusters to a set of high availability groups.  Each cluster's
+ score contributes to the total score for its high availability
+ group.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_cluster">
+	<documentation>
+ Removes clusters from a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_clusters">
+	<documentation>
+ Removes all clusters from a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cluster">
+	<documentation>
+ Gets the clusters used to contribute to the score of a set of high
+ availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_cluster_attribute">
+	<documentation>
+ Sets the attribute used for scoring a set of clusters in a set of
+ high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cluster_attribute">
+	<documentation>
+ Gets the attribute used for scoring a set of clusters in a set of
+ high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_cluster_weight">
+	<documentation>
+ Sets the proportional weight of a cluster's score in the total
+ score for a set of clusters in a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cluster_weight">
+	<documentation>
+ Gets the proportional weight of a cluster's score in the total
+ score for a set of clusters in a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_cluster_attribute_threshold">
+	<documentation>
+ Sets the value of the scoring attribute below which a cluster's
+ contribution to the total score is zero for a set of cluster in a
+ set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cluster_attribute_threshold">
+	<documentation>
+ Gets the value of the scoring attribute below which a cluster's
+ contribution to the total score is zero for a set of clusters in a
+ set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cluster_attribute_value">
+	<documentation>
+ Gets the current value of the scoring attribute for a set of
+ clusters for a set of high availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cluster_score">
+	<documentation>
+ Gets the current score for a set of clusters for a set of high
+ availability groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/HAGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/HAGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="System.HAGroup">
+	<documentation>
+ The high availability group is used to calculate a score to determine
+ the relative health of the system.  If enabled for a redundant pair,
+ the system with the highest score becomes the active system, everything
+ else being equal.
+
+ The score is calculated by measuring specified attributes for a set of
+ specified objects (the high availability group).  Each object
+ contributes to the total score according to its specified weight.  In
+ addition, a value can be added to the total score if a system is
+ currently active, a contribution which can prevent continual failovers
+ due to small fluctuations in the scores on both systems in the
+ redundant pair.
+
+ This interface configures all of the items listed above, plus retrieves
+ the current high availability score and scores for individual objects.
+
+        	</documentation>
+	<port name="System.HAGroupPort" binding="tns:System.HAGroupBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

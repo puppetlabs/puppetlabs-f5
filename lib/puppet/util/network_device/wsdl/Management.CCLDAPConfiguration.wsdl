@@ -1,0 +1,1637 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.CCLDAPConfiguration"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Management.LDAPSearchMethod">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LDAP_SEARCH_METHOD_USER">
+					<xsd:annotation>
+						<xsd:documentation>LDAP_SEARCH_METHOD_USER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LDAP_SEARCH_METHOD_CERTIFICATE">
+					<xsd:annotation>
+						<xsd:documentation>LDAP_SEARCH_METHOD_CERTIFICATE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LDAP_SEARCH_METHOD_CERTIFICATE_MAP">
+					<xsd:annotation>
+						<xsd:documentation>LDAP_SEARCH_METHOD_CERTIFICATE_MAP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.CCLDAPConfiguration.LDAPSearchOption">
+			<xsd:sequence>
+				<xsd:element name="search_method" type="tns:Management.LDAPSearchMethod"/>
+				<xsd:element name="search_base" type="xsd:string"/>
+				<xsd:element name="search_key" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.CCLDAPConfiguration.LDAPSearchOptionSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.CCLDAPConfiguration.LDAPSearchOption[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.CCLDAPConfiguration.get_listRequest">
+</message>
+<message name="Management.CCLDAPConfiguration.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.CCLDAPConfiguration.createRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="search_options" type="tns:Management.CCLDAPConfiguration.LDAPSearchOptionSequence"/>
+	<part name="servers" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.createResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.delete_configurationRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.delete_configurationResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.delete_all_configurationsRequest">
+</message>
+<message name="Management.CCLDAPConfiguration.delete_all_configurationsResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.set_cache_sizeRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="sizes" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.set_cache_sizeResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.get_cache_sizeRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.get_cache_sizeResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Management.CCLDAPConfiguration.set_cache_timeoutRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="timeouts" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.set_cache_timeoutResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.get_cache_timeoutRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.get_cache_timeoutResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Management.CCLDAPConfiguration.set_search_optionRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="options" type="tns:Management.CCLDAPConfiguration.LDAPSearchOptionSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.set_search_optionResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.get_search_optionRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.get_search_optionResponse">
+	<part name="return" type="tns:Management.CCLDAPConfiguration.LDAPSearchOptionSequence"/>
+</message>
+
+<message name="Management.CCLDAPConfiguration.set_user_classRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="user_classes" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.set_user_classResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.get_user_classRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.get_user_classResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.CCLDAPConfiguration.set_use_security_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.set_use_security_stateResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.get_use_security_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.get_use_security_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.CCLDAPConfiguration.set_admin_distinguished_nameRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="admin_dns" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.set_admin_distinguished_nameResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.get_admin_distinguished_nameRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.get_admin_distinguished_nameResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.CCLDAPConfiguration.set_admin_passwordRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="admin_passwords" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.set_admin_passwordResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.get_admin_passwordRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.get_admin_passwordResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.CCLDAPConfiguration.set_use_certificate_serial_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.set_use_certificate_serial_stateResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.get_use_certificate_serial_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.get_use_certificate_serial_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.CCLDAPConfiguration.set_group_baseRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="bases" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.set_group_baseResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.get_group_baseRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.get_group_baseResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.CCLDAPConfiguration.set_group_keyRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.set_group_keyResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.get_group_keyRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.get_group_keyResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.CCLDAPConfiguration.set_group_member_keyRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.set_group_member_keyResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.get_group_member_keyRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.get_group_member_keyResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.CCLDAPConfiguration.set_role_keyRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.set_role_keyResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.get_role_keyRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.get_role_keyResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.CCLDAPConfiguration.get_serverRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.get_serverResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Management.CCLDAPConfiguration.add_serverRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="servers" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.add_serverResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.remove_serverRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="servers" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.remove_serverResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.get_valid_groupRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.get_valid_groupResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Management.CCLDAPConfiguration.add_valid_groupRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="groups" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.add_valid_groupResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.remove_valid_groupRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="groups" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.remove_valid_groupResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.remove_all_valid_groupsRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.remove_all_valid_groupsResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.get_valid_roleRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.get_valid_roleResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Management.CCLDAPConfiguration.add_valid_roleRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="roles" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.add_valid_roleResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.remove_valid_roleRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="roles" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.remove_valid_roleResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.remove_all_valid_rolesRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.remove_all_valid_rolesResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.set_descriptionRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.set_descriptionResponse">
+</message>
+
+<message name="Management.CCLDAPConfiguration.get_descriptionRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CCLDAPConfiguration.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.CCLDAPConfiguration.get_versionRequest">
+</message>
+<message name="Management.CCLDAPConfiguration.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.CCLDAPConfigurationPortType">
+	<operation name="get_list">
+  	<documentation>
+ Gets a list of all Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.get_listRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates the specified Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.createRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.createResponse"/>
+	</operation>
+	<operation name="delete_configuration">
+	<documentation>
+ Deletes the specified Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.delete_configurationRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.delete_configurationResponse"/>
+	</operation>
+	<operation name="delete_all_configurations">
+	<documentation>
+ Deletes all Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.delete_all_configurationsRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.delete_all_configurationsResponse"/>
+	</operation>
+	<operation name="set_cache_size">
+	<documentation>
+ Sets the maximum LDAP response cache sizes in bytes. If zero is specified, the cache is not activated.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.set_cache_sizeRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.set_cache_sizeResponse"/>
+	</operation>
+	<operation name="get_cache_size">
+	<documentation>
+ Gets the maximum LDAP response cache sizes in bytes. If zero is specified, the cache is not activated.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.get_cache_sizeRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.get_cache_sizeResponse"/>
+	</operation>
+	<operation name="set_cache_timeout">
+	<documentation>
+ Sets the LDAP response cache timeout in seconds. If zero is specified, the cache is not activated.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.set_cache_timeoutRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.set_cache_timeoutResponse"/>
+	</operation>
+	<operation name="get_cache_timeout">
+	<documentation>
+ Gets the LDAP response cache timeout in seconds. If zero is specified, the cache is not activated.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.get_cache_timeoutRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.get_cache_timeoutResponse"/>
+	</operation>
+	<operation name="set_search_option">
+	<documentation>
+ Sets the search options used by the Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.set_search_optionRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.set_search_optionResponse"/>
+	</operation>
+	<operation name="get_search_option">
+	<documentation>
+ Gets the search options used by the Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.get_search_optionRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.get_search_optionResponse"/>
+	</operation>
+	<operation name="set_user_class">
+	<documentation>
+ Sets the user classes (only in certficate search method) for the specified Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.set_user_classRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.set_user_classResponse"/>
+	</operation>
+	<operation name="get_user_class">
+	<documentation>
+ Gets the user classes (only in certficate search method) for the specified Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.get_user_classRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.get_user_classResponse"/>
+	</operation>
+	<operation name="set_use_security_state">
+	<documentation>
+ Sets the states indicating whether SSL/TLS should be used when connecting to the LDAP server.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.set_use_security_stateRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.set_use_security_stateResponse"/>
+	</operation>
+	<operation name="get_use_security_state">
+	<documentation>
+ Gets the states indicating whether SSL/TLS should be used when connecting to the LDAP server.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.get_use_security_stateRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.get_use_security_stateResponse"/>
+	</operation>
+	<operation name="set_admin_distinguished_name">
+	<documentation>
+ Sets the admin DNs for the specified Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.set_admin_distinguished_nameRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.set_admin_distinguished_nameResponse"/>
+	</operation>
+	<operation name="get_admin_distinguished_name">
+	<documentation>
+ Gets the admin DNs for the specified Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.get_admin_distinguished_nameRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.get_admin_distinguished_nameResponse"/>
+	</operation>
+	<operation name="set_admin_password">
+	<documentation>
+ Sets the admin passwords for the specified Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.set_admin_passwordRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.set_admin_passwordResponse"/>
+	</operation>
+	<operation name="get_admin_password">
+	<documentation>
+ Gets the admin passwords for the specified Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.get_admin_passwordRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.get_admin_passwordResponse"/>
+	</operation>
+	<operation name="set_use_certificate_serial_state">
+	<documentation>
+ Sets the states indicating whether to use the client certificate's serial number instead of its 
+ subject (one or the other is always used in conjunction with the certificate issuer) when trying 
+ to match an entry in the certificate map subtree.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.set_use_certificate_serial_stateRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.set_use_certificate_serial_stateResponse"/>
+	</operation>
+	<operation name="get_use_certificate_serial_state">
+	<documentation>
+ Gets the states indicating whether to use the client certificate's serial number instead of its 
+ subject (one or the other is always used in conjunction with the certificate issuer) when trying 
+ to match an entry in the certificate map subtree.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.get_use_certificate_serial_stateRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.get_use_certificate_serial_stateResponse"/>
+	</operation>
+	<operation name="set_group_base">
+	<documentation>
+ Sets the search bases for the subtrees used by group searches.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.set_group_baseRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.set_group_baseResponse"/>
+	</operation>
+	<operation name="get_group_base">
+	<documentation>
+ Gets the search bases for the subtrees used by group searches.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.get_group_baseRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.get_group_baseResponse"/>
+	</operation>
+	<operation name="set_group_key">
+	<documentation>
+ Sets the names of the attributes in the LDAP database that identify the group names in the 
+ group subtrees.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.set_group_keyRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.set_group_keyResponse"/>
+	</operation>
+	<operation name="get_group_key">
+	<documentation>
+ Gets the names of the attributes in the LDAP database that identify the group names in the 
+ group subtrees.
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.get_group_keyRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.get_group_keyResponse"/>
+	</operation>
+	<operation name="set_group_member_key">
+	<documentation>
+ Sets the names of the attributes in the LDAP database that identify members (DNs) of a group.  
+ A typical key would be "member".  
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.set_group_member_keyRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.set_group_member_keyResponse"/>
+	</operation>
+	<operation name="get_group_member_key">
+	<documentation>
+ Gets the names of the attributes in the LDAP database that identify members (DNs) of a group.  
+ A typical key would be "member". 
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.get_group_member_keyRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.get_group_member_keyResponse"/>
+	</operation>
+	<operation name="set_role_key">
+	<documentation>
+ Sets the names of the attributes in the LDAP database that identify a user's authorization roles. 
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.set_role_keyRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.set_role_keyResponse"/>
+	</operation>
+	<operation name="get_role_key">
+	<documentation>
+ Gets the names of the attributes in the LDAP database that identify a user's authorization roles. 
+ 
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.get_role_keyRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.get_role_keyResponse"/>
+	</operation>
+	<operation name="get_server">
+	<documentation>
+ Gets the lists of servers the specified Client Certificate LDAP configurations are associated with.
+
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.get_serverRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.get_serverResponse"/>
+	</operation>
+	<operation name="add_server">
+	<documentation>
+ Adds/associates servers to the specified Client Certificate LDAP configurations.
+
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.add_serverRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.add_serverResponse"/>
+	</operation>
+	<operation name="remove_server">
+	<documentation>
+ Removes servers from the specified Client Certificate LDAP configurations.
+
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.remove_serverRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.remove_serverResponse"/>
+	</operation>
+	<operation name="get_valid_group">
+	<documentation>
+ Gets the lists of valid groups in which the clients must belong in order to be authorized 
+ (matches against the group key in the group subtree). A client only needs to be a member of 
+ a single specified group in order to be authorized.
+
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.get_valid_groupRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.get_valid_groupResponse"/>
+	</operation>
+	<operation name="add_valid_group">
+	<documentation>
+ Adds/associates lists of valid groups in which the clients must belong in order to be authorized 
+ (matches against the group key in the group subtree). A client only needs to be a member of 
+ a single specified group in order to be authorized.
+
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.add_valid_groupRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.add_valid_groupResponse"/>
+	</operation>
+	<operation name="remove_valid_group">
+	<documentation>
+ Removes lists of valid groups in which the clients must belong in order to be authorized 
+ (matches against the group key in the group subtree). A client only needs to be a member of 
+ a single specified group in order to be authorized.
+
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.remove_valid_groupRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.remove_valid_groupResponse"/>
+	</operation>
+	<operation name="remove_all_valid_groups">
+	<documentation>
+ Removes all lists of valid groups in which the clients must belong in order to be authorized 
+ (matches against the group key in the group subtree). A client only needs to be a member of 
+ a single specified group in order to be authorized.
+
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.remove_all_valid_groupsRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.remove_all_valid_groupsResponse"/>
+	</operation>
+	<operation name="get_valid_role">
+	<documentation>
+ Gets the lists of valid roles that the client must possess in order to be authorized.  
+ A client only needs to match of a single specified role in order to be authorized.
+
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.get_valid_roleRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.get_valid_roleResponse"/>
+	</operation>
+	<operation name="add_valid_role">
+	<documentation>
+ Adds/associates lists of valid roles that the client must possess in order to be authorized.  
+ A client only needs to match of a single specified role in order to be authorized.
+
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.add_valid_roleRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.add_valid_roleResponse"/>
+	</operation>
+	<operation name="remove_valid_role">
+	<documentation>
+ Removes lists of valid roles that the client must possess in order to be authorized.  
+ A client only needs to match of a single specified role in order to be authorized.
+
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.remove_valid_roleRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.remove_valid_roleResponse"/>
+	</operation>
+	<operation name="remove_all_valid_roles">
+	<documentation>
+ Removes all lists of valid roles that the client must possess in order to be authorized.  
+ A client only needs to match of a single specified role in order to be authorized.
+
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.remove_all_valid_rolesRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.remove_all_valid_rolesResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of Client Certificate LDAP
+ configurations.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.set_descriptionRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of Client Certificate LDAP
+ configurations.
+
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.get_descriptionRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Management.CCLDAPConfiguration.get_versionRequest"/>
+		<output message="tns:Management.CCLDAPConfiguration.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.CCLDAPConfigurationBinding" type="tns:Management.CCLDAPConfigurationPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates the specified Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_configuration">
+	<documentation>
+ Deletes the specified Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_configurations">
+	<documentation>
+ Deletes all Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_cache_size">
+	<documentation>
+ Sets the maximum LDAP response cache sizes in bytes. If zero is specified, the cache is not activated.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cache_size">
+	<documentation>
+ Gets the maximum LDAP response cache sizes in bytes. If zero is specified, the cache is not activated.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_cache_timeout">
+	<documentation>
+ Sets the LDAP response cache timeout in seconds. If zero is specified, the cache is not activated.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cache_timeout">
+	<documentation>
+ Gets the LDAP response cache timeout in seconds. If zero is specified, the cache is not activated.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_search_option">
+	<documentation>
+ Sets the search options used by the Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_search_option">
+	<documentation>
+ Gets the search options used by the Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_user_class">
+	<documentation>
+ Sets the user classes (only in certficate search method) for the specified Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_user_class">
+	<documentation>
+ Gets the user classes (only in certficate search method) for the specified Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_use_security_state">
+	<documentation>
+ Sets the states indicating whether SSL/TLS should be used when connecting to the LDAP server.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_use_security_state">
+	<documentation>
+ Gets the states indicating whether SSL/TLS should be used when connecting to the LDAP server.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_admin_distinguished_name">
+	<documentation>
+ Sets the admin DNs for the specified Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_admin_distinguished_name">
+	<documentation>
+ Gets the admin DNs for the specified Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_admin_password">
+	<documentation>
+ Sets the admin passwords for the specified Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_admin_password">
+	<documentation>
+ Gets the admin passwords for the specified Client Certificate LDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_use_certificate_serial_state">
+	<documentation>
+ Sets the states indicating whether to use the client certificate's serial number instead of its 
+ subject (one or the other is always used in conjunction with the certificate issuer) when trying 
+ to match an entry in the certificate map subtree.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_use_certificate_serial_state">
+	<documentation>
+ Gets the states indicating whether to use the client certificate's serial number instead of its 
+ subject (one or the other is always used in conjunction with the certificate issuer) when trying 
+ to match an entry in the certificate map subtree.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_group_base">
+	<documentation>
+ Sets the search bases for the subtrees used by group searches.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_group_base">
+	<documentation>
+ Gets the search bases for the subtrees used by group searches.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_group_key">
+	<documentation>
+ Sets the names of the attributes in the LDAP database that identify the group names in the 
+ group subtrees.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_group_key">
+	<documentation>
+ Gets the names of the attributes in the LDAP database that identify the group names in the 
+ group subtrees.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_group_member_key">
+	<documentation>
+ Sets the names of the attributes in the LDAP database that identify members (DNs) of a group.  
+ A typical key would be "member".  
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_group_member_key">
+	<documentation>
+ Gets the names of the attributes in the LDAP database that identify members (DNs) of a group.  
+ A typical key would be "member". 
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_role_key">
+	<documentation>
+ Sets the names of the attributes in the LDAP database that identify a user's authorization roles. 
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_role_key">
+	<documentation>
+ Gets the names of the attributes in the LDAP database that identify a user's authorization roles. 
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_server">
+	<documentation>
+ Gets the lists of servers the specified Client Certificate LDAP configurations are associated with.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_server">
+	<documentation>
+ Adds/associates servers to the specified Client Certificate LDAP configurations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_server">
+	<documentation>
+ Removes servers from the specified Client Certificate LDAP configurations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_valid_group">
+	<documentation>
+ Gets the lists of valid groups in which the clients must belong in order to be authorized 
+ (matches against the group key in the group subtree). A client only needs to be a member of 
+ a single specified group in order to be authorized.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_valid_group">
+	<documentation>
+ Adds/associates lists of valid groups in which the clients must belong in order to be authorized 
+ (matches against the group key in the group subtree). A client only needs to be a member of 
+ a single specified group in order to be authorized.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_valid_group">
+	<documentation>
+ Removes lists of valid groups in which the clients must belong in order to be authorized 
+ (matches against the group key in the group subtree). A client only needs to be a member of 
+ a single specified group in order to be authorized.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_valid_groups">
+	<documentation>
+ Removes all lists of valid groups in which the clients must belong in order to be authorized 
+ (matches against the group key in the group subtree). A client only needs to be a member of 
+ a single specified group in order to be authorized.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_valid_role">
+	<documentation>
+ Gets the lists of valid roles that the client must possess in order to be authorized.  
+ A client only needs to match of a single specified role in order to be authorized.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_valid_role">
+	<documentation>
+ Adds/associates lists of valid roles that the client must possess in order to be authorized.  
+ A client only needs to match of a single specified role in order to be authorized.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_valid_role">
+	<documentation>
+ Removes lists of valid roles that the client must possess in order to be authorized.  
+ A client only needs to match of a single specified role in order to be authorized.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_valid_roles">
+	<documentation>
+ Removes all lists of valid roles that the client must possess in order to be authorized.  
+ A client only needs to match of a single specified role in order to be authorized.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of Client Certificate LDAP
+ configurations.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of Client Certificate LDAP
+ configurations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CCLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CCLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.CCLDAPConfiguration">
+	<documentation>
+ The CCLDAPConfiguration interface enables you to manage SSL Client Certificate LDAP PAM configuration.
+
+        	</documentation>
+	<port name="Management.CCLDAPConfigurationPort" binding="tns:Management.CCLDAPConfigurationBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

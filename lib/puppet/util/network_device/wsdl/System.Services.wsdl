@@ -1,0 +1,1054 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="System.Services"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="System.Services.SSHAccess">
+			<xsd:sequence>
+				<xsd:element name="state" type="tns:Common.EnabledState"/>
+				<xsd:element name="addresses" type="tns:Common.StringSequence"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="System.Services.ServiceType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="SERVICE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_ALERTD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_ALERTD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_BCM56XXD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_BCM56XXD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_BIG3D">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_BIG3D</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_BIG3DSHIM">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_BIG3DSHIM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_BIGD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_BIGD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_BIGDBD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_BIGDBD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_BIGSNMPD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_BIGSNMPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_CHMAND">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_CHMAND</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_CSSD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_CSSD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_EVENTD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_EVENTD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_FPDD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_FPDD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_HTTPD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_HTTPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_LACPD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_LACPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_MCPD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_MCPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_NAMED">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_NAMED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_NOKIASNMPD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_NOKIASNMPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_NTPD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_NTPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_OVERDOG">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_OVERDOG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_PVAD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_PVAD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_RADVD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_RADVD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_RMONSNMPD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_RMONSNMPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_SNMPD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_SNMPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_SOD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_SOD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_SSHD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_SSHD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_STATSD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_STATSD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_STPD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_STPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_SYSCALLD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_SYSCALLD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_SYSLOGD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_SYSLOGD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_TAMD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_TAMD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_TMM">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_TMM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_TMROUTED">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_TMROUTED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_TMSNMPD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_TMSNMPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_TOMCAT4">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_TOMCAT4</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_ZEBOSD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_ZEBOSD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_GTMD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_GTMD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_SUBSNMPD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_SUBSNMPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_ZRD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_ZRD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_ASM">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_ASM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_PVAC">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_PVAC</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_COMM_SRV">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_COMM_SRV</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_HDS_PRUNE">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_HDS_PRUNE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_TMZD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_TMZD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_WAICD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_WAICD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_CLUSTERD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_CLUSTERD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_CSYNCD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_CSYNCD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_LIND">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_LIND</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_WAMD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_WAMD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_DATASTOR">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_DATASTOR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_APD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_APD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_APMD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_APMD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_ACCTD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_ACCTD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_ACED">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_ACED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_DNSCACHED">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_DNSCACHED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_REWRITE">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_REWRITE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_WEBSSO">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_WEBSSO</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_EAM">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_EAM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_RBA">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_RBA</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_HTTPD_APM">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_HTTPD_APM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_MONPD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_MONPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_MYSQL">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_MYSQL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_LOGSTATD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_LOGSTATD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_LOGD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_LOGD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_WOCD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_WOCD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_WCCPD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_WCCPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_DEDUP_ADMIN">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_DEDUP_ADMIN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_WOCPLUGIN">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_WOCPLUGIN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_MD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_MD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_DPID">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_DPID</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_VCMPD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_VCMPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_ZXFRD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_ZXFRD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_CBRD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_CBRD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_ISTATSD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_ISTATSD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_LLDPD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_LLDPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_MERGED">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_MERGED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_NTLMCONNPOOL">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_NTLMCONNPOOL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_SCRIPTD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_SCRIPTD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_DEVMGMTD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_DEVMGMTD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_DISKEVENT">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_DISKEVENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_EMADMIND">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_EMADMIND</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_EMALERTD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_EMALERTD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_EMDEVICED">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_EMDEVICED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_EMFILED">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_EMFILED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_EMSTATSD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_EMSTATSD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_EMSNMPD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_EMSNMPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_SWIMD">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_SWIMD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="System.Services.ServiceStatus">
+			<xsd:sequence>
+				<xsd:element name="service" type="tns:System.Services.ServiceType"/>
+				<xsd:element name="status" type="tns:System.Services.ServiceStatusType"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="System.Services.ServiceStatusType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="SERVICE_STATUS_NOT_FOUND">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_STATUS_NOT_FOUND</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_STATUS_UP">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_STATUS_UP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_STATUS_DOWN">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_STATUS_DOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="System.Services.SSHAccess_v2">
+			<xsd:sequence>
+				<xsd:element name="state" type="tns:Common.EnabledState"/>
+				<xsd:element name="addresses" type="tns:Common.StringSequence"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="System.Services.ServiceTypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.Services.ServiceType[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="System.Services.ServiceStatusSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.Services.ServiceStatus[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.ULong">
+			<xsd:restriction base="xsd:long"/>
+		</xsd:simpleType>
+		<xsd:simpleType name="System.Services.ServiceAction">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="SERVICE_ACTION_START">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_ACTION_START</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_ACTION_STOP">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_ACTION_STOP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_ACTION_REINIT">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_ACTION_REINIT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_ACTION_RESTART">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_ACTION_RESTART</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_ACTION_ADD_TO_BOOT_LIST">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_ACTION_ADD_TO_BOOT_LIST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_ACTION_REMOVE_FROM_BOOT_LIST">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_ACTION_REMOVE_FROM_BOOT_LIST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_ACTION_ADD_TO_DEFAULT_LIST">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_ACTION_ADD_TO_DEFAULT_LIST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SERVICE_ACTION_REMOVE_FROM_DEFAULT_LIST">
+					<xsd:annotation>
+						<xsd:documentation>SERVICE_ACTION_REMOVE_FROM_DEFAULT_LIST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="System.Services.get_listRequest">
+</message>
+<message name="System.Services.get_listResponse">
+	<part name="return" type="tns:System.Services.ServiceTypeSequence"/>
+</message>
+
+<message name="System.Services.set_serviceRequest">
+	<part name="services" type="tns:System.Services.ServiceTypeSequence"/>
+	<part name="service_action" type="tns:System.Services.ServiceAction"/>
+</message>
+<message name="System.Services.set_serviceResponse">
+</message>
+
+<message name="System.Services.set_all_servicesRequest">
+	<part name="service_action" type="tns:System.Services.ServiceAction"/>
+</message>
+<message name="System.Services.set_all_servicesResponse">
+</message>
+
+<message name="System.Services.get_service_statusRequest">
+	<part name="services" type="tns:System.Services.ServiceTypeSequence"/>
+</message>
+<message name="System.Services.get_service_statusResponse">
+	<part name="return" type="tns:System.Services.ServiceStatusSequence"/>
+</message>
+
+<message name="System.Services.get_all_service_statusesRequest">
+</message>
+<message name="System.Services.get_all_service_statusesResponse">
+	<part name="return" type="tns:System.Services.ServiceStatusSequence"/>
+</message>
+
+<message name="System.Services.reboot_systemRequest">
+	<part name="seconds_to_reboot" type="xsd:long"/>
+</message>
+<message name="System.Services.reboot_systemResponse">
+</message>
+
+<message name="System.Services.get_ssh_accessRequest">
+</message>
+<message name="System.Services.get_ssh_accessResponse">
+	<part name="return" type="tns:System.Services.SSHAccess"/>
+</message>
+
+<message name="System.Services.set_ssh_accessRequest">
+	<part name="access" type="tns:System.Services.SSHAccess"/>
+</message>
+<message name="System.Services.set_ssh_accessResponse">
+</message>
+
+<message name="System.Services.get_ssh_access_v2Request">
+</message>
+<message name="System.Services.get_ssh_access_v2Response">
+	<part name="return" type="tns:System.Services.SSHAccess_v2"/>
+</message>
+
+<message name="System.Services.set_ssh_access_v2Request">
+	<part name="access" type="tns:System.Services.SSHAccess_v2"/>
+</message>
+<message name="System.Services.set_ssh_access_v2Response">
+</message>
+
+<message name="System.Services.get_versionRequest">
+</message>
+<message name="System.Services.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="System.ServicesPortType">
+	<operation name="get_list">
+ 	<documentation>
+ Gets a list of all services supported on this device.
+ 
+        	</documentation>
+		<input message="tns:System.Services.get_listRequest"/>
+		<output message="tns:System.Services.get_listResponse"/>
+	</operation>
+	<operation name="set_service">
+	<documentation>
+
+ Sets the action for the specified services to take. This method is asynchronous, meaning 
+ that the method may return before the requested action is completed.
+
+        	</documentation>
+		<input message="tns:System.Services.set_serviceRequest"/>
+		<output message="tns:System.Services.set_serviceResponse"/>
+	</operation>
+	<operation name="set_all_services">
+	<documentation>
+
+ Sets the action for all services to take. This method is asynchronous, meaning that
+ the method may return before the requested action is completed.
+ NOTE: For this method, the only valid values for service_action are:
+      SERVICE_ACTION_START
+      SERVICE_ACTION_STOP
+      SERVICE_ACTION_REINIT
+      SERVICE_ACTION_RESTART
+
+
+        	</documentation>
+		<input message="tns:System.Services.set_all_servicesRequest"/>
+		<output message="tns:System.Services.set_all_servicesResponse"/>
+	</operation>
+	<operation name="get_service_status">
+	<documentation>
+
+ Gets the statuses of the specified services
+
+        	</documentation>
+		<input message="tns:System.Services.get_service_statusRequest"/>
+		<output message="tns:System.Services.get_service_statusResponse"/>
+	</operation>
+	<operation name="get_all_service_statuses">
+	<documentation>
+
+ Determines whether the specified services are enabled or disabled on an ITCM appliance.
+
+        	</documentation>
+		<input message="tns:System.Services.get_all_service_statusesRequest"/>
+		<output message="tns:System.Services.get_all_service_statusesResponse"/>
+	</operation>
+	<operation name="reboot_system">
+	<documentation>
+
+ Reboots the system.  This method will reboot the system within specified number of seconds.
+ Once this method has been called, no further operations or requests should be sent to the 
+ Portal, and make sure all pending operations are completed before the reboot.
+
+        	</documentation>
+		<input message="tns:System.Services.reboot_systemRequest"/>
+		<output message="tns:System.Services.reboot_systemResponse"/>
+	</operation>
+	<operation name="get_ssh_access">
+	<documentation>
+ Note: This method is deprecated; please use get_ssh_access_v2
+ in new applications.
+
+ Gets the ssl service state and allowed addresses.
+
+ Please see note in SSHAccess regarding "no access" and
+ "all access".
+
+        	</documentation>
+		<input message="tns:System.Services.get_ssh_accessRequest"/>
+		<output message="tns:System.Services.get_ssh_accessResponse"/>
+	</operation>
+	<operation name="set_ssh_access">
+	<documentation>
+ Note: This method is deprecated; please use get_ssh_access_v2
+ in new applications.
+
+ Sets the ssl service state and allowed addresses.
+
+ Please see note in SSHAccess regarding "no access" and
+ "all access".
+
+        	</documentation>
+		<input message="tns:System.Services.set_ssh_accessRequest"/>
+		<output message="tns:System.Services.set_ssh_accessResponse"/>
+	</operation>
+	<operation name="get_ssh_access_v2">
+	<documentation>
+ Gets the ssl service state and allowed addresses.
+
+ Please see note in SSHAccess_v2 regarding "no access" and
+ "all access".
+
+        	</documentation>
+		<input message="tns:System.Services.get_ssh_access_v2Request"/>
+		<output message="tns:System.Services.get_ssh_access_v2Response"/>
+	</operation>
+	<operation name="set_ssh_access_v2">
+	<documentation>
+ Sets the ssl service state and allowed addresses.
+
+ Please see note in SSHAccess_v2 regarding "no access" and
+ "all access".
+
+        	</documentation>
+		<input message="tns:System.Services.set_ssh_access_v2Request"/>
+		<output message="tns:System.Services.set_ssh_access_v2Response"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:System.Services.get_versionRequest"/>
+		<output message="tns:System.Services.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="System.ServicesBinding" type="tns:System.ServicesPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all services supported on this device.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Services"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Services"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Services"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_service">
+	<documentation>
+
+ Sets the action for the specified services to take. This method is asynchronous, meaning 
+ that the method may return before the requested action is completed.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Services"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Services"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Services"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_all_services">
+	<documentation>
+
+ Sets the action for all services to take. This method is asynchronous, meaning that
+ the method may return before the requested action is completed.
+ NOTE: For this method, the only valid values for service_action are:
+      SERVICE_ACTION_START
+      SERVICE_ACTION_STOP
+      SERVICE_ACTION_REINIT
+      SERVICE_ACTION_RESTART
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Services"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Services"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Services"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_service_status">
+	<documentation>
+
+ Gets the statuses of the specified services
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Services"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Services"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Services"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_all_service_statuses">
+	<documentation>
+
+ Determines whether the specified services are enabled or disabled on an ITCM appliance.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Services"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Services"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Services"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="reboot_system">
+	<documentation>
+
+ Reboots the system.  This method will reboot the system within specified number of seconds.
+ Once this method has been called, no further operations or requests should be sent to the 
+ Portal, and make sure all pending operations are completed before the reboot.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Services"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Services"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Services"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ssh_access">
+	<documentation>
+ Note: This method is deprecated; please use get_ssh_access_v2
+ in new applications.
+
+ Gets the ssl service state and allowed addresses.
+
+ Please see note in SSHAccess regarding "no access" and
+ "all access".
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Services"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Services"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Services"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ssh_access">
+	<documentation>
+ Note: This method is deprecated; please use get_ssh_access_v2
+ in new applications.
+
+ Sets the ssl service state and allowed addresses.
+
+ Please see note in SSHAccess regarding "no access" and
+ "all access".
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Services"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Services"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Services"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ssh_access_v2">
+	<documentation>
+ Gets the ssl service state and allowed addresses.
+
+ Please see note in SSHAccess_v2 regarding "no access" and
+ "all access".
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Services"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Services"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Services"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ssh_access_v2">
+	<documentation>
+ Sets the ssl service state and allowed addresses.
+
+ Please see note in SSHAccess_v2 regarding "no access" and
+ "all access".
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Services"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Services"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Services"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Services"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Services"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Services"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="System.Services">
+	<documentation>
+
+ The Services interface enables you to manage the various
+ supported services on the device, such as SSHD, HTTPD, NTPD,
+ and SOD.
+
+ Note: this interface exposes internal workings of the system,
+ hence, the ability for you to interact with a given service
+ over time as the product changes is not guaranteed.
+
+ This interface does not support transactions.
+
+        	</documentation>
+	<port name="System.ServicesPort" binding="tns:System.ServicesBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

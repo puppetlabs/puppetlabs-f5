@@ -1,0 +1,1129 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="ASM.WebApplication"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="ASM.ApplyLearning">
+			<xsd:sequence>
+				<xsd:element name="type" type="tns:ASM.ApplyLearningType"/>
+				<xsd:element name="policy_name" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.WebApplicationLanguageSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.WebApplicationLanguage[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="ASM.ApplyLearningType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="APPLY_LEARNING_ALL_POLICIES">
+					<xsd:annotation>
+						<xsd:documentation>APPLY_LEARNING_ALL_POLICIES</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="APPLY_LEARNING_ACTIVE_POLICY">
+					<xsd:annotation>
+						<xsd:documentation>APPLY_LEARNING_ACTIVE_POLICY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="APPLY_LEARNING_SPECIFIC_POLICY">
+					<xsd:annotation>
+						<xsd:documentation>APPLY_LEARNING_SPECIFIC_POLICY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="ASM.PolicyTemplateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.PolicyTemplate[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.BooleanSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:boolean[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.ULong">
+			<xsd:restriction base="xsd:long"/>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="ASM.WebApplicationLanguage">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LANGUAGE_UNDEFINED">
+					<xsd:annotation>
+						<xsd:documentation>LANGUAGE_UNDEFINED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="UNICODE_UTF_8">
+					<xsd:annotation>
+						<xsd:documentation>UNICODE_UTF_8</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="WESTERN_EUROPEAN_ISO_8859_1">
+					<xsd:annotation>
+						<xsd:documentation>WESTERN_EUROPEAN_ISO_8859_1</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="WESTERN_EUROPEAN_WINDOWS_1252">
+					<xsd:annotation>
+						<xsd:documentation>WESTERN_EUROPEAN_WINDOWS_1252</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="WESTERN_EUROPEAN_ISO_8859_15">
+					<xsd:annotation>
+						<xsd:documentation>WESTERN_EUROPEAN_ISO_8859_15</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CENTRAL_EUROPEAN_ISO_8859_2">
+					<xsd:annotation>
+						<xsd:documentation>CENTRAL_EUROPEAN_ISO_8859_2</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CENTRAL_EUROPEAN_WINDOWS_1250">
+					<xsd:annotation>
+						<xsd:documentation>CENTRAL_EUROPEAN_WINDOWS_1250</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SOUTH_EUROPEAN_ISO_8859_3">
+					<xsd:annotation>
+						<xsd:documentation>SOUTH_EUROPEAN_ISO_8859_3</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="GREEK_ISO_8859_7">
+					<xsd:annotation>
+						<xsd:documentation>GREEK_ISO_8859_7</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="GREEK_WINDOWS_1253">
+					<xsd:annotation>
+						<xsd:documentation>GREEK_WINDOWS_1253</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="NORDIC_ISO_8859_10">
+					<xsd:annotation>
+						<xsd:documentation>NORDIC_ISO_8859_10</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CYRILLIC_WINDOWS_1251">
+					<xsd:annotation>
+						<xsd:documentation>CYRILLIC_WINDOWS_1251</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CYRILLIC_KOI8_R">
+					<xsd:annotation>
+						<xsd:documentation>CYRILLIC_KOI8_R</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CYRILLIC_ISO_8859_5">
+					<xsd:annotation>
+						<xsd:documentation>CYRILLIC_ISO_8859_5</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ROMANIAN_ISO_8859_16">
+					<xsd:annotation>
+						<xsd:documentation>ROMANIAN_ISO_8859_16</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="BALTIC_ISO_8859_4">
+					<xsd:annotation>
+						<xsd:documentation>BALTIC_ISO_8859_4</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="BALTIC_ISO_8859_13">
+					<xsd:annotation>
+						<xsd:documentation>BALTIC_ISO_8859_13</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="BALTIC_WINDOWS_1257">
+					<xsd:annotation>
+						<xsd:documentation>BALTIC_WINDOWS_1257</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HEBREW_WINDOWS_1255">
+					<xsd:annotation>
+						<xsd:documentation>HEBREW_WINDOWS_1255</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HEBREW_ISO_8859_8">
+					<xsd:annotation>
+						<xsd:documentation>HEBREW_ISO_8859_8</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="JAPANESE_SHIFT_JIS">
+					<xsd:annotation>
+						<xsd:documentation>JAPANESE_SHIFT_JIS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="JAPANESE_EUC_JP">
+					<xsd:annotation>
+						<xsd:documentation>JAPANESE_EUC_JP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="KOREAN_EUC_KR">
+					<xsd:annotation>
+						<xsd:documentation>KOREAN_EUC_KR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CHINESE_BIG5">
+					<xsd:annotation>
+						<xsd:documentation>CHINESE_BIG5</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CHINESE_GB2312">
+					<xsd:annotation>
+						<xsd:documentation>CHINESE_GB2312</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="THAI_CP874">
+					<xsd:annotation>
+						<xsd:documentation>THAI_CP874</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ARABIC_ISO_8859_6">
+					<xsd:annotation>
+						<xsd:documentation>ARABIC_ISO_8859_6</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CHINESE_GBK">
+					<xsd:annotation>
+						<xsd:documentation>CHINESE_GBK</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CHINESE_GB18030">
+					<xsd:annotation>
+						<xsd:documentation>CHINESE_GB18030</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="ASM.PolicyTemplate">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="POLICY_TEMPLATE_EMPTY">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_EMPTY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_SHAREPOINT_2007_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_SHAREPOINT_2007_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_SHAREPOINT_2007_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_SHAREPOINT_2007_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_OWA_EXCHANGE_2003_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_OWA_EXCHANGE_2003_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_OWA_EXCHANGE_2003_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_OWA_EXCHANGE_2003_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_ORACLE_APPLICATIONS_11I_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_ORACLE_APPLICATIONS_11I_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_ORACLE_APPLICATIONS_11I_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_ORACLE_APPLICATIONS_11I_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_LOTUSDOMINO_6_5_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_LOTUSDOMINO_6_5_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_LOTUSDOMINO_6_5_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_LOTUSDOMINO_6_5_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_OWA_EXCHANGE_2007_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_OWA_EXCHANGE_2007_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_OWA_EXCHANGE_2007_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_OWA_EXCHANGE_2007_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_SAP_NETWEAVER_7_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_SAP_NETWEAVER_7_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_SAP_NETWEAVER_7_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_SAP_NETWEAVER_7_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_RAPID_DEPLOYMENT_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_RAPID_DEPLOYMENT_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_RAPID_DEPLOYMENT_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_RAPID_DEPLOYMENT_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_PEOPLESOFT_PORTAL_9_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_PEOPLESOFT_PORTAL_9_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_PEOPLESOFT_PORTAL_9_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_PEOPLESOFT_PORTAL_9_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_ORACLE_10G_PORTAL_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_ORACLE_10G_PORTAL_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_ORACLE_10G_PORTAL_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_ORACLE_10G_PORTAL_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_SHAREPOINT_2003_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_SHAREPOINT_2003_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_SHAREPOINT_2003_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_SHAREPOINT_2003_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_ACTIVESYNC_V1_0_V2_0_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_ACTIVESYNC_V1_0_V2_0_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_ACTIVESYNC_V1_0_V2_0_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_ACTIVESYNC_V1_0_V2_0_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_OWA_EXCHANGE_2007_WITH_ACTIVESYNC_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_OWA_EXCHANGE_2007_WITH_ACTIVESYNC_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_OWA_EXCHANGE_2007_WITH_ACTIVESYNC_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_OWA_EXCHANGE_2007_WITH_ACTIVESYNC_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_OWA_EXCHANGE_2003_WITH_ACTIVESYNC_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_OWA_EXCHANGE_2003_WITH_ACTIVESYNC_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_OWA_EXCHANGE_2003_WITH_ACTIVESYNC_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_OWA_EXCHANGE_2003_WITH_ACTIVESYNC_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_WHITEHAT_SENTINEL_BASELINE">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_WHITEHAT_SENTINEL_BASELINE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_OWA_EXCHANGE_2010_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_OWA_EXCHANGE_2010_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_OWA_EXCHANGE_2010_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_OWA_EXCHANGE_2010_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_SHAREPOINT_2010_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_SHAREPOINT_2010_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_SHAREPOINT_2010_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_SHAREPOINT_2010_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_RAPID_DEPLOYMENT">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_RAPID_DEPLOYMENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_RAPID_DEPLOYMENT_PB">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_RAPID_DEPLOYMENT_PB</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="ASM.ApplyLearningSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.ApplyLearning[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="ASM.WebApplication.get_listRequest">
+</message>
+<message name="ASM.WebApplication.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="ASM.WebApplication.delete_all_non_active_policiesRequest">
+	<part name="webapp_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.WebApplication.delete_all_non_active_policiesResponse">
+</message>
+
+<message name="ASM.WebApplication.delete_all_disabled_webappsRequest">
+</message>
+<message name="ASM.WebApplication.delete_all_disabled_webappsResponse">
+</message>
+
+<message name="ASM.WebApplication.set_languageRequest">
+	<part name="webapp_names" type="tns:Common.StringSequence"/>
+	<part name="languages" type="tns:ASM.WebApplicationLanguageSequence"/>
+</message>
+<message name="ASM.WebApplication.set_languageResponse">
+</message>
+
+<message name="ASM.WebApplication.get_languageRequest">
+	<part name="webapp_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.WebApplication.get_languageResponse">
+	<part name="return" type="tns:ASM.WebApplicationLanguageSequence"/>
+</message>
+
+<message name="ASM.WebApplication.set_apply_learningRequest">
+	<part name="webapp_names" type="tns:Common.StringSequence"/>
+	<part name="settings" type="tns:ASM.ApplyLearningSequence"/>
+</message>
+<message name="ASM.WebApplication.set_apply_learningResponse">
+</message>
+
+<message name="ASM.WebApplication.get_apply_learningRequest">
+	<part name="webapp_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.WebApplication.get_apply_learningResponse">
+	<part name="return" type="tns:ASM.ApplyLearningSequence"/>
+</message>
+
+<message name="ASM.WebApplication.set_active_policyRequest">
+	<part name="webapp_names" type="tns:Common.StringSequence"/>
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.WebApplication.set_active_policyResponse">
+</message>
+
+<message name="ASM.WebApplication.get_active_policyRequest">
+	<part name="webapp_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.WebApplication.get_active_policyResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="ASM.WebApplication.get_policy_listRequest">
+	<part name="webapp_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.WebApplication.get_policy_listResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="ASM.WebApplication.get_enabled_stateRequest">
+	<part name="webapp_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.WebApplication.get_enabled_stateResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="ASM.WebApplication.delete_webappRequest">
+	<part name="webapp_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.WebApplication.delete_webappResponse">
+</message>
+
+<message name="ASM.WebApplication.set_logging_profileRequest">
+	<part name="webapp_names" type="tns:Common.StringSequence"/>
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.WebApplication.set_logging_profileResponse">
+</message>
+
+<message name="ASM.WebApplication.get_logging_profileRequest">
+	<part name="webapp_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.WebApplication.get_logging_profileResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="ASM.WebApplication.reconfigureRequest">
+	<part name="webapp_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.WebApplication.reconfigureResponse">
+</message>
+
+<message name="ASM.WebApplication.set_language_extendedRequest">
+	<part name="webapp_names" type="tns:Common.StringSequence"/>
+	<part name="languages" type="tns:ASM.WebApplicationLanguageSequence"/>
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="policy_template_names" type="tns:ASM.PolicyTemplateSequence"/>
+	<part name="timeout" type="xsd:long"/>
+</message>
+<message name="ASM.WebApplication.set_language_extendedResponse">
+</message>
+
+<message name="ASM.WebApplication.set_language_extended_template_namesRequest">
+	<part name="webapp_names" type="tns:Common.StringSequence"/>
+	<part name="languages" type="tns:ASM.WebApplicationLanguageSequence"/>
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="policy_template_names" type="tns:Common.StringSequence"/>
+	<part name="timeout" type="xsd:long"/>
+</message>
+<message name="ASM.WebApplication.set_language_extended_template_namesResponse">
+</message>
+
+<message name="ASM.WebApplication.get_versionRequest">
+</message>
+<message name="ASM.WebApplication.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="ASM.WebApplicationPortType">
+	<operation name="get_list">
+      	<documentation>
+ Gets a list of all HTTP classes.
+ 
+        	</documentation>
+		<input message="tns:ASM.WebApplication.get_listRequest"/>
+		<output message="tns:ASM.WebApplication.get_listResponse"/>
+	</operation>
+	<operation name="delete_all_non_active_policies">
+	<documentation>
+ Deletes all non-active policies for HTTP classes. The active policy will not be deleted.
+ 
+ As of v11.1.0, all offline policies will be deleted. HTTP class names will be ignored.
+
+        	</documentation>
+		<input message="tns:ASM.WebApplication.delete_all_non_active_policiesRequest"/>
+		<output message="tns:ASM.WebApplication.delete_all_non_active_policiesResponse"/>
+	</operation>
+	<operation name="delete_all_disabled_webapps">
+	<documentation>
+ Deletes all disabled HTTP classes.
+ The corresponding HTTP Class profiles are not deleted.
+
+        	</documentation>
+		<input message="tns:ASM.WebApplication.delete_all_disabled_webappsRequest"/>
+		<output message="tns:ASM.WebApplication.delete_all_disabled_webappsResponse"/>
+	</operation>
+	<operation name="set_language">
+	<documentation>
+ Set the language for the specified HTTP classes.
+ Note that the language can only be set once for an HTTP class.
+ 
+        	</documentation>
+		<input message="tns:ASM.WebApplication.set_languageRequest"/>
+		<output message="tns:ASM.WebApplication.set_languageResponse"/>
+	</operation>
+	<operation name="get_language">
+	<documentation>
+ Gets the language for the specified HTTP classes.
+ 
+
+        	</documentation>
+		<input message="tns:ASM.WebApplication.get_languageRequest"/>
+		<output message="tns:ASM.WebApplication.get_languageResponse"/>
+	</operation>
+	<operation name="set_apply_learning">
+	<documentation>
+ This method has been deprecated.
+ Set the "apply learning" for the specified HTTP classes.
+ 
+        	</documentation>
+		<input message="tns:ASM.WebApplication.set_apply_learningRequest"/>
+		<output message="tns:ASM.WebApplication.set_apply_learningResponse"/>
+	</operation>
+	<operation name="get_apply_learning">
+	<documentation>
+ This method has been deprecated.
+ Get the "apply learning" for the specified HTTP classes.
+ 
+        	</documentation>
+		<input message="tns:ASM.WebApplication.get_apply_learningRequest"/>
+		<output message="tns:ASM.WebApplication.get_apply_learningResponse"/>
+	</operation>
+	<operation name="set_active_policy">
+	<documentation>
+ Set the active policy for the specified HTTP classes.
+ This applies the specified policy to the enforcer.
+ 
+        	</documentation>
+		<input message="tns:ASM.WebApplication.set_active_policyRequest"/>
+		<output message="tns:ASM.WebApplication.set_active_policyResponse"/>
+	</operation>
+	<operation name="get_active_policy">
+	<documentation>
+ Get the active policy for the specified HTTP classes.
+ 
+        	</documentation>
+		<input message="tns:ASM.WebApplication.get_active_policyRequest"/>
+		<output message="tns:ASM.WebApplication.get_active_policyResponse"/>
+	</operation>
+	<operation name="get_policy_list">
+	<documentation>
+ Returns a list of the policies associated with the specified HTTP class.
+ 
+        	</documentation>
+		<input message="tns:ASM.WebApplication.get_policy_listRequest"/>
+		<output message="tns:ASM.WebApplication.get_policy_listResponse"/>
+	</operation>
+	<operation name="get_enabled_state">
+	<documentation>
+ Returns the enabled flag of specified HTTP class.
+ 
+        	</documentation>
+		<input message="tns:ASM.WebApplication.get_enabled_stateRequest"/>
+		<output message="tns:ASM.WebApplication.get_enabled_stateResponse"/>
+	</operation>
+	<operation name="delete_webapp">
+	<documentation>
+ Deletes the specified HTTP classes. Only disabled HTTP classes can be deleted.
+ The corresponding HTTP Class profiles are not deleted.
+
+        	</documentation>
+		<input message="tns:ASM.WebApplication.delete_webappRequest"/>
+		<output message="tns:ASM.WebApplication.delete_webappResponse"/>
+	</operation>
+	<operation name="set_logging_profile">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate Security log profile,
+ which is assigned to VS, so logging profile is not associated with ASM directly.
+
+ Set the logging profile for the specified HTTP classes.
+
+        	</documentation>
+		<input message="tns:ASM.WebApplication.set_logging_profileRequest"/>
+		<output message="tns:ASM.WebApplication.set_logging_profileResponse"/>
+	</operation>
+	<operation name="get_logging_profile">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate Security log profile,
+ which is assigned to VS, so logging profile is not associated with ASM directly.
+
+ Get the logging profile for the specified HTTP classes.
+
+        	</documentation>
+		<input message="tns:ASM.WebApplication.get_logging_profileRequest"/>
+		<output message="tns:ASM.WebApplication.get_logging_profileResponse"/>
+	</operation>
+	<operation name="reconfigure">
+	<documentation>
+ Reconfigures the specified HTTP classes. This resets all properties of the HTTP class and its active security policy.
+ 
+
+        	</documentation>
+		<input message="tns:ASM.WebApplication.reconfigureRequest"/>
+		<output message="tns:ASM.WebApplication.reconfigureResponse"/>
+	</operation>
+	<operation name="set_language_extended">
+	<documentation>
+ Configures the specified HTTP classes in one-step.  
+ For each HTTP class:
+ sets the language 
+ adds a policy created from the specified template
+ sets the policy active
+ removes the original default policy
+
+        	</documentation>
+		<input message="tns:ASM.WebApplication.set_language_extendedRequest"/>
+		<output message="tns:ASM.WebApplication.set_language_extendedResponse"/>
+	</operation>
+	<operation name="set_language_extended_template_names">
+	<documentation>
+ Confugures the specified HTTP classes in one-step.
+ For each HTTP class:
+ sets the language
+ adds a policy created from the specified template (specified by icontrol_name)
+ sets the policy active
+ removes the original default policy
+
+        	</documentation>
+		<input message="tns:ASM.WebApplication.set_language_extended_template_namesRequest"/>
+		<output message="tns:ASM.WebApplication.set_language_extended_template_namesResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+
+        	</documentation>
+		<input message="tns:ASM.WebApplication.get_versionRequest"/>
+		<output message="tns:ASM.WebApplication.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="ASM.WebApplicationBinding" type="tns:ASM.WebApplicationPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all HTTP classes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/WebApplication"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_non_active_policies">
+	<documentation>
+ Deletes all non-active policies for HTTP classes. The active policy will not be deleted.
+ 
+ As of v11.1.0, all offline policies will be deleted. HTTP class names will be ignored.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/WebApplication"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_disabled_webapps">
+	<documentation>
+ Deletes all disabled HTTP classes.
+ The corresponding HTTP Class profiles are not deleted.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/WebApplication"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_language">
+	<documentation>
+ Set the language for the specified HTTP classes.
+ Note that the language can only be set once for an HTTP class.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/WebApplication"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_language">
+	<documentation>
+ Gets the language for the specified HTTP classes.
+ 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/WebApplication"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_apply_learning">
+	<documentation>
+ This method has been deprecated.
+ Set the "apply learning" for the specified HTTP classes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/WebApplication"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_apply_learning">
+	<documentation>
+ This method has been deprecated.
+ Get the "apply learning" for the specified HTTP classes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/WebApplication"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_active_policy">
+	<documentation>
+ Set the active policy for the specified HTTP classes.
+ This applies the specified policy to the enforcer.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/WebApplication"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_active_policy">
+	<documentation>
+ Get the active policy for the specified HTTP classes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/WebApplication"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_policy_list">
+	<documentation>
+ Returns a list of the policies associated with the specified HTTP class.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/WebApplication"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_enabled_state">
+	<documentation>
+ Returns the enabled flag of specified HTTP class.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/WebApplication"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_webapp">
+	<documentation>
+ Deletes the specified HTTP classes. Only disabled HTTP classes can be deleted.
+ The corresponding HTTP Class profiles are not deleted.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/WebApplication"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_logging_profile">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate Security log profile,
+ which is assigned to VS, so logging profile is not associated with ASM directly.
+
+ Set the logging profile for the specified HTTP classes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/WebApplication"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_logging_profile">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate Security log profile,
+ which is assigned to VS, so logging profile is not associated with ASM directly.
+
+ Get the logging profile for the specified HTTP classes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/WebApplication"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="reconfigure">
+	<documentation>
+ Reconfigures the specified HTTP classes. This resets all properties of the HTTP class and its active security policy.
+ 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/WebApplication"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_language_extended">
+	<documentation>
+ Configures the specified HTTP classes in one-step.  
+ For each HTTP class:
+ sets the language 
+ adds a policy created from the specified template
+ sets the policy active
+ removes the original default policy
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/WebApplication"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_language_extended_template_names">
+	<documentation>
+ Confugures the specified HTTP classes in one-step.
+ For each HTTP class:
+ sets the language
+ adds a policy created from the specified template (specified by icontrol_name)
+ sets the policy active
+ removes the original default policy
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/WebApplication"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/WebApplication"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/WebApplication"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="ASM.WebApplication">
+	<documentation>
+ The WebApplication interface enables you to manipulate Application Security Policies (until v11.1.0, ASM Web Applications)
+ associated with HTTP Class profiles.
+
+ This interface does not support transactions.
+
+        	</documentation>
+	<port name="ASM.WebApplicationPort" binding="tns:ASM.WebApplicationBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

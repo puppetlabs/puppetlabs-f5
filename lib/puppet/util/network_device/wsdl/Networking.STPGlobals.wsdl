@@ -1,0 +1,796 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.STPGlobals"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Common.ULong">
+			<xsd:restriction base="xsd:long"/>
+		</xsd:simpleType>
+		<xsd:simpleType name="Networking.STPModeType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STP_MODE_TYPE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STP_MODE_TYPE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STP_MODE_TYPE_PASSTHROUGH">
+					<xsd:annotation>
+						<xsd:documentation>STP_MODE_TYPE_PASSTHROUGH</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STP_MODE_TYPE_STP">
+					<xsd:annotation>
+						<xsd:documentation>STP_MODE_TYPE_STP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STP_MODE_TYPE_RSTP">
+					<xsd:annotation>
+						<xsd:documentation>STP_MODE_TYPE_RSTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STP_MODE_TYPE_MSTP">
+					<xsd:annotation>
+						<xsd:documentation>STP_MODE_TYPE_MSTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.STPGlobals.set_modeRequest">
+	<part name="value" type="tns:Networking.STPModeType"/>
+</message>
+<message name="Networking.STPGlobals.set_modeResponse">
+</message>
+
+<message name="Networking.STPGlobals.get_modeRequest">
+</message>
+<message name="Networking.STPGlobals.get_modeResponse">
+	<part name="return" type="tns:Networking.STPModeType"/>
+</message>
+
+<message name="Networking.STPGlobals.set_forward_delayRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="Networking.STPGlobals.set_forward_delayResponse">
+</message>
+
+<message name="Networking.STPGlobals.get_forward_delayRequest">
+</message>
+<message name="Networking.STPGlobals.get_forward_delayResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="Networking.STPGlobals.set_hello_timeRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="Networking.STPGlobals.set_hello_timeResponse">
+</message>
+
+<message name="Networking.STPGlobals.get_hello_timeRequest">
+</message>
+<message name="Networking.STPGlobals.get_hello_timeResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="Networking.STPGlobals.set_maximum_ageRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="Networking.STPGlobals.set_maximum_ageResponse">
+</message>
+
+<message name="Networking.STPGlobals.get_maximum_ageRequest">
+</message>
+<message name="Networking.STPGlobals.get_maximum_ageResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="Networking.STPGlobals.set_transmit_holdRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="Networking.STPGlobals.set_transmit_holdResponse">
+</message>
+
+<message name="Networking.STPGlobals.get_transmit_holdRequest">
+</message>
+<message name="Networking.STPGlobals.get_transmit_holdResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="Networking.STPGlobals.set_maximum_hopRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="Networking.STPGlobals.set_maximum_hopResponse">
+</message>
+
+<message name="Networking.STPGlobals.get_maximum_hopRequest">
+</message>
+<message name="Networking.STPGlobals.get_maximum_hopResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="Networking.STPGlobals.set_configuration_identifierRequest">
+	<part name="value" type="xsd:string"/>
+</message>
+<message name="Networking.STPGlobals.set_configuration_identifierResponse">
+</message>
+
+<message name="Networking.STPGlobals.get_configuration_identifierRequest">
+</message>
+<message name="Networking.STPGlobals.get_configuration_identifierResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="Networking.STPGlobals.set_configuration_revisionRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="Networking.STPGlobals.set_configuration_revisionResponse">
+</message>
+
+<message name="Networking.STPGlobals.get_configuration_revisionRequest">
+</message>
+<message name="Networking.STPGlobals.get_configuration_revisionResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="Networking.STPGlobals.set_descriptionRequest">
+	<part name="description" type="xsd:string"/>
+</message>
+<message name="Networking.STPGlobals.set_descriptionResponse">
+</message>
+
+<message name="Networking.STPGlobals.get_descriptionRequest">
+</message>
+<message name="Networking.STPGlobals.get_descriptionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="Networking.STPGlobals.get_versionRequest">
+</message>
+<message name="Networking.STPGlobals.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.STPGlobalsPortType">
+	<operation name="set_mode">
+   	<documentation>
+ Sets the STP mode.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPGlobals.set_modeRequest"/>
+		<output message="tns:Networking.STPGlobals.set_modeResponse"/>
+	</operation>
+	<operation name="get_mode">
+	<documentation>
+ Gets the STP mode.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPGlobals.get_modeRequest"/>
+		<output message="tns:Networking.STPGlobals.get_modeResponse"/>
+	</operation>
+	<operation name="set_forward_delay">
+	<documentation>
+ Sets the forward delay parameter, which controls how long an interface was blocked from
+ forwarding network traffic after a reconfiguration of the spanning tree topology. The 
+ default value is 15 seconds, and the valid range is 4-30 seconds.  Note that this parameter
+ has no effect when the STP mode is RSPT or MSTP, as long as all bridges in the spanning tree
+ use the RSTP or MSTP protocol.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPGlobals.set_forward_delayRequest"/>
+		<output message="tns:Networking.STPGlobals.set_forward_delayResponse"/>
+	</operation>
+	<operation name="get_forward_delay">
+	<documentation>
+ Gets the forward delay parameter, which controls how long an interface was blocked from
+ forwarding network traffic after a reconfiguration of the spanning tree topology. The 
+ default value is 15 seconds, and the valid range is 4-30 seconds.  Note that this parameter
+ has no effect when the STP mode is RSPT or MSTP, as long as all bridges in the spanning tree
+ use the RSTP or MSTP protocol.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPGlobals.get_forward_delayRequest"/>
+		<output message="tns:Networking.STPGlobals.get_forward_delayResponse"/>
+	</operation>
+	<operation name="set_hello_time">
+	<documentation>
+ Sets the hello time, which is the time interval in seconds between the periodic 
+ transmissions that communicate spanning tree information to the adjacent bridges 
+ in the network. The default value is 2 seconds, and the valid range is 1-10 seconds.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPGlobals.set_hello_timeRequest"/>
+		<output message="tns:Networking.STPGlobals.set_hello_timeResponse"/>
+	</operation>
+	<operation name="get_hello_time">
+	<documentation>
+ Gets the hello time, which is the time interval in seconds between the periodic 
+ transmissions that communicate spanning tree information to the adjacent bridges 
+ in the network. The default value is 2 seconds, and the valid range is 1-10 seconds.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPGlobals.get_hello_timeRequest"/>
+		<output message="tns:Networking.STPGlobals.get_hello_timeResponse"/>
+	</operation>
+	<operation name="set_maximum_age">
+	<documentation>
+ Sets the maximum age parameter, which controls how long spanning tree information 
+ received from other bridges is considered valid.  The default value is 20 seconds,
+ and the valid range is 6-40 seconds.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPGlobals.set_maximum_ageRequest"/>
+		<output message="tns:Networking.STPGlobals.set_maximum_ageResponse"/>
+	</operation>
+	<operation name="get_maximum_age">
+	<documentation>
+ Gets the maximum age parameter, which controls how long spanning tree information 
+ received from other bridges is considered valid.  The default value is 20 seconds,
+ and the valid range is 6-40 seconds.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPGlobals.get_maximum_ageRequest"/>
+		<output message="tns:Networking.STPGlobals.get_maximum_ageResponse"/>
+	</operation>
+	<operation name="set_transmit_hold">
+	<documentation>
+ Sets the transmit hold count parameter, which is an absolute limit on the number of spanning 
+ tree protocol packets the BIG-IP may transmit on a port in any hello time interval.  This ensures
+ that the spanning tree packets will not unduly load the network even in unstable conditions.
+ The default value is 6 packets, and the valid range is 1-10 packets.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPGlobals.set_transmit_holdRequest"/>
+		<output message="tns:Networking.STPGlobals.set_transmit_holdResponse"/>
+	</operation>
+	<operation name="get_transmit_hold">
+	<documentation>
+ Gets the transmit hold count parameter, which is an absolute limit on the number of spanning 
+ tree protocol packets the BIG-IP may transmit on a port in any hello time interval.  This ensures
+ that the spanning tree packets will not unduly load the network even in unstable conditions.
+ The default value is 6 packets, and the valid range is 1-10 packets.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPGlobals.get_transmit_holdRequest"/>
+		<output message="tns:Networking.STPGlobals.get_transmit_holdResponse"/>
+	</operation>
+	<operation name="set_maximum_hop">
+	<documentation>
+ Sets the maximum hops an MSTP packet may travel before it is discarded.  It's used only when
+ the STP mode is MSTP, however, the user may set it in any STP mode.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPGlobals.set_maximum_hopRequest"/>
+		<output message="tns:Networking.STPGlobals.set_maximum_hopResponse"/>
+	</operation>
+	<operation name="get_maximum_hop">
+	<documentation>
+ Gets the maximum hops an MSTP packet may travel before it is discarded.  It's used only when
+ the STP mode is MSTP, however, the user may set it in any STP mode.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPGlobals.get_maximum_hopRequest"/>
+		<output message="tns:Networking.STPGlobals.get_maximum_hopResponse"/>
+	</operation>
+	<operation name="set_configuration_identifier">
+	<documentation>
+ Sets the configuration identifier name in a spanning tree region, used to identify a group 
+ of adjacent bridges with identical configuration name, configuration revision levels, and 
+ assignments of VLANs to spanning tree instances.  This setting is used only when the STP mode
+ is MSTP, however the user may set it in any STP mode.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPGlobals.set_configuration_identifierRequest"/>
+		<output message="tns:Networking.STPGlobals.set_configuration_identifierResponse"/>
+	</operation>
+	<operation name="get_configuration_identifier">
+	<documentation>
+ Gets the configuration identifier name in a spanning tree region, used to identify a group 
+ of adjacent bridges with identical configuration name, configuration revision levels, and 
+ assignments of VLANs to spanning tree instances.  This setting is used only when the STP mode
+ is MSTP, however the user may set it in any STP mode.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPGlobals.get_configuration_identifierRequest"/>
+		<output message="tns:Networking.STPGlobals.get_configuration_identifierResponse"/>
+	</operation>
+	<operation name="set_configuration_revision">
+	<documentation>
+ Sets the configuration revision level of the MSTP configuration.  It's used only when
+ the STP mode is MSTP, however, the user may set it in any STP mode.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPGlobals.set_configuration_revisionRequest"/>
+		<output message="tns:Networking.STPGlobals.set_configuration_revisionResponse"/>
+	</operation>
+	<operation name="get_configuration_revision">
+	<documentation>
+ Gets the configuration revision level of the MSTP configuration.  It's used only when
+ the STP mode is MSTP, however, the user may set it in any STP mode.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPGlobals.get_configuration_revisionRequest"/>
+		<output message="tns:Networking.STPGlobals.get_configuration_revisionResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the STP global description.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Networking.STPGlobals.set_descriptionRequest"/>
+		<output message="tns:Networking.STPGlobals.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the STP global description.
+
+        	</documentation>
+		<input message="tns:Networking.STPGlobals.get_descriptionRequest"/>
+		<output message="tns:Networking.STPGlobals.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.STPGlobals.get_versionRequest"/>
+		<output message="tns:Networking.STPGlobals.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.STPGlobalsBinding" type="tns:Networking.STPGlobalsPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="set_mode">
+	<documentation>
+ Sets the STP mode.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_mode">
+	<documentation>
+ Gets the STP mode.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_forward_delay">
+	<documentation>
+ Sets the forward delay parameter, which controls how long an interface was blocked from
+ forwarding network traffic after a reconfiguration of the spanning tree topology. The 
+ default value is 15 seconds, and the valid range is 4-30 seconds.  Note that this parameter
+ has no effect when the STP mode is RSPT or MSTP, as long as all bridges in the spanning tree
+ use the RSTP or MSTP protocol.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_forward_delay">
+	<documentation>
+ Gets the forward delay parameter, which controls how long an interface was blocked from
+ forwarding network traffic after a reconfiguration of the spanning tree topology. The 
+ default value is 15 seconds, and the valid range is 4-30 seconds.  Note that this parameter
+ has no effect when the STP mode is RSPT or MSTP, as long as all bridges in the spanning tree
+ use the RSTP or MSTP protocol.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_hello_time">
+	<documentation>
+ Sets the hello time, which is the time interval in seconds between the periodic 
+ transmissions that communicate spanning tree information to the adjacent bridges 
+ in the network. The default value is 2 seconds, and the valid range is 1-10 seconds.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_hello_time">
+	<documentation>
+ Gets the hello time, which is the time interval in seconds between the periodic 
+ transmissions that communicate spanning tree information to the adjacent bridges 
+ in the network. The default value is 2 seconds, and the valid range is 1-10 seconds.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_maximum_age">
+	<documentation>
+ Sets the maximum age parameter, which controls how long spanning tree information 
+ received from other bridges is considered valid.  The default value is 20 seconds,
+ and the valid range is 6-40 seconds.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_maximum_age">
+	<documentation>
+ Gets the maximum age parameter, which controls how long spanning tree information 
+ received from other bridges is considered valid.  The default value is 20 seconds,
+ and the valid range is 6-40 seconds.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_transmit_hold">
+	<documentation>
+ Sets the transmit hold count parameter, which is an absolute limit on the number of spanning 
+ tree protocol packets the BIG-IP may transmit on a port in any hello time interval.  This ensures
+ that the spanning tree packets will not unduly load the network even in unstable conditions.
+ The default value is 6 packets, and the valid range is 1-10 packets.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_transmit_hold">
+	<documentation>
+ Gets the transmit hold count parameter, which is an absolute limit on the number of spanning 
+ tree protocol packets the BIG-IP may transmit on a port in any hello time interval.  This ensures
+ that the spanning tree packets will not unduly load the network even in unstable conditions.
+ The default value is 6 packets, and the valid range is 1-10 packets.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_maximum_hop">
+	<documentation>
+ Sets the maximum hops an MSTP packet may travel before it is discarded.  It's used only when
+ the STP mode is MSTP, however, the user may set it in any STP mode.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_maximum_hop">
+	<documentation>
+ Gets the maximum hops an MSTP packet may travel before it is discarded.  It's used only when
+ the STP mode is MSTP, however, the user may set it in any STP mode.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_configuration_identifier">
+	<documentation>
+ Sets the configuration identifier name in a spanning tree region, used to identify a group 
+ of adjacent bridges with identical configuration name, configuration revision levels, and 
+ assignments of VLANs to spanning tree instances.  This setting is used only when the STP mode
+ is MSTP, however the user may set it in any STP mode.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_configuration_identifier">
+	<documentation>
+ Gets the configuration identifier name in a spanning tree region, used to identify a group 
+ of adjacent bridges with identical configuration name, configuration revision levels, and 
+ assignments of VLANs to spanning tree instances.  This setting is used only when the STP mode
+ is MSTP, however the user may set it in any STP mode.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_configuration_revision">
+	<documentation>
+ Sets the configuration revision level of the MSTP configuration.  It's used only when
+ the STP mode is MSTP, however, the user may set it in any STP mode.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_configuration_revision">
+	<documentation>
+ Gets the configuration revision level of the MSTP configuration.  It's used only when
+ the STP mode is MSTP, however, the user may set it in any STP mode.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the STP global description.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the STP global description.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.STPGlobals">
+	<documentation>
+ The STPGlobals interface enables you to work with global attributes used to configure STP (Spanning Tree Protocol).  
+
+        	</documentation>
+	<port name="Networking.STPGlobalsPort" binding="tns:Networking.STPGlobalsBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

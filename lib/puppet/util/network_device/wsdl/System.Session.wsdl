@@ -1,0 +1,993 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="System.Session"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="System.Session.ReturnedPath">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="PATH_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>PATH_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PATH_FULL">
+					<xsd:annotation>
+						<xsd:documentation>PATH_FULL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PATH_RELATIVE">
+					<xsd:annotation>
+						<xsd:documentation>PATH_RELATIVE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PATH_BARE">
+					<xsd:annotation>
+						<xsd:documentation>PATH_BARE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Common.ULong">
+			<xsd:restriction base="xsd:long"/>
+		</xsd:simpleType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="System.Session.get_session_identifierRequest">
+</message>
+<message name="System.Session.get_session_identifierResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="System.Session.set_session_timeoutRequest">
+	<part name="timeout" type="xsd:long"/>
+</message>
+<message name="System.Session.set_session_timeoutResponse">
+</message>
+
+<message name="System.Session.get_session_timeoutRequest">
+</message>
+<message name="System.Session.get_session_timeoutResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="System.Session.set_maximum_sessionsRequest">
+	<part name="sessions" type="xsd:long"/>
+</message>
+<message name="System.Session.set_maximum_sessionsResponse">
+</message>
+
+<message name="System.Session.get_maximum_sessionsRequest">
+</message>
+<message name="System.Session.get_maximum_sessionsResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="System.Session.start_transactionRequest">
+</message>
+<message name="System.Session.start_transactionResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="System.Session.submit_transactionRequest">
+</message>
+<message name="System.Session.submit_transactionResponse">
+</message>
+
+<message name="System.Session.rollback_transactionRequest">
+</message>
+<message name="System.Session.rollback_transactionResponse">
+</message>
+
+<message name="System.Session.set_transaction_timeoutRequest">
+	<part name="timeout" type="xsd:long"/>
+</message>
+<message name="System.Session.set_transaction_timeoutResponse">
+</message>
+
+<message name="System.Session.get_transaction_timeoutRequest">
+</message>
+<message name="System.Session.get_transaction_timeoutResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="System.Session.set_active_folderRequest">
+	<part name="folder" type="xsd:string"/>
+</message>
+<message name="System.Session.set_active_folderResponse">
+</message>
+
+<message name="System.Session.get_active_folderRequest">
+</message>
+<message name="System.Session.get_active_folderResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="System.Session.set_returned_pathRequest">
+	<part name="path" type="tns:System.Session.ReturnedPath"/>
+</message>
+<message name="System.Session.set_returned_pathResponse">
+</message>
+
+<message name="System.Session.get_returned_pathRequest">
+</message>
+<message name="System.Session.get_returned_pathResponse">
+	<part name="return" type="tns:System.Session.ReturnedPath"/>
+</message>
+
+<message name="System.Session.set_recursive_query_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="System.Session.set_recursive_query_stateResponse">
+</message>
+
+<message name="System.Session.get_recursive_query_stateRequest">
+</message>
+<message name="System.Session.get_recursive_query_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="System.Session.get_versionRequest">
+</message>
+<message name="System.Session.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="System.SessionPortType">
+	<operation name="get_session_identifier">
+  	<documentation>
+ Gets a new session identifier.
+
+ This identifier is a value which uniquely identifies a user
+ session.  Once retrieved by a client, it may be included in any
+ subsequent requests to notify the iControl portal that a specific
+ request should be executed in the context of the session associated
+ with that identifier. 
+
+ Use of this identifier is completely optional. If  it is not
+ included in an iControl request, the session key defaults to the
+ user name.  Note that this is even true if you have retrieved a
+ unique session identifier.  It is also possible to have more than
+ one such unique session identifier active at the same time.
+ However, it is important to understand that each session key,
+ whether the unique identifier or the default user name represent
+ distinct sessions.  Changing a session variable in one session does
+ not effect the variable in any other session.  On the other hand,
+ if different clients have the same session key and one changes a
+ session variable, the others will see it.  The important
+ distinction is not the client being run and not the user running
+ it, but the session key for each request. 
+
+ When used, this session identifier must be passed to the iControl
+ portal via either an HTTP header or a SOAP header element.  There
+ is no preference for which transport is used, as the portal will
+ pick up either.  The client is free to use whichever is easier to
+ work with in the client's SOAP package.  If for some reason,
+ conflicting values are set in the HTTP header and SOAP header
+ element, the SOAP header element value will take precedence. 
+
+ The HTTP header holding the session identifier is named
+ "X-IControl-Session".  If used, its value must be set to the text
+ representation of the session identifier.  Thus in the HTTP
+ request, the header would look like, e.g., X-iControl-Session: 14.
+ Most SOAP packages include a straightforward way to add an HTTP
+ header to the HTTP request, so reference your documentation. 
+
+ The SOAP header element is named "session".  If used, its value
+ must be a SOAP integer element holding the session identifier. If
+ this client is intended to work with older versions of iControl, be
+ aware that the mustUnderstand SOAP header element attribute must be
+ set to 0.  Reference your SOAP package documentation for details
+ for adding a SOAP header to a request.
+
+        	</documentation>
+		<input message="tns:System.Session.get_session_identifierRequest"/>
+		<output message="tns:System.Session.get_session_identifierResponse"/>
+	</operation>
+	<operation name="set_session_timeout">
+	<documentation>
+ Sets the session timeout.
+
+ The session timeout is the amount of time for which a user session
+ has not processed a request before it is marked as eligible for
+ deletion.  For a user session without a session identifier,
+ re-using an expired session will trigger the creation of a new user
+ session with the default session values.  For a user session with a
+ session identifier, re-using an expired session will result in an
+ error.
+
+ The session timeout is a global value, so it applies equally to all
+ user sessions.  A zero timeout means that only one request can be
+ handled per user session, effectively turning off sessions.  Only
+ administrators can set this value.
+
+        	</documentation>
+		<input message="tns:System.Session.set_session_timeoutRequest"/>
+		<output message="tns:System.Session.set_session_timeoutResponse"/>
+	</operation>
+	<operation name="get_session_timeout">
+	<documentation>
+ Gets the session timeout.
+
+        	</documentation>
+		<input message="tns:System.Session.get_session_timeoutRequest"/>
+		<output message="tns:System.Session.get_session_timeoutResponse"/>
+	</operation>
+	<operation name="set_maximum_sessions">
+	<documentation>
+ Sets the maximum number of concurrent user sessions.
+
+ A system could be attacked by creating an inordinate number of
+ iControl user sessions, eventually bringing the iControl portal (or
+ the system itself) to a crawl.  If iControl is already supporting
+ this number of user sessions, subsequent attempts to create a new
+ user sessions are rejected with an error.
+
+ If this limit is set to zero, the number of user sessions is
+ unlimited.  Only administrators can set this value.
+
+        	</documentation>
+		<input message="tns:System.Session.set_maximum_sessionsRequest"/>
+		<output message="tns:System.Session.set_maximum_sessionsResponse"/>
+	</operation>
+	<operation name="get_maximum_sessions">
+	<documentation>
+ Gets the maximum number of user sessions.
+
+        	</documentation>
+		<input message="tns:System.Session.get_maximum_sessionsRequest"/>
+		<output message="tns:System.Session.get_maximum_sessionsResponse"/>
+	</operation>
+	<operation name="start_transaction">
+	<documentation>
+ Start an iControl transaction, which combines the effects of a
+ number of iControl methods into a single atomic transaction.
+
+ Once an iControl client calls start_transaction, the handling of
+ subsequent iControl requests changes until the client submits or
+ rolls back the transaction, i.e. while the transaction is open.  It
+ is important to understand the characteristics of iControl requests
+ made in this mode.  iControl requests which modify the
+ configuration are submitted for subsequent execution.  The requests
+ do not affect the configuration at the time they are made.
+ iControl requests which query the configuration are executed
+ immediately and do not see the effects of a pending transaction.
+ iControl modify requests made outside a session with an open
+ transaction affect the configuration immediately and do not see
+ effects of any pending transactions.
+
+ A transaction remains open until submit_transaction or
+ rollback_transaction is called or until it is idle for too long.
+
+ Reporting errors also differ while a transaction is open.  Some
+ classes of errors (such as invalid arguments) are returned by the
+ method itself.  The context for these errors should thus be as
+ clear as without a transaction.  However, most errors will be
+ returned by the submit_transaction call.  Note that this can make
+ it difficult to determine which iControl method caused the error.
+ If an error occurs at any time during a transaction, the
+ transaction remains open, but is marked as errant.  When
+ submit_transaction is subsequently called, the transaction will
+ actually be deleted, as if rollback_transaction has been called.
+ Note that even if an error occurs, submit_transaction or
+ rollback_transaction still must be called to properly close it.
+
+ Not all interfaces and methods support transactions.  These methods
+ are processed per normal, i.e., executed immediately and not as
+ part of the transaction. The documentation includes a note for
+ those interfaces and methods which do not. 
+
+ The contents of pending transaction cannot be queried or modified.
+ Only one transaction can be open at the same time in a single
+ user session. 
+
+        	</documentation>
+		<input message="tns:System.Session.start_transactionRequest"/>
+		<output message="tns:System.Session.start_transactionResponse"/>
+	</operation>
+	<operation name="submit_transaction">
+	<documentation>
+ Submit the transaction for execution.
+
+ When called, all of the requests submitted since start_transaction
+ was called are committed to the configuration as a single atomic
+ transaction.  If all of the requests succeed, the configuration is
+ updated.  If any of the requests fail, the transaction as a whole
+ fails and the configuration remains unchanged. 
+
+ If an error is signaled, it may be from any of the submitted
+ requests.  Nothing outside the returned error message can indicate
+ which request triggered the error.  If no requests have been queued
+ in the transaction, nothing is done and no error is signaled.   If
+ no transaction is open, an error is signaled. 
+
+        	</documentation>
+		<input message="tns:System.Session.submit_transactionRequest"/>
+		<output message="tns:System.Session.submit_transactionResponse"/>
+	</operation>
+	<operation name="rollback_transaction">
+	<documentation>
+ Roll back the transaction.
+
+ When called, all of the requests submitted since start_transaction
+ was called are un-done.  The configuration will remain unchanged. 
+
+ If no transaction is open, an error is signaled.  If no requests
+ have been queued in the transaction, nothing is done and no error
+ is signaled. 
+
+        	</documentation>
+		<input message="tns:System.Session.rollback_transactionRequest"/>
+		<output message="tns:System.Session.rollback_transactionResponse"/>
+	</operation>
+	<operation name="set_transaction_timeout">
+	<documentation>
+ Sets the transaction timeout, the amount of time that an open
+ transaction can be inactive before it is marked for deletion.
+
+ This is effectively a lower limit, an inactive open transaction may
+ be open longer than that, though is effectively unusable after that
+ point.  Expiring transactions are logged.  The transaction timeout
+ is unique for each session.
+
+        	</documentation>
+		<input message="tns:System.Session.set_transaction_timeoutRequest"/>
+		<output message="tns:System.Session.set_transaction_timeoutResponse"/>
+	</operation>
+	<operation name="get_transaction_timeout">
+	<documentation>
+ Gets the transaction timeout.
+
+        	</documentation>
+		<input message="tns:System.Session.get_transaction_timeoutRequest"/>
+		<output message="tns:System.Session.get_transaction_timeoutResponse"/>
+	</operation>
+	<operation name="set_active_folder">
+	<documentation>
+ Sets the active folder.
+
+ Most configuration objects reside in folders (see the
+ Management::Folder interface), but continually specifying the full
+ path to name an object can be wearing.  For ease, an "active
+ folder" can be specified.  When creating or accessing objects and a
+ full object path is not specified (i.e., the object path does not
+ begin with a slash (/)), the active folder is prepended to the
+ object name.  Thus if the name for an object to be created is
+ specified as "repository-a" and the active folder is
+ /george/server, the full path for the created object is
+ /george/server/repository-a.  Note that relative paths are also
+ allowed in the object identifier, so that if the active folder is
+ /george/server and the given object identifier is
+ virtual/repository-a, then the full object path is
+ /george/server/virtual/repository-a.
+
+ The active folder may be the root folder (/), but that is only
+ usable when querying.
+
+ If for some reason, neither the currently active folder nor the
+ newly requested active folder exist, the currently active folder
+ will be set to the user's default folder.
+
+        	</documentation>
+		<input message="tns:System.Session.set_active_folderRequest"/>
+		<output message="tns:System.Session.set_active_folderResponse"/>
+	</operation>
+	<operation name="get_active_folder">
+	<documentation>
+ Gets the active folder.
+
+        	</documentation>
+		<input message="tns:System.Session.get_active_folderRequest"/>
+		<output message="tns:System.Session.get_active_folderResponse"/>
+	</operation>
+	<operation name="set_returned_path">
+	<documentation>
+ Sets the type of path information returned with object names.
+
+        	</documentation>
+		<input message="tns:System.Session.set_returned_pathRequest"/>
+		<output message="tns:System.Session.set_returned_pathResponse"/>
+	</operation>
+	<operation name="get_returned_path">
+	<documentation>
+ Gets the type of path information returned with object names.
+
+        	</documentation>
+		<input message="tns:System.Session.get_returned_pathRequest"/>
+		<output message="tns:System.Session.get_returned_pathResponse"/>
+	</operation>
+	<operation name="set_recursive_query_state">
+	<documentation>
+ Sets the state to recursively query the contents of the active
+ folder.
+
+ If not set, any query will return objects in the active folder
+ only.  If set, any query will return objects in the active folder,
+ plus objects in any sub-folders under that active folder no matter
+ how deeply nested.
+
+        	</documentation>
+		<input message="tns:System.Session.set_recursive_query_stateRequest"/>
+		<output message="tns:System.Session.set_recursive_query_stateResponse"/>
+	</operation>
+	<operation name="get_recursive_query_state">
+	<documentation>
+ Gets the state to recursively query the contents of the active
+ folder.
+
+        	</documentation>
+		<input message="tns:System.Session.get_recursive_query_stateRequest"/>
+		<output message="tns:System.Session.get_recursive_query_stateResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:System.Session.get_versionRequest"/>
+		<output message="tns:System.Session.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="System.SessionBinding" type="tns:System.SessionPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_session_identifier">
+	<documentation>
+ Gets a new session identifier.
+
+ This identifier is a value which uniquely identifies a user
+ session.  Once retrieved by a client, it may be included in any
+ subsequent requests to notify the iControl portal that a specific
+ request should be executed in the context of the session associated
+ with that identifier. 
+
+ Use of this identifier is completely optional. If  it is not
+ included in an iControl request, the session key defaults to the
+ user name.  Note that this is even true if you have retrieved a
+ unique session identifier.  It is also possible to have more than
+ one such unique session identifier active at the same time.
+ However, it is important to understand that each session key,
+ whether the unique identifier or the default user name represent
+ distinct sessions.  Changing a session variable in one session does
+ not effect the variable in any other session.  On the other hand,
+ if different clients have the same session key and one changes a
+ session variable, the others will see it.  The important
+ distinction is not the client being run and not the user running
+ it, but the session key for each request. 
+
+ When used, this session identifier must be passed to the iControl
+ portal via either an HTTP header or a SOAP header element.  There
+ is no preference for which transport is used, as the portal will
+ pick up either.  The client is free to use whichever is easier to
+ work with in the client's SOAP package.  If for some reason,
+ conflicting values are set in the HTTP header and SOAP header
+ element, the SOAP header element value will take precedence. 
+
+ The HTTP header holding the session identifier is named
+ "X-IControl-Session".  If used, its value must be set to the text
+ representation of the session identifier.  Thus in the HTTP
+ request, the header would look like, e.g., X-iControl-Session: 14.
+ Most SOAP packages include a straightforward way to add an HTTP
+ header to the HTTP request, so reference your documentation. 
+
+ The SOAP header element is named "session".  If used, its value
+ must be a SOAP integer element holding the session identifier. If
+ this client is intended to work with older versions of iControl, be
+ aware that the mustUnderstand SOAP header element attribute must be
+ set to 0.  Reference your SOAP package documentation for details
+ for adding a SOAP header to a request.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Session"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_session_timeout">
+	<documentation>
+ Sets the session timeout.
+
+ The session timeout is the amount of time for which a user session
+ has not processed a request before it is marked as eligible for
+ deletion.  For a user session without a session identifier,
+ re-using an expired session will trigger the creation of a new user
+ session with the default session values.  For a user session with a
+ session identifier, re-using an expired session will result in an
+ error.
+
+ The session timeout is a global value, so it applies equally to all
+ user sessions.  A zero timeout means that only one request can be
+ handled per user session, effectively turning off sessions.  Only
+ administrators can set this value.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Session"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_session_timeout">
+	<documentation>
+ Gets the session timeout.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Session"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_maximum_sessions">
+	<documentation>
+ Sets the maximum number of concurrent user sessions.
+
+ A system could be attacked by creating an inordinate number of
+ iControl user sessions, eventually bringing the iControl portal (or
+ the system itself) to a crawl.  If iControl is already supporting
+ this number of user sessions, subsequent attempts to create a new
+ user sessions are rejected with an error.
+
+ If this limit is set to zero, the number of user sessions is
+ unlimited.  Only administrators can set this value.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Session"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_maximum_sessions">
+	<documentation>
+ Gets the maximum number of user sessions.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Session"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="start_transaction">
+	<documentation>
+ Start an iControl transaction, which combines the effects of a
+ number of iControl methods into a single atomic transaction.
+
+ Once an iControl client calls start_transaction, the handling of
+ subsequent iControl requests changes until the client submits or
+ rolls back the transaction, i.e. while the transaction is open.  It
+ is important to understand the characteristics of iControl requests
+ made in this mode.  iControl requests which modify the
+ configuration are submitted for subsequent execution.  The requests
+ do not affect the configuration at the time they are made.
+ iControl requests which query the configuration are executed
+ immediately and do not see the effects of a pending transaction.
+ iControl modify requests made outside a session with an open
+ transaction affect the configuration immediately and do not see
+ effects of any pending transactions.
+
+ A transaction remains open until submit_transaction or
+ rollback_transaction is called or until it is idle for too long.
+
+ Reporting errors also differ while a transaction is open.  Some
+ classes of errors (such as invalid arguments) are returned by the
+ method itself.  The context for these errors should thus be as
+ clear as without a transaction.  However, most errors will be
+ returned by the submit_transaction call.  Note that this can make
+ it difficult to determine which iControl method caused the error.
+ If an error occurs at any time during a transaction, the
+ transaction remains open, but is marked as errant.  When
+ submit_transaction is subsequently called, the transaction will
+ actually be deleted, as if rollback_transaction has been called.
+ Note that even if an error occurs, submit_transaction or
+ rollback_transaction still must be called to properly close it.
+
+ Not all interfaces and methods support transactions.  These methods
+ are processed per normal, i.e., executed immediately and not as
+ part of the transaction. The documentation includes a note for
+ those interfaces and methods which do not. 
+
+ The contents of pending transaction cannot be queried or modified.
+ Only one transaction can be open at the same time in a single
+ user session. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Session"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="submit_transaction">
+	<documentation>
+ Submit the transaction for execution.
+
+ When called, all of the requests submitted since start_transaction
+ was called are committed to the configuration as a single atomic
+ transaction.  If all of the requests succeed, the configuration is
+ updated.  If any of the requests fail, the transaction as a whole
+ fails and the configuration remains unchanged. 
+
+ If an error is signaled, it may be from any of the submitted
+ requests.  Nothing outside the returned error message can indicate
+ which request triggered the error.  If no requests have been queued
+ in the transaction, nothing is done and no error is signaled.   If
+ no transaction is open, an error is signaled. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Session"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="rollback_transaction">
+	<documentation>
+ Roll back the transaction.
+
+ When called, all of the requests submitted since start_transaction
+ was called are un-done.  The configuration will remain unchanged. 
+
+ If no transaction is open, an error is signaled.  If no requests
+ have been queued in the transaction, nothing is done and no error
+ is signaled. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Session"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_transaction_timeout">
+	<documentation>
+ Sets the transaction timeout, the amount of time that an open
+ transaction can be inactive before it is marked for deletion.
+
+ This is effectively a lower limit, an inactive open transaction may
+ be open longer than that, though is effectively unusable after that
+ point.  Expiring transactions are logged.  The transaction timeout
+ is unique for each session.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Session"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_transaction_timeout">
+	<documentation>
+ Gets the transaction timeout.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Session"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_active_folder">
+	<documentation>
+ Sets the active folder.
+
+ Most configuration objects reside in folders (see the
+ Management::Folder interface), but continually specifying the full
+ path to name an object can be wearing.  For ease, an "active
+ folder" can be specified.  When creating or accessing objects and a
+ full object path is not specified (i.e., the object path does not
+ begin with a slash (/)), the active folder is prepended to the
+ object name.  Thus if the name for an object to be created is
+ specified as "repository-a" and the active folder is
+ /george/server, the full path for the created object is
+ /george/server/repository-a.  Note that relative paths are also
+ allowed in the object identifier, so that if the active folder is
+ /george/server and the given object identifier is
+ virtual/repository-a, then the full object path is
+ /george/server/virtual/repository-a.
+
+ The active folder may be the root folder (/), but that is only
+ usable when querying.
+
+ If for some reason, neither the currently active folder nor the
+ newly requested active folder exist, the currently active folder
+ will be set to the user's default folder.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Session"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_active_folder">
+	<documentation>
+ Gets the active folder.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Session"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_returned_path">
+	<documentation>
+ Sets the type of path information returned with object names.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Session"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_returned_path">
+	<documentation>
+ Gets the type of path information returned with object names.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Session"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_recursive_query_state">
+	<documentation>
+ Sets the state to recursively query the contents of the active
+ folder.
+
+ If not set, any query will return objects in the active folder
+ only.  If set, any query will return objects in the active folder,
+ plus objects in any sub-folders under that active folder no matter
+ how deeply nested.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Session"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_recursive_query_state">
+	<documentation>
+ Gets the state to recursively query the contents of the active
+ folder.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Session"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Session"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Session"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="System.Session">
+	<documentation>
+ The Session interface allows you to manage iControl sessions.
+
+ An iControl session is a set of attributes which can persist across
+ iControl requests for a specific user.  These values currently include
+ the active folder and the transaction.
+
+ By default, a user session is identified by the user's name.  However,
+ finer grained control over user session can be gained via an explicit
+ session identifier, which can be requested by a user and included in
+ any subsequent requests which are intended to be included in that
+ session.
+
+ This interface does not support transactions.
+
+        	</documentation>
+	<port name="System.SessionPort" binding="tns:System.SessionBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

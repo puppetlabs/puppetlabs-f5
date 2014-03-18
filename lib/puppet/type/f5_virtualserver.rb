@@ -1,37 +1,9 @@
 Puppet::Type.newtype(:f5_virtualserver) do
 
-  # We can't use munge to sort array values.
-  class Puppet::Property::ArrayHash < Puppet::Property
-    def insync?(is)
-      # array of hashes doesn't support .sort
-      is.sort_by(&:hash) == @should.sort_by(&:hash)
-    end
-  end
-
-  # Normally puppet array order matters, in this case we don't care.
-  class Puppet::Property::UnorderArray < Puppet::Property
-    def insync?(is)
-      is.sort == @should.sort
-    end
-  end
-
   @doc = "Manage F5 virtualserver."
 
   apply_to_device
-
-  ensurable do
-    desc "Add or delete virtualserver."
-
-    defaultto(:present)
-
-    newvalue(:present) do
-      provider.create
-    end
-
-    newvalue(:absent) do
-      provider.destroy
-    end
-  end
+  ensurable
 
   newparam(:name, :namevar=>true) do
     desc "The virtual server name."
@@ -129,7 +101,7 @@ Puppet::Type.newtype(:f5_virtualserver) do
     end
   end
 
-  newproperty(:rule, :array_matching => :all, :parent => Puppet::Property::UnorderArray) do
+  newproperty(:rule, :array_matching => :all) do
     desc "The virtual server rules. The rule order isn't enforced since F5 API does not provide ability to reorder rules, use irule priority to dictate rule processing order"
 
     def should_to_s(newvalue)

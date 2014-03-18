@@ -1,0 +1,1906 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.ResourceRecord"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Management.SIGRecordSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SIGRecordSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.KEYRecordSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.KEYRecord[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.TXTRecordSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.TXTRecordSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.RRListSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.RRList[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SOARecord">
+			<xsd:sequence>
+				<xsd:element name="domain_name" type="xsd:string"/>
+				<xsd:element name="primary" type="xsd:string"/>
+				<xsd:element name="email" type="xsd:string"/>
+				<xsd:element name="serial" type="xsd:long"/>
+				<xsd:element name="refresh" type="xsd:long"/>
+				<xsd:element name="retry" type="xsd:long"/>
+				<xsd:element name="expire" type="xsd:long"/>
+				<xsd:element name="neg_ttl" type="xsd:long"/>
+				<xsd:element name="ttl" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.MXRecord">
+			<xsd:sequence>
+				<xsd:element name="domain_name" type="xsd:string"/>
+				<xsd:element name="preference" type="xsd:long"/>
+				<xsd:element name="mail" type="xsd:string"/>
+				<xsd:element name="ttl" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.HINFORecord">
+			<xsd:sequence>
+				<xsd:element name="domain_name" type="xsd:string"/>
+				<xsd:element name="hardware" type="xsd:string"/>
+				<xsd:element name="os" type="xsd:string"/>
+				<xsd:element name="ttl" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.DNAMERecordSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.DNAMERecord[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ViewZone">
+			<xsd:sequence>
+				<xsd:element name="view_name" type="xsd:string"/>
+				<xsd:element name="zone_name" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SOARecordSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SOARecord[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.PTRRecordSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.PTRRecordSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.KEYRecord">
+			<xsd:sequence>
+				<xsd:element name="domain_name" type="xsd:string"/>
+				<xsd:element name="flags" type="xsd:int"/>
+				<xsd:element name="protocol" type="xsd:int"/>
+				<xsd:element name="algorithm" type="xsd:int"/>
+				<xsd:element name="public_key" type="xsd:string"/>
+				<xsd:element name="ttl" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.NSRecord">
+			<xsd:sequence>
+				<xsd:element name="domain_name" type="xsd:string"/>
+				<xsd:element name="host_name" type="xsd:string"/>
+				<xsd:element name="ttl" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.AAAARecordSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.AAAARecord[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.A6RecordSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.A6RecordSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.MXRecordSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.MXRecordSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ARecordSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.ARecordSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SOARecordSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SOARecordSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.BooleanSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:boolean[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.PTRRecord">
+			<xsd:sequence>
+				<xsd:element name="ip_address" type="xsd:string"/>
+				<xsd:element name="dname" type="xsd:string"/>
+				<xsd:element name="ttl" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.KEYRecordSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.KEYRecordSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.HINFORecordSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.HINFORecordSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.NSRecordSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.NSRecordSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.AAAARecordSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.AAAARecordSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.HINFORecordSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.HINFORecord[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ARecord">
+			<xsd:sequence>
+				<xsd:element name="domain_name" type="xsd:string"/>
+				<xsd:element name="ip_address" type="xsd:string"/>
+				<xsd:element name="ttl" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SRVRecordSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SRVRecord[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ViewZoneSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.ViewZone[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.CNAMERecordSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.CNAMERecord[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SRVRecord">
+			<xsd:sequence>
+				<xsd:element name="domain_name" type="xsd:string"/>
+				<xsd:element name="priority" type="xsd:long"/>
+				<xsd:element name="weight" type="xsd:long"/>
+				<xsd:element name="port" type="xsd:long"/>
+				<xsd:element name="target" type="xsd:string"/>
+				<xsd:element name="ttl" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.CNAMERecord">
+			<xsd:sequence>
+				<xsd:element name="domain_name" type="xsd:string"/>
+				<xsd:element name="cname" type="xsd:string"/>
+				<xsd:element name="ttl" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SIGRecordSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SIGRecord[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.DNAMERecord">
+			<xsd:sequence>
+				<xsd:element name="label" type="xsd:string"/>
+				<xsd:element name="domain_name" type="xsd:string"/>
+				<xsd:element name="ttl" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.A6Record">
+			<xsd:sequence>
+				<xsd:element name="domain_name" type="xsd:string"/>
+				<xsd:element name="prefix_bits" type="xsd:int"/>
+				<xsd:element name="ip_address" type="xsd:string"/>
+				<xsd:element name="prefix_name" type="xsd:string"/>
+				<xsd:element name="ttl" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.A6RecordSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.A6Record[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.TXTRecordSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.TXTRecord[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.TXTRecord">
+			<xsd:sequence>
+				<xsd:element name="domain_name" type="xsd:string"/>
+				<xsd:element name="text" type="xsd:string"/>
+				<xsd:element name="ttl" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.PTRRecordSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.PTRRecord[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.RRList">
+			<xsd:sequence>
+				<xsd:element name="a_list" type="tns:Management.ARecordSequence"/>
+				<xsd:element name="ns_list" type="tns:Management.NSRecordSequence"/>
+				<xsd:element name="cname_list" type="tns:Management.CNAMERecordSequence"/>
+				<xsd:element name="soa_list" type="tns:Management.SOARecordSequence"/>
+				<xsd:element name="ptr_list" type="tns:Management.PTRRecordSequence"/>
+				<xsd:element name="hinfo_list" type="tns:Management.HINFORecordSequence"/>
+				<xsd:element name="mx_list" type="tns:Management.MXRecordSequence"/>
+				<xsd:element name="txt_list" type="tns:Management.TXTRecordSequence"/>
+				<xsd:element name="srv_list" type="tns:Management.SRVRecordSequence"/>
+				<xsd:element name="key_list" type="tns:Management.KEYRecordSequence"/>
+				<xsd:element name="sig_list" type="tns:Management.SIGRecordSequence"/>
+				<xsd:element name="nxt_list" type="tns:Management.NXTRecordSequence"/>
+				<xsd:element name="aaaa_list" type="tns:Management.AAAARecordSequence"/>
+				<xsd:element name="a6_list" type="tns:Management.A6RecordSequence"/>
+				<xsd:element name="dname_list" type="tns:Management.DNAMERecordSequence"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.NSRecordSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.NSRecord[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.AAAARecord">
+			<xsd:sequence>
+				<xsd:element name="domain_name" type="xsd:string"/>
+				<xsd:element name="ip_address" type="xsd:string"/>
+				<xsd:element name="ttl" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SRVRecordSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SRVRecordSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.MXRecordSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.MXRecord[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.NXTRecordSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.NXTRecordSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.NXTRecordSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.NXTRecord[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SIGRecord">
+			<xsd:sequence>
+				<xsd:element name="domain_name" type="xsd:string"/>
+				<xsd:element name="type_covered" type="xsd:int"/>
+				<xsd:element name="algorithm" type="xsd:int"/>
+				<xsd:element name="labels" type="xsd:int"/>
+				<xsd:element name="orig_ttl" type="xsd:long"/>
+				<xsd:element name="sig_expiration" type="xsd:string"/>
+				<xsd:element name="sig_inception" type="xsd:string"/>
+				<xsd:element name="key_tag" type="xsd:int"/>
+				<xsd:element name="signer_name" type="xsd:string"/>
+				<xsd:element name="signature" type="xsd:string"/>
+				<xsd:element name="ttl" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ARecordSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.ARecord[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.NXTRecord">
+			<xsd:sequence>
+				<xsd:element name="domain_name" type="xsd:string"/>
+				<xsd:element name="nxt_domain" type="xsd:string"/>
+				<xsd:element name="types" type="xsd:string"/>
+				<xsd:element name="ttl" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.CNAMERecordSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.CNAMERecordSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.DNAMERecordSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.DNAMERecordSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.ResourceRecord.get_rrsRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+</message>
+<message name="Management.ResourceRecord.get_rrsResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Management.ResourceRecord.get_rrs_detailedRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+</message>
+<message name="Management.ResourceRecord.get_rrs_detailedResponse">
+	<part name="return" type="tns:Management.RRListSequence"/>
+</message>
+
+<message name="Management.ResourceRecord.add_rrsRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="rr_lists" type="tns:Management.RRListSequence"/>
+	<part name="sync_ptrs" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="Management.ResourceRecord.add_rrsResponse">
+</message>
+
+<message name="Management.ResourceRecord.add_aRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="a_records" type="tns:Management.ARecordSequenceSequence"/>
+	<part name="sync_ptrs" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="Management.ResourceRecord.add_aResponse">
+</message>
+
+<message name="Management.ResourceRecord.add_cnameRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="cname_records" type="tns:Management.CNAMERecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.add_cnameResponse">
+</message>
+
+<message name="Management.ResourceRecord.add_hinfoRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="hinfo_records" type="tns:Management.HINFORecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.add_hinfoResponse">
+</message>
+
+<message name="Management.ResourceRecord.add_mxRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="mx_records" type="tns:Management.MXRecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.add_mxResponse">
+</message>
+
+<message name="Management.ResourceRecord.add_nsRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="ns_records" type="tns:Management.NSRecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.add_nsResponse">
+</message>
+
+<message name="Management.ResourceRecord.add_ptrRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="ptr_records" type="tns:Management.PTRRecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.add_ptrResponse">
+</message>
+
+<message name="Management.ResourceRecord.add_soaRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="soa_records" type="tns:Management.SOARecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.add_soaResponse">
+</message>
+
+<message name="Management.ResourceRecord.add_srvRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="srv_records" type="tns:Management.SRVRecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.add_srvResponse">
+</message>
+
+<message name="Management.ResourceRecord.add_txtRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="txt_records" type="tns:Management.TXTRecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.add_txtResponse">
+</message>
+
+<message name="Management.ResourceRecord.add_aaaaRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="aaaa_records" type="tns:Management.AAAARecordSequenceSequence"/>
+	<part name="sync_ptrs" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="Management.ResourceRecord.add_aaaaResponse">
+</message>
+
+<message name="Management.ResourceRecord.add_dnameRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="dname_records" type="tns:Management.DNAMERecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.add_dnameResponse">
+</message>
+
+<message name="Management.ResourceRecord.delete_aRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="a_records" type="tns:Management.ARecordSequenceSequence"/>
+	<part name="sync_ptrs" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="Management.ResourceRecord.delete_aResponse">
+</message>
+
+<message name="Management.ResourceRecord.delete_cnameRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="cname_records" type="tns:Management.CNAMERecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.delete_cnameResponse">
+</message>
+
+<message name="Management.ResourceRecord.delete_hinfoRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="hinfo_records" type="tns:Management.HINFORecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.delete_hinfoResponse">
+</message>
+
+<message name="Management.ResourceRecord.delete_mxRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="mx_records" type="tns:Management.MXRecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.delete_mxResponse">
+</message>
+
+<message name="Management.ResourceRecord.delete_nsRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="ns_records" type="tns:Management.NSRecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.delete_nsResponse">
+</message>
+
+<message name="Management.ResourceRecord.delete_ptrRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="ptr_records" type="tns:Management.PTRRecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.delete_ptrResponse">
+</message>
+
+<message name="Management.ResourceRecord.delete_soaRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="soa_records" type="tns:Management.SOARecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.delete_soaResponse">
+</message>
+
+<message name="Management.ResourceRecord.delete_srvRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="srv_records" type="tns:Management.SRVRecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.delete_srvResponse">
+</message>
+
+<message name="Management.ResourceRecord.delete_txtRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="txt_records" type="tns:Management.TXTRecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.delete_txtResponse">
+</message>
+
+<message name="Management.ResourceRecord.delete_keyRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="key_records" type="tns:Management.KEYRecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.delete_keyResponse">
+</message>
+
+<message name="Management.ResourceRecord.delete_sigRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="sig_records" type="tns:Management.SIGRecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.delete_sigResponse">
+</message>
+
+<message name="Management.ResourceRecord.delete_nxtRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="nxt_records" type="tns:Management.NXTRecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.delete_nxtResponse">
+</message>
+
+<message name="Management.ResourceRecord.delete_aaaaRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="aaaa_records" type="tns:Management.AAAARecordSequenceSequence"/>
+	<part name="sync_ptrs" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="Management.ResourceRecord.delete_aaaaResponse">
+</message>
+
+<message name="Management.ResourceRecord.delete_a6Request">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="a6_records" type="tns:Management.A6RecordSequenceSequence"/>
+	<part name="sync_ptrs" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="Management.ResourceRecord.delete_a6Response">
+</message>
+
+<message name="Management.ResourceRecord.delete_dnameRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="dname_records" type="tns:Management.DNAMERecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.delete_dnameResponse">
+</message>
+
+<message name="Management.ResourceRecord.update_aRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="old_records" type="tns:Management.ARecordSequenceSequence"/>
+	<part name="new_records" type="tns:Management.ARecordSequenceSequence"/>
+	<part name="sync_ptrs" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="Management.ResourceRecord.update_aResponse">
+</message>
+
+<message name="Management.ResourceRecord.update_cnameRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="old_records" type="tns:Management.CNAMERecordSequenceSequence"/>
+	<part name="new_records" type="tns:Management.CNAMERecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.update_cnameResponse">
+</message>
+
+<message name="Management.ResourceRecord.update_hinfoRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="old_records" type="tns:Management.HINFORecordSequenceSequence"/>
+	<part name="new_records" type="tns:Management.HINFORecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.update_hinfoResponse">
+</message>
+
+<message name="Management.ResourceRecord.update_mxRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="old_records" type="tns:Management.MXRecordSequenceSequence"/>
+	<part name="new_records" type="tns:Management.MXRecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.update_mxResponse">
+</message>
+
+<message name="Management.ResourceRecord.update_nsRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="old_records" type="tns:Management.NSRecordSequenceSequence"/>
+	<part name="new_records" type="tns:Management.NSRecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.update_nsResponse">
+</message>
+
+<message name="Management.ResourceRecord.update_ptrRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="old_records" type="tns:Management.PTRRecordSequenceSequence"/>
+	<part name="new_records" type="tns:Management.PTRRecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.update_ptrResponse">
+</message>
+
+<message name="Management.ResourceRecord.update_soaRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="old_records" type="tns:Management.SOARecordSequenceSequence"/>
+	<part name="new_records" type="tns:Management.SOARecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.update_soaResponse">
+</message>
+
+<message name="Management.ResourceRecord.update_srvRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="old_records" type="tns:Management.SRVRecordSequenceSequence"/>
+	<part name="new_records" type="tns:Management.SRVRecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.update_srvResponse">
+</message>
+
+<message name="Management.ResourceRecord.update_txtRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="old_records" type="tns:Management.TXTRecordSequenceSequence"/>
+	<part name="new_records" type="tns:Management.TXTRecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.update_txtResponse">
+</message>
+
+<message name="Management.ResourceRecord.update_aaaaRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="old_records" type="tns:Management.AAAARecordSequenceSequence"/>
+	<part name="new_records" type="tns:Management.AAAARecordSequenceSequence"/>
+	<part name="sync_ptrs" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="Management.ResourceRecord.update_aaaaResponse">
+</message>
+
+<message name="Management.ResourceRecord.update_dnameRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+	<part name="old_records" type="tns:Management.DNAMERecordSequenceSequence"/>
+	<part name="new_records" type="tns:Management.DNAMERecordSequenceSequence"/>
+</message>
+<message name="Management.ResourceRecord.update_dnameResponse">
+</message>
+
+<message name="Management.ResourceRecord.get_versionRequest">
+</message>
+<message name="Management.ResourceRecord.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.ResourceRecordPortType">
+	<operation name="get_rrs">
+       	<documentation>
+ Gets a list of resource records for a specified view/zone
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.get_rrsRequest"/>
+		<output message="tns:Management.ResourceRecord.get_rrsResponse"/>
+	</operation>
+	<operation name="get_rrs_detailed">
+	<documentation>
+ Gets a list of resource records for the specified view/zone information.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.get_rrs_detailedRequest"/>
+		<output message="tns:Management.ResourceRecord.get_rrs_detailedResponse"/>
+	</operation>
+	<operation name="add_rrs">
+	<documentation>
+ Adds a list of RRS to a view/zone
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.add_rrsRequest"/>
+		<output message="tns:Management.ResourceRecord.add_rrsResponse"/>
+	</operation>
+	<operation name="add_a">
+	<documentation>
+ Adds DNS "A" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.add_aRequest"/>
+		<output message="tns:Management.ResourceRecord.add_aResponse"/>
+	</operation>
+	<operation name="add_cname">
+	<documentation>
+ Adds DNS "CNAME" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.add_cnameRequest"/>
+		<output message="tns:Management.ResourceRecord.add_cnameResponse"/>
+	</operation>
+	<operation name="add_hinfo">
+	<documentation>
+ Adds  DNS "HINFO" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.add_hinfoRequest"/>
+		<output message="tns:Management.ResourceRecord.add_hinfoResponse"/>
+	</operation>
+	<operation name="add_mx">
+	<documentation>
+ Adds DNS "MX" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.add_mxRequest"/>
+		<output message="tns:Management.ResourceRecord.add_mxResponse"/>
+	</operation>
+	<operation name="add_ns">
+	<documentation>
+ Adds DNS "NS" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.add_nsRequest"/>
+		<output message="tns:Management.ResourceRecord.add_nsResponse"/>
+	</operation>
+	<operation name="add_ptr">
+	<documentation>
+ Adds DNS "PTR" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.add_ptrRequest"/>
+		<output message="tns:Management.ResourceRecord.add_ptrResponse"/>
+	</operation>
+	<operation name="add_soa">
+	<documentation>
+ Adds DNS "SOA" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.add_soaRequest"/>
+		<output message="tns:Management.ResourceRecord.add_soaResponse"/>
+	</operation>
+	<operation name="add_srv">
+	<documentation>
+ Adds DNS "SRV" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.add_srvRequest"/>
+		<output message="tns:Management.ResourceRecord.add_srvResponse"/>
+	</operation>
+	<operation name="add_txt">
+	<documentation>
+ Adds DNS "TXT" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.add_txtRequest"/>
+		<output message="tns:Management.ResourceRecord.add_txtResponse"/>
+	</operation>
+	<operation name="add_aaaa">
+	<documentation>
+ Adds DNS "AAAA" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.add_aaaaRequest"/>
+		<output message="tns:Management.ResourceRecord.add_aaaaResponse"/>
+	</operation>
+	<operation name="add_dname">
+	<documentation>
+ Adds DNS "DNAME" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.add_dnameRequest"/>
+		<output message="tns:Management.ResourceRecord.add_dnameResponse"/>
+	</operation>
+	<operation name="delete_a">
+	<documentation>
+ Deletes DNS "A" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.delete_aRequest"/>
+		<output message="tns:Management.ResourceRecord.delete_aResponse"/>
+	</operation>
+	<operation name="delete_cname">
+	<documentation>
+ Deletes DNS "CNAME" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.delete_cnameRequest"/>
+		<output message="tns:Management.ResourceRecord.delete_cnameResponse"/>
+	</operation>
+	<operation name="delete_hinfo">
+	<documentation>
+ Deletes DNS "HINFO" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.delete_hinfoRequest"/>
+		<output message="tns:Management.ResourceRecord.delete_hinfoResponse"/>
+	</operation>
+	<operation name="delete_mx">
+	<documentation>
+ Deletes DNS "MX" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.delete_mxRequest"/>
+		<output message="tns:Management.ResourceRecord.delete_mxResponse"/>
+	</operation>
+	<operation name="delete_ns">
+	<documentation>
+ Deletes DNS "NS" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.delete_nsRequest"/>
+		<output message="tns:Management.ResourceRecord.delete_nsResponse"/>
+	</operation>
+	<operation name="delete_ptr">
+	<documentation>
+ Deletes DNS "PTR" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.delete_ptrRequest"/>
+		<output message="tns:Management.ResourceRecord.delete_ptrResponse"/>
+	</operation>
+	<operation name="delete_soa">
+	<documentation>
+ Deletes DNS "SOA" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.delete_soaRequest"/>
+		<output message="tns:Management.ResourceRecord.delete_soaResponse"/>
+	</operation>
+	<operation name="delete_srv">
+	<documentation>
+ Deletes DNS "SRV" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.delete_srvRequest"/>
+		<output message="tns:Management.ResourceRecord.delete_srvResponse"/>
+	</operation>
+	<operation name="delete_txt">
+	<documentation>
+ Deletes DNS "TXT" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.delete_txtRequest"/>
+		<output message="tns:Management.ResourceRecord.delete_txtResponse"/>
+	</operation>
+	<operation name="delete_key">
+	<documentation>
+ Deletes DNS "KEY" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.delete_keyRequest"/>
+		<output message="tns:Management.ResourceRecord.delete_keyResponse"/>
+	</operation>
+	<operation name="delete_sig">
+	<documentation>
+ deletes DNS "SIG" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.delete_sigRequest"/>
+		<output message="tns:Management.ResourceRecord.delete_sigResponse"/>
+	</operation>
+	<operation name="delete_nxt">
+	<documentation>
+ deletes DNS "NXT" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.delete_nxtRequest"/>
+		<output message="tns:Management.ResourceRecord.delete_nxtResponse"/>
+	</operation>
+	<operation name="delete_aaaa">
+	<documentation>
+ Deletes DNS "AAAA" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.delete_aaaaRequest"/>
+		<output message="tns:Management.ResourceRecord.delete_aaaaResponse"/>
+	</operation>
+	<operation name="delete_a6">
+	<documentation>
+ deletes DNS "A6" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.delete_a6Request"/>
+		<output message="tns:Management.ResourceRecord.delete_a6Response"/>
+	</operation>
+	<operation name="delete_dname">
+	<documentation>
+ Deletes DNS "DNAME" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.delete_dnameRequest"/>
+		<output message="tns:Management.ResourceRecord.delete_dnameResponse"/>
+	</operation>
+	<operation name="update_a">
+	<documentation>
+ Updates or changes DNS "A" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.update_aRequest"/>
+		<output message="tns:Management.ResourceRecord.update_aResponse"/>
+	</operation>
+	<operation name="update_cname">
+	<documentation>
+ Updates or changes DNS "CNAME" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.update_cnameRequest"/>
+		<output message="tns:Management.ResourceRecord.update_cnameResponse"/>
+	</operation>
+	<operation name="update_hinfo">
+	<documentation>
+ Updates or changes DNS "HINFO" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.update_hinfoRequest"/>
+		<output message="tns:Management.ResourceRecord.update_hinfoResponse"/>
+	</operation>
+	<operation name="update_mx">
+	<documentation>
+ Updates or changes DNS "MX" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.update_mxRequest"/>
+		<output message="tns:Management.ResourceRecord.update_mxResponse"/>
+	</operation>
+	<operation name="update_ns">
+	<documentation>
+ Updates or changes DNS "NS" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.update_nsRequest"/>
+		<output message="tns:Management.ResourceRecord.update_nsResponse"/>
+	</operation>
+	<operation name="update_ptr">
+	<documentation>
+ Updates or changes DNS "PTR" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.update_ptrRequest"/>
+		<output message="tns:Management.ResourceRecord.update_ptrResponse"/>
+	</operation>
+	<operation name="update_soa">
+	<documentation>
+ Updates or changes DNS "SOA" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.update_soaRequest"/>
+		<output message="tns:Management.ResourceRecord.update_soaResponse"/>
+	</operation>
+	<operation name="update_srv">
+	<documentation>
+ Updates or changes DNS "SRV" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.update_srvRequest"/>
+		<output message="tns:Management.ResourceRecord.update_srvResponse"/>
+	</operation>
+	<operation name="update_txt">
+	<documentation>
+ Updates or changes DNS "TXT" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.update_txtRequest"/>
+		<output message="tns:Management.ResourceRecord.update_txtResponse"/>
+	</operation>
+	<operation name="update_aaaa">
+	<documentation>
+ Updates or changes DNS "AAAA" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.update_aaaaRequest"/>
+		<output message="tns:Management.ResourceRecord.update_aaaaResponse"/>
+	</operation>
+	<operation name="update_dname">
+	<documentation>
+ Updates or changes DNS "DNAME" Records.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.update_dnameRequest"/>
+		<output message="tns:Management.ResourceRecord.update_dnameResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Management.ResourceRecord.get_versionRequest"/>
+		<output message="tns:Management.ResourceRecord.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.ResourceRecordBinding" type="tns:Management.ResourceRecordPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_rrs">
+	<documentation>
+ Gets a list of resource records for a specified view/zone
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_rrs_detailed">
+	<documentation>
+ Gets a list of resource records for the specified view/zone information.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_rrs">
+	<documentation>
+ Adds a list of RRS to a view/zone
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_a">
+	<documentation>
+ Adds DNS "A" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_cname">
+	<documentation>
+ Adds DNS "CNAME" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_hinfo">
+	<documentation>
+ Adds  DNS "HINFO" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_mx">
+	<documentation>
+ Adds DNS "MX" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_ns">
+	<documentation>
+ Adds DNS "NS" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_ptr">
+	<documentation>
+ Adds DNS "PTR" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_soa">
+	<documentation>
+ Adds DNS "SOA" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_srv">
+	<documentation>
+ Adds DNS "SRV" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_txt">
+	<documentation>
+ Adds DNS "TXT" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_aaaa">
+	<documentation>
+ Adds DNS "AAAA" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_dname">
+	<documentation>
+ Adds DNS "DNAME" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_a">
+	<documentation>
+ Deletes DNS "A" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_cname">
+	<documentation>
+ Deletes DNS "CNAME" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_hinfo">
+	<documentation>
+ Deletes DNS "HINFO" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_mx">
+	<documentation>
+ Deletes DNS "MX" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_ns">
+	<documentation>
+ Deletes DNS "NS" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_ptr">
+	<documentation>
+ Deletes DNS "PTR" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_soa">
+	<documentation>
+ Deletes DNS "SOA" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_srv">
+	<documentation>
+ Deletes DNS "SRV" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_txt">
+	<documentation>
+ Deletes DNS "TXT" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_key">
+	<documentation>
+ Deletes DNS "KEY" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_sig">
+	<documentation>
+ deletes DNS "SIG" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_nxt">
+	<documentation>
+ deletes DNS "NXT" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_aaaa">
+	<documentation>
+ Deletes DNS "AAAA" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_a6">
+	<documentation>
+ deletes DNS "A6" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_dname">
+	<documentation>
+ Deletes DNS "DNAME" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="update_a">
+	<documentation>
+ Updates or changes DNS "A" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="update_cname">
+	<documentation>
+ Updates or changes DNS "CNAME" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="update_hinfo">
+	<documentation>
+ Updates or changes DNS "HINFO" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="update_mx">
+	<documentation>
+ Updates or changes DNS "MX" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="update_ns">
+	<documentation>
+ Updates or changes DNS "NS" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="update_ptr">
+	<documentation>
+ Updates or changes DNS "PTR" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="update_soa">
+	<documentation>
+ Updates or changes DNS "SOA" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="update_srv">
+	<documentation>
+ Updates or changes DNS "SRV" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="update_txt">
+	<documentation>
+ Updates or changes DNS "TXT" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="update_aaaa">
+	<documentation>
+ Updates or changes DNS "AAAA" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="update_dname">
+	<documentation>
+ Updates or changes DNS "DNAME" Records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ResourceRecord"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ResourceRecord"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.ResourceRecord">
+	<documentation> 
+ The ResourceRecord interface contains all the calls necessary for manipulating 
+ Resource Records: adding/deleting/updating
+
+ This interface does not support transactions.
+
+        	</documentation>
+	<port name="Management.ResourceRecordPort" binding="tns:Management.ResourceRecordBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

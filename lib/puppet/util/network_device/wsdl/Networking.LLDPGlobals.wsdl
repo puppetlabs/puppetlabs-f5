@@ -1,0 +1,590 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.LLDPGlobals"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Common.ULong">
+			<xsd:restriction base="xsd:long"/>
+		</xsd:simpleType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.LLDPGlobals.set_lldp_enabled_stateRequest">
+	<part name="value" type="tns:Common.EnabledState"/>
+</message>
+<message name="Networking.LLDPGlobals.set_lldp_enabled_stateResponse">
+</message>
+
+<message name="Networking.LLDPGlobals.get_lldp_enabled_stateRequest">
+</message>
+<message name="Networking.LLDPGlobals.get_lldp_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="Networking.LLDPGlobals.set_tx_intervalRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="Networking.LLDPGlobals.set_tx_intervalResponse">
+</message>
+
+<message name="Networking.LLDPGlobals.get_tx_intervalRequest">
+</message>
+<message name="Networking.LLDPGlobals.get_tx_intervalResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="Networking.LLDPGlobals.set_tx_holdRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="Networking.LLDPGlobals.set_tx_holdResponse">
+</message>
+
+<message name="Networking.LLDPGlobals.get_tx_holdRequest">
+</message>
+<message name="Networking.LLDPGlobals.get_tx_holdResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="Networking.LLDPGlobals.set_reinit_delayRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="Networking.LLDPGlobals.set_reinit_delayResponse">
+</message>
+
+<message name="Networking.LLDPGlobals.get_reinit_delayRequest">
+</message>
+<message name="Networking.LLDPGlobals.get_reinit_delayResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="Networking.LLDPGlobals.set_tx_delayRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="Networking.LLDPGlobals.set_tx_delayResponse">
+</message>
+
+<message name="Networking.LLDPGlobals.get_tx_delayRequest">
+</message>
+<message name="Networking.LLDPGlobals.get_tx_delayResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="Networking.LLDPGlobals.set_maximum_neighbors_per_portRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="Networking.LLDPGlobals.set_maximum_neighbors_per_portResponse">
+</message>
+
+<message name="Networking.LLDPGlobals.get_maximum_neighbors_per_portRequest">
+</message>
+<message name="Networking.LLDPGlobals.get_maximum_neighbors_per_portResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="Networking.LLDPGlobals.set_descriptionRequest">
+	<part name="description" type="xsd:string"/>
+</message>
+<message name="Networking.LLDPGlobals.set_descriptionResponse">
+</message>
+
+<message name="Networking.LLDPGlobals.get_descriptionRequest">
+</message>
+<message name="Networking.LLDPGlobals.get_descriptionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="Networking.LLDPGlobals.get_versionRequest">
+</message>
+<message name="Networking.LLDPGlobals.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.LLDPGlobalsPortType">
+	<operation name="set_lldp_enabled_state">
+  	<documentation>
+ Sets the LLDP system enable parameter. It turns on/off the LLDP feature.
+ 
+        	</documentation>
+		<input message="tns:Networking.LLDPGlobals.set_lldp_enabled_stateRequest"/>
+		<output message="tns:Networking.LLDPGlobals.set_lldp_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_lldp_enabled_state">
+	<documentation>
+ Gets the LLDP system enabled parameter. It turns on/off the LLDP feature.
+ 
+        	</documentation>
+		<input message="tns:Networking.LLDPGlobals.get_lldp_enabled_stateRequest"/>
+		<output message="tns:Networking.LLDPGlobals.get_lldp_enabled_stateResponse"/>
+	</operation>
+	<operation name="set_tx_interval">
+	<documentation>
+ Sets the Transmit Interval parameter. This parameter defines the LLDP frame transmit interval in seconds.
+ 
+        	</documentation>
+		<input message="tns:Networking.LLDPGlobals.set_tx_intervalRequest"/>
+		<output message="tns:Networking.LLDPGlobals.set_tx_intervalResponse"/>
+	</operation>
+	<operation name="get_tx_interval">
+	<documentation>
+ Gets the  Transmit Interval parameter. This parameter defines the LLDP frame transmit interval in seconds.
+ 
+        	</documentation>
+		<input message="tns:Networking.LLDPGlobals.get_tx_intervalRequest"/>
+		<output message="tns:Networking.LLDPGlobals.get_tx_intervalResponse"/>
+	</operation>
+	<operation name="set_tx_hold">
+	<documentation>
+ Sets the transmit hold parameter. This parameter defines a multiplier to determine TTL.
+ ttl = tx_hold * tx_interval.
+
+        	</documentation>
+		<input message="tns:Networking.LLDPGlobals.set_tx_holdRequest"/>
+		<output message="tns:Networking.LLDPGlobals.set_tx_holdResponse"/>
+	</operation>
+	<operation name="get_tx_hold">
+	<documentation>
+ Gets the transmit hold parameter. This parameter defines a multiplier to determine TTL.
+
+        	</documentation>
+		<input message="tns:Networking.LLDPGlobals.get_tx_holdRequest"/>
+		<output message="tns:Networking.LLDPGlobals.get_tx_holdResponse"/>
+	</operation>
+	<operation name="set_reinit_delay">
+	<documentation>
+ Sets the reinit delay parameter. This parameter defines the delay in seconds after which reinitialization of a disabled port will be attempted.
+
+        	</documentation>
+		<input message="tns:Networking.LLDPGlobals.set_reinit_delayRequest"/>
+		<output message="tns:Networking.LLDPGlobals.set_reinit_delayResponse"/>
+	</operation>
+	<operation name="get_reinit_delay">
+	<documentation>
+ Gets the reinit delay parameter.  This parameter defines the delay in seconds after which reinitialization of a disabled port will be attempted. 
+
+        	</documentation>
+		<input message="tns:Networking.LLDPGlobals.get_reinit_delayRequest"/>
+		<output message="tns:Networking.LLDPGlobals.get_reinit_delayResponse"/>
+	</operation>
+	<operation name="set_tx_delay">
+	<documentation>
+ Sets the transmit delay parameter. This parameter defines the delay in seconds between
+ LLDP successive frames transmission initiated by status change.
+
+        	</documentation>
+		<input message="tns:Networking.LLDPGlobals.set_tx_delayRequest"/>
+		<output message="tns:Networking.LLDPGlobals.set_tx_delayResponse"/>
+	</operation>
+	<operation name="get_tx_delay">
+	<documentation>
+ Gets the transmit delay parameter. This parameter defines the delay in seconds between
+ LLDP successive frames transmission initiated by status change.
+
+        	</documentation>
+		<input message="tns:Networking.LLDPGlobals.get_tx_delayRequest"/>
+		<output message="tns:Networking.LLDPGlobals.get_tx_delayResponse"/>
+	</operation>
+	<operation name="set_maximum_neighbors_per_port">
+	<documentation>
+ Sets the maximum neighbors per port parameter. This parameter defines the maximum neighbor counts 
+ the LLDP agent will keep.   
+
+        	</documentation>
+		<input message="tns:Networking.LLDPGlobals.set_maximum_neighbors_per_portRequest"/>
+		<output message="tns:Networking.LLDPGlobals.set_maximum_neighbors_per_portResponse"/>
+	</operation>
+	<operation name="get_maximum_neighbors_per_port">
+	<documentation>
+ Gets the maximum neighbors per port parameter. This parameter defines the maximum neighbor counts
+ the LLDP agent will keep.
+
+        	</documentation>
+		<input message="tns:Networking.LLDPGlobals.get_maximum_neighbors_per_portRequest"/>
+		<output message="tns:Networking.LLDPGlobals.get_maximum_neighbors_per_portResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the LLDP globals description.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Networking.LLDPGlobals.set_descriptionRequest"/>
+		<output message="tns:Networking.LLDPGlobals.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the LLDP globals description.
+
+        	</documentation>
+		<input message="tns:Networking.LLDPGlobals.get_descriptionRequest"/>
+		<output message="tns:Networking.LLDPGlobals.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.LLDPGlobals.get_versionRequest"/>
+		<output message="tns:Networking.LLDPGlobals.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.LLDPGlobalsBinding" type="tns:Networking.LLDPGlobalsPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="set_lldp_enabled_state">
+	<documentation>
+ Sets the LLDP system enable parameter. It turns on/off the LLDP feature.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/LLDPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_lldp_enabled_state">
+	<documentation>
+ Gets the LLDP system enabled parameter. It turns on/off the LLDP feature.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/LLDPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_tx_interval">
+	<documentation>
+ Sets the Transmit Interval parameter. This parameter defines the LLDP frame transmit interval in seconds.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/LLDPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_tx_interval">
+	<documentation>
+ Gets the  Transmit Interval parameter. This parameter defines the LLDP frame transmit interval in seconds.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/LLDPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_tx_hold">
+	<documentation>
+ Sets the transmit hold parameter. This parameter defines a multiplier to determine TTL.
+ ttl = tx_hold * tx_interval.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/LLDPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_tx_hold">
+	<documentation>
+ Gets the transmit hold parameter. This parameter defines a multiplier to determine TTL.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/LLDPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_reinit_delay">
+	<documentation>
+ Sets the reinit delay parameter. This parameter defines the delay in seconds after which reinitialization of a disabled port will be attempted.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/LLDPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_reinit_delay">
+	<documentation>
+ Gets the reinit delay parameter.  This parameter defines the delay in seconds after which reinitialization of a disabled port will be attempted. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/LLDPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_tx_delay">
+	<documentation>
+ Sets the transmit delay parameter. This parameter defines the delay in seconds between
+ LLDP successive frames transmission initiated by status change.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/LLDPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_tx_delay">
+	<documentation>
+ Gets the transmit delay parameter. This parameter defines the delay in seconds between
+ LLDP successive frames transmission initiated by status change.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/LLDPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_maximum_neighbors_per_port">
+	<documentation>
+ Sets the maximum neighbors per port parameter. This parameter defines the maximum neighbor counts 
+ the LLDP agent will keep.   
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/LLDPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_maximum_neighbors_per_port">
+	<documentation>
+ Gets the maximum neighbors per port parameter. This parameter defines the maximum neighbor counts
+ the LLDP agent will keep.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/LLDPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the LLDP globals description.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/LLDPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the LLDP globals description.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/LLDPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/LLDPGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/LLDPGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.LLDPGlobals">
+	<documentation>
+ The LLDPGlobals interface enables you to work with global attributes used to configure LLDP.   
+        	</documentation>
+	<port name="Networking.LLDPGlobalsPort" binding="tns:Networking.LLDPGlobalsBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

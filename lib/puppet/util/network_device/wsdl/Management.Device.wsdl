@@ -1,0 +1,1614 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.Device"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Management.Device.ChassisVersion">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="CHASSIS_VERSION_VIPRION">
+					<xsd:annotation>
+						<xsd:documentation>CHASSIS_VERSION_VIPRION</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CHASSIS_VERSION_INDIVIDUAL">
+					<xsd:annotation>
+						<xsd:documentation>CHASSIS_VERSION_INDIVIDUAL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CHASSIS_VERSION_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>CHASSIS_VERSION_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.Device.UnicastAddress">
+			<xsd:sequence>
+				<xsd:element name="source" type="tns:Common.IPPortDefinition"/>
+				<xsd:element name="effective" type="tns:Common.IPPortDefinition"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.Device.MulticastAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.Device.MulticastAddress[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPAddressSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.IPAddressSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.Device.UnicastAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.Device.UnicastAddress[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.HAState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="HA_STATE_OFFLINE">
+					<xsd:annotation>
+						<xsd:documentation>HA_STATE_OFFLINE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_STATE_FORCED_OFFLINE">
+					<xsd:annotation>
+						<xsd:documentation>HA_STATE_FORCED_OFFLINE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_STATE_STANDBY">
+					<xsd:annotation>
+						<xsd:documentation>HA_STATE_STANDBY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_STATE_ACTIVE">
+					<xsd:annotation>
+						<xsd:documentation>HA_STATE_ACTIVE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HA_STATE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>HA_STATE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.Device.ChassisVersionSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.Device.ChassisVersion[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPPortDefinition">
+			<xsd:sequence>
+				<xsd:element name="address" type="xsd:string"/>
+				<xsd:element name="port" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.HAStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.HAState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.Device.UnicastAddressSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.Device.UnicastAddressSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.Device.MulticastAddress">
+			<xsd:sequence>
+				<xsd:element name="interface_name" type="xsd:string"/>
+				<xsd:element name="address" type="tns:Common.IPPortDefinition"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.Device.get_listRequest">
+</message>
+<message name="Management.Device.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.Device.createRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Management.Device.createResponse">
+</message>
+
+<message name="Management.Device.get_local_deviceRequest">
+</message>
+<message name="Management.Device.get_local_deviceResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="Management.Device.get_descriptionRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.Device.set_descriptionRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.set_descriptionResponse">
+</message>
+
+<message name="Management.Device.get_management_addressRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_management_addressResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Management.Device.set_management_addressRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Management.Device.set_management_addressResponse">
+</message>
+
+<message name="Management.Device.get_blade_addressesRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_blade_addressesResponse">
+	<part name="return" type="tns:Common.IPAddressSequenceSequence"/>
+</message>
+
+<message name="Management.Device.set_configsync_addressRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Management.Device.set_configsync_addressResponse">
+</message>
+
+<message name="Management.Device.get_configsync_addressRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_configsync_addressResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Management.Device.get_hostnameRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_hostnameResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.Device.get_base_mac_addressRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_base_mac_addressResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.Device.set_primary_mirror_addressRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Management.Device.set_primary_mirror_addressResponse">
+</message>
+
+<message name="Management.Device.get_primary_mirror_addressRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_primary_mirror_addressResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Management.Device.set_secondary_mirror_addressRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Management.Device.set_secondary_mirror_addressResponse">
+</message>
+
+<message name="Management.Device.get_secondary_mirror_addressRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_secondary_mirror_addressResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Management.Device.get_failover_stateRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_failover_stateResponse">
+	<part name="return" type="tns:Common.HAStateSequence"/>
+</message>
+
+<message name="Management.Device.get_unicast_addressesRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_unicast_addressesResponse">
+	<part name="return" type="tns:Management.Device.UnicastAddressSequenceSequence"/>
+</message>
+
+<message name="Management.Device.set_unicast_addressesRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Management.Device.UnicastAddressSequenceSequence"/>
+</message>
+<message name="Management.Device.set_unicast_addressesResponse">
+</message>
+
+<message name="Management.Device.get_multicast_addressRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_multicast_addressResponse">
+	<part name="return" type="tns:Management.Device.MulticastAddressSequence"/>
+</message>
+
+<message name="Management.Device.set_multicast_addressRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Management.Device.MulticastAddressSequence"/>
+</message>
+<message name="Management.Device.set_multicast_addressResponse">
+</message>
+
+<message name="Management.Device.get_software_versionRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_software_versionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.Device.get_productRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_productResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.Device.get_editionRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_editionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.Device.get_buildRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_buildResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.Device.get_active_modulesRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_active_modulesResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Management.Device.get_inactive_modulesRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_inactive_modulesResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Management.Device.get_optional_modulesRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_optional_modulesResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Management.Device.get_timelimited_modulesRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_timelimited_modulesResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Management.Device.get_marketing_nameRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_marketing_nameResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.Device.get_platform_idRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_platform_idResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.Device.get_chassis_idRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_chassis_idResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.Device.get_chassis_typeRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_chassis_typeResponse">
+	<part name="return" type="tns:Management.Device.ChassisVersionSequence"/>
+</message>
+
+<message name="Management.Device.get_locationRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_locationResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.Device.set_locationRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+	<part name="locations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.set_locationResponse">
+</message>
+
+<message name="Management.Device.get_contactRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_contactResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.Device.set_contactRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+	<part name="contacts" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.set_contactResponse">
+</message>
+
+<message name="Management.Device.get_commentRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_commentResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.Device.set_commentRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+	<part name="comments" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.set_commentResponse">
+</message>
+
+<message name="Management.Device.get_timezoneRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Device.get_timezoneResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.Device.get_versionRequest">
+</message>
+<message name="Management.Device.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.DevicePortType">
+	<operation name="get_list">
+       	<documentation>
+ Gets a list of all devices
+
+        	</documentation>
+		<input message="tns:Management.Device.get_listRequest"/>
+		<output message="tns:Management.Device.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates devices
+
+        	</documentation>
+		<input message="tns:Management.Device.createRequest"/>
+		<output message="tns:Management.Device.createResponse"/>
+	</operation>
+	<operation name="get_local_device">
+	<documentation>
+ Gets the device object for the local device (self)
+
+        	</documentation>
+		<input message="tns:Management.Device.get_local_deviceRequest"/>
+		<output message="tns:Management.Device.get_local_deviceResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the description
+
+        	</documentation>
+		<input message="tns:Management.Device.get_descriptionRequest"/>
+		<output message="tns:Management.Device.get_descriptionResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description
+
+        	</documentation>
+		<input message="tns:Management.Device.set_descriptionRequest"/>
+		<output message="tns:Management.Device.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_management_address">
+	<documentation>
+ Gets the management address
+
+        	</documentation>
+		<input message="tns:Management.Device.get_management_addressRequest"/>
+		<output message="tns:Management.Device.get_management_addressResponse"/>
+	</operation>
+	<operation name="set_management_address">
+	<documentation>
+ Sets the management IP address
+
+        	</documentation>
+		<input message="tns:Management.Device.set_management_addressRequest"/>
+		<output message="tns:Management.Device.set_management_addressResponse"/>
+	</operation>
+	<operation name="get_blade_addresses">
+	<documentation>
+ Gets the blade address
+
+        	</documentation>
+		<input message="tns:Management.Device.get_blade_addressesRequest"/>
+		<output message="tns:Management.Device.get_blade_addressesResponse"/>
+	</operation>
+	<operation name="set_configsync_address">
+	<documentation>
+ Sets the configsync IP address
+
+        	</documentation>
+		<input message="tns:Management.Device.set_configsync_addressRequest"/>
+		<output message="tns:Management.Device.set_configsync_addressResponse"/>
+	</operation>
+	<operation name="get_configsync_address">
+	<documentation>
+ Gets the configsync IP address
+
+        	</documentation>
+		<input message="tns:Management.Device.get_configsync_addressRequest"/>
+		<output message="tns:Management.Device.get_configsync_addressResponse"/>
+	</operation>
+	<operation name="get_hostname">
+	<documentation>
+ Gets the hostname
+
+        	</documentation>
+		<input message="tns:Management.Device.get_hostnameRequest"/>
+		<output message="tns:Management.Device.get_hostnameResponse"/>
+	</operation>
+	<operation name="get_base_mac_address">
+	<documentation>
+ Gets the base MAC Address
+
+        	</documentation>
+		<input message="tns:Management.Device.get_base_mac_addressRequest"/>
+		<output message="tns:Management.Device.get_base_mac_addressResponse"/>
+	</operation>
+	<operation name="set_primary_mirror_address">
+	<documentation>
+ Sets the primary mirror IP address
+
+        	</documentation>
+		<input message="tns:Management.Device.set_primary_mirror_addressRequest"/>
+		<output message="tns:Management.Device.set_primary_mirror_addressResponse"/>
+	</operation>
+	<operation name="get_primary_mirror_address">
+	<documentation>
+ Gets the primary mirror IP address
+
+        	</documentation>
+		<input message="tns:Management.Device.get_primary_mirror_addressRequest"/>
+		<output message="tns:Management.Device.get_primary_mirror_addressResponse"/>
+	</operation>
+	<operation name="set_secondary_mirror_address">
+	<documentation>
+ Sets the secondary mirror IP address
+
+        	</documentation>
+		<input message="tns:Management.Device.set_secondary_mirror_addressRequest"/>
+		<output message="tns:Management.Device.set_secondary_mirror_addressResponse"/>
+	</operation>
+	<operation name="get_secondary_mirror_address">
+	<documentation>
+ Gets the secondary mirror IP address
+
+        	</documentation>
+		<input message="tns:Management.Device.get_secondary_mirror_addressRequest"/>
+		<output message="tns:Management.Device.get_secondary_mirror_addressResponse"/>
+	</operation>
+	<operation name="get_failover_state">
+	<documentation>
+ Gets the failover state
+
+        	</documentation>
+		<input message="tns:Management.Device.get_failover_stateRequest"/>
+		<output message="tns:Management.Device.get_failover_stateResponse"/>
+	</operation>
+	<operation name="get_unicast_addresses">
+	<documentation>
+ Gets the unicast addresses
+
+        	</documentation>
+		<input message="tns:Management.Device.get_unicast_addressesRequest"/>
+		<output message="tns:Management.Device.get_unicast_addressesResponse"/>
+	</operation>
+	<operation name="set_unicast_addresses">
+	<documentation>
+ Sets the unicast addresses
+
+        	</documentation>
+		<input message="tns:Management.Device.set_unicast_addressesRequest"/>
+		<output message="tns:Management.Device.set_unicast_addressesResponse"/>
+	</operation>
+	<operation name="get_multicast_address">
+	<documentation>
+ Gets the multicast address
+
+        	</documentation>
+		<input message="tns:Management.Device.get_multicast_addressRequest"/>
+		<output message="tns:Management.Device.get_multicast_addressResponse"/>
+	</operation>
+	<operation name="set_multicast_address">
+	<documentation>
+ Sets the multicast address
+
+        	</documentation>
+		<input message="tns:Management.Device.set_multicast_addressRequest"/>
+		<output message="tns:Management.Device.set_multicast_addressResponse"/>
+	</operation>
+	<operation name="get_software_version">
+	<documentation>
+ Gets the software version 
+
+        	</documentation>
+		<input message="tns:Management.Device.get_software_versionRequest"/>
+		<output message="tns:Management.Device.get_software_versionResponse"/>
+	</operation>
+	<operation name="get_product">
+	<documentation>
+ Gets the product name
+
+        	</documentation>
+		<input message="tns:Management.Device.get_productRequest"/>
+		<output message="tns:Management.Device.get_productResponse"/>
+	</operation>
+	<operation name="get_edition">
+	<documentation>
+ Gets the edition
+
+        	</documentation>
+		<input message="tns:Management.Device.get_editionRequest"/>
+		<output message="tns:Management.Device.get_editionResponse"/>
+	</operation>
+	<operation name="get_build">
+	<documentation>
+ Gets the build number
+
+        	</documentation>
+		<input message="tns:Management.Device.get_buildRequest"/>
+		<output message="tns:Management.Device.get_buildResponse"/>
+	</operation>
+	<operation name="get_active_modules">
+	<documentation>
+ Gets the licensed active BIG-IP modules
+
+        	</documentation>
+		<input message="tns:Management.Device.get_active_modulesRequest"/>
+		<output message="tns:Management.Device.get_active_modulesResponse"/>
+	</operation>
+	<operation name="get_inactive_modules">
+	<documentation>
+ Gets the licensed, but inactive BIG-IP modules
+
+        	</documentation>
+		<input message="tns:Management.Device.get_inactive_modulesRequest"/>
+		<output message="tns:Management.Device.get_inactive_modulesResponse"/>
+	</operation>
+	<operation name="get_optional_modules">
+	<documentation>
+ Gets the unlicensed, optional BIG-IP modules for the device
+
+        	</documentation>
+		<input message="tns:Management.Device.get_optional_modulesRequest"/>
+		<output message="tns:Management.Device.get_optional_modulesResponse"/>
+	</operation>
+	<operation name="get_timelimited_modules">
+	<documentation>
+ gets the timelimited BIG-IP modules that have been temporarily licensed
+
+        	</documentation>
+		<input message="tns:Management.Device.get_timelimited_modulesRequest"/>
+		<output message="tns:Management.Device.get_timelimited_modulesResponse"/>
+	</operation>
+	<operation name="get_marketing_name">
+	<documentation>
+ Gets the marketing name for the platform
+
+        	</documentation>
+		<input message="tns:Management.Device.get_marketing_nameRequest"/>
+		<output message="tns:Management.Device.get_marketing_nameResponse"/>
+	</operation>
+	<operation name="get_platform_id">
+	<documentation>
+ Gets the platform id
+
+        	</documentation>
+		<input message="tns:Management.Device.get_platform_idRequest"/>
+		<output message="tns:Management.Device.get_platform_idResponse"/>
+	</operation>
+	<operation name="get_chassis_id">
+	<documentation>
+ Gets the chassis id
+
+        	</documentation>
+		<input message="tns:Management.Device.get_chassis_idRequest"/>
+		<output message="tns:Management.Device.get_chassis_idResponse"/>
+	</operation>
+	<operation name="get_chassis_type">
+	<documentation>
+ Gets the chassis type (if the device is a viprion or a individual device)
+
+        	</documentation>
+		<input message="tns:Management.Device.get_chassis_typeRequest"/>
+		<output message="tns:Management.Device.get_chassis_typeResponse"/>
+	</operation>
+	<operation name="get_location">
+	<documentation>
+ Gets the location
+
+        	</documentation>
+		<input message="tns:Management.Device.get_locationRequest"/>
+		<output message="tns:Management.Device.get_locationResponse"/>
+	</operation>
+	<operation name="set_location">
+	<documentation>
+ Sets the location
+
+        	</documentation>
+		<input message="tns:Management.Device.set_locationRequest"/>
+		<output message="tns:Management.Device.set_locationResponse"/>
+	</operation>
+	<operation name="get_contact">
+	<documentation>
+ Gets the contact
+
+        	</documentation>
+		<input message="tns:Management.Device.get_contactRequest"/>
+		<output message="tns:Management.Device.get_contactResponse"/>
+	</operation>
+	<operation name="set_contact">
+	<documentation>
+ Sets the contact
+
+        	</documentation>
+		<input message="tns:Management.Device.set_contactRequest"/>
+		<output message="tns:Management.Device.set_contactResponse"/>
+	</operation>
+	<operation name="get_comment">
+	<documentation>
+ Gets the comment
+
+        	</documentation>
+		<input message="tns:Management.Device.get_commentRequest"/>
+		<output message="tns:Management.Device.get_commentResponse"/>
+	</operation>
+	<operation name="set_comment">
+	<documentation>
+ Sets the comment
+
+        	</documentation>
+		<input message="tns:Management.Device.set_commentRequest"/>
+		<output message="tns:Management.Device.set_commentResponse"/>
+	</operation>
+	<operation name="get_timezone">
+	<documentation>
+ Gets the timezone
+
+        	</documentation>
+		<input message="tns:Management.Device.get_timezoneRequest"/>
+		<output message="tns:Management.Device.get_timezoneResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the interface version
+
+        	</documentation>
+		<input message="tns:Management.Device.get_versionRequest"/>
+		<output message="tns:Management.Device.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.DeviceBinding" type="tns:Management.DevicePortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all devices
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates devices
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_local_device">
+	<documentation>
+ Gets the device object for the local device (self)
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the description
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_management_address">
+	<documentation>
+ Gets the management address
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_management_address">
+	<documentation>
+ Sets the management IP address
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_blade_addresses">
+	<documentation>
+ Gets the blade address
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_configsync_address">
+	<documentation>
+ Sets the configsync IP address
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_configsync_address">
+	<documentation>
+ Gets the configsync IP address
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_hostname">
+	<documentation>
+ Gets the hostname
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_base_mac_address">
+	<documentation>
+ Gets the base MAC Address
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_primary_mirror_address">
+	<documentation>
+ Sets the primary mirror IP address
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_primary_mirror_address">
+	<documentation>
+ Gets the primary mirror IP address
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_secondary_mirror_address">
+	<documentation>
+ Sets the secondary mirror IP address
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_secondary_mirror_address">
+	<documentation>
+ Gets the secondary mirror IP address
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_failover_state">
+	<documentation>
+ Gets the failover state
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_unicast_addresses">
+	<documentation>
+ Gets the unicast addresses
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_unicast_addresses">
+	<documentation>
+ Sets the unicast addresses
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_multicast_address">
+	<documentation>
+ Gets the multicast address
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_multicast_address">
+	<documentation>
+ Sets the multicast address
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_software_version">
+	<documentation>
+ Gets the software version 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_product">
+	<documentation>
+ Gets the product name
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_edition">
+	<documentation>
+ Gets the edition
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_build">
+	<documentation>
+ Gets the build number
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_active_modules">
+	<documentation>
+ Gets the licensed active BIG-IP modules
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_inactive_modules">
+	<documentation>
+ Gets the licensed, but inactive BIG-IP modules
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_optional_modules">
+	<documentation>
+ Gets the unlicensed, optional BIG-IP modules for the device
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_timelimited_modules">
+	<documentation>
+ gets the timelimited BIG-IP modules that have been temporarily licensed
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_marketing_name">
+	<documentation>
+ Gets the marketing name for the platform
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_platform_id">
+	<documentation>
+ Gets the platform id
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_chassis_id">
+	<documentation>
+ Gets the chassis id
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_chassis_type">
+	<documentation>
+ Gets the chassis type (if the device is a viprion or a individual device)
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_location">
+	<documentation>
+ Gets the location
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_location">
+	<documentation>
+ Sets the location
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_contact">
+	<documentation>
+ Gets the contact
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_contact">
+	<documentation>
+ Sets the contact
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_comment">
+	<documentation>
+ Gets the comment
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_comment">
+	<documentation>
+ Sets the comment
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_timezone">
+	<documentation>
+ Gets the timezone
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the interface version
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Device"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Device"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.Device">
+	<documentation>
+ The Device interface contains the methods for creating and manipulating
+ device objects.  Device objects are representations of devices in the 
+ current trust domain (including self) that are used in device groups and 
+ logical devices.
+
+        	</documentation>
+	<port name="Management.DevicePort" binding="tns:Management.DeviceBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

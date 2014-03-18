@@ -1,0 +1,206 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.ZoneRunner"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Management.DebugLevel">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="ZRD_EMERG">
+					<xsd:annotation>
+						<xsd:documentation>ZRD_EMERG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ZRD_ALERT">
+					<xsd:annotation>
+						<xsd:documentation>ZRD_ALERT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ZRD_CRIT">
+					<xsd:annotation>
+						<xsd:documentation>ZRD_CRIT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ZRD_ERROR">
+					<xsd:annotation>
+						<xsd:documentation>ZRD_ERROR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ZRD_WARN">
+					<xsd:annotation>
+						<xsd:documentation>ZRD_WARN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ZRD_NOTICE">
+					<xsd:annotation>
+						<xsd:documentation>ZRD_NOTICE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ZRD_INFO">
+					<xsd:annotation>
+						<xsd:documentation>ZRD_INFO</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ZRD_DEBUG">
+					<xsd:annotation>
+						<xsd:documentation>ZRD_DEBUG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ZRD_UNSET">
+					<xsd:annotation>
+						<xsd:documentation>ZRD_UNSET</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.ZoneRunner.set_loglevelRequest">
+	<part name="level" type="tns:Management.DebugLevel"/>
+</message>
+<message name="Management.ZoneRunner.set_loglevelResponse">
+</message>
+
+<message name="Management.ZoneRunner.initRequest">
+</message>
+<message name="Management.ZoneRunner.initResponse">
+</message>
+
+<message name="Management.ZoneRunner.get_versionRequest">
+</message>
+<message name="Management.ZoneRunner.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.ZoneRunnerPortType">
+	<operation name="set_loglevel">
+   	<documentation>
+ Set the logging level for messages
+
+        	</documentation>
+		<input message="tns:Management.ZoneRunner.set_loglevelRequest"/>
+		<output message="tns:Management.ZoneRunner.set_loglevelResponse"/>
+	</operation>
+	<operation name="init">
+	<documentation>
+ (re)init ZoneRunner
+ instructs ZoneRunner to re-read named.conf and rebuild its 
+ internal data structures based on contents 
+
+        	</documentation>
+		<input message="tns:Management.ZoneRunner.initRequest"/>
+		<output message="tns:Management.ZoneRunner.initResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Management.ZoneRunner.get_versionRequest"/>
+		<output message="tns:Management.ZoneRunner.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.ZoneRunnerBinding" type="tns:Management.ZoneRunnerPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="set_loglevel">
+	<documentation>
+ Set the logging level for messages
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ZoneRunner"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ZoneRunner"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ZoneRunner"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="init">
+	<documentation>
+ (re)init ZoneRunner
+ instructs ZoneRunner to re-read named.conf and rebuild its 
+ internal data structures based on contents 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ZoneRunner"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ZoneRunner"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ZoneRunner"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/ZoneRunner"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ZoneRunner"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/ZoneRunner"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.ZoneRunner">
+	<documentation>
+ The ZoneRunner interface handles all the top level calls
+
+ This interface does not support transactions.
+
+        	</documentation>
+	<port name="Management.ZoneRunnerPort" binding="tns:Management.ZoneRunnerBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

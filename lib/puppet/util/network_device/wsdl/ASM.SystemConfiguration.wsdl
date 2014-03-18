@@ -1,0 +1,730 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="ASM.SystemConfiguration"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="ASM.ViolationSeveritySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.ViolationSeverity[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.FileTransferContext">
+			<xsd:sequence>
+				<xsd:element name="file_data" type="tns:Common.OctetSequence"/>
+				<xsd:element name="chain_type" type="tns:Common.FileChainType"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.OctetSequence">
+			<xsd:restriction base="xsd:base64Binary"/>
+		</xsd:simpleType>
+		<xsd:simpleType name="ASM.ViolationName">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="VIOLATION_EVASION_DETECTED">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_EVASION_DETECTED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_VIRUS_DETECTED">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_VIRUS_DETECTED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_REQUEST_TOO_LONG">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_REQUEST_TOO_LONG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_ILLEGAL_INGRESS_OBJECT">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_ILLEGAL_INGRESS_OBJECT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_PARSER_EXPIRED_INGRESS_OBJECT">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_PARSER_EXPIRED_INGRESS_OBJECT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_RESPONSE_SCRUBBING">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_RESPONSE_SCRUBBING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_ILLEGAL_SOAP_ATTACHMENT">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_ILLEGAL_SOAP_ATTACHMENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_MISSING_MANDATORY_HEADER">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_MISSING_MANDATORY_HEADER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_ILLEGAL_GEOLOCATION">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_ILLEGAL_GEOLOCATION</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_HTTP_SANITY_CHECK_FAILED">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_HTTP_SANITY_CHECK_FAILED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_CHAR_CONV">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_CHAR_CONV</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_CSRF">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_CSRF</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_MALFORMED_XML">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_MALFORMED_XML</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_XML_WSDL">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_XML_WSDL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_XML_FORMAT_SETTING">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_XML_FORMAT_SETTING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_PARSER_FAILED_SOAP_SECURITY">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_PARSER_FAILED_SOAP_SECURITY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_SOAP_METHOD_NOT_ALLOWED">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_SOAP_METHOD_NOT_ALLOWED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_BRUTE_FORCE_ATTACK_DETECTED">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_BRUTE_FORCE_ATTACK_DETECTED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_WEB_SCRAPING_DETECTED">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_WEB_SCRAPING_DETECTED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_CSRF_EXPIRED">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_CSRF_EXPIRED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_OBJ_LEN">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_OBJ_LEN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_COOKIE_LEN">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_COOKIE_LEN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_REQ_LEN">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_REQ_LEN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_QS_LEN">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_QS_LEN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_POST_DATA_LEN">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_POST_DATA_LEN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_MULTI_PART_PARAM_VAL">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_MULTI_PART_PARAM_VAL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_HEADER_LEN">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_HEADER_LEN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_JSON_FORMAT_SETTING">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_JSON_FORMAT_SETTING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_REPEATED_PARAMETER_NAME">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_REPEATED_PARAMETER_NAME</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_METACHAR_IN_OBJ">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_METACHAR_IN_OBJ</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_METACHAR_IN_PARAM_NAME">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_METACHAR_IN_PARAM_NAME</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_METACHAR_IN_DEF_PARAM">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_METACHAR_IN_DEF_PARAM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_OBJ_TYPE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_OBJ_TYPE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_OBJ_DOESNT_EXIST">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_OBJ_DOESNT_EXIST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_FLOW_TO_OBJ">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_FLOW_TO_OBJ</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_ILLEGAL_METHOD">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_ILLEGAL_METHOD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_SESSSION_ID_IN_URL">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_SESSSION_ID_IN_URL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_QS_OR_POST_DATA">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_QS_OR_POST_DATA</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_PARAM">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_PARAM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_EMPTY_PARAM_VALUE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_EMPTY_PARAM_VALUE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_STATIC_PARAM_VALUE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_STATIC_PARAM_VALUE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_DYN_PARAM_VALUE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_DYN_PARAM_VALUE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_PARAM_VALUE_LEN">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_PARAM_VALUE_LEN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_PARAM_DATA_TYPE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_PARAM_DATA_TYPE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_PARAM_NUMERIC_VALUE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_PARAM_NUMERIC_VALUE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_NUM_OF_MANDATORY_PARAMS">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_NUM_OF_MANDATORY_PARAMS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_PARAM_VALUE_NOT_MATCHING_REGEX">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_PARAM_VALUE_NOT_MATCHING_REGEX</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_MOD_ASM_COOKIE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_MOD_ASM_COOKIE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_MOD_DOMAIN_COOKIE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_MOD_DOMAIN_COOKIE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_NOT_RFC_COOKIE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_NOT_RFC_COOKIE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_MALFORMED_JSON">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_MALFORMED_JSON</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_ENTRY_POINT">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_ENTRY_POINT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_SESSION_AWARENESS">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_SESSION_AWARENESS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_MSG_KEY">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_MSG_KEY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_EXPIRED_TIMESTAMP">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_EXPIRED_TIMESTAMP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_DISALLOWED_FILE_UPLOAD_CONTENT">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_DISALLOWED_FILE_UPLOAD_CONTENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_METACHAR_IN_HEADER">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_METACHAR_IN_HEADER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_ILLEGAL_REQUEST_CONTENT_TYPE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_ILLEGAL_REQUEST_CONTENT_TYPE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_HTTP_STATUS_IN_RESPONSE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_HTTP_STATUS_IN_RESPONSE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_PARSER_ACCESS_FROM_MALICIOUS_IP_ADDRESS">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_PARSER_ACCESS_FROM_MALICIOUS_IP_ADDRESS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_GWT_FORMAT_SETTING">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_GWT_FORMAT_SETTING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_MALFORMED_GWT">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_MALFORMED_GWT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_BASE64_PARAM_VALUE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_BASE64_PARAM_VALUE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="ASM.SignatureFileUpdateReturnValue">
+			<xsd:sequence>
+				<xsd:element name="completed_successfully" type="xsd:long"/>
+				<xsd:element name="sig_count" type="xsd:long"/>
+				<xsd:element name="sigs_updated_count" type="xsd:long"/>
+				<xsd:element name="error_msg" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.FileChainType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="FILE_UNDEFINED">
+					<xsd:annotation>
+						<xsd:documentation>FILE_UNDEFINED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILE_FIRST">
+					<xsd:annotation>
+						<xsd:documentation>FILE_FIRST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILE_MIDDLE">
+					<xsd:annotation>
+						<xsd:documentation>FILE_MIDDLE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILE_UNUSED">
+					<xsd:annotation>
+						<xsd:documentation>FILE_UNUSED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILE_LAST">
+					<xsd:annotation>
+						<xsd:documentation>FILE_LAST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILE_FIRST_AND_LAST">
+					<xsd:annotation>
+						<xsd:documentation>FILE_FIRST_AND_LAST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="ASM.SeverityName">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="SEVERITY_LOG_EMERG">
+					<xsd:annotation>
+						<xsd:documentation>SEVERITY_LOG_EMERG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SEVERITY_LOG_ALERT">
+					<xsd:annotation>
+						<xsd:documentation>SEVERITY_LOG_ALERT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SEVERITY_LOG_CRIT">
+					<xsd:annotation>
+						<xsd:documentation>SEVERITY_LOG_CRIT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SEVERITY_LOG_ERR">
+					<xsd:annotation>
+						<xsd:documentation>SEVERITY_LOG_ERR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SEVERITY_LOG_WARNING">
+					<xsd:annotation>
+						<xsd:documentation>SEVERITY_LOG_WARNING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SEVERITY_LOG_NOTICE">
+					<xsd:annotation>
+						<xsd:documentation>SEVERITY_LOG_NOTICE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SEVERITY_LOG_INFO">
+					<xsd:annotation>
+						<xsd:documentation>SEVERITY_LOG_INFO</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SEVERITY_LOG_DEBUG">
+					<xsd:annotation>
+						<xsd:documentation>SEVERITY_LOG_DEBUG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="ASM.ViolationSeverity">
+			<xsd:sequence>
+				<xsd:element name="violation_name" type="tns:ASM.ViolationName"/>
+				<xsd:element name="severity_name" type="tns:ASM.SeverityName"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="ASM.SystemConfiguration.set_violation_severitiesRequest">
+	<part name="violation_severities" type="tns:ASM.ViolationSeveritySequence"/>
+</message>
+<message name="ASM.SystemConfiguration.set_violation_severitiesResponse">
+</message>
+
+<message name="ASM.SystemConfiguration.get_violation_severitiesRequest">
+</message>
+<message name="ASM.SystemConfiguration.get_violation_severitiesResponse">
+	<part name="return" type="tns:ASM.ViolationSeveritySequence"/>
+</message>
+
+<message name="ASM.SystemConfiguration.update_signature_file_automaticRequest">
+	<part name="flg_is_user_defined" type="xsd:boolean"/>
+	<part name="do_set_active" type="xsd:boolean"/>
+	<part name="force" type="xsd:boolean"/>
+	<part name="user_name" type="xsd:string"/>
+	<part name="check_interval" type="xsd:boolean"/>
+</message>
+<message name="ASM.SystemConfiguration.update_signature_file_automaticResponse">
+	<part name="return" type="tns:ASM.SignatureFileUpdateReturnValue"/>
+</message>
+
+<message name="ASM.SystemConfiguration.update_signature_file_manualRequest">
+	<part name="file_context" type="tns:ASM.FileTransferContext"/>
+	<part name="flg_is_user_defined" type="xsd:boolean"/>
+	<part name="do_set_active" type="xsd:boolean"/>
+	<part name="force" type="xsd:boolean"/>
+	<part name="user_name" type="xsd:string"/>
+	<part name="check_interval" type="xsd:boolean"/>
+</message>
+<message name="ASM.SystemConfiguration.update_signature_file_manualResponse">
+	<part name="return" type="tns:ASM.SignatureFileUpdateReturnValue"/>
+</message>
+
+<message name="ASM.SystemConfiguration.get_signature_file_versionRequest">
+</message>
+<message name="ASM.SystemConfiguration.get_signature_file_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="ASM.SystemConfiguration.is_asm_readyRequest">
+</message>
+<message name="ASM.SystemConfiguration.is_asm_readyResponse">
+	<part name="return" type="xsd:boolean"/>
+</message>
+
+<message name="ASM.SystemConfiguration.get_versionRequest">
+</message>
+<message name="ASM.SystemConfiguration.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="ASM.SystemConfigurationPortType">
+	<operation name="set_violation_severities">
+ 	<documentation>
+ Set the severity of violations.
+
+        	</documentation>
+		<input message="tns:ASM.SystemConfiguration.set_violation_severitiesRequest"/>
+		<output message="tns:ASM.SystemConfiguration.set_violation_severitiesResponse"/>
+	</operation>
+	<operation name="get_violation_severities">
+	<documentation>
+ Get the severity of violations.
+
+        	</documentation>
+		<input message="tns:ASM.SystemConfiguration.get_violation_severitiesRequest"/>
+		<output message="tns:ASM.SystemConfiguration.get_violation_severitiesResponse"/>
+	</operation>
+	<operation name="update_signature_file_automatic">
+	<documentation>
+ Updates the factory negsig file automatically from F5 server
+
+        	</documentation>
+		<input message="tns:ASM.SystemConfiguration.update_signature_file_automaticRequest"/>
+		<output message="tns:ASM.SystemConfiguration.update_signature_file_automaticResponse"/>
+	</operation>
+	<operation name="update_signature_file_manual">
+	<documentation>
+ Updates the factory negsig file manually
+
+        	</documentation>
+		<input message="tns:ASM.SystemConfiguration.update_signature_file_manualRequest"/>
+		<output message="tns:ASM.SystemConfiguration.update_signature_file_manualResponse"/>
+	</operation>
+	<operation name="get_signature_file_version">
+	<documentation>
+ Returns the current version of the installed signature file
+
+        	</documentation>
+		<input message="tns:ASM.SystemConfiguration.get_signature_file_versionRequest"/>
+		<output message="tns:ASM.SystemConfiguration.get_signature_file_versionResponse"/>
+	</operation>
+	<operation name="is_asm_ready">
+	<documentation>
+ Returns the current status of ASM: '1'=ASM ready '0'=ASM not ready
+
+        	</documentation>
+		<input message="tns:ASM.SystemConfiguration.is_asm_readyRequest"/>
+		<output message="tns:ASM.SystemConfiguration.is_asm_readyResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+
+        	</documentation>
+		<input message="tns:ASM.SystemConfiguration.get_versionRequest"/>
+		<output message="tns:ASM.SystemConfiguration.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="ASM.SystemConfigurationBinding" type="tns:ASM.SystemConfigurationPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="set_violation_severities">
+	<documentation>
+ Set the severity of violations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/SystemConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/SystemConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/SystemConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_violation_severities">
+	<documentation>
+ Get the severity of violations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/SystemConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/SystemConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/SystemConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="update_signature_file_automatic">
+	<documentation>
+ Updates the factory negsig file automatically from F5 server
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/SystemConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/SystemConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/SystemConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="update_signature_file_manual">
+	<documentation>
+ Updates the factory negsig file manually
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/SystemConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/SystemConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/SystemConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_signature_file_version">
+	<documentation>
+ Returns the current version of the installed signature file
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/SystemConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/SystemConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/SystemConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="is_asm_ready">
+	<documentation>
+ Returns the current status of ASM: '1'=ASM ready '0'=ASM not ready
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/SystemConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/SystemConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/SystemConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/SystemConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/SystemConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/SystemConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="ASM.SystemConfiguration">
+	<documentation>
+ The SystemConfiguration interface enables you to manipulate system-wide settings of ASM.
+
+ This interface does not support transactions.
+
+        	</documentation>
+	<port name="ASM.SystemConfigurationPort" binding="tns:ASM.SystemConfigurationBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

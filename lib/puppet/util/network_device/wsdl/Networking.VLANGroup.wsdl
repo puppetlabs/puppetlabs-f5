@@ -1,0 +1,1326 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.VLANGroup"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPAddressSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.IPAddressSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.VLANGroup.VLANGroupTransparencySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.VLANGroup.VLANGroupTransparency[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.VLANGroup.VLANGroupTransparency">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="VLANGROUP_TRANSPARENT">
+					<xsd:annotation>
+						<xsd:documentation>VLANGROUP_TRANSPARENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VLANGROUP_OPAQUE">
+					<xsd:annotation>
+						<xsd:documentation>VLANGROUP_OPAQUE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VLANGROUP_TRANSLUCENT">
+					<xsd:annotation>
+						<xsd:documentation>VLANGROUP_TRANSLUCENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.VLANGroup.get_listRequest">
+</message>
+<message name="Networking.VLANGroup.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.VLANGroup.createRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+	<part name="vlan_ids" type="tns:Common.ULongSequence"/>
+	<part name="member_vlans" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.VLANGroup.createResponse">
+</message>
+
+<message name="Networking.VLANGroup.create_v2Request">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+	<part name="member_vlans" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.VLANGroup.create_v2Response">
+</message>
+
+<message name="Networking.VLANGroup.delete_vlan_groupRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.VLANGroup.delete_vlan_groupResponse">
+</message>
+
+<message name="Networking.VLANGroup.delete_all_vlan_groupsRequest">
+</message>
+<message name="Networking.VLANGroup.delete_all_vlan_groupsResponse">
+</message>
+
+<message name="Networking.VLANGroup.set_vlan_idRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+	<part name="vlan_ids" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.VLANGroup.set_vlan_idResponse">
+</message>
+
+<message name="Networking.VLANGroup.get_vlan_idRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.VLANGroup.get_vlan_idResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.VLANGroup.set_transparency_modeRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+	<part name="modes" type="tns:Networking.VLANGroup.VLANGroupTransparencySequence"/>
+</message>
+<message name="Networking.VLANGroup.set_transparency_modeResponse">
+</message>
+
+<message name="Networking.VLANGroup.get_transparency_modeRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.VLANGroup.get_transparency_modeResponse">
+	<part name="return" type="tns:Networking.VLANGroup.VLANGroupTransparencySequence"/>
+</message>
+
+<message name="Networking.VLANGroup.set_bridge_all_traffic_stateRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.VLANGroup.set_bridge_all_traffic_stateResponse">
+</message>
+
+<message name="Networking.VLANGroup.get_bridge_all_traffic_stateRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.VLANGroup.get_bridge_all_traffic_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.VLANGroup.set_bridge_in_standby_stateRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.VLANGroup.set_bridge_in_standby_stateResponse">
+</message>
+
+<message name="Networking.VLANGroup.get_bridge_in_standby_stateRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.VLANGroup.get_bridge_in_standby_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.VLANGroup.set_bridge_multicast_stateRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.VLANGroup.set_bridge_multicast_stateResponse">
+</message>
+
+<message name="Networking.VLANGroup.get_bridge_multicast_stateRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.VLANGroup.get_bridge_multicast_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.VLANGroup.set_mac_masquerade_addressRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+	<part name="mac_masquerade_addresses" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.VLANGroup.set_mac_masquerade_addressResponse">
+</message>
+
+<message name="Networking.VLANGroup.get_mac_masquerade_addressRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.VLANGroup.get_mac_masquerade_addressResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.VLANGroup.get_true_mac_addressRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.VLANGroup.get_true_mac_addressResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.VLANGroup.get_memberRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.VLANGroup.get_memberResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Networking.VLANGroup.add_memberRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+	<part name="member_vlans" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.VLANGroup.add_memberResponse">
+</message>
+
+<message name="Networking.VLANGroup.remove_memberRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+	<part name="member_vlans" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.VLANGroup.remove_memberResponse">
+</message>
+
+<message name="Networking.VLANGroup.remove_all_membersRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.VLANGroup.remove_all_membersResponse">
+</message>
+
+<message name="Networking.VLANGroup.get_global_proxy_exclusionRequest">
+</message>
+<message name="Networking.VLANGroup.get_global_proxy_exclusionResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Networking.VLANGroup.add_global_proxy_exclusionRequest">
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.VLANGroup.add_global_proxy_exclusionResponse">
+</message>
+
+<message name="Networking.VLANGroup.remove_global_proxy_exclusionRequest">
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.VLANGroup.remove_global_proxy_exclusionResponse">
+</message>
+
+<message name="Networking.VLANGroup.remove_all_global_proxy_exclusionsRequest">
+</message>
+<message name="Networking.VLANGroup.remove_all_global_proxy_exclusionsResponse">
+</message>
+
+<message name="Networking.VLANGroup.get_proxy_exclusionRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.VLANGroup.get_proxy_exclusionResponse">
+	<part name="return" type="tns:Common.IPAddressSequenceSequence"/>
+</message>
+
+<message name="Networking.VLANGroup.add_proxy_exclusionRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequenceSequence"/>
+</message>
+<message name="Networking.VLANGroup.add_proxy_exclusionResponse">
+</message>
+
+<message name="Networking.VLANGroup.remove_proxy_exclusionRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequenceSequence"/>
+</message>
+<message name="Networking.VLANGroup.remove_proxy_exclusionResponse">
+</message>
+
+<message name="Networking.VLANGroup.remove_all_proxy_exclusionsRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.VLANGroup.remove_all_proxy_exclusionsResponse">
+</message>
+
+<message name="Networking.VLANGroup.set_descriptionRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.VLANGroup.set_descriptionResponse">
+</message>
+
+<message name="Networking.VLANGroup.get_descriptionRequest">
+	<part name="vlan_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.VLANGroup.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.VLANGroup.get_versionRequest">
+</message>
+<message name="Networking.VLANGroup.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.VLANGroupPortType">
+	<operation name="get_list">
+    	<documentation>
+ Gets a list of all VLAN groups on this device.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.get_listRequest"/>
+		<output message="tns:Networking.VLANGroup.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ This method has been deprecated; please use create_v2 instead.
+
+ Creates a VLAN group.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.createRequest"/>
+		<output message="tns:Networking.VLANGroup.createResponse"/>
+	</operation>
+	<operation name="create_v2">
+	<documentation>
+ Creates a VLAN group.
+
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.create_v2Request"/>
+		<output message="tns:Networking.VLANGroup.create_v2Response"/>
+	</operation>
+	<operation name="delete_vlan_group">
+	<documentation>
+ Deletes the specified VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.delete_vlan_groupRequest"/>
+		<output message="tns:Networking.VLANGroup.delete_vlan_groupResponse"/>
+	</operation>
+	<operation name="delete_all_vlan_groups">
+	<documentation>
+ Deletes all VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.delete_all_vlan_groupsRequest"/>
+		<output message="tns:Networking.VLANGroup.delete_all_vlan_groupsResponse"/>
+	</operation>
+	<operation name="set_vlan_id">
+	<documentation>
+ This method has been deprecated; setting VLAN id for a VLAN group
+ had and will have no effect.  Please don't use in the future.
+
+ Sets the tag ids for the specified VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.set_vlan_idRequest"/>
+		<output message="tns:Networking.VLANGroup.set_vlan_idResponse"/>
+	</operation>
+	<operation name="get_vlan_id">
+	<documentation>
+ This method has been deprecated; accessing VLAN id for a VLAN group
+ was unnecessary and misleading.  The method now returns 0s.
+ Please don't use in the future.
+
+ Gets the ids for the specified VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.get_vlan_idRequest"/>
+		<output message="tns:Networking.VLANGroup.get_vlan_idResponse"/>
+	</operation>
+	<operation name="set_transparency_mode">
+	<documentation>
+ Sets the transparency modes for the specified VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.set_transparency_modeRequest"/>
+		<output message="tns:Networking.VLANGroup.set_transparency_modeResponse"/>
+	</operation>
+	<operation name="get_transparency_mode">
+	<documentation>
+ Gets the transparency modes for the specified VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.get_transparency_modeRequest"/>
+		<output message="tns:Networking.VLANGroup.get_transparency_modeResponse"/>
+	</operation>
+	<operation name="set_bridge_all_traffic_state">
+	<documentation>
+ Sets the states to indicate whether to bridge non-IP traffic as well as IP traffic 
+ for the specified VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.set_bridge_all_traffic_stateRequest"/>
+		<output message="tns:Networking.VLANGroup.set_bridge_all_traffic_stateResponse"/>
+	</operation>
+	<operation name="get_bridge_all_traffic_state">
+	<documentation>
+ Gets the states to indicate whether to bridge non-IP traffic as well as IP traffic 
+ for the specified VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.get_bridge_all_traffic_stateRequest"/>
+		<output message="tns:Networking.VLANGroup.get_bridge_all_traffic_stateResponse"/>
+	</operation>
+	<operation name="set_bridge_in_standby_state">
+	<documentation>
+ Sets the states to indicate whether to bridge while unit is in standby mode 
+ for the specified VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.set_bridge_in_standby_stateRequest"/>
+		<output message="tns:Networking.VLANGroup.set_bridge_in_standby_stateResponse"/>
+	</operation>
+	<operation name="get_bridge_in_standby_state">
+	<documentation>
+ Gets the states to indicate whether to bridge while unit is in standby mode 
+ for the specified VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.get_bridge_in_standby_stateRequest"/>
+		<output message="tns:Networking.VLANGroup.get_bridge_in_standby_stateResponse"/>
+	</operation>
+	<operation name="set_bridge_multicast_state">
+	<documentation>
+ Sets the states to indicate whether to bridge multicast/broadcast traffic 
+ for the specified VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.set_bridge_multicast_stateRequest"/>
+		<output message="tns:Networking.VLANGroup.set_bridge_multicast_stateResponse"/>
+	</operation>
+	<operation name="get_bridge_multicast_state">
+	<documentation>
+ Gets the states to indicate whether to bridge multicast/broadcast traffic 
+ for the specified VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.get_bridge_multicast_stateRequest"/>
+		<output message="tns:Networking.VLANGroup.get_bridge_multicast_stateResponse"/>
+	</operation>
+	<operation name="set_mac_masquerade_address">
+	<documentation>
+ This function is deprecated.  MAC masquerade address are now configured
+ on traffic groups.
+
+ If there is only one floating traffic group in the system, this function will
+ set the traffic group's MAC masquerade address to the last address in
+ mac_masquerade_addresses and discard all other MAC addresses provided.  If
+ there is more than one floating traffic group, a Common::OperationFailed exception
+ is raised.
+
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.set_mac_masquerade_addressRequest"/>
+		<output message="tns:Networking.VLANGroup.set_mac_masquerade_addressResponse"/>
+	</operation>
+	<operation name="get_mac_masquerade_address">
+	<documentation>
+ This function is deprecated.  MAC masquerade addresses are now configured
+ on traffic groups.
+
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.get_mac_masquerade_addressRequest"/>
+		<output message="tns:Networking.VLANGroup.get_mac_masquerade_addressResponse"/>
+	</operation>
+	<operation name="get_true_mac_address">
+	<documentation>
+ Gets the true MAC addresses used by the specified VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.get_true_mac_addressRequest"/>
+		<output message="tns:Networking.VLANGroup.get_true_mac_addressResponse"/>
+	</operation>
+	<operation name="get_member">
+	<documentation>
+ Gets the lists of children VLANs of the specified VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.get_memberRequest"/>
+		<output message="tns:Networking.VLANGroup.get_memberResponse"/>
+	</operation>
+	<operation name="add_member">
+	<documentation>
+ Adds the specified children VLANs to the specified VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.add_memberRequest"/>
+		<output message="tns:Networking.VLANGroup.add_memberResponse"/>
+	</operation>
+	<operation name="remove_member">
+	<documentation>
+ Removes the specified children VLANs from the specified VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.remove_memberRequest"/>
+		<output message="tns:Networking.VLANGroup.remove_memberResponse"/>
+	</operation>
+	<operation name="remove_all_members">
+	<documentation>
+ Removes all children VLANs from the specified VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.remove_all_membersRequest"/>
+		<output message="tns:Networking.VLANGroup.remove_all_membersResponse"/>
+	</operation>
+	<operation name="get_global_proxy_exclusion">
+	<documentation>
+ Gets the global lists of IP addresses that proxy ARP will ignore for all VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.get_global_proxy_exclusionRequest"/>
+		<output message="tns:Networking.VLANGroup.get_global_proxy_exclusionResponse"/>
+	</operation>
+	<operation name="add_global_proxy_exclusion">
+	<documentation>
+ Adds the specified IP addresses to the global proxy ARP exclusion list that applies to all VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.add_global_proxy_exclusionRequest"/>
+		<output message="tns:Networking.VLANGroup.add_global_proxy_exclusionResponse"/>
+	</operation>
+	<operation name="remove_global_proxy_exclusion">
+	<documentation>
+ Removes the specified IP addresses from the global proxy ARP exclusion list that applies to all VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.remove_global_proxy_exclusionRequest"/>
+		<output message="tns:Networking.VLANGroup.remove_global_proxy_exclusionResponse"/>
+	</operation>
+	<operation name="remove_all_global_proxy_exclusions">
+	<documentation>
+ Removes all IP addresses from the global proxy ARP exclusion list for all VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.remove_all_global_proxy_exclusionsRequest"/>
+		<output message="tns:Networking.VLANGroup.remove_all_global_proxy_exclusionsResponse"/>
+	</operation>
+	<operation name="get_proxy_exclusion">
+	<documentation>
+ Gets the lists of IP addresses that proxy ARP will ignore for the specified VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.get_proxy_exclusionRequest"/>
+		<output message="tns:Networking.VLANGroup.get_proxy_exclusionResponse"/>
+	</operation>
+	<operation name="add_proxy_exclusion">
+	<documentation>
+ Adds the specified IP addresses to the proxy ARP exclusion lists of the specified VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.add_proxy_exclusionRequest"/>
+		<output message="tns:Networking.VLANGroup.add_proxy_exclusionResponse"/>
+	</operation>
+	<operation name="remove_proxy_exclusion">
+	<documentation>
+ Removes the specified IP addresses from the proxy ARP exclusion lists of the specified VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.remove_proxy_exclusionRequest"/>
+		<output message="tns:Networking.VLANGroup.remove_proxy_exclusionResponse"/>
+	</operation>
+	<operation name="remove_all_proxy_exclusions">
+	<documentation>
+ Removes all IP addresses from the proxy ARP exclusion lists of the specified VLAN groups.
+ 
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.remove_all_proxy_exclusionsRequest"/>
+		<output message="tns:Networking.VLANGroup.remove_all_proxy_exclusionsResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of VLAN groups.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.set_descriptionRequest"/>
+		<output message="tns:Networking.VLANGroup.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of VLAN groups.
+
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.get_descriptionRequest"/>
+		<output message="tns:Networking.VLANGroup.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.VLANGroup.get_versionRequest"/>
+		<output message="tns:Networking.VLANGroup.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.VLANGroupBinding" type="tns:Networking.VLANGroupPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all VLAN groups on this device.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ This method has been deprecated; please use create_v2 instead.
+
+ Creates a VLAN group.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_v2">
+	<documentation>
+ Creates a VLAN group.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_vlan_group">
+	<documentation>
+ Deletes the specified VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_vlan_groups">
+	<documentation>
+ Deletes all VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_vlan_id">
+	<documentation>
+ This method has been deprecated; setting VLAN id for a VLAN group
+ had and will have no effect.  Please don't use in the future.
+
+ Sets the tag ids for the specified VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_vlan_id">
+	<documentation>
+ This method has been deprecated; accessing VLAN id for a VLAN group
+ was unnecessary and misleading.  The method now returns 0s.
+ Please don't use in the future.
+
+ Gets the ids for the specified VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_transparency_mode">
+	<documentation>
+ Sets the transparency modes for the specified VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_transparency_mode">
+	<documentation>
+ Gets the transparency modes for the specified VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_bridge_all_traffic_state">
+	<documentation>
+ Sets the states to indicate whether to bridge non-IP traffic as well as IP traffic 
+ for the specified VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_bridge_all_traffic_state">
+	<documentation>
+ Gets the states to indicate whether to bridge non-IP traffic as well as IP traffic 
+ for the specified VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_bridge_in_standby_state">
+	<documentation>
+ Sets the states to indicate whether to bridge while unit is in standby mode 
+ for the specified VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_bridge_in_standby_state">
+	<documentation>
+ Gets the states to indicate whether to bridge while unit is in standby mode 
+ for the specified VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_bridge_multicast_state">
+	<documentation>
+ Sets the states to indicate whether to bridge multicast/broadcast traffic 
+ for the specified VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_bridge_multicast_state">
+	<documentation>
+ Gets the states to indicate whether to bridge multicast/broadcast traffic 
+ for the specified VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_mac_masquerade_address">
+	<documentation>
+ This function is deprecated.  MAC masquerade address are now configured
+ on traffic groups.
+
+ If there is only one floating traffic group in the system, this function will
+ set the traffic group's MAC masquerade address to the last address in
+ mac_masquerade_addresses and discard all other MAC addresses provided.  If
+ there is more than one floating traffic group, a Common::OperationFailed exception
+ is raised.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_mac_masquerade_address">
+	<documentation>
+ This function is deprecated.  MAC masquerade addresses are now configured
+ on traffic groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_true_mac_address">
+	<documentation>
+ Gets the true MAC addresses used by the specified VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_member">
+	<documentation>
+ Gets the lists of children VLANs of the specified VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_member">
+	<documentation>
+ Adds the specified children VLANs to the specified VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_member">
+	<documentation>
+ Removes the specified children VLANs from the specified VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_members">
+	<documentation>
+ Removes all children VLANs from the specified VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_global_proxy_exclusion">
+	<documentation>
+ Gets the global lists of IP addresses that proxy ARP will ignore for all VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_global_proxy_exclusion">
+	<documentation>
+ Adds the specified IP addresses to the global proxy ARP exclusion list that applies to all VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_global_proxy_exclusion">
+	<documentation>
+ Removes the specified IP addresses from the global proxy ARP exclusion list that applies to all VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_global_proxy_exclusions">
+	<documentation>
+ Removes all IP addresses from the global proxy ARP exclusion list for all VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_proxy_exclusion">
+	<documentation>
+ Gets the lists of IP addresses that proxy ARP will ignore for the specified VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_proxy_exclusion">
+	<documentation>
+ Adds the specified IP addresses to the proxy ARP exclusion lists of the specified VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_proxy_exclusion">
+	<documentation>
+ Removes the specified IP addresses from the proxy ARP exclusion lists of the specified VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_proxy_exclusions">
+	<documentation>
+ Removes all IP addresses from the proxy ARP exclusion lists of the specified VLAN groups.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of VLAN groups.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of VLAN groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/VLANGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/VLANGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.VLANGroup">
+	<documentation>
+ The VLANGroup interface enables you to work with the definitions and attributes contained in a device's VLAN group.  
+
+        	</documentation>
+	<port name="Networking.VLANGroupPort" binding="tns:Networking.VLANGroupBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

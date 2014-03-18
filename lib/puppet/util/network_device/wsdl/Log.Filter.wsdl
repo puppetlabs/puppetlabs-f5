@@ -1,0 +1,1170 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Log.Filter"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Log.Filter.Source">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LOG_SOURCE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_ALL">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_ALL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_ACCESSCONTROL">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_ACCESSCONTROL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_ADAPT">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_ADAPT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_ALERTD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_ALERTD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_APMACL">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_APMACL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_ARP">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_ARP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_AVR">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_AVR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_BASED">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_BASED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_BCM56XXD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_BCM56XXD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_BIG3D">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_BIG3D</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_BIG3DSHIM">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_BIG3DSHIM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_BIGD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_BIGD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_BIGDB">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_BIGDB</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_BIGDBD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_BIGDBD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_BIGPIPE">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_BIGPIPE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_BIGSTART">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_BIGSTART</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_BP">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_BP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_CHECKCERT">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_CHECKCERT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_CHMAND">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_CHMAND</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_CIFS">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_CIFS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_CLUSTERD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_CLUSTERD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_COAPI">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_COAPI</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_BIGIP_COMMON">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_BIGIP_COMMON</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_CONFIG_DB">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_CONFIG_DB</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_CONNAPI">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_CONNAPI</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_CS">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_CS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_CSSD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_CSSD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_CSYNCD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_CSYNCD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_DAEMON">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_DAEMON</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_DEFLATE">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_DEFLATE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_DEVMGMTD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_DEVMGMTD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_DIAMETER">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_DIAMETER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_DMON">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_DMON</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_DOSPROTECT">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_DOSPROTECT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_DUMMY">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_DUMMY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_ECA">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_ECA</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_EVENTD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_EVENTD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_EVROUTED">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_EVROUTED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_FFLAG">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_FFLAG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_GET_DOSSIER">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_GET_DOSSIER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_GTMD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_GTMD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_HA">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_HA</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_HALMSG">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_HALMSG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_HA_TABLE">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_HA_TABLE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_HWCTL">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_HWCTL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_IP">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_IP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_IPREPD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_IPREPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_ISESSION">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_ISESSION</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_ISTATSD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_ISTATSD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_LACPD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_LACPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_LAYER4">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_LAYER4</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_LIBHAL">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_LIBHAL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_LIND">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_LIND</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_LLDPD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_LLDPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_MAPI">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_MAPI</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_MCP">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_MCP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_MCPD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_MCPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_MGMT_ACLD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_MGMT_ACLD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_MYSQLHAD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_MYSQLHAD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_NET">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_NET</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_NETWORK">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_NETWORK</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_PACKET_FILTER">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_PACKET_FILTER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_PCCD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_PCCD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_PFMAND">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_PFMAND</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_PKTCLASS">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_PKTCLASS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_PLUGIN">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_PLUGIN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_PROBE_PLUSPLUS">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_PROBE_PLUSPLUS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_PROMPTSTATUSD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_PROMPTSTATUSD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_PVA">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_PVA</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_PVAD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_PVAD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_RADIUS">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_RADIUS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_RAMCACHE">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_RAMCACHE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_RBA">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_RBA</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_RTSP">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_RTSP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_RULES">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_RULES</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_SASPD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_SASPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_SCRIPTD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_SCRIPTD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_SHELL">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_SHELL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_SNMP">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_SNMP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_SOD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_SOD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_SSL">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_SSL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_SSO">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_SSO</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_STATSD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_STATSD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_STPD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_STPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_SUBAGENTS">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_SUBAGENTS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_SYSCALL">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_SYSCALL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_SYSTEM_CHECK">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_SYSTEM_CHECK</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_TAMD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_TAMD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_TCL_CHECKER">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_TCL_CHECKER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_TCPDUMP">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_TCPDUMP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_TMM">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_TMM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_TMSH">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_TMSH</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_TS">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_TS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_VCMPD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_VCMPD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_PORTAL_ACCESS">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_PORTAL_ACCESS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_WEBSSO">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_WEBSSO</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_WOC_PLUGIN">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_WOC_PLUGIN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_XCONFIG">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_XCONFIG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_XDB">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_XDB</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_ZFD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_ZFD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_ZXFRD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_ZXFRD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_COMMON_F5LOGGING">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_COMMON_F5LOGGING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_COMMON_FPDD">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_COMMON_FPDD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_EM_ADMIN">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_EM_ADMIN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_EM_ALERT">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_EM_ALERT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_EM_CLIENTLIB">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_EM_CLIENTLIB</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_EM_COMMON">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_EM_COMMON</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_EM_DEVICE">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_EM_DEVICE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_EM_DISCOVERY">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_EM_DISCOVERY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_EM_FILE">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_EM_FILE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_EM_LIB">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_EM_LIB</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_EM_REPORT">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_EM_REPORT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_EM_STATS">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_EM_STATS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_SOURCE_EM_SWIM">
+					<xsd:annotation>
+						<xsd:documentation>LOG_SOURCE_EM_SWIM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Log.SyslogLevel">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LOG_LEVEL_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>LOG_LEVEL_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_LEVEL_EMERG">
+					<xsd:annotation>
+						<xsd:documentation>LOG_LEVEL_EMERG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_LEVEL_ALERT">
+					<xsd:annotation>
+						<xsd:documentation>LOG_LEVEL_ALERT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_LEVEL_CRIT">
+					<xsd:annotation>
+						<xsd:documentation>LOG_LEVEL_CRIT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_LEVEL_ERR">
+					<xsd:annotation>
+						<xsd:documentation>LOG_LEVEL_ERR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_LEVEL_WARNING">
+					<xsd:annotation>
+						<xsd:documentation>LOG_LEVEL_WARNING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_LEVEL_NOTICE">
+					<xsd:annotation>
+						<xsd:documentation>LOG_LEVEL_NOTICE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_LEVEL_INFO">
+					<xsd:annotation>
+						<xsd:documentation>LOG_LEVEL_INFO</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOG_LEVEL_DEBUG">
+					<xsd:annotation>
+						<xsd:documentation>LOG_LEVEL_DEBUG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Log.SyslogLevelSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Log.SyslogLevel[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Log.Filter.SourceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Log.Filter.Source[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Log.Filter.get_listRequest">
+</message>
+<message name="Log.Filter.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Log.Filter.createRequest">
+	<part name="filters" type="tns:Common.StringSequence"/>
+	<part name="sources" type="tns:Log.Filter.SourceSequence"/>
+	<part name="publishers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.Filter.createResponse">
+</message>
+
+<message name="Log.Filter.delete_filterRequest">
+	<part name="filters" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.Filter.delete_filterResponse">
+</message>
+
+<message name="Log.Filter.delete_all_filtersRequest">
+</message>
+<message name="Log.Filter.delete_all_filtersResponse">
+</message>
+
+<message name="Log.Filter.set_sourceRequest">
+	<part name="filters" type="tns:Common.StringSequence"/>
+	<part name="sources" type="tns:Log.Filter.SourceSequence"/>
+</message>
+<message name="Log.Filter.set_sourceResponse">
+</message>
+
+<message name="Log.Filter.get_sourceRequest">
+	<part name="filters" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.Filter.get_sourceResponse">
+	<part name="return" type="tns:Log.Filter.SourceSequence"/>
+</message>
+
+<message name="Log.Filter.set_levelRequest">
+	<part name="filters" type="tns:Common.StringSequence"/>
+	<part name="levels" type="tns:Log.SyslogLevelSequence"/>
+</message>
+<message name="Log.Filter.set_levelResponse">
+</message>
+
+<message name="Log.Filter.get_levelRequest">
+	<part name="filters" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.Filter.get_levelResponse">
+	<part name="return" type="tns:Log.SyslogLevelSequence"/>
+</message>
+
+<message name="Log.Filter.set_publisherRequest">
+	<part name="filters" type="tns:Common.StringSequence"/>
+	<part name="publishers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.Filter.set_publisherResponse">
+</message>
+
+<message name="Log.Filter.get_publisherRequest">
+	<part name="filters" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.Filter.get_publisherResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Log.Filter.set_descriptionRequest">
+	<part name="filters" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.Filter.set_descriptionResponse">
+</message>
+
+<message name="Log.Filter.get_descriptionRequest">
+	<part name="filters" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.Filter.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Log.Filter.get_versionRequest">
+</message>
+<message name="Log.Filter.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Log.FilterPortType">
+	<operation name="get_list">
+      	<documentation>
+ Gets the list of log filters.
+
+        	</documentation>
+		<input message="tns:Log.Filter.get_listRequest"/>
+		<output message="tns:Log.Filter.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a log filter.
+
+        	</documentation>
+		<input message="tns:Log.Filter.createRequest"/>
+		<output message="tns:Log.Filter.createResponse"/>
+	</operation>
+	<operation name="delete_filter">
+	<documentation>
+ Deletes the specified log filters.
+
+        	</documentation>
+		<input message="tns:Log.Filter.delete_filterRequest"/>
+		<output message="tns:Log.Filter.delete_filterResponse"/>
+	</operation>
+	<operation name="delete_all_filters">
+	<documentation>
+ Deletes all log filters.
+
+        	</documentation>
+		<input message="tns:Log.Filter.delete_all_filtersRequest"/>
+		<output message="tns:Log.Filter.delete_all_filtersResponse"/>
+	</operation>
+	<operation name="set_source">
+	<documentation>
+ Sets the source of messages for the specified filters. If no source
+ is specified, all sources will be filtered.
+
+        	</documentation>
+		<input message="tns:Log.Filter.set_sourceRequest"/>
+		<output message="tns:Log.Filter.set_sourceResponse"/>
+	</operation>
+	<operation name="get_source">
+	<documentation>
+ Gets the source of messages for the specified log filters.
+
+        	</documentation>
+		<input message="tns:Log.Filter.get_sourceRequest"/>
+		<output message="tns:Log.Filter.get_sourceResponse"/>
+	</operation>
+	<operation name="set_level">
+	<documentation>
+ Gets the lowest severity level of a message that will be matched by
+ the specified log filters.
+
+        	</documentation>
+		<input message="tns:Log.Filter.set_levelRequest"/>
+		<output message="tns:Log.Filter.set_levelResponse"/>
+	</operation>
+	<operation name="get_level">
+	<documentation>
+ Gets the lowest severity level of a message that will be matched by
+ the specified log filters.
+
+        	</documentation>
+		<input message="tns:Log.Filter.get_levelRequest"/>
+		<output message="tns:Log.Filter.get_levelResponse"/>
+	</operation>
+	<operation name="set_publisher">
+	<documentation>
+ Sets the log publisher which will send out messages chosen by the
+ specified log filters.
+
+        	</documentation>
+		<input message="tns:Log.Filter.set_publisherRequest"/>
+		<output message="tns:Log.Filter.set_publisherResponse"/>
+	</operation>
+	<operation name="get_publisher">
+	<documentation>
+ Gets the log publisher which will send out messages chosen by the
+ specified log filters.
+
+        	</documentation>
+		<input message="tns:Log.Filter.get_publisherRequest"/>
+		<output message="tns:Log.Filter.get_publisherResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for the specified log filters.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Log.Filter.set_descriptionRequest"/>
+		<output message="tns:Log.Filter.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the specified log filters.
+
+        	</documentation>
+		<input message="tns:Log.Filter.get_descriptionRequest"/>
+		<output message="tns:Log.Filter.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Log.Filter.get_versionRequest"/>
+		<output message="tns:Log.Filter.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Log.FilterBinding" type="tns:Log.FilterPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the list of log filters.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Filter"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a log filter.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Filter"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_filter">
+	<documentation>
+ Deletes the specified log filters.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Filter"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_filters">
+	<documentation>
+ Deletes all log filters.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Filter"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_source">
+	<documentation>
+ Sets the source of messages for the specified filters. If no source
+ is specified, all sources will be filtered.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Filter"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_source">
+	<documentation>
+ Gets the source of messages for the specified log filters.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Filter"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_level">
+	<documentation>
+ Gets the lowest severity level of a message that will be matched by
+ the specified log filters.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Filter"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_level">
+	<documentation>
+ Gets the lowest severity level of a message that will be matched by
+ the specified log filters.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Filter"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_publisher">
+	<documentation>
+ Sets the log publisher which will send out messages chosen by the
+ specified log filters.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Filter"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_publisher">
+	<documentation>
+ Gets the log publisher which will send out messages chosen by the
+ specified log filters.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Filter"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for the specified log filters.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Filter"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the specified log filters.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Filter"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Filter"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Filter"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Log.Filter">
+	<documentation>
+ The filter interface enables you to create and modify filters which
+ are used to select messages for processing by a log publisher.
+
+        	</documentation>
+	<port name="Log.FilterPort" binding="tns:Log.FilterBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

@@ -1,0 +1,279 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="System.Internal"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.KeyValueSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.KeyValue[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="System.Internal.URISequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.Internal.URI[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.PortSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="System.Internal.URI">
+			<xsd:sequence>
+				<xsd:element name="path" type="xsd:string"/>
+				<xsd:element name="argmap" type="tns:Common.KeyValueSequence"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.KeyValue">
+			<xsd:sequence>
+				<xsd:element name="key" type="xsd:string"/>
+				<xsd:element name="value" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="System.Internal.test_connectionRequest">
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+	<part name="ports" type="tns:Common.PortSequence"/>
+</message>
+<message name="System.Internal.test_connectionResponse">
+	<part name="return" type="xsd:boolean"/>
+</message>
+
+<message name="System.Internal.test_connection_with_proxyRequest">
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+	<part name="ports" type="tns:Common.PortSequence"/>
+	<part name="proxy_addresses" type="tns:Common.IPAddressSequence"/>
+	<part name="proxy_ports" type="tns:Common.PortSequence"/>
+</message>
+<message name="System.Internal.test_connection_with_proxyResponse">
+	<part name="return" type="xsd:boolean"/>
+</message>
+
+<message name="System.Internal.map_uriRequest">
+	<part name="target_tags" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.Internal.map_uriResponse">
+	<part name="return" type="tns:System.Internal.URISequence"/>
+</message>
+
+<message name="System.Internal.get_methodsRequest">
+</message>
+<message name="System.Internal.get_methodsResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="System.Internal.get_versionRequest">
+</message>
+<message name="System.Internal.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="System.InternalPortType">
+	<operation name="test_connection">
+ 	<documentation>
+
+ Tests a connection from the device to the caller
+
+        	</documentation>
+		<input message="tns:System.Internal.test_connectionRequest"/>
+		<output message="tns:System.Internal.test_connectionResponse"/>
+	</operation>
+	<operation name="test_connection_with_proxy">
+	<documentation>
+ Tests a connection from the device to the caller through a proxy.
+
+        	</documentation>
+		<input message="tns:System.Internal.test_connection_with_proxyRequest"/>
+		<output message="tns:System.Internal.test_connection_with_proxyResponse"/>
+	</operation>
+	<operation name="map_uri">
+	<documentation>
+
+ Returns a sequence of URIs given a list of tags.
+
+        	</documentation>
+		<input message="tns:System.Internal.map_uriRequest"/>
+		<output message="tns:System.Internal.map_uriResponse"/>
+	</operation>
+	<operation name="get_methods">
+	<documentation>
+ Get the iControl methods provided by this device.
+
+        	</documentation>
+		<input message="tns:System.Internal.get_methodsRequest"/>
+		<output message="tns:System.Internal.get_methodsResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:System.Internal.get_versionRequest"/>
+		<output message="tns:System.Internal.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="System.InternalBinding" type="tns:System.InternalPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="test_connection">
+	<documentation>
+
+ Tests a connection from the device to the caller
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Internal"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Internal"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Internal"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="test_connection_with_proxy">
+	<documentation>
+ Tests a connection from the device to the caller through a proxy.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Internal"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Internal"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Internal"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="map_uri">
+	<documentation>
+
+ Returns a sequence of URIs given a list of tags.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Internal"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Internal"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Internal"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_methods">
+	<documentation>
+ Get the iControl methods provided by this device.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Internal"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Internal"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Internal"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/Internal"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Internal"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/Internal"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="System.Internal">
+	<documentation>
+
+ The Internal interface is a private interface to support internal F5 capabilities.
+
+        	</documentation>
+	<port name="System.InternalPort" binding="tns:System.InternalBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

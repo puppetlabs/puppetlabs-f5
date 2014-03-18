@@ -1,0 +1,3188 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Security.LogProfile"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Security.LogProfile.RemoteProtocolSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Security.LogProfile.RemoteProtocol[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Security.LogProfile.RemoteStorage">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="REMOTE_STORAGE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>REMOTE_STORAGE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REMOTE_STORAGE_NONE">
+					<xsd:annotation>
+						<xsd:documentation>REMOTE_STORAGE_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REMOTE_STORAGE_REMOTE">
+					<xsd:annotation>
+						<xsd:documentation>REMOTE_STORAGE_REMOTE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REMOTE_STORAGE_SPLUNK">
+					<xsd:annotation>
+						<xsd:documentation>REMOTE_STORAGE_SPLUNK</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REMOTE_STORAGE_ARCSIGHT">
+					<xsd:annotation>
+						<xsd:documentation>REMOTE_STORAGE_ARCSIGHT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.ULongSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.ULongSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Security.LogProfile.FilterKeySequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Security.LogProfile.FilterKeySequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Security.LogProfile.StorageFormatSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Security.LogProfile.StorageFormat[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Security.LogProfile.EntryLengthSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Security.LogProfile.EntryLengthSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Security.LogProfile.RemoteStorageSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Security.LogProfile.RemoteStorageSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.BooleanSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:boolean[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPPortDefinitionSequenceSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.IPPortDefinitionSequenceSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequenceSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Security.LogProfile.EntryLengthSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Security.LogProfile.EntryLength[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Security.LogProfile.LogicOperationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Security.LogProfile.LogicOperation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Security.LogProfile.FilterKey">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="FILTER_KEY_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>FILTER_KEY_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILTER_KEY_REQUEST_TYPE">
+					<xsd:annotation>
+						<xsd:documentation>FILTER_KEY_REQUEST_TYPE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILTER_KEY_PROTOCOL">
+					<xsd:annotation>
+						<xsd:documentation>FILTER_KEY_PROTOCOL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILTER_KEY_RESPONSE_CODE">
+					<xsd:annotation>
+						<xsd:documentation>FILTER_KEY_RESPONSE_CODE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILTER_KEY_HTTP_METHOD">
+					<xsd:annotation>
+						<xsd:documentation>FILTER_KEY_HTTP_METHOD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILTER_KEY_SEARCH_ALL">
+					<xsd:annotation>
+						<xsd:documentation>FILTER_KEY_SEARCH_ALL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILTER_KEY_SEARCH_IN_HEADERS">
+					<xsd:annotation>
+						<xsd:documentation>FILTER_KEY_SEARCH_IN_HEADERS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILTER_KEY_SEARCH_IN_POST_DATA">
+					<xsd:annotation>
+						<xsd:documentation>FILTER_KEY_SEARCH_IN_POST_DATA</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILTER_KEY_SEARCH_IN_QUERY_STRING">
+					<xsd:annotation>
+						<xsd:documentation>FILTER_KEY_SEARCH_IN_QUERY_STRING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILTER_KEY_SEARCH_IN_REQUEST">
+					<xsd:annotation>
+						<xsd:documentation>FILTER_KEY_SEARCH_IN_REQUEST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILTER_KEY_SEARCH_IN_URI">
+					<xsd:annotation>
+						<xsd:documentation>FILTER_KEY_SEARCH_IN_URI</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.IPPortDefinitionSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.IPPortDefinition[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPPortDefinitionSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.IPPortDefinitionSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Security.LogProfile.FilterKeySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Security.LogProfile.FilterKey[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Security.LogProfile.RemoteFacilitySequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Security.LogProfile.RemoteFacilitySequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Security.LogProfile.FilterKeySequenceSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Security.LogProfile.FilterKeySequenceSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Security.LogProfile.ResponseLogging">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="RESPONSE_LOGGING_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>RESPONSE_LOGGING_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="RESPONSE_LOGGING_NONE">
+					<xsd:annotation>
+						<xsd:documentation>RESPONSE_LOGGING_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="RESPONSE_LOGGING_ILLEGAL">
+					<xsd:annotation>
+						<xsd:documentation>RESPONSE_LOGGING_ILLEGAL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="RESPONSE_LOGGING_ALL">
+					<xsd:annotation>
+						<xsd:documentation>RESPONSE_LOGGING_ALL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Security.LogProfile.StorageFormatSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Security.LogProfile.StorageFormatSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Security.LogProfile.RemoteStorageSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Security.LogProfile.RemoteStorage[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Security.LogProfile.ResponseLoggingSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Security.LogProfile.ResponseLogging[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Security.LogProfile.EntryLength">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="ENTRY_LENGTH_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>ENTRY_LENGTH_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ENTRY_LENGTH_1K">
+					<xsd:annotation>
+						<xsd:documentation>ENTRY_LENGTH_1K</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ENTRY_LENGTH_2K">
+					<xsd:annotation>
+						<xsd:documentation>ENTRY_LENGTH_2K</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ENTRY_LENGTH_10K">
+					<xsd:annotation>
+						<xsd:documentation>ENTRY_LENGTH_10K</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ENTRY_LENGTH_64K">
+					<xsd:annotation>
+						<xsd:documentation>ENTRY_LENGTH_64K</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Security.LogProfile.LogicOperationSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Security.LogProfile.LogicOperationSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequenceSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequenceSequenceSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPPortDefinition">
+			<xsd:sequence>
+				<xsd:element name="address" type="xsd:string"/>
+				<xsd:element name="port" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Security.LogProfile.RemoteFacility">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="REMOTE_FACILITY_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>REMOTE_FACILITY_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REMOTE_FACILITY_LOCAL0">
+					<xsd:annotation>
+						<xsd:documentation>REMOTE_FACILITY_LOCAL0</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REMOTE_FACILITY_LOCAL1">
+					<xsd:annotation>
+						<xsd:documentation>REMOTE_FACILITY_LOCAL1</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REMOTE_FACILITY_LOCAL2">
+					<xsd:annotation>
+						<xsd:documentation>REMOTE_FACILITY_LOCAL2</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REMOTE_FACILITY_LOCAL3">
+					<xsd:annotation>
+						<xsd:documentation>REMOTE_FACILITY_LOCAL3</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REMOTE_FACILITY_LOCAL4">
+					<xsd:annotation>
+						<xsd:documentation>REMOTE_FACILITY_LOCAL4</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REMOTE_FACILITY_LOCAL5">
+					<xsd:annotation>
+						<xsd:documentation>REMOTE_FACILITY_LOCAL5</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REMOTE_FACILITY_LOCAL6">
+					<xsd:annotation>
+						<xsd:documentation>REMOTE_FACILITY_LOCAL6</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REMOTE_FACILITY_LOCAL7">
+					<xsd:annotation>
+						<xsd:documentation>REMOTE_FACILITY_LOCAL7</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Security.LogProfile.LogicOperation">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LOGIC_OPERATION_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>LOGIC_OPERATION_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOGIC_OPERATION_AND">
+					<xsd:annotation>
+						<xsd:documentation>LOGIC_OPERATION_AND</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LOGIC_OPERATION_OR">
+					<xsd:annotation>
+						<xsd:documentation>LOGIC_OPERATION_OR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Security.LogProfile.RemoteFacilitySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Security.LogProfile.RemoteFacility[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledStateSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Security.LogProfile.ResponseLoggingSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Security.LogProfile.ResponseLoggingSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Security.LogProfile.RemoteProtocol">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="REMOTE_PROTOCOL_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>REMOTE_PROTOCOL_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REMOTE_PROTOCOL_UDP">
+					<xsd:annotation>
+						<xsd:documentation>REMOTE_PROTOCOL_UDP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REMOTE_PROTOCOL_TCP">
+					<xsd:annotation>
+						<xsd:documentation>REMOTE_PROTOCOL_TCP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="REMOTE_PROTOCOL_TCP_RFC3195">
+					<xsd:annotation>
+						<xsd:documentation>REMOTE_PROTOCOL_TCP_RFC3195</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Security.LogProfile.StorageFormat">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STORAGE_FORMAT_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>STORAGE_FORMAT_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STORAGE_FORMAT_PREDEFINED">
+					<xsd:annotation>
+						<xsd:documentation>STORAGE_FORMAT_PREDEFINED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STORAGE_FORMAT_USER_DEFINED">
+					<xsd:annotation>
+						<xsd:documentation>STORAGE_FORMAT_USER_DEFINED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Security.LogProfile.RemoteProtocolSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Security.LogProfile.RemoteProtocolSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Security.LogProfile.get_listRequest">
+</message>
+<message name="Security.LogProfile.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Security.LogProfile.createRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.LogProfile.createResponse">
+</message>
+
+<message name="Security.LogProfile.delete_log_profileRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.LogProfile.delete_log_profileResponse">
+</message>
+
+<message name="Security.LogProfile.delete_all_log_profilesRequest">
+</message>
+<message name="Security.LogProfile.delete_all_log_profilesResponse">
+</message>
+
+<message name="Security.LogProfile.is_system_log_profileRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.LogProfile.is_system_log_profileResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="Security.LogProfile.set_descriptionRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.LogProfile.set_descriptionResponse">
+</message>
+
+<message name="Security.LogProfile.get_descriptionRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.LogProfile.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Security.LogProfile.get_applicationRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.LogProfile.get_applicationResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.add_applicationRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.add_applicationResponse">
+</message>
+
+<message name="Security.LogProfile.remove_applicationRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.remove_applicationResponse">
+</message>
+
+<message name="Security.LogProfile.remove_all_applicationsRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.LogProfile.remove_all_applicationsResponse">
+</message>
+
+<message name="Security.LogProfile.set_application_local_storage_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.set_application_local_storage_stateResponse">
+</message>
+
+<message name="Security.LogProfile.get_application_local_storage_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.get_application_local_storage_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.set_application_guarantee_logging_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.set_application_guarantee_logging_stateResponse">
+</message>
+
+<message name="Security.LogProfile.get_application_guarantee_logging_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.get_application_guarantee_logging_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.set_application_response_loggingRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="types" type="tns:Security.LogProfile.ResponseLoggingSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.set_application_response_loggingResponse">
+</message>
+
+<message name="Security.LogProfile.get_application_response_loggingRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.get_application_response_loggingResponse">
+	<part name="return" type="tns:Security.LogProfile.ResponseLoggingSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.set_application_guarantee_response_logging_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.set_application_guarantee_response_logging_stateResponse">
+</message>
+
+<message name="Security.LogProfile.get_application_guarantee_response_logging_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.get_application_guarantee_response_logging_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.set_application_remote_storageRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="types" type="tns:Security.LogProfile.RemoteStorageSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.set_application_remote_storageResponse">
+</message>
+
+<message name="Security.LogProfile.set_application_remote_format_predefinedRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="fields" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.set_application_remote_format_predefinedResponse">
+</message>
+
+<message name="Security.LogProfile.set_application_remote_format_user_definedRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="texts" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.set_application_remote_format_user_definedResponse">
+</message>
+
+<message name="Security.LogProfile.get_application_remote_storageRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.get_application_remote_storageResponse">
+	<part name="return" type="tns:Security.LogProfile.RemoteStorageSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.set_application_protocolRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="protocols" type="tns:Security.LogProfile.RemoteProtocolSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.set_application_protocolResponse">
+</message>
+
+<message name="Security.LogProfile.get_application_protocolRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.get_application_protocolResponse">
+	<part name="return" type="tns:Security.LogProfile.RemoteProtocolSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.set_application_facilityRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="facilities" type="tns:Security.LogProfile.RemoteFacilitySequenceSequence"/>
+</message>
+<message name="Security.LogProfile.set_application_facilityResponse">
+</message>
+
+<message name="Security.LogProfile.get_application_facilityRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.get_application_facilityResponse">
+	<part name="return" type="tns:Security.LogProfile.RemoteFacilitySequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.set_application_format_predefinedRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="fields" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.set_application_format_predefinedResponse">
+</message>
+
+<message name="Security.LogProfile.set_application_format_user_definedRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="texts" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.set_application_format_user_definedResponse">
+</message>
+
+<message name="Security.LogProfile.get_application_formatRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.get_application_formatResponse">
+	<part name="return" type="tns:Security.LogProfile.StorageFormatSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.set_application_field_delimiterRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="texts" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.set_application_field_delimiterResponse">
+</message>
+
+<message name="Security.LogProfile.get_application_field_delimiterRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.get_application_field_delimiterResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.set_application_field_formatRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="texts" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.set_application_field_formatResponse">
+</message>
+
+<message name="Security.LogProfile.get_application_field_formatRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.get_application_field_formatResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.get_application_fieldsRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.get_application_fieldsResponse">
+	<part name="return" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.replace_application_fieldsRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="fields" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.replace_application_fieldsResponse">
+</message>
+
+<message name="Security.LogProfile.set_application_user_stringRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="texts" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.set_application_user_stringResponse">
+</message>
+
+<message name="Security.LogProfile.get_application_user_stringRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.get_application_user_stringResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.set_application_maximum_request_sizeRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="values" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.set_application_maximum_request_sizeResponse">
+</message>
+
+<message name="Security.LogProfile.get_application_maximum_request_sizeRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.get_application_maximum_request_sizeResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.set_application_maximum_header_sizeRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="values" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.set_application_maximum_header_sizeResponse">
+</message>
+
+<message name="Security.LogProfile.get_application_maximum_header_sizeRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.get_application_maximum_header_sizeResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.set_application_maximum_query_sizeRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="values" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.set_application_maximum_query_sizeResponse">
+</message>
+
+<message name="Security.LogProfile.get_application_maximum_query_sizeRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.get_application_maximum_query_sizeResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.set_application_maximum_entry_lengthRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="lengths" type="tns:Security.LogProfile.EntryLengthSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.set_application_maximum_entry_lengthResponse">
+</message>
+
+<message name="Security.LogProfile.get_application_maximum_entry_lengthRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.get_application_maximum_entry_lengthResponse">
+	<part name="return" type="tns:Security.LogProfile.EntryLengthSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.set_application_report_anomalies_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.set_application_report_anomalies_stateResponse">
+</message>
+
+<message name="Security.LogProfile.get_application_report_anomalies_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.get_application_report_anomalies_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.set_application_logic_operationRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="operations" type="tns:Security.LogProfile.LogicOperationSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.set_application_logic_operationResponse">
+</message>
+
+<message name="Security.LogProfile.get_application_logic_operationRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.get_application_logic_operationResponse">
+	<part name="return" type="tns:Security.LogProfile.LogicOperationSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.get_application_server_addressRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.get_application_server_addressResponse">
+	<part name="return" type="tns:Common.IPPortDefinitionSequenceSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.add_application_server_addressRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="servers" type="tns:Common.IPPortDefinitionSequenceSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.add_application_server_addressResponse">
+</message>
+
+<message name="Security.LogProfile.remove_application_server_addressRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="servers" type="tns:Common.IPPortDefinitionSequenceSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.remove_application_server_addressResponse">
+</message>
+
+<message name="Security.LogProfile.remove_all_application_server_addressesRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.remove_all_application_server_addressesResponse">
+</message>
+
+<message name="Security.LogProfile.get_application_request_filter_keysRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.get_application_request_filter_keysResponse">
+	<part name="return" type="tns:Security.LogProfile.FilterKeySequenceSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.add_application_request_filterRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="keys" type="tns:Security.LogProfile.FilterKeySequenceSequenceSequence"/>
+	<part name="values" type="tns:Common.StringSequenceSequenceSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.add_application_request_filterResponse">
+</message>
+
+<message name="Security.LogProfile.remove_application_request_filterRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="keys" type="tns:Security.LogProfile.FilterKeySequenceSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.remove_application_request_filterResponse">
+</message>
+
+<message name="Security.LogProfile.remove_all_application_request_filtersRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.remove_all_application_request_filtersResponse">
+</message>
+
+<message name="Security.LogProfile.get_application_request_filter_valuesRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="keys" type="tns:Security.LogProfile.FilterKeySequenceSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.get_application_request_filter_valuesResponse">
+	<part name="return" type="tns:Common.StringSequenceSequenceSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.add_application_request_filter_valuesRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="keys" type="tns:Security.LogProfile.FilterKeySequenceSequenceSequence"/>
+	<part name="values" type="tns:Common.StringSequenceSequenceSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.add_application_request_filter_valuesResponse">
+</message>
+
+<message name="Security.LogProfile.replace_application_request_filter_valuesRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="keys" type="tns:Security.LogProfile.FilterKeySequenceSequenceSequence"/>
+	<part name="values" type="tns:Common.StringSequenceSequenceSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.replace_application_request_filter_valuesResponse">
+</message>
+
+<message name="Security.LogProfile.remove_application_request_filter_valuesRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="applications" type="tns:Common.StringSequenceSequence"/>
+	<part name="keys" type="tns:Security.LogProfile.FilterKeySequenceSequenceSequence"/>
+	<part name="values" type="tns:Common.StringSequenceSequenceSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.remove_application_request_filter_valuesResponse">
+</message>
+
+<message name="Security.LogProfile.get_protocol_transferRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.LogProfile.get_protocol_transferResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.add_protocol_transferRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="protocols" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.add_protocol_transferResponse">
+</message>
+
+<message name="Security.LogProfile.remove_protocol_transferRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="protocols" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.remove_protocol_transferResponse">
+</message>
+
+<message name="Security.LogProfile.remove_all_protocol_transfersRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Security.LogProfile.remove_all_protocol_transfersResponse">
+</message>
+
+<message name="Security.LogProfile.set_protocol_transfer_publisherRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="protocols" type="tns:Common.StringSequenceSequence"/>
+	<part name="publishers" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.set_protocol_transfer_publisherResponse">
+</message>
+
+<message name="Security.LogProfile.get_protocol_transfer_publisherRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="protocols" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Security.LogProfile.get_protocol_transfer_publisherResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Security.LogProfile.get_versionRequest">
+</message>
+<message name="Security.LogProfile.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Security.LogProfilePortType">
+	<operation name="get_list">
+     	<documentation>
+ Gets a list of all (security) logging profiles configured in the system.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_listRequest"/>
+		<output message="tns:Security.LogProfile.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates the specified logging profiles.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.createRequest"/>
+		<output message="tns:Security.LogProfile.createResponse"/>
+	</operation>
+	<operation name="delete_log_profile">
+	<documentation>
+ Deletes the specified logging profiles.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.delete_log_profileRequest"/>
+		<output message="tns:Security.LogProfile.delete_log_profileResponse"/>
+	</operation>
+	<operation name="delete_all_log_profiles">
+	<documentation>
+ Deletes all logging profiles.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.delete_all_log_profilesRequest"/>
+		<output message="tns:Security.LogProfile.delete_all_log_profilesResponse"/>
+	</operation>
+	<operation name="is_system_log_profile">
+	<documentation>
+ Determines whether the specified logging profiles are system logging profiles.
+ A system logging profile is a logging profile pre-configured on the system, ready
+ for use.  Non-system logging profiles are logging profiles created or modified by a
+ user.  Note that if a system logging profile is modified, it is no longer
+ considered a system logging profile (except those ones that explicitly preserved).
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.is_system_log_profileRequest"/>
+		<output message="tns:Security.LogProfile.is_system_log_profileResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of logging profiles.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.set_descriptionRequest"/>
+		<output message="tns:Security.LogProfile.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of logging profiles.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_descriptionRequest"/>
+		<output message="tns:Security.LogProfile.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_application">
+	<documentation>
+ Gets a list of Application Security sub-profiles for a list of given logging profiles.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_applicationRequest"/>
+		<output message="tns:Security.LogProfile.get_applicationResponse"/>
+	</operation>
+	<operation name="add_application">
+	<documentation>
+ Adds a list of Application Security sub-profiles to given logging profiles.
+ Note: Only one Application Security sub-profile can exist per logging profile.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.add_applicationRequest"/>
+		<output message="tns:Security.LogProfile.add_applicationResponse"/>
+	</operation>
+	<operation name="remove_application">
+	<documentation>
+ Removes specific Application Security sub-profiles from the specified logging profiles.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.remove_applicationRequest"/>
+		<output message="tns:Security.LogProfile.remove_applicationResponse"/>
+	</operation>
+	<operation name="remove_all_applications">
+	<documentation>
+ Removes all Application Security sub-profiles from the specified logging profiles.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.remove_all_applicationsRequest"/>
+		<output message="tns:Security.LogProfile.remove_all_applicationsResponse"/>
+	</operation>
+	<operation name="set_application_local_storage_state">
+	<documentation>
+ Sets the local storage state in Application Security.
+
+ Local storage specifies, when enabled, that the system stores all traffic in the system
+ and can be viewed in the Requests screen. 
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.set_application_local_storage_stateRequest"/>
+		<output message="tns:Security.LogProfile.set_application_local_storage_stateResponse"/>
+	</operation>
+	<operation name="get_application_local_storage_state">
+	<documentation>
+ Gets the local storage state in Application Security.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_application_local_storage_stateRequest"/>
+		<output message="tns:Security.LogProfile.get_application_local_storage_stateResponse"/>
+	</operation>
+	<operation name="set_application_guarantee_logging_state">
+	<documentation>
+ Sets the guarantee local logging state in Application Security.
+
+ Guarantee local logging specifies:
+  - When enabled, that the system logs all requests, even though this may slow your virtual server.
+  - When disabled, that the system logs requests as long as it does not slow your virtual server.
+ The default is disabled. In either case, the system does not drop requests.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.set_application_guarantee_logging_stateRequest"/>
+		<output message="tns:Security.LogProfile.set_application_guarantee_logging_stateResponse"/>
+	</operation>
+	<operation name="get_application_guarantee_logging_state">
+	<documentation>
+ Gets the guarantee local logging state in Application Security.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_application_guarantee_logging_stateRequest"/>
+		<output message="tns:Security.LogProfile.get_application_guarantee_logging_stateResponse"/>
+	</operation>
+	<operation name="set_application_response_logging">
+	<documentation>
+ Sets the response logging type in Application Security.
+ The available response logging types are mentioned under the ResponseLogging enumeration.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.set_application_response_loggingRequest"/>
+		<output message="tns:Security.LogProfile.set_application_response_loggingResponse"/>
+	</operation>
+	<operation name="get_application_response_logging">
+	<documentation>
+ Gets the response logging type in Application Security.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_application_response_loggingRequest"/>
+		<output message="tns:Security.LogProfile.get_application_response_loggingResponse"/>
+	</operation>
+	<operation name="set_application_guarantee_response_logging_state">
+	<documentation>
+ Sets the guarantee local response logging state in Application Security.
+
+ Guarantee local response logging specifies, when enabled, that the system logs all responses,
+ even though this may slow your virtual server.
+ The system may drop requests if the database is too slow to log all responses.
+ In order to enable this setting, you must first enable guarantee local logging,
+ and set response logging to either illegal or all requests.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.set_application_guarantee_response_logging_stateRequest"/>
+		<output message="tns:Security.LogProfile.set_application_guarantee_response_logging_stateResponse"/>
+	</operation>
+	<operation name="get_application_guarantee_response_logging_state">
+	<documentation>
+ Gets the guarantee local response logging state in Application Security.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_application_guarantee_response_logging_stateRequest"/>
+		<output message="tns:Security.LogProfile.get_application_guarantee_response_logging_stateResponse"/>
+	</operation>
+	<operation name="set_application_remote_storage">
+	<documentation>
+ Sets the remote storage type in Application Security.
+ The available remote storage types are mentioned under the RemoteStorage enumeration.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.set_application_remote_storageRequest"/>
+		<output message="tns:Security.LogProfile.set_application_remote_storageResponse"/>
+	</operation>
+	<operation name="set_application_remote_format_predefined">
+	<documentation>
+ Sets the remote storage type to remote, storage format type to predefined and replaces the fields in Application Security.
+ For consistent configuration, when changing the remote storage type to remote (in particular, for the first time)
+ you must specify also the fields or user-string (for the corresponding format type).
+ Please see set_application_remote_storage, set_application_format_predefined and replace_application_fields
+ for more information about every setting.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.set_application_remote_format_predefinedRequest"/>
+		<output message="tns:Security.LogProfile.set_application_remote_format_predefinedResponse"/>
+	</operation>
+	<operation name="set_application_remote_format_user_defined">
+	<documentation>
+ Sets the remote storage type to remote, storage format type to user-defined and sets the user string in Application Security.
+ For consistent configuration, when changing the remote storage type to remote (in particular, for the first time)
+ you must specify also the fields or user-string (for the corresponding format type).
+ Please see set_application_remote_storage, set_application_format_user_defined and set_application_user_string
+ for more information about every setting.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.set_application_remote_format_user_definedRequest"/>
+		<output message="tns:Security.LogProfile.set_application_remote_format_user_definedResponse"/>
+	</operation>
+	<operation name="get_application_remote_storage">
+	<documentation>
+ Gets the remote storage type in Application Security.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_application_remote_storageRequest"/>
+		<output message="tns:Security.LogProfile.get_application_remote_storageResponse"/>
+	</operation>
+	<operation name="set_application_protocol">
+	<documentation>
+ Sets the remote protocol in Application Security.
+ The available remote protocols are mentioned under the RemoteProtocol enumeration.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.set_application_protocolRequest"/>
+		<output message="tns:Security.LogProfile.set_application_protocolResponse"/>
+	</operation>
+	<operation name="get_application_protocol">
+	<documentation>
+ Gets the remote protocol in Application Security.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_application_protocolRequest"/>
+		<output message="tns:Security.LogProfile.get_application_protocolResponse"/>
+	</operation>
+	<operation name="set_application_facility">
+	<documentation>
+ Sets the remote facility in Application Security.
+ The available remote facilities are mentioned under the RemoteFacility enumeration.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.set_application_facilityRequest"/>
+		<output message="tns:Security.LogProfile.set_application_facilityResponse"/>
+	</operation>
+	<operation name="get_application_facility">
+	<documentation>
+ Gets the remote facility in Application Security.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_application_facilityRequest"/>
+		<output message="tns:Security.LogProfile.get_application_facilityResponse"/>
+	</operation>
+	<operation name="set_application_format_predefined">
+	<documentation>
+ Sets the storage format type to predefined and replaces the fields in Application Security.
+ This is relevant only for the remote storage of type remote, since Splunk and ArcSight have their fixed format.
+ For consistent configuration, when changing the storage format type to predefined you must specify also the fields.
+ The available storage format types are mentioned under the StorageFormat enumeration.
+ Please see replace_application_fields for more information about the fields setting.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.set_application_format_predefinedRequest"/>
+		<output message="tns:Security.LogProfile.set_application_format_predefinedResponse"/>
+	</operation>
+	<operation name="set_application_format_user_defined">
+	<documentation>
+ Sets the storage format type to user-defined and sets the user string in Application Security.
+ This is relevant only for the remote storage of type remote, since Splunk and ArcSight have their fixed format.
+ For consistent configuration, when changing the storage format type to user-defined you must specify also the user-string.
+ The available storage format types are mentioned under the StorageFormat enumeration.
+ Please see set_application_user_string for more information about every setting.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.set_application_format_user_definedRequest"/>
+		<output message="tns:Security.LogProfile.set_application_format_user_definedResponse"/>
+	</operation>
+	<operation name="get_application_format">
+	<documentation>
+ Gets the storage format type in Application Security.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_application_formatRequest"/>
+		<output message="tns:Security.LogProfile.get_application_formatResponse"/>
+	</operation>
+	<operation name="set_application_field_delimiter">
+	<documentation>
+ Sets the field delimiter of the predefined storage format in Application Security.
+ This is relevant only for the remote storage of type remote, since Splunk and ArcSight have their fixed format.
+ 
+ Field delimiter specifies which delimiter the remote machine uses to separate the fields in the logging file.
+ You may not use the % character. The default delimiter is the comma character, for Comma Separated Value (CSV).
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.set_application_field_delimiterRequest"/>
+		<output message="tns:Security.LogProfile.set_application_field_delimiterResponse"/>
+	</operation>
+	<operation name="get_application_field_delimiter">
+	<documentation>
+ Gets the field delimiter of the predefined storage format in Application Security.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_application_field_delimiterRequest"/>
+		<output message="tns:Security.LogProfile.get_application_field_delimiterResponse"/>
+	</operation>
+	<operation name="set_application_field_format">
+	<documentation>
+ Sets the field format of the predefined storage format in Application Security.
+ This is relevant only for the remote storage of type remote, since Splunk and ArcSight have their fixed format.
+ 
+ Field format specifies which format the remote machine uses for each key/value pair in the logging file.
+ Use %k for key and %v for value. The default format is empty that is interpreted as "%v", for CSV.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.set_application_field_formatRequest"/>
+		<output message="tns:Security.LogProfile.set_application_field_formatResponse"/>
+	</operation>
+	<operation name="get_application_field_format">
+	<documentation>
+ Gets the field format of the predefined storage format in Application Security.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_application_field_formatRequest"/>
+		<output message="tns:Security.LogProfile.get_application_field_formatResponse"/>
+	</operation>
+	<operation name="get_application_fields">
+	<documentation>
+ Gets the fields of the predefined storage format in Application Security.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_application_fieldsRequest"/>
+		<output message="tns:Security.LogProfile.get_application_fieldsResponse"/>
+	</operation>
+	<operation name="replace_application_fields">
+	<documentation>
+ Replaces the existing fields of the predefined storage format with new ones in Application Security.
+ This is relevant only for the remote storage of type remote, since Splunk and ArcSight have their fixed format.
+ 
+ Fields specify which traffic items the server logs, and the order in which the server logs them.
+ The server displays the items in the log sequentially from the first to the last one.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.replace_application_fieldsRequest"/>
+		<output message="tns:Security.LogProfile.replace_application_fieldsResponse"/>
+	</operation>
+	<operation name="set_application_user_string">
+	<documentation>
+ Sets the user string of the user-defined storage format in Application Security.
+ This is relevant only for the remote storage of type remote, since Splunk and ArcSight have their fixed format.
+ 
+ User string specifies the format in which the server logs traffic items.
+ You can use free text between the traffic items enclosed in % on both sides.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.set_application_user_stringRequest"/>
+		<output message="tns:Security.LogProfile.set_application_user_stringResponse"/>
+	</operation>
+	<operation name="get_application_user_string">
+	<documentation>
+ Gets the user string of the user-defined storage format in Application Security.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_application_user_stringRequest"/>
+		<output message="tns:Security.LogProfile.get_application_user_stringResponse"/>
+	</operation>
+	<operation name="set_application_maximum_request_size">
+	<documentation>
+ Sets the maximum request size value in Application Security.
+ 
+ Maximum request size specifies how much of the request the server logs.
+  - Any (zero value): Specifies that the server logs the entire request. This is the default.
+  - Length in bytes (positive value): Specifies that the server logs requests up to
+                                      a particular length that you indicate.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.set_application_maximum_request_sizeRequest"/>
+		<output message="tns:Security.LogProfile.set_application_maximum_request_sizeResponse"/>
+	</operation>
+	<operation name="get_application_maximum_request_size">
+	<documentation>
+ Gets the maximum request size value in Application Security.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_application_maximum_request_sizeRequest"/>
+		<output message="tns:Security.LogProfile.get_application_maximum_request_sizeResponse"/>
+	</operation>
+	<operation name="set_application_maximum_header_size">
+	<documentation>
+ Sets the maximum headers size value in Application Security.
+ 
+ Maximum headers size specifies how much of the header the server logs.
+  - Any (zero value): Specifies that the server logs the entire header. This is the default.
+  - Length in bytes (positive value): Specifies that the server logs headers up to
+                                      a particular length that you indicate.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.set_application_maximum_header_sizeRequest"/>
+		<output message="tns:Security.LogProfile.set_application_maximum_header_sizeResponse"/>
+	</operation>
+	<operation name="get_application_maximum_header_size">
+	<documentation>
+ Gets the maximum headers size value in Application Security.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_application_maximum_header_sizeRequest"/>
+		<output message="tns:Security.LogProfile.get_application_maximum_header_sizeResponse"/>
+	</operation>
+	<operation name="set_application_maximum_query_size">
+	<documentation>
+ Sets the maximum query string size value in Application Security.
+ 
+ Maximum query string size specifies how much of the query string the server logs.
+  - Any (zero value): Specifies that the server logs the entire query string. This is the default.
+  - Length in bytes (positive value): Specifies that the server logs query strings up to
+                                      a particular length that you indicate.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.set_application_maximum_query_sizeRequest"/>
+		<output message="tns:Security.LogProfile.set_application_maximum_query_sizeResponse"/>
+	</operation>
+	<operation name="get_application_maximum_query_size">
+	<documentation>
+ Gets the maximum query string size value in Application Security.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_application_maximum_query_sizeRequest"/>
+		<output message="tns:Security.LogProfile.get_application_maximum_query_sizeResponse"/>
+	</operation>
+	<operation name="set_application_maximum_entry_length">
+	<documentation>
+ Sets the maximum entry length in Application Security.
+ The available entry lengths are mentioned under the EntryLength enumeration.
+
+ You can change the maximum entry length only for remote servers that support the TCP protocol.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.set_application_maximum_entry_lengthRequest"/>
+		<output message="tns:Security.LogProfile.set_application_maximum_entry_lengthResponse"/>
+	</operation>
+	<operation name="get_application_maximum_entry_length">
+	<documentation>
+ Gets the maximum entry length in Application Security.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_application_maximum_entry_lengthRequest"/>
+		<output message="tns:Security.LogProfile.get_application_maximum_entry_lengthResponse"/>
+	</operation>
+	<operation name="set_application_report_anomalies_state">
+	<documentation>
+ Sets the report detected anomalies state in Application Security.
+
+ Report detected anomalies specifies, when enabled, that the system sends a report string to the
+ remote system log when a brute force attack, IP enforcer attack, or web scraping attack starts and ends.
+ The default is disabled.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.set_application_report_anomalies_stateRequest"/>
+		<output message="tns:Security.LogProfile.set_application_report_anomalies_stateResponse"/>
+	</operation>
+	<operation name="get_application_report_anomalies_state">
+	<documentation>
+ Gets the report detected anomalies state in Application Security.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_application_report_anomalies_stateRequest"/>
+		<output message="tns:Security.LogProfile.get_application_report_anomalies_stateResponse"/>
+	</operation>
+	<operation name="set_application_logic_operation">
+	<documentation>
+ Sets the logic operation in Application Security.
+ The available logic operations are mentioned under the LogicOperation enumeration.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.set_application_logic_operationRequest"/>
+		<output message="tns:Security.LogProfile.set_application_logic_operationResponse"/>
+	</operation>
+	<operation name="get_application_logic_operation">
+	<documentation>
+ Gets the logic operation in Application Security.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_application_logic_operationRequest"/>
+		<output message="tns:Security.LogProfile.get_application_logic_operationResponse"/>
+	</operation>
+	<operation name="get_application_server_address">
+	<documentation>
+ Gets a list of remote servers in Application Security.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_application_server_addressRequest"/>
+		<output message="tns:Security.LogProfile.get_application_server_addressResponse"/>
+	</operation>
+	<operation name="add_application_server_address">
+	<documentation>
+ Adds a list of IP addresses and ports to the list of remote servers in Application Security.
+ 
+ Server addresses specify which remote servers log traffic.
+ You can configure the system to log traffic to multiple remote servers.
+ The default port of the remote machine used to log traffic is 514.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.add_application_server_addressRequest"/>
+		<output message="tns:Security.LogProfile.add_application_server_addressResponse"/>
+	</operation>
+	<operation name="remove_application_server_address">
+	<documentation>
+ Removes specific IP addresses and ports from the list of remote servers in Application Security.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.remove_application_server_addressRequest"/>
+		<output message="tns:Security.LogProfile.remove_application_server_addressResponse"/>
+	</operation>
+	<operation name="remove_all_application_server_addresses">
+	<documentation>
+ Removes all remote servers in Application Security.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.remove_all_application_server_addressesRequest"/>
+		<output message="tns:Security.LogProfile.remove_all_application_server_addressesResponse"/>
+	</operation>
+	<operation name="get_application_request_filter_keys">
+	<documentation>
+ Gets a list of keys of request (storage) filters in Application Security.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_application_request_filter_keysRequest"/>
+		<output message="tns:Security.LogProfile.get_application_request_filter_keysResponse"/>
+	</operation>
+	<operation name="add_application_request_filter">
+	<documentation>
+ Adds a list of request filters to the existing list in Application Security.
+ Request filter specifies a fundamental or detailed setting for the type of requests the system, or server logs.
+ Every request filter has a generic form of key/values.
+ For consistent configuration, when creating a new request filter with the specified key
+ you must specify also the values.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.add_application_request_filterRequest"/>
+		<output message="tns:Security.LogProfile.add_application_request_filterResponse"/>
+	</operation>
+	<operation name="remove_application_request_filter">
+	<documentation>
+ Removes specific request filters from the existing list in Application Security.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.remove_application_request_filterRequest"/>
+		<output message="tns:Security.LogProfile.remove_application_request_filterResponse"/>
+	</operation>
+	<operation name="remove_all_application_request_filters">
+	<documentation>
+ Removes all request filters in Application Security.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.remove_all_application_request_filtersRequest"/>
+		<output message="tns:Security.LogProfile.remove_all_application_request_filtersResponse"/>
+	</operation>
+	<operation name="get_application_request_filter_values">
+	<documentation>
+ Gets the values of the request filters in Application Security.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_application_request_filter_valuesRequest"/>
+		<output message="tns:Security.LogProfile.get_application_request_filter_valuesResponse"/>
+	</operation>
+	<operation name="add_application_request_filter_values">
+	<documentation>
+ Adds a list of values to the request filters in Application Security.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.add_application_request_filter_valuesRequest"/>
+		<output message="tns:Security.LogProfile.add_application_request_filter_valuesResponse"/>
+	</operation>
+	<operation name="replace_application_request_filter_values">
+	<documentation>
+ Replaces the existing values of the request filters with new ones in Application Security.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.replace_application_request_filter_valuesRequest"/>
+		<output message="tns:Security.LogProfile.replace_application_request_filter_valuesResponse"/>
+	</operation>
+	<operation name="remove_application_request_filter_values">
+	<documentation>
+ Removes specific values from the request filters in Application Security.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.remove_application_request_filter_valuesRequest"/>
+		<output message="tns:Security.LogProfile.remove_application_request_filter_valuesResponse"/>
+	</operation>
+	<operation name="get_protocol_transfer">
+	<documentation>
+ Gets a list of Protocol (Transfer) Security sub-profiles for a list of given logging profiles.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_protocol_transferRequest"/>
+		<output message="tns:Security.LogProfile.get_protocol_transferResponse"/>
+	</operation>
+	<operation name="add_protocol_transfer">
+	<documentation>
+ Adds a list of Protocol (Transfer) Security sub-profiles to given logging profiles.
+ Note: Only one Protocol (Transfer) Security sub-profile can exist per logging profile.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.add_protocol_transferRequest"/>
+		<output message="tns:Security.LogProfile.add_protocol_transferResponse"/>
+	</operation>
+	<operation name="remove_protocol_transfer">
+	<documentation>
+ Removes specific Protocol (Transfer) Security sub-profiles from the specified logging profiles.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.remove_protocol_transferRequest"/>
+		<output message="tns:Security.LogProfile.remove_protocol_transferResponse"/>
+	</operation>
+	<operation name="remove_all_protocol_transfers">
+	<documentation>
+ Removes all Protocol (Transfer) Security sub-profiles from the specified logging profiles.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.remove_all_protocol_transfersRequest"/>
+		<output message="tns:Security.LogProfile.remove_all_protocol_transfersResponse"/>
+	</operation>
+	<operation name="set_protocol_transfer_publisher">
+	<documentation>
+ Sets the log publisher in Protocol (Transfer) Security.
+ The publisher name is the only configuration in this sub-profile
+ that encapsulates all remote logging settings in a generic way.
+ Please see the Publisher interface in the Log module for more information.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.set_protocol_transfer_publisherRequest"/>
+		<output message="tns:Security.LogProfile.set_protocol_transfer_publisherResponse"/>
+	</operation>
+	<operation name="get_protocol_transfer_publisher">
+	<documentation>
+ Gets the log publisher in Protocol (Transfer) Security.
+ 
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_protocol_transfer_publisherRequest"/>
+		<output message="tns:Security.LogProfile.get_protocol_transfer_publisherResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Security.LogProfile.get_versionRequest"/>
+		<output message="tns:Security.LogProfile.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Security.LogProfileBinding" type="tns:Security.LogProfilePortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all (security) logging profiles configured in the system.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates the specified logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_log_profile">
+	<documentation>
+ Deletes the specified logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_log_profiles">
+	<documentation>
+ Deletes all logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="is_system_log_profile">
+	<documentation>
+ Determines whether the specified logging profiles are system logging profiles.
+ A system logging profile is a logging profile pre-configured on the system, ready
+ for use.  Non-system logging profiles are logging profiles created or modified by a
+ user.  Note that if a system logging profile is modified, it is no longer
+ considered a system logging profile (except those ones that explicitly preserved).
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of logging profiles.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application">
+	<documentation>
+ Gets a list of Application Security sub-profiles for a list of given logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_application">
+	<documentation>
+ Adds a list of Application Security sub-profiles to given logging profiles.
+ Note: Only one Application Security sub-profile can exist per logging profile.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_application">
+	<documentation>
+ Removes specific Application Security sub-profiles from the specified logging profiles.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_applications">
+	<documentation>
+ Removes all Application Security sub-profiles from the specified logging profiles.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_application_local_storage_state">
+	<documentation>
+ Sets the local storage state in Application Security.
+
+ Local storage specifies, when enabled, that the system stores all traffic in the system
+ and can be viewed in the Requests screen. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_local_storage_state">
+	<documentation>
+ Gets the local storage state in Application Security.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_application_guarantee_logging_state">
+	<documentation>
+ Sets the guarantee local logging state in Application Security.
+
+ Guarantee local logging specifies:
+  - When enabled, that the system logs all requests, even though this may slow your virtual server.
+  - When disabled, that the system logs requests as long as it does not slow your virtual server.
+ The default is disabled. In either case, the system does not drop requests.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_guarantee_logging_state">
+	<documentation>
+ Gets the guarantee local logging state in Application Security.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_application_response_logging">
+	<documentation>
+ Sets the response logging type in Application Security.
+ The available response logging types are mentioned under the ResponseLogging enumeration.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_response_logging">
+	<documentation>
+ Gets the response logging type in Application Security.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_application_guarantee_response_logging_state">
+	<documentation>
+ Sets the guarantee local response logging state in Application Security.
+
+ Guarantee local response logging specifies, when enabled, that the system logs all responses,
+ even though this may slow your virtual server.
+ The system may drop requests if the database is too slow to log all responses.
+ In order to enable this setting, you must first enable guarantee local logging,
+ and set response logging to either illegal or all requests.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_guarantee_response_logging_state">
+	<documentation>
+ Gets the guarantee local response logging state in Application Security.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_application_remote_storage">
+	<documentation>
+ Sets the remote storage type in Application Security.
+ The available remote storage types are mentioned under the RemoteStorage enumeration.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_application_remote_format_predefined">
+	<documentation>
+ Sets the remote storage type to remote, storage format type to predefined and replaces the fields in Application Security.
+ For consistent configuration, when changing the remote storage type to remote (in particular, for the first time)
+ you must specify also the fields or user-string (for the corresponding format type).
+ Please see set_application_remote_storage, set_application_format_predefined and replace_application_fields
+ for more information about every setting.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_application_remote_format_user_defined">
+	<documentation>
+ Sets the remote storage type to remote, storage format type to user-defined and sets the user string in Application Security.
+ For consistent configuration, when changing the remote storage type to remote (in particular, for the first time)
+ you must specify also the fields or user-string (for the corresponding format type).
+ Please see set_application_remote_storage, set_application_format_user_defined and set_application_user_string
+ for more information about every setting.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_remote_storage">
+	<documentation>
+ Gets the remote storage type in Application Security.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_application_protocol">
+	<documentation>
+ Sets the remote protocol in Application Security.
+ The available remote protocols are mentioned under the RemoteProtocol enumeration.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_protocol">
+	<documentation>
+ Gets the remote protocol in Application Security.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_application_facility">
+	<documentation>
+ Sets the remote facility in Application Security.
+ The available remote facilities are mentioned under the RemoteFacility enumeration.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_facility">
+	<documentation>
+ Gets the remote facility in Application Security.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_application_format_predefined">
+	<documentation>
+ Sets the storage format type to predefined and replaces the fields in Application Security.
+ This is relevant only for the remote storage of type remote, since Splunk and ArcSight have their fixed format.
+ For consistent configuration, when changing the storage format type to predefined you must specify also the fields.
+ The available storage format types are mentioned under the StorageFormat enumeration.
+ Please see replace_application_fields for more information about the fields setting.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_application_format_user_defined">
+	<documentation>
+ Sets the storage format type to user-defined and sets the user string in Application Security.
+ This is relevant only for the remote storage of type remote, since Splunk and ArcSight have their fixed format.
+ For consistent configuration, when changing the storage format type to user-defined you must specify also the user-string.
+ The available storage format types are mentioned under the StorageFormat enumeration.
+ Please see set_application_user_string for more information about every setting.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_format">
+	<documentation>
+ Gets the storage format type in Application Security.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_application_field_delimiter">
+	<documentation>
+ Sets the field delimiter of the predefined storage format in Application Security.
+ This is relevant only for the remote storage of type remote, since Splunk and ArcSight have their fixed format.
+ 
+ Field delimiter specifies which delimiter the remote machine uses to separate the fields in the logging file.
+ You may not use the % character. The default delimiter is the comma character, for Comma Separated Value (CSV).
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_field_delimiter">
+	<documentation>
+ Gets the field delimiter of the predefined storage format in Application Security.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_application_field_format">
+	<documentation>
+ Sets the field format of the predefined storage format in Application Security.
+ This is relevant only for the remote storage of type remote, since Splunk and ArcSight have their fixed format.
+ 
+ Field format specifies which format the remote machine uses for each key/value pair in the logging file.
+ Use %k for key and %v for value. The default format is empty that is interpreted as "%v", for CSV.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_field_format">
+	<documentation>
+ Gets the field format of the predefined storage format in Application Security.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_fields">
+	<documentation>
+ Gets the fields of the predefined storage format in Application Security.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="replace_application_fields">
+	<documentation>
+ Replaces the existing fields of the predefined storage format with new ones in Application Security.
+ This is relevant only for the remote storage of type remote, since Splunk and ArcSight have their fixed format.
+ 
+ Fields specify which traffic items the server logs, and the order in which the server logs them.
+ The server displays the items in the log sequentially from the first to the last one.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_application_user_string">
+	<documentation>
+ Sets the user string of the user-defined storage format in Application Security.
+ This is relevant only for the remote storage of type remote, since Splunk and ArcSight have their fixed format.
+ 
+ User string specifies the format in which the server logs traffic items.
+ You can use free text between the traffic items enclosed in % on both sides.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_user_string">
+	<documentation>
+ Gets the user string of the user-defined storage format in Application Security.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_application_maximum_request_size">
+	<documentation>
+ Sets the maximum request size value in Application Security.
+ 
+ Maximum request size specifies how much of the request the server logs.
+  - Any (zero value): Specifies that the server logs the entire request. This is the default.
+  - Length in bytes (positive value): Specifies that the server logs requests up to
+                                      a particular length that you indicate.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_maximum_request_size">
+	<documentation>
+ Gets the maximum request size value in Application Security.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_application_maximum_header_size">
+	<documentation>
+ Sets the maximum headers size value in Application Security.
+ 
+ Maximum headers size specifies how much of the header the server logs.
+  - Any (zero value): Specifies that the server logs the entire header. This is the default.
+  - Length in bytes (positive value): Specifies that the server logs headers up to
+                                      a particular length that you indicate.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_maximum_header_size">
+	<documentation>
+ Gets the maximum headers size value in Application Security.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_application_maximum_query_size">
+	<documentation>
+ Sets the maximum query string size value in Application Security.
+ 
+ Maximum query string size specifies how much of the query string the server logs.
+  - Any (zero value): Specifies that the server logs the entire query string. This is the default.
+  - Length in bytes (positive value): Specifies that the server logs query strings up to
+                                      a particular length that you indicate.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_maximum_query_size">
+	<documentation>
+ Gets the maximum query string size value in Application Security.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_application_maximum_entry_length">
+	<documentation>
+ Sets the maximum entry length in Application Security.
+ The available entry lengths are mentioned under the EntryLength enumeration.
+
+ You can change the maximum entry length only for remote servers that support the TCP protocol.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_maximum_entry_length">
+	<documentation>
+ Gets the maximum entry length in Application Security.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_application_report_anomalies_state">
+	<documentation>
+ Sets the report detected anomalies state in Application Security.
+
+ Report detected anomalies specifies, when enabled, that the system sends a report string to the
+ remote system log when a brute force attack, IP enforcer attack, or web scraping attack starts and ends.
+ The default is disabled.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_report_anomalies_state">
+	<documentation>
+ Gets the report detected anomalies state in Application Security.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_application_logic_operation">
+	<documentation>
+ Sets the logic operation in Application Security.
+ The available logic operations are mentioned under the LogicOperation enumeration.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_logic_operation">
+	<documentation>
+ Gets the logic operation in Application Security.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_server_address">
+	<documentation>
+ Gets a list of remote servers in Application Security.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_application_server_address">
+	<documentation>
+ Adds a list of IP addresses and ports to the list of remote servers in Application Security.
+ 
+ Server addresses specify which remote servers log traffic.
+ You can configure the system to log traffic to multiple remote servers.
+ The default port of the remote machine used to log traffic is 514.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_application_server_address">
+	<documentation>
+ Removes specific IP addresses and ports from the list of remote servers in Application Security.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_application_server_addresses">
+	<documentation>
+ Removes all remote servers in Application Security.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_request_filter_keys">
+	<documentation>
+ Gets a list of keys of request (storage) filters in Application Security.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_application_request_filter">
+	<documentation>
+ Adds a list of request filters to the existing list in Application Security.
+ Request filter specifies a fundamental or detailed setting for the type of requests the system, or server logs.
+ Every request filter has a generic form of key/values.
+ For consistent configuration, when creating a new request filter with the specified key
+ you must specify also the values.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_application_request_filter">
+	<documentation>
+ Removes specific request filters from the existing list in Application Security.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_application_request_filters">
+	<documentation>
+ Removes all request filters in Application Security.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_request_filter_values">
+	<documentation>
+ Gets the values of the request filters in Application Security.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_application_request_filter_values">
+	<documentation>
+ Adds a list of values to the request filters in Application Security.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="replace_application_request_filter_values">
+	<documentation>
+ Replaces the existing values of the request filters with new ones in Application Security.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_application_request_filter_values">
+	<documentation>
+ Removes specific values from the request filters in Application Security.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_protocol_transfer">
+	<documentation>
+ Gets a list of Protocol (Transfer) Security sub-profiles for a list of given logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_protocol_transfer">
+	<documentation>
+ Adds a list of Protocol (Transfer) Security sub-profiles to given logging profiles.
+ Note: Only one Protocol (Transfer) Security sub-profile can exist per logging profile.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_protocol_transfer">
+	<documentation>
+ Removes specific Protocol (Transfer) Security sub-profiles from the specified logging profiles.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_protocol_transfers">
+	<documentation>
+ Removes all Protocol (Transfer) Security sub-profiles from the specified logging profiles.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_protocol_transfer_publisher">
+	<documentation>
+ Sets the log publisher in Protocol (Transfer) Security.
+ The publisher name is the only configuration in this sub-profile
+ that encapsulates all remote logging settings in a generic way.
+ Please see the Publisher interface in the Log module for more information.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_protocol_transfer_publisher">
+	<documentation>
+ Gets the log publisher in Protocol (Transfer) Security.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Security/LogProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Security/LogProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Security.LogProfile">
+	<documentation>
+ The LogProfile interface enables you to manipulate (security) logging profiles.
+ A logging profile is used to record requests to the virtual server.
+ You may use more than one logging profile per virtual server (see LocalLB::VirtualServer::add_security_log_profile).
+ Logging profile consists of several parts (layers): Application Security, Protocol (Transfer and DNS) Security,
+ Network Firewall and DoS Protection.
+ Each part can be enabled or disabled by means of creating or deleting the corresponding sub-profile.
+ Note that logging profiles with same (or mutually exclusive) parts enabled cannot be associated with one virtual server. 
+
+ In Application Security you can configure where requests to the virtual server are logged,
+ and which part of requests are logged. Requests can be logged either locally by the system and viewed in the Requests screen,
+ or remotely by the client's server. The system forwards the log messages to the client's server using the Syslog service.
+ Note that you cannot modify a system-default logging profile with Application Security enabled.
+
+ In Protocol (Transfer) Security you can configure the remote server where the system sends the Protocol Security log messages.
+ The settings you configure in this sub-profile apply only to security profiles (HTTP, FTP and SMTP) associated with the same
+ virtual server as the logging profile containing it.
+ Note that Application and Protocol (Transfer) Security are mutually exclusive parts per logging profile and virtual server.
+
+        	</documentation>
+	<port name="Security.LogProfilePort" binding="tns:Security.LogProfileBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

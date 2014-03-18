@@ -1,0 +1,1026 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.EventNotification"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Management.EventNotification.EventDataSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.EventNotification.EventData[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.TimeStamp">
+			<xsd:sequence>
+				<xsd:element name="year" type="xsd:long"/>
+				<xsd:element name="month" type="xsd:long"/>
+				<xsd:element name="day" type="xsd:long"/>
+				<xsd:element name="hour" type="xsd:long"/>
+				<xsd:element name="minute" type="xsd:long"/>
+				<xsd:element name="second" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.EventNotification.EventSource">
+			<xsd:sequence>
+				<xsd:element name="system_id" type="xsd:string"/>
+				<xsd:element name="url" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.EventSubscription.EventType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="EVENTTYPE_NONE">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_TEST">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_TEST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_ALL">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_ALL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_SYSTEM_STARTUP">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_SYSTEM_STARTUP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_SYSTEM_SHUTDOWN">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_SYSTEM_SHUTDOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_SYSTEM_CONFIG_LOAD">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_SYSTEM_CONFIG_LOAD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_CREATE">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_CREATE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_MODIFY">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_MODIFY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_DELETE">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_DELETE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_ADMIN_IP">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_ADMIN_IP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_ARP_ENTRY">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_ARP_ENTRY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_DAEMON_HA">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_DAEMON_HA</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_DB_VARIABLE">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_DB_VARIABLE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_FEATURE_FLAGS">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_FEATURE_FLAGS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_FILTER_PROFILE">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_FILTER_PROFILE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_GTMD">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_GTMD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_INTERFACE">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_INTERFACE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_LCDWARN">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_LCDWARN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_L2_FORWARD">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_L2_FORWARD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_MIRROR_PORT_MEMBER">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_MIRROR_PORT_MEMBER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_MIRROR_PORT">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_MIRROR_PORT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_MIRROR_VLAN">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_MIRROR_VLAN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_MONITOR">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_MONITOR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_NAT">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_NAT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_NODE_ADDRESS">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_NODE_ADDRESS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_PACKET_FILTER">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_PACKET_FILTER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_PCI_DEVICE">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_PCI_DEVICE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_POOL">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_POOL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_POOL_MEMBER">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_POOL_MEMBER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_RATE_FILTER">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_RATE_FILTER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_ROUTE_MGMT">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_ROUTE_MGMT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_ROUTE_UPDATE">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_ROUTE_UPDATE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_RULE">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_RULE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_SELF_IP">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_SELF_IP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_SENSOR">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_SENSOR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_SNAT_ADDRESS">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_SNAT_ADDRESS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_SNAT_POOL">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_SNAT_POOL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_SNAT_POOL_MEMBER">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_SNAT_POOL_MEMBER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_STP">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_STP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_SWITCH_DOMAIN">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_SWITCH_DOMAIN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_SWITCH_EDGE">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_SWITCH_EDGE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_TAMD_AUTH">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_TAMD_AUTH</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_TRUNK">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_TRUNK</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_TRUNK_CONFIG_MEMBER">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_TRUNK_CONFIG_MEMBER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_TRUNK_WORKING_MEMBER">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_TRUNK_WORKING_MEMBER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_VALUE_LIST">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_VALUE_LIST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_VIRTUAL_ADDRESS">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_VIRTUAL_ADDRESS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_VIRTUAL_SERVER">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_VIRTUAL_SERVER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_VIRTUAL_SERVER_PROFILE">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_VIRTUAL_SERVER_PROFILE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_VLAN">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_VLAN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_VLAN_MEMBER">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_VLAN_MEMBER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="EVENTTYPE_VLANGROUP">
+					<xsd:annotation>
+						<xsd:documentation>EVENTTYPE_VLANGROUP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.EventNotification.EventData">
+			<xsd:sequence>
+				<xsd:element name="username" type="xsd:string"/>
+				<xsd:element name="sequence_number" type="xsd:long"/>
+				<xsd:element name="event_type" type="tns:Management.EventSubscription.EventType"/>
+				<xsd:element name="object_type" type="tns:Management.EventSubscription.ObjectType"/>
+				<xsd:element name="event_data_item_list" type="tns:Management.EventNotification.EventDataItemSequence"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.EventNotification.EventDataItem">
+			<xsd:sequence>
+				<xsd:element name="event_data_name" type="xsd:string"/>
+				<xsd:element name="event_data_type" type="tns:Management.EventNotification.EventDataType"/>
+				<xsd:element name="event_data_value" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.EventNotification.EventDataItemSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.EventNotification.EventDataItem[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.EventSubscription.ObjectType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="OBJECTTYPE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_ADMIN_IP">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_ADMIN_IP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_ARP_STATIC_ENTRY">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_ARP_STATIC_ENTRY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_AUTH_GENERIC_CONFIG">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_AUTH_GENERIC_CONFIG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_AUTH_LDAP_CONFIG">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_AUTH_LDAP_CONFIG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_AUTH_RADIUS_CONFIG">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_AUTH_RADIUS_CONFIG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_AUTH_RADIUS_CONFIG_RADIUS_SERVER">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_AUTH_RADIUS_CONFIG_RADIUS_SERVER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_AUTH_SSL_CC_LDAP_CONFIG">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_AUTH_SSL_CC_LDAP_CONFIG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_AUTH_SSL_OCSP_CONFIG">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_AUTH_SSL_OCSP_CONFIG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_AUTH_TACACS_CONFIG">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_AUTH_TACACS_CONFIG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_DAEMON_HA">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_DAEMON_HA</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_DAEMON_STATUS">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_DAEMON_STATUS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_DB_VARIABLE">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_DB_VARIABLE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_DEFAULT_MONITOR_RULE">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_DEFAULT_MONITOR_RULE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_GTM_BOX">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_GTM_BOX</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_GTM_DC">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_GTM_DC</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_GTM_ECV">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_GTM_ECV</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_GTM_GLOBALS">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_GTM_GLOBALS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_GTM_IP">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_GTM_IP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_GTM_LINK">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_GTM_LINK</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_GTM_POOL">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_GTM_POOL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_GTM_POOL_MEMBER">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_GTM_POOL_MEMBER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_GTM_QOS_COEFF">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_GTM_QOS_COEFF</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_GTM_REG_ITEM">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_GTM_REG_ITEM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_GTM_REGION_ENTRY">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_GTM_REGION_ENTRY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_GTM_SERVER">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_GTM_SERVER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_GTM_TOP_ITEM">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_GTM_TOP_ITEM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_GTM_VS">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_GTM_VS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_GTM_WIDEIP">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_GTM_WIDEIP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_GTM_WIDEIP_ALIAS">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_GTM_WIDEIP_ALIAS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_GTM_WIDEIP_POOL">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_GTM_WIDEIP_POOL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_INTERFACE">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_INTERFACE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_JOIN_AUTH_SSL_OCSP_CONFIG_OCSP_RESPONDER">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_JOIN_AUTH_SSL_OCSP_CONFIG_OCSP_RESPONDER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_L2_FORWARD">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_L2_FORWARD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_LICENSE_BLOB">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_LICENSE_BLOB</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_MIRROR_PORT">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_MIRROR_PORT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_MIRROR_PORT_MBR">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_MIRROR_PORT_MBR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_MIRROR_VLAN">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_MIRROR_VLAN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_MONITOR">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_MONITOR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_MONITOR_INSTANCE">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_MONITOR_INSTANCE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_MONITOR_PARAM">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_MONITOR_PARAM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_MONITOR_RULE">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_MONITOR_RULE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_MONITOR_RULE_INSTANCE">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_MONITOR_RULE_INSTANCE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_NAT">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_NAT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_NAT_VLAN">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_NAT_VLAN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_NODE_ADDRESS">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_NODE_ADDRESS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_NOKIA_ALARM">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_NOKIA_ALARM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_NOKIA_LOG">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_NOKIA_LOG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_OCSP_RESPONDER">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_OCSP_RESPONDER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_PACKET_FILTER_ALLOW_TRUSTED">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_PACKET_FILTER_ALLOW_TRUSTED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_PACKET_FILTER_RULE">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_PACKET_FILTER_RULE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_PAM_LINE">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_PAM_LINE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_PCI_DEVICE">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_PCI_DEVICE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_PLATFORM">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_PLATFORM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_POOL">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_POOL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_POOL_MEMBER">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_POOL_MEMBER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_PROFILE_AUTH">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_PROFILE_AUTH</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_PROFILE_BIGPROTO">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_PROFILE_BIGPROTO</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_PROFILE_CLIENTSSL">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_PROFILE_CLIENTSSL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_PROFILE_CONNPOOL">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_PROFILE_CONNPOOL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_PROFILE_FTP">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_PROFILE_FTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_PROFILE_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_PROFILE_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_PROFILE_PERSIST">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_PROFILE_PERSIST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_PROFILE_SERVERSSL">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_PROFILE_SERVERSSL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_PROFILE_STREAM">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_PROFILE_STREAM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_PROFILE_TCP">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_PROFILE_TCP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_PROFILE_UDP">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_PROFILE_UDP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_PROXY_EXCLUSION">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_PROXY_EXCLUSION</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_RADIUS_SERVER">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_RADIUS_SERVER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_RATE_FILTER_CLASS">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_RATE_FILTER_CLASS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_ROUTE_STATIC_ENTRY">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_ROUTE_STATIC_ENTRY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_ROUTE_MGMT_ENTRY">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_ROUTE_MGMT_ENTRY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_RULE">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_RULE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_RULE_EVENT">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_RULE_EVENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_SELF_IP">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_SELF_IP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_SNAT">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_SNAT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_SNAT_ORIG_ADDR">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_SNAT_ORIG_ADDR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_SNAT_VLAN">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_SNAT_VLAN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_SNATPOOL">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_SNATPOOL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_SNATPOOL_TRANS_ADDR">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_SNATPOOL_TRANS_ADDR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_STP">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_STP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_STP_GLOBALS">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_STP_GLOBALS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_STP_INTERFACE_MBR">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_STP_INTERFACE_MBR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_STP_VLAN_MBR">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_STP_VLAN_MBR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_SWITCH_DOMAIN">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_SWITCH_DOMAIN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_SWITCH_EDGE">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_SWITCH_EDGE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_SYSTEM_INFORMATION">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_SYSTEM_INFORMATION</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_TRANS_ADDR">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_TRANS_ADDR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_TRUNK">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_TRUNK</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_TRUNK_CFG_MBR">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_TRUNK_CFG_MBR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_TRUNK_WRKNG_MBR">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_TRUNK_WRKNG_MBR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_USERDB_ENTRY">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_USERDB_ENTRY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_VALUE_LIST">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_VALUE_LIST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_VIRTUAL_ADDRESS">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_VIRTUAL_ADDRESS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_VIRTUAL_SERVER">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_VIRTUAL_SERVER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_VIRTUAL_SERVER_AUTH">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_VIRTUAL_SERVER_AUTH</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_VIRTUAL_SERVER_CLONE_POOL">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_VIRTUAL_SERVER_CLONE_POOL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_VIRTUAL_SERVER_PERSIST">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_VIRTUAL_SERVER_PERSIST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_VIRTUAL_SERVER_POOL">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_VIRTUAL_SERVER_POOL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_VIRTUAL_SERVER_PROFILE">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_VIRTUAL_SERVER_PROFILE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_VIRTUAL_SERVER_RULE">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_VIRTUAL_SERVER_RULE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_VIRTUAL_SERVER_VLAN">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_VIRTUAL_SERVER_VLAN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_VLAN">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_VLAN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_VLAN_ID_CONTAINER">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_VLAN_ID_CONTAINER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_VLAN_MEMBER">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_VLAN_MEMBER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_VLANGROUP">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_VLANGROUP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OBJECTTYPE_VLANGROUP_MBR">
+					<xsd:annotation>
+						<xsd:documentation>OBJECTTYPE_VLANGROUP_MBR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Management.EventNotification.EventDataType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="DATATYPE_BITS">
+					<xsd:annotation>
+						<xsd:documentation>DATATYPE_BITS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DATATYPE_BLOB">
+					<xsd:annotation>
+						<xsd:documentation>DATATYPE_BLOB</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DATATYPE_BOOL">
+					<xsd:annotation>
+						<xsd:documentation>DATATYPE_BOOL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DATATYPE_BYTE">
+					<xsd:annotation>
+						<xsd:documentation>DATATYPE_BYTE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DATATYPE_DATE">
+					<xsd:annotation>
+						<xsd:documentation>DATATYPE_DATE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DATATYPE_IP_ADDRESS">
+					<xsd:annotation>
+						<xsd:documentation>DATATYPE_IP_ADDRESS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DATATYPE_LONG">
+					<xsd:annotation>
+						<xsd:documentation>DATATYPE_LONG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DATATYPE_MAC">
+					<xsd:annotation>
+						<xsd:documentation>DATATYPE_MAC</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DATATYPE_PTR">
+					<xsd:annotation>
+						<xsd:documentation>DATATYPE_PTR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DATATYPE_SERVICE">
+					<xsd:annotation>
+						<xsd:documentation>DATATYPE_SERVICE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DATATYPE_STRING">
+					<xsd:annotation>
+						<xsd:documentation>DATATYPE_STRING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DATATYPE_TAG">
+					<xsd:annotation>
+						<xsd:documentation>DATATYPE_TAG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DATATYPE_TIME">
+					<xsd:annotation>
+						<xsd:documentation>DATATYPE_TIME</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DATATYPE_ULONG">
+					<xsd:annotation>
+						<xsd:documentation>DATATYPE_ULONG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DATATYPE_UWORD">
+					<xsd:annotation>
+						<xsd:documentation>DATATYPE_UWORD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DATATYPE_UQUAD">
+					<xsd:annotation>
+						<xsd:documentation>DATATYPE_UQUAD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.EventNotification.events_occurredRequest">
+	<part name="event_source" type="tns:Management.EventNotification.EventSource"/>
+	<part name="subscription_id" type="xsd:string"/>
+	<part name="event_data_list" type="tns:Management.EventNotification.EventDataSequence"/>
+	<part name="time_stamp" type="tns:Common.TimeStamp"/>
+</message>
+<message name="Management.EventNotification.events_occurredResponse">
+</message>
+
+<!-- portType -->
+
+<portType name="Management.EventNotificationPortType">
+	<operation name="events_occurred">
+    	<documentation>
+ The notification mechanism used to send event notification messages.
+Clients must implement this interface to act as an endpoint of event
+notifications.
+
+        	</documentation>
+		<input message="tns:Management.EventNotification.events_occurredRequest"/>
+		<output message="tns:Management.EventNotification.events_occurredResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.EventNotificationBinding" type="tns:Management.EventNotificationPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="events_occurred">
+	<documentation>
+ The notification mechanism used to send event notification messages.
+Clients must implement this interface to act as an endpoint of event
+notifications.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/EventNotification"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/EventNotification"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/EventNotification"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.EventNotification">
+	<documentation>
+ The EventNotification interface is used for system configuration change events that are configured with the EventSubscriptions interface.
+
+ This interface does not support transactions.
+
+        	</documentation>
+	<port name="Management.EventNotificationPort" binding="tns:Management.EventNotificationBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

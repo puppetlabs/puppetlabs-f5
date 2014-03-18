@@ -1,0 +1,372 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="LocalLB.RAMCacheInformation"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="LocalLB.RAMCacheInformation.RAMCacheEntrySequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.RAMCacheInformation.RAMCacheEntrySequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.RAMCacheInformation.RAMCacheEntry">
+			<xsd:sequence>
+				<xsd:element name="profile_name" type="xsd:string"/>
+				<xsd:element name="host_name" type="xsd:string"/>
+				<xsd:element name="uri" type="xsd:string"/>
+				<xsd:element name="vary_type" type="tns:LocalLB.RAMCacheInformation.RAMCacheVaryType"/>
+				<xsd:element name="vary_count" type="xsd:long"/>
+				<xsd:element name="hits" type="xsd:long"/>
+				<xsd:element name="received" type="xsd:long"/>
+				<xsd:element name="last_sent" type="xsd:long"/>
+				<xsd:element name="expiration" type="xsd:long"/>
+				<xsd:element name="size" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.RAMCacheInformation.RAMCacheKeySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.RAMCacheInformation.RAMCacheKey[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.RAMCacheInformation.RAMCacheEntryExactMatchSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.RAMCacheInformation.RAMCacheEntryExactMatch[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="LocalLB.RAMCacheInformation.RAMCacheVaryType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="RAM_CACHE_VARY_NONE">
+					<xsd:annotation>
+						<xsd:documentation>RAM_CACHE_VARY_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="RAM_CACHE_VARY_USERAGENT">
+					<xsd:annotation>
+						<xsd:documentation>RAM_CACHE_VARY_USERAGENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="RAM_CACHE_VARY_ACCEPT_ENCODING">
+					<xsd:annotation>
+						<xsd:documentation>RAM_CACHE_VARY_ACCEPT_ENCODING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="RAM_CACHE_VARY_BOTH">
+					<xsd:annotation>
+						<xsd:documentation>RAM_CACHE_VARY_BOTH</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="LocalLB.RAMCacheInformation.RAMCacheEntryExactMatch">
+			<xsd:sequence>
+				<xsd:element name="profile_name" type="xsd:string"/>
+				<xsd:element name="host_name" type="xsd:string"/>
+				<xsd:element name="uri" type="xsd:string"/>
+				<xsd:element name="vary_useragent" type="xsd:string"/>
+				<xsd:element name="vary_encoding" type="xsd:string"/>
+				<xsd:element name="hits" type="xsd:long"/>
+				<xsd:element name="received" type="xsd:long"/>
+				<xsd:element name="last_sent" type="xsd:long"/>
+				<xsd:element name="expiration" type="xsd:long"/>
+				<xsd:element name="size" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.RAMCacheInformation.RAMCacheEntryExactMatchSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.RAMCacheInformation.RAMCacheEntryExactMatchSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.RAMCacheInformation.RAMCacheEntrySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.RAMCacheInformation.RAMCacheEntry[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.RAMCacheInformation.RAMCacheKey">
+			<xsd:sequence>
+				<xsd:element name="profile_name" type="xsd:string"/>
+				<xsd:element name="host_name" type="xsd:string"/>
+				<xsd:element name="uri" type="xsd:string"/>
+				<xsd:element name="maximum_responses" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="LocalLB.RAMCacheInformation.get_ramcache_entryRequest">
+	<part name="keys" type="tns:LocalLB.RAMCacheInformation.RAMCacheKeySequence"/>
+</message>
+<message name="LocalLB.RAMCacheInformation.get_ramcache_entryResponse">
+	<part name="return" type="tns:LocalLB.RAMCacheInformation.RAMCacheEntrySequenceSequence"/>
+</message>
+
+<message name="LocalLB.RAMCacheInformation.get_ramcache_entry_exact_matchRequest">
+	<part name="keys" type="tns:LocalLB.RAMCacheInformation.RAMCacheKeySequence"/>
+</message>
+<message name="LocalLB.RAMCacheInformation.get_ramcache_entry_exact_matchResponse">
+	<part name="return" type="tns:LocalLB.RAMCacheInformation.RAMCacheEntryExactMatchSequenceSequence"/>
+</message>
+
+<message name="LocalLB.RAMCacheInformation.evict_ramcache_entryRequest">
+	<part name="keys" type="tns:LocalLB.RAMCacheInformation.RAMCacheKeySequence"/>
+</message>
+<message name="LocalLB.RAMCacheInformation.evict_ramcache_entryResponse">
+</message>
+
+<message name="LocalLB.RAMCacheInformation.evict_ramcache_entry_v2Request">
+	<part name="keys" type="tns:LocalLB.RAMCacheInformation.RAMCacheKeySequence"/>
+	<part name="exact_match" type="xsd:boolean"/>
+</message>
+<message name="LocalLB.RAMCacheInformation.evict_ramcache_entry_v2Response">
+</message>
+
+<message name="LocalLB.RAMCacheInformation.evict_all_ramcache_entriesRequest">
+</message>
+<message name="LocalLB.RAMCacheInformation.evict_all_ramcache_entriesResponse">
+</message>
+
+<message name="LocalLB.RAMCacheInformation.get_versionRequest">
+</message>
+<message name="LocalLB.RAMCacheInformation.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="LocalLB.RAMCacheInformationPortType">
+	<operation name="get_ramcache_entry">
+     	<documentation>
+ Gets the RAM cache entries associated with the specified keys. The "profile_name" in the key
+ is required, however, other fields in each key are optionally specified. "max_response" is 
+ recommended to be set to avoid possible large amount of entries.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.RAMCacheInformation.get_ramcache_entryRequest"/>
+		<output message="tns:LocalLB.RAMCacheInformation.get_ramcache_entryResponse"/>
+	</operation>
+	<operation name="get_ramcache_entry_exact_match">
+	<documentation>
+ Gets the RAM cache entries associated with the specified keys. Each field in the
+ key must be provided, and together the key is used to extract a specific entry.
+ However, since each entry with the same profile/hostname/URI can still vary based
+ on the User-Agent or Accept-Encoding headers, a separate entry will be returned
+ for each variation, with also the specific header string that causes the variation.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.RAMCacheInformation.get_ramcache_entry_exact_matchRequest"/>
+		<output message="tns:LocalLB.RAMCacheInformation.get_ramcache_entry_exact_matchResponse"/>
+	</operation>
+	<operation name="evict_ramcache_entry">
+	<documentation>
+ Note: This function has been deprecated. Please use evict_ramcache_entry_v2.
+
+ Resets/evicts the cache entries associated with the specified keys.
+ Note: The "max_responses" field in each RAMCacheKey key is ignored in this method.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.RAMCacheInformation.evict_ramcache_entryRequest"/>
+		<output message="tns:LocalLB.RAMCacheInformation.evict_ramcache_entryResponse"/>
+	</operation>
+	<operation name="evict_ramcache_entry_v2">
+	<documentation>
+ Resets/evicts the cache entries associated with the specified keys.
+ Note: The "max_responses" field in each RAMCacheKey key is ignored in this method.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.RAMCacheInformation.evict_ramcache_entry_v2Request"/>
+		<output message="tns:LocalLB.RAMCacheInformation.evict_ramcache_entry_v2Response"/>
+	</operation>
+	<operation name="evict_all_ramcache_entries">
+	<documentation>
+ Resets/evicts all cache entries.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.RAMCacheInformation.evict_all_ramcache_entriesRequest"/>
+		<output message="tns:LocalLB.RAMCacheInformation.evict_all_ramcache_entriesResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.RAMCacheInformation.get_versionRequest"/>
+		<output message="tns:LocalLB.RAMCacheInformation.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="LocalLB.RAMCacheInformationBinding" type="tns:LocalLB.RAMCacheInformationPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_ramcache_entry">
+	<documentation>
+ Gets the RAM cache entries associated with the specified keys. The "profile_name" in the key
+ is required, however, other fields in each key are optionally specified. "max_response" is 
+ recommended to be set to avoid possible large amount of entries.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/RAMCacheInformation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/RAMCacheInformation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/RAMCacheInformation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ramcache_entry_exact_match">
+	<documentation>
+ Gets the RAM cache entries associated with the specified keys. Each field in the
+ key must be provided, and together the key is used to extract a specific entry.
+ However, since each entry with the same profile/hostname/URI can still vary based
+ on the User-Agent or Accept-Encoding headers, a separate entry will be returned
+ for each variation, with also the specific header string that causes the variation.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/RAMCacheInformation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/RAMCacheInformation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/RAMCacheInformation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="evict_ramcache_entry">
+	<documentation>
+ Note: This function has been deprecated. Please use evict_ramcache_entry_v2.
+
+ Resets/evicts the cache entries associated with the specified keys.
+ Note: The "max_responses" field in each RAMCacheKey key is ignored in this method.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/RAMCacheInformation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/RAMCacheInformation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/RAMCacheInformation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="evict_ramcache_entry_v2">
+	<documentation>
+ Resets/evicts the cache entries associated with the specified keys.
+ Note: The "max_responses" field in each RAMCacheKey key is ignored in this method.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/RAMCacheInformation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/RAMCacheInformation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/RAMCacheInformation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="evict_all_ramcache_entries">
+	<documentation>
+ Resets/evicts all cache entries.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/RAMCacheInformation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/RAMCacheInformation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/RAMCacheInformation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/RAMCacheInformation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/RAMCacheInformation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/RAMCacheInformation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="LocalLB.RAMCacheInformation">
+	<documentation>
+ The RAMCacheInformation interface enables you to query for RAM cache entries/statistics, 
+ as well as evicting RAM cache entries.
+ 
+        	</documentation>
+	<port name="LocalLB.RAMCacheInformationPort" binding="tns:LocalLB.RAMCacheInformationBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

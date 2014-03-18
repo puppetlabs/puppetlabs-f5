@@ -1,0 +1,864 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.AdminIP"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.ULongSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.ULongSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPAddressSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.IPAddressSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.AdminIP.get_listRequest">
+</message>
+<message name="Networking.AdminIP.get_listResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Networking.AdminIP.createRequest">
+	<part name="admin_ips" type="tns:Common.IPAddressSequence"/>
+	<part name="netmasks" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.AdminIP.createResponse">
+</message>
+
+<message name="Networking.AdminIP.replace_administrative_ipRequest">
+	<part name="old_ips" type="tns:Common.IPAddressSequence"/>
+	<part name="new_ips" type="tns:Common.IPAddressSequence"/>
+	<part name="netmasks" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.AdminIP.replace_administrative_ipResponse">
+</message>
+
+<message name="Networking.AdminIP.delete_administrative_ipRequest">
+	<part name="admin_ips" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.AdminIP.delete_administrative_ipResponse">
+</message>
+
+<message name="Networking.AdminIP.delete_all_administrative_ipsRequest">
+</message>
+<message name="Networking.AdminIP.delete_all_administrative_ipsResponse">
+</message>
+
+<message name="Networking.AdminIP.get_netmaskRequest">
+	<part name="admin_ips" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.AdminIP.get_netmaskResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Networking.AdminIP.set_netmaskRequest">
+	<part name="admin_ips" type="tns:Common.IPAddressSequence"/>
+	<part name="netmasks" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.AdminIP.set_netmaskResponse">
+</message>
+
+<message name="Networking.AdminIP.set_descriptionRequest">
+	<part name="admin_ips" type="tns:Common.IPAddressSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.AdminIP.set_descriptionResponse">
+</message>
+
+<message name="Networking.AdminIP.get_descriptionRequest">
+	<part name="admin_ips" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.AdminIP.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.AdminIP.get_cluster_listRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.AdminIP.get_cluster_listResponse">
+	<part name="return" type="tns:Common.IPAddressSequenceSequence"/>
+</message>
+
+<message name="Networking.AdminIP.create_clusterRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+	<part name="cluster_ips" type="tns:Common.IPAddressSequenceSequence"/>
+	<part name="netmasks" type="tns:Common.IPAddressSequenceSequence"/>
+</message>
+<message name="Networking.AdminIP.create_clusterResponse">
+</message>
+
+<message name="Networking.AdminIP.replace_cluster_ipRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+	<part name="old_ips" type="tns:Common.IPAddressSequenceSequence"/>
+	<part name="new_ips" type="tns:Common.IPAddressSequenceSequence"/>
+	<part name="netmasks" type="tns:Common.IPAddressSequenceSequence"/>
+</message>
+<message name="Networking.AdminIP.replace_cluster_ipResponse">
+</message>
+
+<message name="Networking.AdminIP.delete_cluster_ipRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+	<part name="cluster_ips" type="tns:Common.IPAddressSequenceSequence"/>
+</message>
+<message name="Networking.AdminIP.delete_cluster_ipResponse">
+</message>
+
+<message name="Networking.AdminIP.delete_all_cluster_ipsRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.AdminIP.delete_all_cluster_ipsResponse">
+</message>
+
+<message name="Networking.AdminIP.get_cluster_netmaskRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+	<part name="cluster_ips" type="tns:Common.IPAddressSequenceSequence"/>
+</message>
+<message name="Networking.AdminIP.get_cluster_netmaskResponse">
+	<part name="return" type="tns:Common.IPAddressSequenceSequence"/>
+</message>
+
+<message name="Networking.AdminIP.set_cluster_netmaskRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+	<part name="cluster_ips" type="tns:Common.IPAddressSequenceSequence"/>
+	<part name="netmasks" type="tns:Common.IPAddressSequenceSequence"/>
+</message>
+<message name="Networking.AdminIP.set_cluster_netmaskResponse">
+</message>
+
+<message name="Networking.AdminIP.get_slot_ipRequest">
+	<part name="cluster_name" type="xsd:string"/>
+	<part name="slot_ids" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.AdminIP.get_slot_ipResponse">
+	<part name="return" type="tns:Common.IPAddressSequenceSequence"/>
+</message>
+
+<message name="Networking.AdminIP.create_slot_ipRequest">
+	<part name="cluster_name" type="xsd:string"/>
+	<part name="slot_ids" type="tns:Common.ULongSequence"/>
+	<part name="slot_ips" type="tns:Common.IPAddressSequenceSequence"/>
+</message>
+<message name="Networking.AdminIP.create_slot_ipResponse">
+</message>
+
+<message name="Networking.AdminIP.replace_slot_ipRequest">
+	<part name="cluster_name" type="xsd:string"/>
+	<part name="slot_ids" type="tns:Common.ULongSequence"/>
+	<part name="old_ips" type="tns:Common.IPAddressSequenceSequence"/>
+	<part name="new_ips" type="tns:Common.IPAddressSequenceSequence"/>
+</message>
+<message name="Networking.AdminIP.replace_slot_ipResponse">
+</message>
+
+<message name="Networking.AdminIP.delete_slot_ipRequest">
+	<part name="cluster_name" type="xsd:string"/>
+	<part name="slot_ids" type="tns:Common.ULongSequence"/>
+	<part name="slot_ips" type="tns:Common.IPAddressSequenceSequence"/>
+</message>
+<message name="Networking.AdminIP.delete_slot_ipResponse">
+</message>
+
+<message name="Networking.AdminIP.delete_all_slot_ipsRequest">
+	<part name="cluster_names" type="tns:Common.StringSequence"/>
+	<part name="slot_ids" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="Networking.AdminIP.delete_all_slot_ipsResponse">
+</message>
+
+<message name="Networking.AdminIP.get_versionRequest">
+</message>
+<message name="Networking.AdminIP.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.AdminIPPortType">
+	<operation name="get_list">
+      	<documentation>
+ Gets a list of all admin IPs on this device.
+ 
+        	</documentation>
+		<input message="tns:Networking.AdminIP.get_listRequest"/>
+		<output message="tns:Networking.AdminIP.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates the specified admin IP addresses with extended attributes.
+ 
+        	</documentation>
+		<input message="tns:Networking.AdminIP.createRequest"/>
+		<output message="tns:Networking.AdminIP.createResponse"/>
+	</operation>
+	<operation name="replace_administrative_ip">
+	<documentation>
+ Replaces the specified admin IP addresses with extended attributes.
+
+        	</documentation>
+		<input message="tns:Networking.AdminIP.replace_administrative_ipRequest"/>
+		<output message="tns:Networking.AdminIP.replace_administrative_ipResponse"/>
+	</operation>
+	<operation name="delete_administrative_ip">
+	<documentation>
+ Deletes the specified admin IP addresses.
+ 
+        	</documentation>
+		<input message="tns:Networking.AdminIP.delete_administrative_ipRequest"/>
+		<output message="tns:Networking.AdminIP.delete_administrative_ipResponse"/>
+	</operation>
+	<operation name="delete_all_administrative_ips">
+	<documentation>
+ Deletes all admin IP addresses.
+ 
+        	</documentation>
+		<input message="tns:Networking.AdminIP.delete_all_administrative_ipsRequest"/>
+		<output message="tns:Networking.AdminIP.delete_all_administrative_ipsResponse"/>
+	</operation>
+	<operation name="get_netmask">
+	<documentation>
+ Gets the netmasks of the specified admin IPs.
+ 
+        	</documentation>
+		<input message="tns:Networking.AdminIP.get_netmaskRequest"/>
+		<output message="tns:Networking.AdminIP.get_netmaskResponse"/>
+	</operation>
+	<operation name="set_netmask">
+	<documentation>
+ Sets the netmasks of the specified admin IPs.
+ 
+        	</documentation>
+		<input message="tns:Networking.AdminIP.set_netmaskRequest"/>
+		<output message="tns:Networking.AdminIP.set_netmaskResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of admin IPs.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Networking.AdminIP.set_descriptionRequest"/>
+		<output message="tns:Networking.AdminIP.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of admin IPs.
+
+        	</documentation>
+		<input message="tns:Networking.AdminIP.get_descriptionRequest"/>
+		<output message="tns:Networking.AdminIP.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_cluster_list">
+	<documentation>
+ Gets a list of all cluster admin IPs on this cluster.
+
+        	</documentation>
+		<input message="tns:Networking.AdminIP.get_cluster_listRequest"/>
+		<output message="tns:Networking.AdminIP.get_cluster_listResponse"/>
+	</operation>
+	<operation name="create_cluster">
+	<documentation>
+ Creates the specified cluster name&amp; IP addresses.
+
+        	</documentation>
+		<input message="tns:Networking.AdminIP.create_clusterRequest"/>
+		<output message="tns:Networking.AdminIP.create_clusterResponse"/>
+	</operation>
+	<operation name="replace_cluster_ip">
+	<documentation>
+ Replaces the specified cluster name with new admin IP addresses.
+
+        	</documentation>
+		<input message="tns:Networking.AdminIP.replace_cluster_ipRequest"/>
+		<output message="tns:Networking.AdminIP.replace_cluster_ipResponse"/>
+	</operation>
+	<operation name="delete_cluster_ip">
+	<documentation>
+ Deletes the specified cluster admin IP addresses.
+
+        	</documentation>
+		<input message="tns:Networking.AdminIP.delete_cluster_ipRequest"/>
+		<output message="tns:Networking.AdminIP.delete_cluster_ipResponse"/>
+	</operation>
+	<operation name="delete_all_cluster_ips">
+	<documentation>
+ Deletes all cluster admin IP addresses.
+
+        	</documentation>
+		<input message="tns:Networking.AdminIP.delete_all_cluster_ipsRequest"/>
+		<output message="tns:Networking.AdminIP.delete_all_cluster_ipsResponse"/>
+	</operation>
+	<operation name="get_cluster_netmask">
+	<documentation>
+ Gets the netmasks of the specified cluster admin IPs.
+
+        	</documentation>
+		<input message="tns:Networking.AdminIP.get_cluster_netmaskRequest"/>
+		<output message="tns:Networking.AdminIP.get_cluster_netmaskResponse"/>
+	</operation>
+	<operation name="set_cluster_netmask">
+	<documentation>
+ Sets the netmasks of the specified cluster admin IPs.
+
+        	</documentation>
+		<input message="tns:Networking.AdminIP.set_cluster_netmaskRequest"/>
+		<output message="tns:Networking.AdminIP.set_cluster_netmaskResponse"/>
+	</operation>
+	<operation name="get_slot_ip">
+	<documentation>
+ Gets a list of all admin IPs on the designated slots.
+
+        	</documentation>
+		<input message="tns:Networking.AdminIP.get_slot_ipRequest"/>
+		<output message="tns:Networking.AdminIP.get_slot_ipResponse"/>
+	</operation>
+	<operation name="create_slot_ip">
+	<documentation>
+ Creates the specified admin IP addresses on the designated slots.
+
+        	</documentation>
+		<input message="tns:Networking.AdminIP.create_slot_ipRequest"/>
+		<output message="tns:Networking.AdminIP.create_slot_ipResponse"/>
+	</operation>
+	<operation name="replace_slot_ip">
+	<documentation>
+ Replaces the specified admin IP addresses on the designated slots.
+
+        	</documentation>
+		<input message="tns:Networking.AdminIP.replace_slot_ipRequest"/>
+		<output message="tns:Networking.AdminIP.replace_slot_ipResponse"/>
+	</operation>
+	<operation name="delete_slot_ip">
+	<documentation>
+ Deletes the specified admin IP addresses on the designated slots.
+
+        	</documentation>
+		<input message="tns:Networking.AdminIP.delete_slot_ipRequest"/>
+		<output message="tns:Networking.AdminIP.delete_slot_ipResponse"/>
+	</operation>
+	<operation name="delete_all_slot_ips">
+	<documentation>
+ Deletes all admin IP addresses on the designated slots.
+
+        	</documentation>
+		<input message="tns:Networking.AdminIP.delete_all_slot_ipsRequest"/>
+		<output message="tns:Networking.AdminIP.delete_all_slot_ipsResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.AdminIP.get_versionRequest"/>
+		<output message="tns:Networking.AdminIP.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.AdminIPBinding" type="tns:Networking.AdminIPPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all admin IPs on this device.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/AdminIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates the specified admin IP addresses with extended attributes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/AdminIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="replace_administrative_ip">
+	<documentation>
+ Replaces the specified admin IP addresses with extended attributes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/AdminIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_administrative_ip">
+	<documentation>
+ Deletes the specified admin IP addresses.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/AdminIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_administrative_ips">
+	<documentation>
+ Deletes all admin IP addresses.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/AdminIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_netmask">
+	<documentation>
+ Gets the netmasks of the specified admin IPs.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/AdminIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_netmask">
+	<documentation>
+ Sets the netmasks of the specified admin IPs.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/AdminIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of admin IPs.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/AdminIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of admin IPs.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/AdminIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cluster_list">
+	<documentation>
+ Gets a list of all cluster admin IPs on this cluster.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/AdminIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_cluster">
+	<documentation>
+ Creates the specified cluster name&amp; IP addresses.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/AdminIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="replace_cluster_ip">
+	<documentation>
+ Replaces the specified cluster name with new admin IP addresses.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/AdminIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_cluster_ip">
+	<documentation>
+ Deletes the specified cluster admin IP addresses.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/AdminIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_cluster_ips">
+	<documentation>
+ Deletes all cluster admin IP addresses.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/AdminIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cluster_netmask">
+	<documentation>
+ Gets the netmasks of the specified cluster admin IPs.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/AdminIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_cluster_netmask">
+	<documentation>
+ Sets the netmasks of the specified cluster admin IPs.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/AdminIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_slot_ip">
+	<documentation>
+ Gets a list of all admin IPs on the designated slots.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/AdminIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_slot_ip">
+	<documentation>
+ Creates the specified admin IP addresses on the designated slots.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/AdminIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="replace_slot_ip">
+	<documentation>
+ Replaces the specified admin IP addresses on the designated slots.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/AdminIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_slot_ip">
+	<documentation>
+ Deletes the specified admin IP addresses on the designated slots.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/AdminIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_slot_ips">
+	<documentation>
+ Deletes all admin IP addresses on the designated slots.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/AdminIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/AdminIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/AdminIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.AdminIP">
+	<documentation>
+ The AdminIP interface enables you to work with the definitions and attributes contained in a device's administrative IP.  
+
+        	</documentation>
+	<port name="Networking.AdminIPPort" binding="tns:Networking.AdminIPBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

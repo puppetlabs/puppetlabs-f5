@@ -1,0 +1,181 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="System.GeoIP"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="System.GeoIP.loadRequest">
+</message>
+<message name="System.GeoIP.loadResponse">
+</message>
+
+<message name="System.GeoIP.get_versionRequest">
+</message>
+<message name="System.GeoIP.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="System.GeoIPPortType">
+	<operation name="load">
+    	<documentation>
+ Loads GeoIP data files into the running configuration. The
+ directory /shared/GeoIP is used for user files (as opposed
+ to the information shipped with the system).  The user
+ files override the system files according to the
+ preferences shown below.
+ 
+ Note: You can use the upload_file method (ConfigSync
+ interface) to get data files to the system.
+
+ The system has the following order of preference when
+ loading files.
+
+ Order of precedence for IPv4 mapping:
+
+ /shared/GeoIP/GeoIPCity.dat
+ /shared/GeoIP/GeoIPRegion.dat
+ /shared/GeoIP/GeoIP.dat
+ /usr/share/GeoIP/F5GeoIP.dat
+
+ Order of precedence for IPv6 mapping:
+
+ /shared/GeoIP/GeoIPv6.dat
+ /usr/share/GeoIP/F5GeoIPv6.dat
+
+ ISP:
+
+ /shared/GeoIP/GeoIPISP.dat
+
+ Organization:
+
+ /shared/GeoIP/GeoIPOrg.dat
+
+        	</documentation>
+		<input message="tns:System.GeoIP.loadRequest"/>
+		<output message="tns:System.GeoIP.loadResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:System.GeoIP.get_versionRequest"/>
+		<output message="tns:System.GeoIP.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="System.GeoIPBinding" type="tns:System.GeoIPPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="load">
+	<documentation>
+ Loads GeoIP data files into the running configuration. The
+ directory /shared/GeoIP is used for user files (as opposed
+ to the information shipped with the system).  The user
+ files override the system files according to the
+ preferences shown below.
+ 
+ Note: You can use the upload_file method (ConfigSync
+ interface) to get data files to the system.
+
+ The system has the following order of preference when
+ loading files.
+
+ Order of precedence for IPv4 mapping:
+
+ /shared/GeoIP/GeoIPCity.dat
+ /shared/GeoIP/GeoIPRegion.dat
+ /shared/GeoIP/GeoIP.dat
+ /usr/share/GeoIP/F5GeoIP.dat
+
+ Order of precedence for IPv6 mapping:
+
+ /shared/GeoIP/GeoIPv6.dat
+ /usr/share/GeoIP/F5GeoIPv6.dat
+
+ ISP:
+
+ /shared/GeoIP/GeoIPISP.dat
+
+ Organization:
+
+ /shared/GeoIP/GeoIPOrg.dat
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/GeoIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/GeoIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/GeoIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/GeoIP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/GeoIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/GeoIP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="System.GeoIP">
+	<documentation>
+ The GeoIP interface enables you to maintain the GeoIP location
+ database.  The location database maps IP addresses to
+ geographical locations.
+
+ This interface does not support transactions.
+
+        	</documentation>
+	<port name="System.GeoIPPort" binding="tns:System.GeoIPBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

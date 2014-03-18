@@ -1,0 +1,491 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.iSessionAdvertisedRoute"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Networking.iSessionAdvertisedRoute.iSessionAdvertisedRouteStruct">
+			<xsd:sequence>
+				<xsd:element name="key" type="tns:Networking.iSessionAdvertisedRoute.SubnetOptKey"/>
+				<xsd:element name="included" type="tns:Common.EnabledState"/>
+				<xsd:element name="metric" type="xsd:long"/>
+				<xsd:element name="label" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.iSessionAdvertisedRoute.SubnetOptKeySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.iSessionAdvertisedRoute.SubnetOptKey[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.iSessionAdvertisedRoute.SubnetOptKey">
+			<xsd:sequence>
+				<xsd:element name="ip" type="xsd:string"/>
+				<xsd:element name="mask" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.iSessionAdvertisedRoute.get_listRequest">
+</message>
+<message name="Networking.iSessionAdvertisedRoute.get_listResponse">
+	<part name="return" type="tns:Networking.iSessionAdvertisedRoute.SubnetOptKeySequence"/>
+</message>
+
+<message name="Networking.iSessionAdvertisedRoute.createRequest">
+	<part name="subnet" type="tns:Networking.iSessionAdvertisedRoute.iSessionAdvertisedRouteStruct"/>
+</message>
+<message name="Networking.iSessionAdvertisedRoute.createResponse">
+</message>
+
+<message name="Networking.iSessionAdvertisedRoute.delete_subnetsRequest">
+	<part name="subnets" type="tns:Networking.iSessionAdvertisedRoute.SubnetOptKeySequence"/>
+</message>
+<message name="Networking.iSessionAdvertisedRoute.delete_subnetsResponse">
+</message>
+
+<message name="Networking.iSessionAdvertisedRoute.delete_all_subnetsRequest">
+</message>
+<message name="Networking.iSessionAdvertisedRoute.delete_all_subnetsResponse">
+</message>
+
+<message name="Networking.iSessionAdvertisedRoute.set_enabled_stateRequest">
+	<part name="ip" type="tns:Networking.iSessionAdvertisedRoute.SubnetOptKeySequence"/>
+	<part name="included" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.iSessionAdvertisedRoute.set_enabled_stateResponse">
+</message>
+
+<message name="Networking.iSessionAdvertisedRoute.get_enabled_stateRequest">
+	<part name="subnets" type="tns:Networking.iSessionAdvertisedRoute.SubnetOptKeySequence"/>
+</message>
+<message name="Networking.iSessionAdvertisedRoute.get_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.iSessionAdvertisedRoute.set_labelRequest">
+	<part name="ip" type="tns:Networking.iSessionAdvertisedRoute.SubnetOptKeySequence"/>
+	<part name="labels" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionAdvertisedRoute.set_labelResponse">
+</message>
+
+<message name="Networking.iSessionAdvertisedRoute.get_labelRequest">
+	<part name="subnets" type="tns:Networking.iSessionAdvertisedRoute.SubnetOptKeySequence"/>
+</message>
+<message name="Networking.iSessionAdvertisedRoute.get_labelResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.iSessionAdvertisedRoute.set_metricRequest">
+	<part name="subnet" type="tns:Networking.iSessionAdvertisedRoute.SubnetOptKeySequence"/>
+	<part name="metric" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.iSessionAdvertisedRoute.set_metricResponse">
+</message>
+
+<message name="Networking.iSessionAdvertisedRoute.get_metricRequest">
+	<part name="subnets" type="tns:Networking.iSessionAdvertisedRoute.SubnetOptKeySequence"/>
+</message>
+<message name="Networking.iSessionAdvertisedRoute.get_metricResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.iSessionAdvertisedRoute.get_versionRequest">
+</message>
+<message name="Networking.iSessionAdvertisedRoute.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.iSessionAdvertisedRoutePortType">
+	<operation name="get_list">
+      	<documentation>
+ Get a list of all subnet interfaces and their netmasks.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRoute.get_listRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRoute.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a specified subnet object with all its attributes.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRoute.createRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRoute.createResponse"/>
+	</operation>
+	<operation name="delete_subnets">
+	<documentation>
+ Deletes the specified subnet via its IP address and netmask.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRoute.delete_subnetsRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRoute.delete_subnetsResponse"/>
+	</operation>
+	<operation name="delete_all_subnets">
+	<documentation>
+ Deletes all exisiting subnet objects.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRoute.delete_all_subnetsRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRoute.delete_all_subnetsResponse"/>
+	</operation>
+	<operation name="set_enabled_state">
+	<documentation>
+ Sets/Resets the enabled flag on the target subnets.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRoute.set_enabled_stateRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRoute.set_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_enabled_state">
+	<documentation>
+ Gets the enabled flag on the target subnets.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRoute.get_enabled_stateRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRoute.get_enabled_stateResponse"/>
+	</operation>
+	<operation name="set_label">
+	<documentation>
+ Sets/Resets the label string on the target subnets.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRoute.set_labelRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRoute.set_labelResponse"/>
+	</operation>
+	<operation name="get_label">
+	<documentation>
+ Gets the label string on the target subnets.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRoute.get_labelRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRoute.get_labelResponse"/>
+	</operation>
+	<operation name="set_metric">
+	<documentation>
+ Sets the metric with which the specified subnet IPs are associated.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRoute.set_metricRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRoute.set_metricResponse"/>
+	</operation>
+	<operation name="get_metric">
+	<documentation>
+ Gets the metric with which the specified subnet IPs are associated.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRoute.get_metricRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRoute.get_metricResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRoute.get_versionRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRoute.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.iSessionAdvertisedRouteBinding" type="tns:Networking.iSessionAdvertisedRoutePortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Get a list of all subnet interfaces and their netmasks.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRoute"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRoute"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRoute"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a specified subnet object with all its attributes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRoute"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRoute"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRoute"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_subnets">
+	<documentation>
+ Deletes the specified subnet via its IP address and netmask.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRoute"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRoute"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRoute"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_subnets">
+	<documentation>
+ Deletes all exisiting subnet objects.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRoute"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRoute"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRoute"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_enabled_state">
+	<documentation>
+ Sets/Resets the enabled flag on the target subnets.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRoute"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRoute"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRoute"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_enabled_state">
+	<documentation>
+ Gets the enabled flag on the target subnets.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRoute"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRoute"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRoute"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_label">
+	<documentation>
+ Sets/Resets the label string on the target subnets.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRoute"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRoute"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRoute"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_label">
+	<documentation>
+ Gets the label string on the target subnets.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRoute"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRoute"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRoute"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_metric">
+	<documentation>
+ Sets the metric with which the specified subnet IPs are associated.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRoute"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRoute"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRoute"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_metric">
+	<documentation>
+ Gets the metric with which the specified subnet IPs are associated.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRoute"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRoute"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRoute"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRoute"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRoute"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRoute"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.iSessionAdvertisedRoute">
+	<documentation>
+ *IMPORTANT* This interface has been deprecated (as of 11.0.0)
+ due to changing the key used to access iSession advertised
+ routes.  Please use the iSessionAdvertisedRouteV2 interface in
+ its stead.
+
+ The iSession AdvertisedRoute interface enables you to work with the definitions and
+ attributes contained in a device's optimized endpoint subnets.
+
+        	</documentation>
+	<port name="Networking.iSessionAdvertisedRoutePort" binding="tns:Networking.iSessionAdvertisedRouteBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

@@ -1,0 +1,776 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.ARP"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Networking.ARP.StaticEntry">
+			<xsd:sequence>
+				<xsd:element name="address" type="xsd:string"/>
+				<xsd:element name="mac_address" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.ARP.NDPEntrySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.ARP.NDPEntry[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.TimeStamp">
+			<xsd:sequence>
+				<xsd:element name="year" type="xsd:long"/>
+				<xsd:element name="month" type="xsd:long"/>
+				<xsd:element name="day" type="xsd:long"/>
+				<xsd:element name="hour" type="xsd:long"/>
+				<xsd:element name="minute" type="xsd:long"/>
+				<xsd:element name="second" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.ARP.StaticEntrySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.ARP.StaticEntry[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.ARP.NDPStatistics">
+			<xsd:sequence>
+				<xsd:element name="statistics" type="tns:Networking.ARP.NDPEntrySequence"/>
+				<xsd:element name="time_stamp" type="tns:Common.TimeStamp"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.ARP.NDPState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="NDP_STATE_INCOMPLETE">
+					<xsd:annotation>
+						<xsd:documentation>NDP_STATE_INCOMPLETE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="NDP_STATE_REACHABLE">
+					<xsd:annotation>
+						<xsd:documentation>NDP_STATE_REACHABLE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="NDP_STATE_STALE">
+					<xsd:annotation>
+						<xsd:documentation>NDP_STATE_STALE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="NDP_STATE_DELAY">
+					<xsd:annotation>
+						<xsd:documentation>NDP_STATE_DELAY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="NDP_STATE_PROBE">
+					<xsd:annotation>
+						<xsd:documentation>NDP_STATE_PROBE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="NDP_STATE_PERMANENT">
+					<xsd:annotation>
+						<xsd:documentation>NDP_STATE_PERMANENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Networking.ARP.ARPEntry">
+			<xsd:sequence>
+				<xsd:element name="arp_address" type="xsd:string"/>
+				<xsd:element name="mac_address" type="xsd:string"/>
+				<xsd:element name="vlan" type="xsd:string"/>
+				<xsd:element name="expiration" type="xsd:long"/>
+				<xsd:element name="is_down" type="xsd:boolean"/>
+				<xsd:element name="is_dynamic" type="xsd:boolean"/>
+				<xsd:element name="is_resolved" type="xsd:boolean"/>
+				<xsd:element name="is_keepalive" type="xsd:boolean"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.ARP.ARPStatistics">
+			<xsd:sequence>
+				<xsd:element name="statistics" type="tns:Networking.ARP.ARPEntrySequence"/>
+				<xsd:element name="time_stamp" type="tns:Common.TimeStamp"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.ARP.NDPEntry">
+			<xsd:sequence>
+				<xsd:element name="ndp_address" type="xsd:string"/>
+				<xsd:element name="mac_address" type="xsd:string"/>
+				<xsd:element name="vlan" type="xsd:string"/>
+				<xsd:element name="expiration" type="xsd:long"/>
+				<xsd:element name="is_router" type="xsd:boolean"/>
+				<xsd:element name="state" type="tns:Networking.ARP.NDPState"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.ARP.ARPEntrySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.ARP.ARPEntry[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.ARP.get_static_entryRequest">
+</message>
+<message name="Networking.ARP.get_static_entryResponse">
+	<part name="return" type="tns:Networking.ARP.StaticEntrySequence"/>
+</message>
+
+<message name="Networking.ARP.add_static_entryRequest">
+	<part name="entries" type="tns:Networking.ARP.StaticEntrySequence"/>
+</message>
+<message name="Networking.ARP.add_static_entryResponse">
+</message>
+
+<message name="Networking.ARP.delete_static_entryRequest">
+	<part name="entries" type="tns:Networking.ARP.StaticEntrySequence"/>
+</message>
+<message name="Networking.ARP.delete_static_entryResponse">
+</message>
+
+<message name="Networking.ARP.get_static_entry_listRequest">
+</message>
+<message name="Networking.ARP.get_static_entry_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.ARP.create_static_entryRequest">
+	<part name="entries" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+	<part name="macs" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.ARP.create_static_entryResponse">
+</message>
+
+<message name="Networking.ARP.get_static_entry_addressRequest">
+	<part name="entries" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.ARP.get_static_entry_addressResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Networking.ARP.set_static_entry_mac_addressRequest">
+	<part name="entries" type="tns:Common.StringSequence"/>
+	<part name="macs" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.ARP.set_static_entry_mac_addressResponse">
+</message>
+
+<message name="Networking.ARP.get_static_entry_mac_addressRequest">
+	<part name="entries" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.ARP.get_static_entry_mac_addressResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.ARP.set_static_entry_descriptionRequest">
+	<part name="entries" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.ARP.set_static_entry_descriptionResponse">
+</message>
+
+<message name="Networking.ARP.get_static_entry_descriptionRequest">
+	<part name="entries" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.ARP.get_static_entry_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.ARP.delete_static_entry_v2Request">
+	<part name="entries" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.ARP.delete_static_entry_v2Response">
+</message>
+
+<message name="Networking.ARP.delete_all_static_entriesRequest">
+</message>
+<message name="Networking.ARP.delete_all_static_entriesResponse">
+</message>
+
+<message name="Networking.ARP.get_dynamic_arpRequest">
+	<part name="arp_addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.ARP.get_dynamic_arpResponse">
+	<part name="return" type="tns:Networking.ARP.ARPStatistics"/>
+</message>
+
+<message name="Networking.ARP.delete_all_dynamic_arpsRequest">
+</message>
+<message name="Networking.ARP.delete_all_dynamic_arpsResponse">
+</message>
+
+<message name="Networking.ARP.get_dynamic_ndpRequest">
+	<part name="ndp_addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.ARP.get_dynamic_ndpResponse">
+	<part name="return" type="tns:Networking.ARP.NDPStatistics"/>
+</message>
+
+<message name="Networking.ARP.delete_all_dynamic_ndpsRequest">
+</message>
+<message name="Networking.ARP.delete_all_dynamic_ndpsResponse">
+</message>
+
+<message name="Networking.ARP.get_versionRequest">
+</message>
+<message name="Networking.ARP.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.ARPPortType">
+	<operation name="get_static_entry">
+  	<documentation>
+ Gets a list of all static ARP/NDP entries.
+
+        	</documentation>
+		<input message="tns:Networking.ARP.get_static_entryRequest"/>
+		<output message="tns:Networking.ARP.get_static_entryResponse"/>
+	</operation>
+	<operation name="add_static_entry">
+	<documentation>
+ Creates/adds the specified static ARP/NDP entries to the ARP/NDP table.
+
+        	</documentation>
+		<input message="tns:Networking.ARP.add_static_entryRequest"/>
+		<output message="tns:Networking.ARP.add_static_entryResponse"/>
+	</operation>
+	<operation name="delete_static_entry">
+	<documentation>
+ Deletes the specified static ARP/NDP entries from the ARP/NDP table.
+
+        	</documentation>
+		<input message="tns:Networking.ARP.delete_static_entryRequest"/>
+		<output message="tns:Networking.ARP.delete_static_entryResponse"/>
+	</operation>
+	<operation name="get_static_entry_list">
+	<documentation>
+ Gets a list of all static ARP/NDP entries.
+
+        	</documentation>
+		<input message="tns:Networking.ARP.get_static_entry_listRequest"/>
+		<output message="tns:Networking.ARP.get_static_entry_listResponse"/>
+	</operation>
+	<operation name="create_static_entry">
+	<documentation>
+ Creates a set of static ARP/NDP entries in the ARP/NDP table.
+
+        	</documentation>
+		<input message="tns:Networking.ARP.create_static_entryRequest"/>
+		<output message="tns:Networking.ARP.create_static_entryResponse"/>
+	</operation>
+	<operation name="get_static_entry_address">
+	<documentation>
+ Gets the IP addresses for a set of static ARP/NDP entries.
+
+ Note: A set_static_entry_address method is not supported.
+
+        	</documentation>
+		<input message="tns:Networking.ARP.get_static_entry_addressRequest"/>
+		<output message="tns:Networking.ARP.get_static_entry_addressResponse"/>
+	</operation>
+	<operation name="set_static_entry_mac_address">
+	<documentation>
+ Sets the MAC addresses for a set of static ARP/NDP entries.
+
+        	</documentation>
+		<input message="tns:Networking.ARP.set_static_entry_mac_addressRequest"/>
+		<output message="tns:Networking.ARP.set_static_entry_mac_addressResponse"/>
+	</operation>
+	<operation name="get_static_entry_mac_address">
+	<documentation>
+ Gets the MAC addresses for a set of static ARP/NDP entries.
+
+        	</documentation>
+		<input message="tns:Networking.ARP.get_static_entry_mac_addressRequest"/>
+		<output message="tns:Networking.ARP.get_static_entry_mac_addressResponse"/>
+	</operation>
+	<operation name="set_static_entry_description">
+	<documentation>
+ Sets the description for a set of static ARP/NDP entries.  This is
+ an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Networking.ARP.set_static_entry_descriptionRequest"/>
+		<output message="tns:Networking.ARP.set_static_entry_descriptionResponse"/>
+	</operation>
+	<operation name="get_static_entry_description">
+	<documentation>
+ Gets the description for a set of static ARP/NDP entries.
+
+        	</documentation>
+		<input message="tns:Networking.ARP.get_static_entry_descriptionRequest"/>
+		<output message="tns:Networking.ARP.get_static_entry_descriptionResponse"/>
+	</operation>
+	<operation name="delete_static_entry_v2">
+	<documentation>
+ Deletes the specified static ARP/NDP entries from the ARP/NDP table.
+
+        	</documentation>
+		<input message="tns:Networking.ARP.delete_static_entry_v2Request"/>
+		<output message="tns:Networking.ARP.delete_static_entry_v2Response"/>
+	</operation>
+	<operation name="delete_all_static_entries">
+	<documentation>
+ Deletes all static ARP/NDP entries from the ARP/NDP table.
+
+        	</documentation>
+		<input message="tns:Networking.ARP.delete_all_static_entriesRequest"/>
+		<output message="tns:Networking.ARP.delete_all_static_entriesResponse"/>
+	</operation>
+	<operation name="get_dynamic_arp">
+	<documentation>
+ Gets the dynamic ARP statistics for the specified ARP addresses.
+
+        	</documentation>
+		<input message="tns:Networking.ARP.get_dynamic_arpRequest"/>
+		<output message="tns:Networking.ARP.get_dynamic_arpResponse"/>
+	</operation>
+	<operation name="delete_all_dynamic_arps">
+	<documentation>
+ Deletes all dynamic ARP entries from the ARP table.
+
+        	</documentation>
+		<input message="tns:Networking.ARP.delete_all_dynamic_arpsRequest"/>
+		<output message="tns:Networking.ARP.delete_all_dynamic_arpsResponse"/>
+	</operation>
+	<operation name="get_dynamic_ndp">
+	<documentation>
+ Gets the dynamic NDP statistics for the specified NDP addresses.
+
+        	</documentation>
+		<input message="tns:Networking.ARP.get_dynamic_ndpRequest"/>
+		<output message="tns:Networking.ARP.get_dynamic_ndpResponse"/>
+	</operation>
+	<operation name="delete_all_dynamic_ndps">
+	<documentation>
+ Deletes all dynamic NDP entries from the NDP table.
+
+        	</documentation>
+		<input message="tns:Networking.ARP.delete_all_dynamic_ndpsRequest"/>
+		<output message="tns:Networking.ARP.delete_all_dynamic_ndpsResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.ARP.get_versionRequest"/>
+		<output message="tns:Networking.ARP.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.ARPBinding" type="tns:Networking.ARPPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_static_entry">
+	<documentation>
+ Gets a list of all static ARP/NDP entries.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/ARP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_static_entry">
+	<documentation>
+ Creates/adds the specified static ARP/NDP entries to the ARP/NDP table.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/ARP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_static_entry">
+	<documentation>
+ Deletes the specified static ARP/NDP entries from the ARP/NDP table.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/ARP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_static_entry_list">
+	<documentation>
+ Gets a list of all static ARP/NDP entries.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/ARP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_static_entry">
+	<documentation>
+ Creates a set of static ARP/NDP entries in the ARP/NDP table.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/ARP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_static_entry_address">
+	<documentation>
+ Gets the IP addresses for a set of static ARP/NDP entries.
+
+ Note: A set_static_entry_address method is not supported.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/ARP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_static_entry_mac_address">
+	<documentation>
+ Sets the MAC addresses for a set of static ARP/NDP entries.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/ARP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_static_entry_mac_address">
+	<documentation>
+ Gets the MAC addresses for a set of static ARP/NDP entries.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/ARP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_static_entry_description">
+	<documentation>
+ Sets the description for a set of static ARP/NDP entries.  This is
+ an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/ARP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_static_entry_description">
+	<documentation>
+ Gets the description for a set of static ARP/NDP entries.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/ARP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_static_entry_v2">
+	<documentation>
+ Deletes the specified static ARP/NDP entries from the ARP/NDP table.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/ARP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_static_entries">
+	<documentation>
+ Deletes all static ARP/NDP entries from the ARP/NDP table.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/ARP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_dynamic_arp">
+	<documentation>
+ Gets the dynamic ARP statistics for the specified ARP addresses.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/ARP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_dynamic_arps">
+	<documentation>
+ Deletes all dynamic ARP entries from the ARP table.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/ARP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_dynamic_ndp">
+	<documentation>
+ Gets the dynamic NDP statistics for the specified NDP addresses.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/ARP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_dynamic_ndps">
+	<documentation>
+ Deletes all dynamic NDP entries from the NDP table.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/ARP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/ARP"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/ARP"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.ARP">
+	<documentation>
+ The ARP interface enables you to work with the ARP table and entries.
+
+ In 11.0.0, the ARP/NDP entries were changed to use an independent name
+ as an entry identifier.  Thus the following methods were deprecated:
+
+   get_static_entry
+   add_static_entry
+   delete_static_entry
+
+ replaced by another set of methods:
+
+   get_static_entry_list
+   create_static_entry
+   set_static_entry_address
+   get_static_entry_address
+   set_static_entry_mac_address
+   get_static_entry_mac_address
+   delete_static_entry_v2
+
+        	</documentation>
+	<port name="Networking.ARPPort" binding="tns:Networking.ARPBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>
