@@ -108,6 +108,7 @@ describe Puppet::Provider::F5 do
         "LocalLB.SNAT"                   => driver,
         "LocalLB.SNATPool"               => driver,
         "LocalLB.SNATTranslationAddress" => driver,
+        "LocalLB.VirtualAddress"         => driver,
         "LocalLB.VirtualServer"          => driver,
         "Management.Partition"           => driver,
         "Management.KeyCertificate"      => driver,
