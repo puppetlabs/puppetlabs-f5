@@ -41,7 +41,7 @@ class Puppet::Util::NetworkDevice::F5::Device
     if @url.path == '' or @url.path == '/'
       @partition = 'Common'
     else
-      @partition = /\/(.*)/.match(@url.path).captures
+      @partition = /\/(.*)/.match(@url.path).captures[0]
     end
 
     # System.Session API not supported until V11.
