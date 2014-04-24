@@ -71,6 +71,12 @@ class Puppet::Util::NetworkDevice::F5::Facts
       @facts['uptime_hours'] = @facts['uptime_seconds'] / (60 * 60)             # Integer
       @facts['uptime_days']  = @facts['uptime_hours'] / 24                      # Integer
     end
+    if @facts['version'] then
+      if @facts['version'] =~ /^(BIG-IP)_v(\d+.\d).(\d)$/i
+        @facts['operatingsystem'] = $1
+        @facts['operatingsystemrelease'] = $2
+      end
+    end
     if @facts['hardware_cpus_versions']
       @facts['hardware_cpus_versions'].each { |key| @facts["hardware_#{key.name.downcase.gsub(/\s/,'_')}"] = key.value }
       @facts.delete('hardware_cpus_versions')
