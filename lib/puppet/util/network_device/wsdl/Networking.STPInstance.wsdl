@@ -1,0 +1,1147 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.STPInstance"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Networking.STPStateType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STP_STATE_TYPE_DETACH">
+					<xsd:annotation>
+						<xsd:documentation>STP_STATE_TYPE_DETACH</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STP_STATE_TYPE_BLOCK">
+					<xsd:annotation>
+						<xsd:documentation>STP_STATE_TYPE_BLOCK</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STP_STATE_TYPE_LISTEN">
+					<xsd:annotation>
+						<xsd:documentation>STP_STATE_TYPE_LISTEN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STP_STATE_TYPE_LEARN">
+					<xsd:annotation>
+						<xsd:documentation>STP_STATE_TYPE_LEARN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STP_STATE_TYPE_FORWARD">
+					<xsd:annotation>
+						<xsd:documentation>STP_STATE_TYPE_FORWARD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STP_STATE_TYPE_DISABLE">
+					<xsd:annotation>
+						<xsd:documentation>STP_STATE_TYPE_DISABLE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Networking.STPInstance.InterfacePrioritySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.STPInstance.InterfacePriority[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.STPInstance.InterfaceSTPRoleSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.STPInstance.InterfaceSTPRole[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.STPInstance.InterfaceSTPState">
+			<xsd:sequence>
+				<xsd:element name="name" type="xsd:string"/>
+				<xsd:element name="state" type="tns:Networking.STPStateType"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.STPInstance.InterfaceSTPStateSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.STPInstance.InterfaceSTPStateSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.STPInstance.InterfacePriority">
+			<xsd:sequence>
+				<xsd:element name="name" type="xsd:string"/>
+				<xsd:element name="priority" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.STPInstance.PathCostType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="PATH_COST_INTERNAL">
+					<xsd:annotation>
+						<xsd:documentation>PATH_COST_INTERNAL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PATH_COST_EXTERNAL">
+					<xsd:annotation>
+						<xsd:documentation>PATH_COST_EXTERNAL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Networking.STPInstance.PathCostTypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.STPInstance.PathCostType[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.STPInstance.InterfacePathCostSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.STPInstance.InterfacePathCost[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.STPInstance.PathCostTypeSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.STPInstance.PathCostTypeSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.STPInstance.InterfacePathCost">
+			<xsd:sequence>
+				<xsd:element name="name" type="xsd:string"/>
+				<xsd:element name="path_cost" type="tns:Networking.STPInstance.PathCost"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.STPInstance.InterfacePrioritySequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.STPInstance.InterfacePrioritySequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.STPInstance.InterfaceSTPStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.STPInstance.InterfaceSTPState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.STPRoleType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STP_ROLE_TYPE_DISABLE">
+					<xsd:annotation>
+						<xsd:documentation>STP_ROLE_TYPE_DISABLE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STP_ROLE_TYPE_ROOT">
+					<xsd:annotation>
+						<xsd:documentation>STP_ROLE_TYPE_ROOT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STP_ROLE_TYPE_DESIGNATE">
+					<xsd:annotation>
+						<xsd:documentation>STP_ROLE_TYPE_DESIGNATE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STP_ROLE_TYPE_ALTERNATE">
+					<xsd:annotation>
+						<xsd:documentation>STP_ROLE_TYPE_ALTERNATE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STP_ROLE_TYPE_BACKUP">
+					<xsd:annotation>
+						<xsd:documentation>STP_ROLE_TYPE_BACKUP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STP_ROLE_TYPE_MASTER">
+					<xsd:annotation>
+						<xsd:documentation>STP_ROLE_TYPE_MASTER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Networking.STPInstance.InterfacePathCostSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.STPInstance.InterfacePathCostSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.STPInstance.InterfaceSTPRole">
+			<xsd:sequence>
+				<xsd:element name="name" type="xsd:string"/>
+				<xsd:element name="role" type="tns:Networking.STPRoleType"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.STPInstance.InterfaceSTPRoleSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.STPInstance.InterfaceSTPRoleSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.STPInstance.PathCost">
+			<xsd:sequence>
+				<xsd:element name="type" type="tns:Networking.STPInstance.PathCostType"/>
+				<xsd:element name="value" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.STPInstance.get_listRequest">
+</message>
+<message name="Networking.STPInstance.get_listResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.STPInstance.createRequest">
+	<part name="stp_instances" type="tns:Common.ULongSequence"/>
+	<part name="priorities" type="tns:Common.ULongSequence"/>
+	<part name="vlan_names" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.STPInstance.createResponse">
+</message>
+
+<message name="Networking.STPInstance.delete_instanceRequest">
+	<part name="stp_instances" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.STPInstance.delete_instanceResponse">
+</message>
+
+<message name="Networking.STPInstance.delete_all_instancesRequest">
+</message>
+<message name="Networking.STPInstance.delete_all_instancesResponse">
+</message>
+
+<message name="Networking.STPInstance.set_bridge_priorityRequest">
+	<part name="stp_instances" type="tns:Common.ULongSequence"/>
+	<part name="priorities" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.STPInstance.set_bridge_priorityResponse">
+</message>
+
+<message name="Networking.STPInstance.get_bridge_priorityRequest">
+	<part name="stp_instances" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.STPInstance.get_bridge_priorityResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.STPInstance.get_root_bridge_mac_addressRequest">
+	<part name="stp_instances" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.STPInstance.get_root_bridge_mac_addressResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.STPInstance.get_regional_root_bridge_mac_addressRequest">
+	<part name="stp_instances" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.STPInstance.get_regional_root_bridge_mac_addressResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.STPInstance.get_vlanRequest">
+	<part name="stp_instances" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.STPInstance.get_vlanResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Networking.STPInstance.add_vlanRequest">
+	<part name="stp_instances" type="tns:Common.ULongSequence"/>
+	<part name="vlan_names" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.STPInstance.add_vlanResponse">
+</message>
+
+<message name="Networking.STPInstance.remove_vlanRequest">
+	<part name="stp_instances" type="tns:Common.ULongSequence"/>
+	<part name="vlan_names" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.STPInstance.remove_vlanResponse">
+</message>
+
+<message name="Networking.STPInstance.remove_all_vlansRequest">
+	<part name="stp_instances" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.STPInstance.remove_all_vlansResponse">
+</message>
+
+<message name="Networking.STPInstance.get_interface_active_stateRequest">
+	<part name="stp_instances" type="tns:Common.ULongSequence"/>
+	<part name="interfaces" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.STPInstance.get_interface_active_stateResponse">
+	<part name="return" type="tns:Networking.STPInstance.InterfaceSTPStateSequenceSequence"/>
+</message>
+
+<message name="Networking.STPInstance.get_interface_requested_stateRequest">
+	<part name="stp_instances" type="tns:Common.ULongSequence"/>
+	<part name="interfaces" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.STPInstance.get_interface_requested_stateResponse">
+	<part name="return" type="tns:Networking.STPInstance.InterfaceSTPStateSequenceSequence"/>
+</message>
+
+<message name="Networking.STPInstance.get_interface_roleRequest">
+	<part name="stp_instances" type="tns:Common.ULongSequence"/>
+	<part name="interfaces" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.STPInstance.get_interface_roleResponse">
+	<part name="return" type="tns:Networking.STPInstance.InterfaceSTPRoleSequenceSequence"/>
+</message>
+
+<message name="Networking.STPInstance.set_interface_priorityRequest">
+	<part name="stp_instances" type="tns:Common.ULongSequence"/>
+	<part name="priorities" type="tns:Networking.STPInstance.InterfacePrioritySequenceSequence"/>
+</message>
+<message name="Networking.STPInstance.set_interface_priorityResponse">
+</message>
+
+<message name="Networking.STPInstance.get_interface_priorityRequest">
+	<part name="stp_instances" type="tns:Common.ULongSequence"/>
+	<part name="interfaces" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.STPInstance.get_interface_priorityResponse">
+	<part name="return" type="tns:Networking.STPInstance.InterfacePrioritySequenceSequence"/>
+</message>
+
+<message name="Networking.STPInstance.set_interface_path_costRequest">
+	<part name="stp_instances" type="tns:Common.ULongSequence"/>
+	<part name="path_costs" type="tns:Networking.STPInstance.InterfacePathCostSequenceSequence"/>
+</message>
+<message name="Networking.STPInstance.set_interface_path_costResponse">
+</message>
+
+<message name="Networking.STPInstance.get_interface_path_costRequest">
+	<part name="stp_instances" type="tns:Common.ULongSequence"/>
+	<part name="interfaces" type="tns:Common.StringSequenceSequence"/>
+	<part name="path_cost_types" type="tns:Networking.STPInstance.PathCostTypeSequenceSequence"/>
+</message>
+<message name="Networking.STPInstance.get_interface_path_costResponse">
+	<part name="return" type="tns:Networking.STPInstance.InterfacePathCostSequenceSequence"/>
+</message>
+
+<message name="Networking.STPInstance.get_versionRequest">
+</message>
+<message name="Networking.STPInstance.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.STPInstancePortType">
+	<operation name="get_list">
+  	<documentation>
+ Gets a list of all spanning tree instances.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPInstance.get_listRequest"/>
+		<output message="tns:Networking.STPInstance.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates the specified spanning tree instances.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPInstance.createRequest"/>
+		<output message="tns:Networking.STPInstance.createResponse"/>
+	</operation>
+	<operation name="delete_instance">
+	<documentation>
+ Deletes the specified spanning tree instances.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPInstance.delete_instanceRequest"/>
+		<output message="tns:Networking.STPInstance.delete_instanceResponse"/>
+	</operation>
+	<operation name="delete_all_instances">
+	<documentation>
+ Deletes all spanning tree instances.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPInstance.delete_all_instancesRequest"/>
+		<output message="tns:Networking.STPInstance.delete_all_instancesResponse"/>
+	</operation>
+	<operation name="set_bridge_priority">
+	<documentation>
+ Sets the bridge priorities of the specified spanning tree instances. Each bridge in a
+ spanning tree instance has a priority value, which controls the topoloty of the spanning
+ tree chosen by the protocol.  The bridge with the lowest priority value will become the
+ root of the spanning tree. Priority values range from 0-61440 in steps of 4096. Hence,
+ the supported priorities are:
+      0       16384       32768       49152
+   4096       20480       36864       53248
+   8192       24576       40960       57344
+  12288       28672       45056       61440
+
+ The default bridge priority is 61440, which will prevent BIGIP from being chosen as the root
+ bridge.  If the specified bridge priority is not one of the allowed values listed above, it is 
+ rounded down to the next lower value in the list.
+ In STP or RSTP mode, only STP intance 0 is valid.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPInstance.set_bridge_priorityRequest"/>
+		<output message="tns:Networking.STPInstance.set_bridge_priorityResponse"/>
+	</operation>
+	<operation name="get_bridge_priority">
+	<documentation>
+ Gets the bridge priorities of the specified spanning tree instances. Each bridge in a
+ spanning tree instance has a priority value, which controls the topoloty of the spanning
+ tree chosen by the protocol.  The bridge with the lowest priority value will become the
+ root of the spanning tree. Priority values range from 0-61440 in steps of 4096. Hence,
+ the supported priorities are:
+      0       16384       32768       49152
+   4096       20480       36864       53248
+   8192       24576       40960       57344
+  12288       28672       45056       61440
+
+ The default bridge priority is 61440, which will prevent BIGIP from being chosen as the root
+ bridge.  If the specified bridge priority is not one of the allowed values listed above, it is 
+ rounded down to the next lower value in the list.
+ In STP or RSTP mode, only STP intance 0 is valid.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPInstance.get_bridge_priorityRequest"/>
+		<output message="tns:Networking.STPInstance.get_bridge_priorityResponse"/>
+	</operation>
+	<operation name="get_root_bridge_mac_address">
+	<documentation>
+ Gets the MAC addresses of the root bridges.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPInstance.get_root_bridge_mac_addressRequest"/>
+		<output message="tns:Networking.STPInstance.get_root_bridge_mac_addressResponse"/>
+	</operation>
+	<operation name="get_regional_root_bridge_mac_address">
+	<documentation>
+ Gets the MAC addresses of the regional root bridges.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPInstance.get_regional_root_bridge_mac_addressRequest"/>
+		<output message="tns:Networking.STPInstance.get_regional_root_bridge_mac_addressResponse"/>
+	</operation>
+	<operation name="get_vlan">
+	<documentation>
+ Gets the lists of VLANs the specified spanning tree instances are associated with.
+ This method may be used only in MSTP mode.  In STP or RSTP mode, all VLANs automatically
+ belong to spanning tree instance 0.
+
+        	</documentation>
+		<input message="tns:Networking.STPInstance.get_vlanRequest"/>
+		<output message="tns:Networking.STPInstance.get_vlanResponse"/>
+	</operation>
+	<operation name="add_vlan">
+	<documentation>
+ Adds/associates VLANs to the specified spanning tree instances.
+ This method may be used only in MSTP mode.  In STP or RSTP mode, all VLANs 
+ automatically belong to spanning tree instance 0.
+
+        	</documentation>
+		<input message="tns:Networking.STPInstance.add_vlanRequest"/>
+		<output message="tns:Networking.STPInstance.add_vlanResponse"/>
+	</operation>
+	<operation name="remove_vlan">
+	<documentation>
+ Removes VLANs from the specified spanning tree instances.
+ This method may be used only in MSTP mode.  In STP or RSTP mode, all VLANs 
+ automatically belong to spanning tree instance 0, and they can not be deleted
+ from it.
+
+        	</documentation>
+		<input message="tns:Networking.STPInstance.remove_vlanRequest"/>
+		<output message="tns:Networking.STPInstance.remove_vlanResponse"/>
+	</operation>
+	<operation name="remove_all_vlans">
+	<documentation>
+ Removes all VLANs from the specified spanning tree instances.
+ This method may be used only in MSTP mode.  In STP or RSTP mode, all VLANs 
+ automatically belong to spanning tree instance 0, and they can not be deleted
+ from it.
+
+        	</documentation>
+		<input message="tns:Networking.STPInstance.remove_all_vlansRequest"/>
+		<output message="tns:Networking.STPInstance.remove_all_vlansResponse"/>
+	</operation>
+	<operation name="get_interface_active_state">
+	<documentation>
+ Gets the STP active states for the specified STP port objects.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPInstance.get_interface_active_stateRequest"/>
+		<output message="tns:Networking.STPInstance.get_interface_active_stateResponse"/>
+	</operation>
+	<operation name="get_interface_requested_state">
+	<documentation>
+ Gets the STP requested/configured states for the specified STP port objects.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPInstance.get_interface_requested_stateRequest"/>
+		<output message="tns:Networking.STPInstance.get_interface_requested_stateResponse"/>
+	</operation>
+	<operation name="get_interface_role">
+	<documentation>
+ Gets the STP roles for the specified STP port objects.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPInstance.get_interface_roleRequest"/>
+		<output message="tns:Networking.STPInstance.get_interface_roleResponse"/>
+	</operation>
+	<operation name="set_interface_priority">
+	<documentation>
+ Sets the priorities for the specified network interfaces in the specified spanning tree instances. 
+ These priority values influence which interfaces are chosen to carry network traffic. Interfaces with
+ numerically lower values are favored to carry traffic. Interface priorities have values in the range 
+ from 0-240 in steps of 16. Hence, the supported priorities are:
+      0        64       128       192
+     16        80       144       208
+     32        96       160       224
+     48       112       176       240
+
+ The default interface priority is 128.  If the specified interface priority is not one of the allowed
+ values listed above, it is rounded down to the next lower value in the list.
+ In STP or RSTP mode, only STP intance 0 is valid.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPInstance.set_interface_priorityRequest"/>
+		<output message="tns:Networking.STPInstance.set_interface_priorityResponse"/>
+	</operation>
+	<operation name="get_interface_priority">
+	<documentation>
+ Gets the priorities for the specified network interfaces in the specified spanning tree instances. 
+ These priority values influence which interfaces are chosen to carry network traffic. Interfaces with
+ numerically lower values are favored to carry traffic. Interface priorities have values in the range 
+ from 0-240 in steps of 16. Hence, the supported priorities are:
+      0        64       128       192
+     16        80       144       208
+     32        96       160       224
+     48       112       176       240
+
+ The default interface priority is 128.  If the specified interface priority is not one of the allowed
+ values listed above, it is rounded down to the next lower value in the list.
+ In STP or RSTP mode, only STP intance 0 is valid.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPInstance.get_interface_priorityRequest"/>
+		<output message="tns:Networking.STPInstance.get_interface_priorityResponse"/>
+	</operation>
+	<operation name="set_interface_path_cost">
+	<documentation>
+ Sets the path costs for the specified network interfaces in the specified spanning tree instances. 
+ An interface path cost represents the relative cost of sending network traffic through that interface.
+ In calculating the spanning tree, the algorithm tries to minimize the total path cost between each point
+ and the root bridge.  By manipulating the path costs of different interfaces, it's possible to steer
+ traffic toward paths that are faster, more reliable, and/or more economical.  Path costs have a range of
+ 1-200,000,000, and the default path cost for an interface is based on the interface's maximum speed (not
+ the actual speed).
+      Max interface speed         Default path cost
+          10 Gb/s                 2,000
+           1 Gb/s                 20,000
+         100 Mb/s                 200,000
+          10 MB/s                 2,000,000
+
+ The default path cost is a function of the interface's maximum speed, not its actual speed, so the default
+ path cost of a 10/100/1000 Mb/s interface will be 20,000 even if the interface is running at 10 Mb/s.
+ Changes in link speed don't cause path costs to change.
+ Link aggregation doesn't affect the default path cost, i.e. a trunk of four 1 Gb/s interfaces will still
+ have a default path cost of 20,000.
+ In STP or RSTP mode, only STP intance 0 is valid.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPInstance.set_interface_path_costRequest"/>
+		<output message="tns:Networking.STPInstance.set_interface_path_costResponse"/>
+	</operation>
+	<operation name="get_interface_path_cost">
+	<documentation>
+ Gets the path costs for the specified network interfaces in the specified spanning tree instances. 
+ An interface path cost represents the relative cost of sending network traffic through that interface.
+ In calculating the spanning tree, the algorithm tries to minimize the total path cost between each point
+ and the root bridge.  By manipulating the path costs of different interfaces, it's possible to steer
+ traffic toward paths that are faster, more reliable, and/or more economical.  Path costs have a range of
+ 1-200,000,000, and the default path cost for an interface is based on the interface's maximum speed (not
+ the actual speed).
+      Max interface speed         Default path cost
+          10 Gb/s                 2,000
+           1 Gb/s                 20,000
+         100 Mb/s                 200,000
+          10 MB/s                 2,000,000
+
+ The default path cost is a function of the interface's maximum speed, not its actual speed, so the default
+ path cost of a 10/100/1000 Mb/s interface will be 20,000 even if the interface is running at 10 Mb/s.
+ Changes in link speed don't cause path costs to change.
+ Link aggregation doesn't affect the default path cost, i.e. a trunk of four 1 Gb/s interfaces will still
+ have a default path cost of 20,000.
+ In STP or RSTP mode, only STP intance 0 is valid.
+ 
+        	</documentation>
+		<input message="tns:Networking.STPInstance.get_interface_path_costRequest"/>
+		<output message="tns:Networking.STPInstance.get_interface_path_costResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.STPInstance.get_versionRequest"/>
+		<output message="tns:Networking.STPInstance.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.STPInstanceBinding" type="tns:Networking.STPInstancePortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all spanning tree instances.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPInstance"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates the specified spanning tree instances.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPInstance"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_instance">
+	<documentation>
+ Deletes the specified spanning tree instances.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPInstance"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_instances">
+	<documentation>
+ Deletes all spanning tree instances.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPInstance"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_bridge_priority">
+	<documentation>
+ Sets the bridge priorities of the specified spanning tree instances. Each bridge in a
+ spanning tree instance has a priority value, which controls the topoloty of the spanning
+ tree chosen by the protocol.  The bridge with the lowest priority value will become the
+ root of the spanning tree. Priority values range from 0-61440 in steps of 4096. Hence,
+ the supported priorities are:
+      0       16384       32768       49152
+   4096       20480       36864       53248
+   8192       24576       40960       57344
+  12288       28672       45056       61440
+
+ The default bridge priority is 61440, which will prevent BIGIP from being chosen as the root
+ bridge.  If the specified bridge priority is not one of the allowed values listed above, it is 
+ rounded down to the next lower value in the list.
+ In STP or RSTP mode, only STP intance 0 is valid.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPInstance"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_bridge_priority">
+	<documentation>
+ Gets the bridge priorities of the specified spanning tree instances. Each bridge in a
+ spanning tree instance has a priority value, which controls the topoloty of the spanning
+ tree chosen by the protocol.  The bridge with the lowest priority value will become the
+ root of the spanning tree. Priority values range from 0-61440 in steps of 4096. Hence,
+ the supported priorities are:
+      0       16384       32768       49152
+   4096       20480       36864       53248
+   8192       24576       40960       57344
+  12288       28672       45056       61440
+
+ The default bridge priority is 61440, which will prevent BIGIP from being chosen as the root
+ bridge.  If the specified bridge priority is not one of the allowed values listed above, it is 
+ rounded down to the next lower value in the list.
+ In STP or RSTP mode, only STP intance 0 is valid.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPInstance"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_root_bridge_mac_address">
+	<documentation>
+ Gets the MAC addresses of the root bridges.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPInstance"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_regional_root_bridge_mac_address">
+	<documentation>
+ Gets the MAC addresses of the regional root bridges.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPInstance"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_vlan">
+	<documentation>
+ Gets the lists of VLANs the specified spanning tree instances are associated with.
+ This method may be used only in MSTP mode.  In STP or RSTP mode, all VLANs automatically
+ belong to spanning tree instance 0.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPInstance"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_vlan">
+	<documentation>
+ Adds/associates VLANs to the specified spanning tree instances.
+ This method may be used only in MSTP mode.  In STP or RSTP mode, all VLANs 
+ automatically belong to spanning tree instance 0.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPInstance"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_vlan">
+	<documentation>
+ Removes VLANs from the specified spanning tree instances.
+ This method may be used only in MSTP mode.  In STP or RSTP mode, all VLANs 
+ automatically belong to spanning tree instance 0, and they can not be deleted
+ from it.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPInstance"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_vlans">
+	<documentation>
+ Removes all VLANs from the specified spanning tree instances.
+ This method may be used only in MSTP mode.  In STP or RSTP mode, all VLANs 
+ automatically belong to spanning tree instance 0, and they can not be deleted
+ from it.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPInstance"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_interface_active_state">
+	<documentation>
+ Gets the STP active states for the specified STP port objects.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPInstance"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_interface_requested_state">
+	<documentation>
+ Gets the STP requested/configured states for the specified STP port objects.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPInstance"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_interface_role">
+	<documentation>
+ Gets the STP roles for the specified STP port objects.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPInstance"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_interface_priority">
+	<documentation>
+ Sets the priorities for the specified network interfaces in the specified spanning tree instances. 
+ These priority values influence which interfaces are chosen to carry network traffic. Interfaces with
+ numerically lower values are favored to carry traffic. Interface priorities have values in the range 
+ from 0-240 in steps of 16. Hence, the supported priorities are:
+      0        64       128       192
+     16        80       144       208
+     32        96       160       224
+     48       112       176       240
+
+ The default interface priority is 128.  If the specified interface priority is not one of the allowed
+ values listed above, it is rounded down to the next lower value in the list.
+ In STP or RSTP mode, only STP intance 0 is valid.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPInstance"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_interface_priority">
+	<documentation>
+ Gets the priorities for the specified network interfaces in the specified spanning tree instances. 
+ These priority values influence which interfaces are chosen to carry network traffic. Interfaces with
+ numerically lower values are favored to carry traffic. Interface priorities have values in the range 
+ from 0-240 in steps of 16. Hence, the supported priorities are:
+      0        64       128       192
+     16        80       144       208
+     32        96       160       224
+     48       112       176       240
+
+ The default interface priority is 128.  If the specified interface priority is not one of the allowed
+ values listed above, it is rounded down to the next lower value in the list.
+ In STP or RSTP mode, only STP intance 0 is valid.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPInstance"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_interface_path_cost">
+	<documentation>
+ Sets the path costs for the specified network interfaces in the specified spanning tree instances. 
+ An interface path cost represents the relative cost of sending network traffic through that interface.
+ In calculating the spanning tree, the algorithm tries to minimize the total path cost between each point
+ and the root bridge.  By manipulating the path costs of different interfaces, it's possible to steer
+ traffic toward paths that are faster, more reliable, and/or more economical.  Path costs have a range of
+ 1-200,000,000, and the default path cost for an interface is based on the interface's maximum speed (not
+ the actual speed).
+      Max interface speed         Default path cost
+          10 Gb/s                 2,000
+           1 Gb/s                 20,000
+         100 Mb/s                 200,000
+          10 MB/s                 2,000,000
+
+ The default path cost is a function of the interface's maximum speed, not its actual speed, so the default
+ path cost of a 10/100/1000 Mb/s interface will be 20,000 even if the interface is running at 10 Mb/s.
+ Changes in link speed don't cause path costs to change.
+ Link aggregation doesn't affect the default path cost, i.e. a trunk of four 1 Gb/s interfaces will still
+ have a default path cost of 20,000.
+ In STP or RSTP mode, only STP intance 0 is valid.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPInstance"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_interface_path_cost">
+	<documentation>
+ Gets the path costs for the specified network interfaces in the specified spanning tree instances. 
+ An interface path cost represents the relative cost of sending network traffic through that interface.
+ In calculating the spanning tree, the algorithm tries to minimize the total path cost between each point
+ and the root bridge.  By manipulating the path costs of different interfaces, it's possible to steer
+ traffic toward paths that are faster, more reliable, and/or more economical.  Path costs have a range of
+ 1-200,000,000, and the default path cost for an interface is based on the interface's maximum speed (not
+ the actual speed).
+      Max interface speed         Default path cost
+          10 Gb/s                 2,000
+           1 Gb/s                 20,000
+         100 Mb/s                 200,000
+          10 MB/s                 2,000,000
+
+ The default path cost is a function of the interface's maximum speed, not its actual speed, so the default
+ path cost of a 10/100/1000 Mb/s interface will be 20,000 even if the interface is running at 10 Mb/s.
+ Changes in link speed don't cause path costs to change.
+ Link aggregation doesn't affect the default path cost, i.e. a trunk of four 1 Gb/s interfaces will still
+ have a default path cost of 20,000.
+ In STP or RSTP mode, only STP intance 0 is valid.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPInstance"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/STPInstance"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/STPInstance"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.STPInstance">
+	<documentation>
+ *IMPORTANT* This entire interface has been deprecated (as of
+ 11.0.0), due to a change from using numeric identifiers to
+ using names to identify STP instances.  Please use the
+ STPInstanceV2 interface.
+
+ The STPInstance interface enables you to work with the definitions and attributes associated with an STP instance.  
+
+        	</documentation>
+	<port name="Networking.STPInstancePort" binding="tns:Networking.STPInstanceBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

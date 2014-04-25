@@ -9,23 +9,7 @@ Puppet::Type.newtype(:f5_external_class) do
   feature :refreshable, "The provider can refresh",
     :methods => [:refresh]
 
-  ensurable do
-    desc "F5 External Class resource state. Valid values are present, absent.
-
-    f5_external_class supports refresh for external data groups as a work around for this limitation:
-    http://devcentral.f5.com/Tutorials/TechTips/tabid/63/articleType/ArticleView/articleId/33/Forcing-a-reload-of-External-Data-Groups-within-an-iRule.aspx
-    "
-
-    defaultto(:present)
-
-    newvalue(:present) do
-      provider.create
-    end
-
-    newvalue(:absent) do
-      provider.destroy
-    end
-  end
+  ensurable
 
   newparam(:name, :namevar=>true) do
     desc "The external class name."
@@ -57,7 +41,7 @@ Puppet::Type.newtype(:f5_external_class) do
   end
 
   newproperty(:data_separator) do
-    desc "The class types for the specified classes."
+    desc "The data seperator for the specified classes."
 
     newvalues(/^[[:punct:][:space:]]+$/)
     defaultto(':=')

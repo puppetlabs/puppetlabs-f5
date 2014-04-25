@@ -1,0 +1,626 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.Trust"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.Trust.BrowserCertificateInfo">
+			<xsd:sequence>
+				<xsd:element name="subject_name" type="xsd:string"/>
+				<xsd:element name="serial_number" type="xsd:string"/>
+				<xsd:element name="expiration_date" type="xsd:string"/>
+				<xsd:element name="signature" type="xsd:string"/>
+				<xsd:element name="sha1_fingerprint" type="xsd:string"/>
+				<xsd:element name="md5_fingerprint" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.Trust.get_browser_certificateRequest">
+	<part name="address" type="xsd:string"/>
+</message>
+<message name="Management.Trust.get_browser_certificateResponse">
+	<part name="return" type="tns:Management.Trust.BrowserCertificateInfo"/>
+</message>
+
+<message name="Management.Trust.get_device_object_nameRequest">
+	<part name="address" type="xsd:string"/>
+	<part name="username" type="xsd:string"/>
+	<part name="password" type="xsd:string"/>
+	<part name="browser_cert_serial_number" type="xsd:string"/>
+	<part name="browser_cert_signature" type="xsd:string"/>
+	<part name="browser_cert_sha1_fingerprint" type="xsd:string"/>
+	<part name="browser_cert_md5_fingerprint" type="xsd:string"/>
+</message>
+<message name="Management.Trust.get_device_object_nameResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="Management.Trust.add_non_authority_deviceRequest">
+	<part name="address" type="xsd:string"/>
+	<part name="username" type="xsd:string"/>
+	<part name="password" type="xsd:string"/>
+	<part name="device_object_name" type="xsd:string"/>
+	<part name="browser_cert_serial_number" type="xsd:string"/>
+	<part name="browser_cert_signature" type="xsd:string"/>
+	<part name="browser_cert_sha1_fingerprint" type="xsd:string"/>
+	<part name="browser_cert_md5_fingerprint" type="xsd:string"/>
+</message>
+<message name="Management.Trust.add_non_authority_deviceResponse">
+</message>
+
+<message name="Management.Trust.add_authority_deviceRequest">
+	<part name="address" type="xsd:string"/>
+	<part name="username" type="xsd:string"/>
+	<part name="password" type="xsd:string"/>
+	<part name="device_object_name" type="xsd:string"/>
+	<part name="browser_cert_serial_number" type="xsd:string"/>
+	<part name="browser_cert_signature" type="xsd:string"/>
+	<part name="browser_cert_sha1_fingerprint" type="xsd:string"/>
+	<part name="browser_cert_md5_fingerprint" type="xsd:string"/>
+</message>
+<message name="Management.Trust.add_authority_deviceResponse">
+</message>
+
+<message name="Management.Trust.remove_deviceRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Trust.remove_deviceResponse">
+</message>
+
+<message name="Management.Trust.reset_allRequest">
+	<part name="device_object_name" type="xsd:string"/>
+	<part name="keep_current_authority" type="xsd:boolean"/>
+	<part name="authority_cert" type="xsd:string"/>
+	<part name="authority_key" type="xsd:string"/>
+</message>
+<message name="Management.Trust.reset_allResponse">
+</message>
+
+<message name="Management.Trust.generate_csrRequest">
+	<part name="device" type="xsd:string"/>
+</message>
+<message name="Management.Trust.generate_csrResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="Management.Trust.install_device_trustRequest">
+	<part name="device" type="xsd:string"/>
+	<part name="identity_cert" type="xsd:string"/>
+	<part name="ca_cert" type="xsd:string"/>
+	<part name="authorities" type="tns:Common.StringSequence"/>
+	<part name="management_addresses" type="tns:Common.IPAddressSequence"/>
+	<part name="configsync_addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Management.Trust.install_device_trustResponse">
+</message>
+
+<message name="Management.Trust.install_authority_trustRequest">
+	<part name="device" type="xsd:string"/>
+	<part name="identity_cert" type="xsd:string"/>
+	<part name="ca_cert" type="xsd:string"/>
+	<part name="ca_key" type="xsd:string"/>
+	<part name="authorities" type="tns:Common.StringSequence"/>
+	<part name="management_addresses" type="tns:Common.IPAddressSequence"/>
+	<part name="configsync_addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Management.Trust.install_authority_trustResponse">
+</message>
+
+<message name="Management.Trust.get_device_in_useRequest">
+</message>
+<message name="Management.Trust.get_device_in_useResponse">
+	<part name="return" type="xsd:boolean"/>
+</message>
+
+<message name="Management.Trust.get_ca_certificateRequest">
+</message>
+<message name="Management.Trust.get_ca_certificateResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="Management.Trust.get_versionRequest">
+</message>
+<message name="Management.Trust.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.TrustPortType">
+	<operation name="get_browser_certificate">
+	<documentation>
+ Get information about the browser certificate for the device
+ at the given address.
+
+ This information will be used later in the get_device_name,
+ add_non_authority_device, and add_authority_device calls.
+
+        	</documentation>
+		<input message="tns:Management.Trust.get_browser_certificateRequest"/>
+		<output message="tns:Management.Trust.get_browser_certificateResponse"/>
+	</operation>
+	<operation name="get_device_object_name">
+	<documentation>
+ Get the device object name for the device at the given address.
+
+ You may specify various arguments to authenticate the
+ browser certificate of the device being added.  Any or all
+ of these values may be omitted.
+
+ Note: Currently, the backend requires hexadecimal values
+ to be in lower case and not include the ':' character.
+
+        	</documentation>
+		<input message="tns:Management.Trust.get_device_object_nameRequest"/>
+		<output message="tns:Management.Trust.get_device_object_nameResponse"/>
+	</operation>
+	<operation name="add_non_authority_device">
+	<documentation>
+ Add a non-authoritative device to the trust domain.
+
+ You must specify a new device object name for the device
+ to be added.
+
+ You may specify various arguments to authenticate
+ the browser certificate of the device being added.  Any or
+ all of these values may be omitted.
+
+ Note: Currently, the backend requires hexadecimal values
+ to be in lower case and not include the ':' character.
+
+        	</documentation>
+		<input message="tns:Management.Trust.add_non_authority_deviceRequest"/>
+		<output message="tns:Management.Trust.add_non_authority_deviceResponse"/>
+	</operation>
+	<operation name="add_authority_device">
+	<documentation>
+ Add an authoritative device to the trust domain.
+
+ You must specify a new device object name for
+ the device to be added.
+
+ You may specify various arguments to authenticate
+ the browser certificate of the device being added.  Any or
+ all of these values may be omitted.
+
+ Note: Currently, the backend requires hexadecimal values
+ to be in lower case and not include the ':' character.
+
+        	</documentation>
+		<input message="tns:Management.Trust.add_authority_deviceRequest"/>
+		<output message="tns:Management.Trust.add_authority_deviceResponse"/>
+	</operation>
+	<operation name="remove_device">
+	<documentation>
+ Remove the specified devices from the trust domain.
+
+        	</documentation>
+		<input message="tns:Management.Trust.remove_deviceRequest"/>
+		<output message="tns:Management.Trust.remove_deviceResponse"/>
+	</operation>
+	<operation name="reset_all">
+	<documentation>
+ Reset the trust domain on the local device.
+
+ This call causes the trust domain on the local device to
+ be cleared.  You may choose to keep the current device
+ object name and authority cert/key pair.  Alternately, you
+ may specify a new device object name and may have the
+ authority cert/key pair regenerated or set to the values
+ specified in the authority_cert and
+ authority_key parameters.
+
+ Note: all known devices (accept for self) will be removed from
+ the trust domain.
+
+        	</documentation>
+		<input message="tns:Management.Trust.reset_allRequest"/>
+		<output message="tns:Management.Trust.reset_allResponse"/>
+	</operation>
+	<operation name="generate_csr">
+	<documentation>
+ Generates a certificate signing request for a device identity certificate
+
+ Note: This method is mostly for internal F5 use.
+
+        	</documentation>
+		<input message="tns:Management.Trust.generate_csrRequest"/>
+		<output message="tns:Management.Trust.generate_csrResponse"/>
+	</operation>
+	<operation name="install_device_trust">
+	<documentation>
+ Install certificates and add the device as a non-authority to a trust domain.
+
+ Note: This method is mostly for internal F5 use.
+
+        	</documentation>
+		<input message="tns:Management.Trust.install_device_trustRequest"/>
+		<output message="tns:Management.Trust.install_device_trustResponse"/>
+	</operation>
+	<operation name="install_authority_trust">
+	<documentation>
+ Install certificates and add the device as a peer authority to a trust domain.
+
+ Note: This method is mostly for internal F5 use.
+
+        	</documentation>
+		<input message="tns:Management.Trust.install_authority_trustRequest"/>
+		<output message="tns:Management.Trust.install_authority_trustResponse"/>
+	</operation>
+	<operation name="get_device_in_use">
+	<documentation>
+ Used to check to see if a device is 'in use' by the current trust domain.
+ A device is considered to be in use if the device trust/logical devices are
+ configured in such a way that the device may be actively passing traffic for
+ the current trust domain
+
+ Note: This method is mostly for internal F5 use.
+
+        	</documentation>
+		<input message="tns:Management.Trust.get_device_in_useRequest"/>
+		<output message="tns:Management.Trust.get_device_in_useResponse"/>
+	</operation>
+	<operation name="get_ca_certificate">
+	<documentation>
+ Get the PEM encoded CA certificate for this device.
+
+        	</documentation>
+		<input message="tns:Management.Trust.get_ca_certificateRequest"/>
+		<output message="tns:Management.Trust.get_ca_certificateResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the interface version
+
+        	</documentation>
+		<input message="tns:Management.Trust.get_versionRequest"/>
+		<output message="tns:Management.Trust.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.TrustBinding" type="tns:Management.TrustPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_browser_certificate">
+	<documentation>
+ Get information about the browser certificate for the device
+ at the given address.
+
+ This information will be used later in the get_device_name,
+ add_non_authority_device, and add_authority_device calls.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Trust"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_device_object_name">
+	<documentation>
+ Get the device object name for the device at the given address.
+
+ You may specify various arguments to authenticate the
+ browser certificate of the device being added.  Any or all
+ of these values may be omitted.
+
+ Note: Currently, the backend requires hexadecimal values
+ to be in lower case and not include the ':' character.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Trust"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_non_authority_device">
+	<documentation>
+ Add a non-authoritative device to the trust domain.
+
+ You must specify a new device object name for the device
+ to be added.
+
+ You may specify various arguments to authenticate
+ the browser certificate of the device being added.  Any or
+ all of these values may be omitted.
+
+ Note: Currently, the backend requires hexadecimal values
+ to be in lower case and not include the ':' character.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Trust"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_authority_device">
+	<documentation>
+ Add an authoritative device to the trust domain.
+
+ You must specify a new device object name for
+ the device to be added.
+
+ You may specify various arguments to authenticate
+ the browser certificate of the device being added.  Any or
+ all of these values may be omitted.
+
+ Note: Currently, the backend requires hexadecimal values
+ to be in lower case and not include the ':' character.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Trust"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_device">
+	<documentation>
+ Remove the specified devices from the trust domain.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Trust"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="reset_all">
+	<documentation>
+ Reset the trust domain on the local device.
+
+ This call causes the trust domain on the local device to
+ be cleared.  You may choose to keep the current device
+ object name and authority cert/key pair.  Alternately, you
+ may specify a new device object name and may have the
+ authority cert/key pair regenerated or set to the values
+ specified in the authority_cert and
+ authority_key parameters.
+
+ Note: all known devices (accept for self) will be removed from
+ the trust domain.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Trust"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="generate_csr">
+	<documentation>
+ Generates a certificate signing request for a device identity certificate
+
+ Note: This method is mostly for internal F5 use.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Trust"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="install_device_trust">
+	<documentation>
+ Install certificates and add the device as a non-authority to a trust domain.
+
+ Note: This method is mostly for internal F5 use.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Trust"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="install_authority_trust">
+	<documentation>
+ Install certificates and add the device as a peer authority to a trust domain.
+
+ Note: This method is mostly for internal F5 use.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Trust"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_device_in_use">
+	<documentation>
+ Used to check to see if a device is 'in use' by the current trust domain.
+ A device is considered to be in use if the device trust/logical devices are
+ configured in such a way that the device may be actively passing traffic for
+ the current trust domain
+
+ Note: This method is mostly for internal F5 use.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Trust"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ca_certificate">
+	<documentation>
+ Get the PEM encoded CA certificate for this device.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Trust"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the interface version
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Trust"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Trust"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.Trust">
+	<documentation>
+ The Trust interface contains the methods for creating and manipulating
+ device trust domains.
+
+        	</documentation>
+	<port name="Management.TrustPort" binding="tns:Management.TrustBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

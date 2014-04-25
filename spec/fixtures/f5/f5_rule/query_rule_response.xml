@@ -1,0 +1,23 @@
+<E:Envelope
+        xmlns:E="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:A="http://schemas.xmlsoap.org/soap/encoding/"
+        xmlns:s="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:y="http://www.w3.org/2001/XMLSchema"
+        xmlns:iControl="urn:iControl"
+        E:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+<E:Body>
+<m:query_ruleResponse
+        xmlns:m="urn:iControl:LocalLB/Rule">
+<return
+        s:type="A:Array"
+        A:arrayType="iControl:LocalLB.Rule.RuleDefinition[1]">
+<item>
+<rule_name
+        s:type="y:string">/Common/test</rule_name>
+<rule_definition
+        s:type="y:string">when HTTP_REQUEST {}</rule_definition>
+</item>
+</return>
+</m:query_ruleResponse>
+</E:Body>
+</E:Envelope>

@@ -1,0 +1,456 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.EM"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.EM.TaskStatusSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.EM.TaskStatus[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.EM.TaskStatus">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="TASK_STATUS_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>TASK_STATUS_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TASK_STATUS_PENDING">
+					<xsd:annotation>
+						<xsd:documentation>TASK_STATUS_PENDING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TASK_STATUS_STARTED">
+					<xsd:annotation>
+						<xsd:documentation>TASK_STATUS_STARTED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TASK_STATUS_FAILED">
+					<xsd:annotation>
+						<xsd:documentation>TASK_STATUS_FAILED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TASK_STATUS_COMPLETE">
+					<xsd:annotation>
+						<xsd:documentation>TASK_STATUS_COMPLETE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TASK_STATUS_RUNNING">
+					<xsd:annotation>
+						<xsd:documentation>TASK_STATUS_RUNNING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TASK_STATUS_CANCELING">
+					<xsd:annotation>
+						<xsd:documentation>TASK_STATUS_CANCELING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TASK_STATUS_CANCELED">
+					<xsd:annotation>
+						<xsd:documentation>TASK_STATUS_CANCELED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TASK_STATUS_ABANDONED">
+					<xsd:annotation>
+						<xsd:documentation>TASK_STATUS_ABANDONED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TASK_STATUS_TERMINATED">
+					<xsd:annotation>
+						<xsd:documentation>TASK_STATUS_TERMINATED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TASK_STATUS_TIMED_OUT">
+					<xsd:annotation>
+						<xsd:documentation>TASK_STATUS_TIMED_OUT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TASK_STATUS_RESCHEDULED">
+					<xsd:annotation>
+						<xsd:documentation>TASK_STATUS_RESCHEDULED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.EM.sendRequestRequest">
+	<part name="daemon" type="xsd:string"/>
+	<part name="request" type="xsd:string"/>
+</message>
+<message name="Management.EM.sendRequestResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="Management.EM.get_device_proxy_configurationRequest">
+</message>
+<message name="Management.EM.get_device_proxy_configurationResponse">
+	<part name="emSslProxyHost" type="xsd:string"/>
+	<part name="emSslProxyPort" type="xsd:int"/>
+	<part name="deviceSslProxyHost" type="xsd:string"/>
+	<part name="deviceSslProxyPort" type="xsd:int"/>
+	<part name="useEmSslProxyForDevice" type="xsd:boolean"/>
+	<part name="deviceProxyEnabled" type="xsd:boolean"/>
+</message>
+
+<message name="Management.EM.get_devicesRequest">
+</message>
+<message name="Management.EM.get_devicesResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.EM.get_context_idRequest">
+</message>
+<message name="Management.EM.get_context_idResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="Management.EM.get_device_tokenRequest">
+	<part name="ip_address" type="xsd:string"/>
+</message>
+<message name="Management.EM.get_device_tokenResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="Management.EM.set_device_contextRequest">
+	<part name="ip_address" type="xsd:string"/>
+</message>
+<message name="Management.EM.set_device_contextResponse">
+</message>
+
+<message name="Management.EM.discover_devicesRequest">
+	<part name="addresses" type="tns:Common.StringSequence"/>
+	<part name="usernames" type="tns:Common.StringSequence"/>
+	<part name="passwords" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.EM.discover_devicesResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="Management.EM.get_task_statusRequest">
+	<part name="ids" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.EM.get_task_statusResponse">
+	<part name="return" type="tns:Management.EM.TaskStatusSequence"/>
+</message>
+
+<message name="Management.EM.delete_devicesRequest">
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.EM.delete_devicesResponse">
+</message>
+
+<!-- portType -->
+
+<portType name="Management.EMPortType">
+	<operation name="sendRequest">
+   	<documentation>
+ Send a daemon request.
+
+        	</documentation>
+		<input message="tns:Management.EM.sendRequestRequest"/>
+		<output message="tns:Management.EM.sendRequestResponse"/>
+	</operation>
+	<operation name="get_device_proxy_configuration">
+	<documentation>
+ Get the proxy settings used by the EM to communicate with
+ devices.
+
+        	</documentation>
+		<input message="tns:Management.EM.get_device_proxy_configurationRequest"/>
+		<output message="tns:Management.EM.get_device_proxy_configurationResponse"/>
+	</operation>
+	<operation name="get_devices">
+	<documentation>
+ When the Enterprise Manager through which you establish an iControl-proxied connection manages multiple BIG-IP 
+ devices, use the get_devices API to retrieve a list of the those BIG-IP devices.
+
+        	</documentation>
+		<input message="tns:Management.EM.get_devicesRequest"/>
+		<output message="tns:Management.EM.get_devicesResponse"/>
+	</operation>
+	<operation name="get_context_id">
+	<documentation>
+ Use the get_context_id API to retrieve a unique context ID. The context ID serves as a unique identifier that the iControl
+ web proxy can use either for client/user session management, or for interaction with one specific BIG-IP device at a time.
+
+        	</documentation>
+		<input message="tns:Management.EM.get_context_idRequest"/>
+		<output message="tns:Management.EM.get_context_idResponse"/>
+	</operation>
+	<operation name="get_device_token">
+	<documentation>
+ The iControl Proxy uses the get_device_token API to obtain a device token. The token is a URL to the iControl interface on 
+ the F5 device accessed by the Enterprise Manager.
+
+        	</documentation>
+		<input message="tns:Management.EM.get_device_tokenRequest"/>
+		<output message="tns:Management.EM.get_device_tokenResponse"/>
+	</operation>
+	<operation name="set_device_context">
+	<documentation>
+ Use the set_device_context API to establish a device context. The iControl Proxy uses this context to identify the specific 
+ client that is initiating the connection.
+
+        	</documentation>
+		<input message="tns:Management.EM.set_device_contextRequest"/>
+		<output message="tns:Management.EM.set_device_contextResponse"/>
+	</operation>
+	<operation name="discover_devices">
+	<documentation>
+ Initiate a device discovery.
+
+        	</documentation>
+		<input message="tns:Management.EM.discover_devicesRequest"/>
+		<output message="tns:Management.EM.discover_devicesResponse"/>
+	</operation>
+	<operation name="get_task_status">
+	<documentation>
+ Get the status of a task.
+
+        	</documentation>
+		<input message="tns:Management.EM.get_task_statusRequest"/>
+		<output message="tns:Management.EM.get_task_statusResponse"/>
+	</operation>
+	<operation name="delete_devices">
+	<documentation>
+ Delete devices from the EM.
+
+        	</documentation>
+		<input message="tns:Management.EM.delete_devicesRequest"/>
+		<output message="tns:Management.EM.delete_devicesResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.EMBinding" type="tns:Management.EMPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="sendRequest">
+	<documentation>
+ Send a daemon request.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/EM"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/EM"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/EM"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_device_proxy_configuration">
+	<documentation>
+ Get the proxy settings used by the EM to communicate with
+ devices.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/EM"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/EM"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/EM"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_devices">
+	<documentation>
+ When the Enterprise Manager through which you establish an iControl-proxied connection manages multiple BIG-IP 
+ devices, use the get_devices API to retrieve a list of the those BIG-IP devices.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/EM"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/EM"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/EM"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_context_id">
+	<documentation>
+ Use the get_context_id API to retrieve a unique context ID. The context ID serves as a unique identifier that the iControl
+ web proxy can use either for client/user session management, or for interaction with one specific BIG-IP device at a time.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/EM"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/EM"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/EM"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_device_token">
+	<documentation>
+ The iControl Proxy uses the get_device_token API to obtain a device token. The token is a URL to the iControl interface on 
+ the F5 device accessed by the Enterprise Manager.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/EM"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/EM"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/EM"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_device_context">
+	<documentation>
+ Use the set_device_context API to establish a device context. The iControl Proxy uses this context to identify the specific 
+ client that is initiating the connection.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/EM"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/EM"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/EM"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="discover_devices">
+	<documentation>
+ Initiate a device discovery.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/EM"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/EM"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/EM"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_task_status">
+	<documentation>
+ Get the status of a task.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/EM"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/EM"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/EM"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_devices">
+	<documentation>
+ Delete devices from the EM.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/EM"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/EM"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/EM"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.EM">
+	<documentation>
+ The EM interface enables the user to perform enterprise management
+ daemon requests.
+	</documentation>
+	<port name="Management.EMPort" binding="tns:Management.EMBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

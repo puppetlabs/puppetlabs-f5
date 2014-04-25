@@ -1,0 +1,302 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="LocalLB.iFile"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="LocalLB.iFile.get_listRequest">
+</message>
+<message name="LocalLB.iFile.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.iFile.createRequest">
+	<part name="names" type="tns:Common.StringSequence"/>
+	<part name="file_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.iFile.createResponse">
+</message>
+
+<message name="LocalLB.iFile.delete_ifileRequest">
+	<part name="names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.iFile.delete_ifileResponse">
+</message>
+
+<message name="LocalLB.iFile.delete_all_ifilesRequest">
+</message>
+<message name="LocalLB.iFile.delete_all_ifilesResponse">
+</message>
+
+<message name="LocalLB.iFile.set_file_nameRequest">
+	<part name="names" type="tns:Common.StringSequence"/>
+	<part name="file_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.iFile.set_file_nameResponse">
+</message>
+
+<message name="LocalLB.iFile.get_file_nameRequest">
+	<part name="names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.iFile.get_file_nameResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.iFile.get_versionRequest">
+</message>
+<message name="LocalLB.iFile.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="LocalLB.iFilePortType">
+	<operation name="get_list">
+   	<documentation>
+ Gets a list of all iFiles on this device.
+
+        	</documentation>
+		<input message="tns:LocalLB.iFile.get_listRequest"/>
+		<output message="tns:LocalLB.iFile.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a set of iFiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.iFile.createRequest"/>
+		<output message="tns:LocalLB.iFile.createResponse"/>
+	</operation>
+	<operation name="delete_ifile">
+	<documentation>
+ Deletes a set of iFiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.iFile.delete_ifileRequest"/>
+		<output message="tns:LocalLB.iFile.delete_ifileResponse"/>
+	</operation>
+	<operation name="delete_all_ifiles">
+	<documentation>
+ Deletes all iFiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.iFile.delete_all_ifilesRequest"/>
+		<output message="tns:LocalLB.iFile.delete_all_ifilesResponse"/>
+	</operation>
+	<operation name="set_file_name">
+	<documentation>
+ Sets the iFile file object name for an iFile.
+
+        	</documentation>
+		<input message="tns:LocalLB.iFile.set_file_nameRequest"/>
+		<output message="tns:LocalLB.iFile.set_file_nameResponse"/>
+	</operation>
+	<operation name="get_file_name">
+	<documentation>
+ Gets the iFile file object name for an iFile.
+
+        	</documentation>
+		<input message="tns:LocalLB.iFile.get_file_nameRequest"/>
+		<output message="tns:LocalLB.iFile.get_file_nameResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:LocalLB.iFile.get_versionRequest"/>
+		<output message="tns:LocalLB.iFile.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="LocalLB.iFileBinding" type="tns:LocalLB.iFilePortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all iFiles on this device.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/iFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/iFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/iFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a set of iFiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/iFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/iFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/iFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_ifile">
+	<documentation>
+ Deletes a set of iFiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/iFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/iFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/iFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_ifiles">
+	<documentation>
+ Deletes all iFiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/iFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/iFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/iFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_file_name">
+	<documentation>
+ Sets the iFile file object name for an iFile.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/iFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/iFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/iFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_file_name">
+	<documentation>
+ Gets the iFile file object name for an iFile.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/iFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/iFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/iFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/iFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/iFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/iFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="LocalLB.iFile">
+	<documentation>
+ The iFile interface enables you to manipulate a local load balancer's iFiles.
+
+ iFiles provide the ability to load an external file into iRules that can be
+ accessed by an iRule using the "ifile" command. To create an iFile, you must
+ first create an iFile file object that loads the file into the system. Then use this
+ interface to create the iFile that can be used by the iRule.
+
+        	</documentation>
+	<port name="LocalLB.iFilePort" binding="tns:LocalLB.iFileBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

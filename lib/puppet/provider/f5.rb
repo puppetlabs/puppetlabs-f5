@@ -13,7 +13,7 @@ class Puppet::Provider::F5 < Puppet::Provider
 
   # convert F5 representation of 64 bit to string (since Puppet compares string rather than int)
   def to_64s(value)
-    ((value.high.to_i << 32) + value.low.to_i).to_s
+    ((value[:high].to_i << 32) + value[:low].to_i).to_s
   end
 
   def network_address(value)
@@ -93,4 +93,5 @@ class Puppet::Provider::F5 < Puppet::Provider
       content = content[chunk_size..content.size]
     end
   end
+
 end

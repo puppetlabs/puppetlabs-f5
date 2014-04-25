@@ -1,0 +1,528 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.Zone"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Management.ZoneInfo">
+			<xsd:sequence>
+				<xsd:element name="view_name" type="xsd:string"/>
+				<xsd:element name="zone_name" type="xsd:string"/>
+				<xsd:element name="zone_type" type="tns:Management.ZoneType"/>
+				<xsd:element name="zone_file" type="xsd:string"/>
+				<xsd:element name="option_seq" type="tns:Common.StringSequence"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ViewZone">
+			<xsd:sequence>
+				<xsd:element name="view_name" type="xsd:string"/>
+				<xsd:element name="zone_name" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.BooleanSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:boolean[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.ZoneType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="UNSET">
+					<xsd:annotation>
+						<xsd:documentation>UNSET</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="MASTER">
+					<xsd:annotation>
+						<xsd:documentation>MASTER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SLAVE">
+					<xsd:annotation>
+						<xsd:documentation>SLAVE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STUB">
+					<xsd:annotation>
+						<xsd:documentation>STUB</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FORWARD">
+					<xsd:annotation>
+						<xsd:documentation>FORWARD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HINT">
+					<xsd:annotation>
+						<xsd:documentation>HINT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.ViewZoneSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.ViewZone[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ZoneInfoSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.ZoneInfo[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.Zone.add_zone_fileRequest">
+	<part name="zone_records" type="tns:Management.ZoneInfoSequence"/>
+	<part name="src_file_names" type="tns:Common.StringSequence"/>
+	<part name="sync_ptrs" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="Management.Zone.add_zone_fileResponse">
+</message>
+
+<message name="Management.Zone.add_zone_textRequest">
+	<part name="zone_records" type="tns:Management.ZoneInfoSequence"/>
+	<part name="text" type="tns:Common.StringSequenceSequence"/>
+	<part name="sync_ptrs" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="Management.Zone.add_zone_textResponse">
+</message>
+
+<message name="Management.Zone.transfer_zoneRequest">
+	<part name="server_names" type="tns:Common.StringSequence"/>
+	<part name="src_zone_names" type="tns:Common.StringSequence"/>
+	<part name="dst_view_names" type="tns:Common.StringSequence"/>
+	<part name="zone_records" type="tns:Management.ZoneInfoSequence"/>
+</message>
+<message name="Management.Zone.transfer_zoneResponse">
+</message>
+
+<message name="Management.Zone.delete_zoneRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+</message>
+<message name="Management.Zone.delete_zoneResponse">
+</message>
+
+<message name="Management.Zone.zone_existRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+</message>
+<message name="Management.Zone.zone_existResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="Management.Zone.get_zone_nameRequest">
+	<part name="view_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Zone.get_zone_nameResponse">
+	<part name="return" type="tns:Management.ViewZoneSequence"/>
+</message>
+
+<message name="Management.Zone.get_zoneRequest">
+	<part name="view_zones" type="tns:Management.ViewZoneSequence"/>
+</message>
+<message name="Management.Zone.get_zoneResponse">
+	<part name="return" type="tns:Management.ZoneInfoSequence"/>
+</message>
+
+<message name="Management.Zone.set_zone_optionRequest">
+	<part name="zones" type="tns:Management.ZoneInfoSequence"/>
+</message>
+<message name="Management.Zone.set_zone_optionResponse">
+</message>
+
+<message name="Management.Zone.add_zone_optionRequest">
+	<part name="zones" type="tns:Management.ZoneInfoSequence"/>
+</message>
+<message name="Management.Zone.add_zone_optionResponse">
+</message>
+
+<message name="Management.Zone.delete_zone_optionRequest">
+	<part name="zones" type="tns:Management.ZoneInfoSequence"/>
+</message>
+<message name="Management.Zone.delete_zone_optionResponse">
+</message>
+
+<message name="Management.Zone.get_versionRequest">
+</message>
+<message name="Management.Zone.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.ZonePortType">
+	<operation name="add_zone_file">
+ 	<documentation>
+ Adds the Zones in the specified views, using the file names specified as 
+ the contents of the zone files. Files must be local to target machine.
+
+        	</documentation>
+		<input message="tns:Management.Zone.add_zone_fileRequest"/>
+		<output message="tns:Management.Zone.add_zone_fileResponse"/>
+	</operation>
+	<operation name="add_zone_text">
+	<documentation>
+ Adds the Zones in the specified views, using the texts specified as 
+ the contents of the zone files.
+
+        	</documentation>
+		<input message="tns:Management.Zone.add_zone_textRequest"/>
+		<output message="tns:Management.Zone.add_zone_textResponse"/>
+	</operation>
+	<operation name="transfer_zone">
+	<documentation>
+ Transfers the Zones from the specified remote named servers,
+ creating them on the local zrd server, using the specified views and zone info
+ (type, file name, etc )
+ 
+        	</documentation>
+		<input message="tns:Management.Zone.transfer_zoneRequest"/>
+		<output message="tns:Management.Zone.transfer_zoneResponse"/>
+	</operation>
+	<operation name="delete_zone">
+	<documentation>
+ Deletes the specified Zones in the specified views. 
+
+        	</documentation>
+		<input message="tns:Management.Zone.delete_zoneRequest"/>
+		<output message="tns:Management.Zone.delete_zoneResponse"/>
+	</operation>
+	<operation name="zone_exist">
+	<documentation>
+ Tests whether the specified zone exists
+
+        	</documentation>
+		<input message="tns:Management.Zone.zone_existRequest"/>
+		<output message="tns:Management.Zone.zone_existResponse"/>
+	</operation>
+	<operation name="get_zone_name">
+	<documentation>
+ Gets the list of zone names for the specified views.
+
+        	</documentation>
+		<input message="tns:Management.Zone.get_zone_nameRequest"/>
+		<output message="tns:Management.Zone.get_zone_nameResponse"/>
+	</operation>
+	<operation name="get_zone">
+	<documentation>
+ Gets the ZoneInfo structs for the specified zones in the specified views.
+ 
+        	</documentation>
+		<input message="tns:Management.Zone.get_zoneRequest"/>
+		<output message="tns:Management.Zone.get_zoneResponse"/>
+	</operation>
+	<operation name="set_zone_option">
+	<documentation>
+ Sets existing options of the specified zones to new values.
+ 
+        	</documentation>
+		<input message="tns:Management.Zone.set_zone_optionRequest"/>
+		<output message="tns:Management.Zone.set_zone_optionResponse"/>
+	</operation>
+	<operation name="add_zone_option">
+	<documentation>
+ Adds new options to the specified zones.
+
+        	</documentation>
+		<input message="tns:Management.Zone.add_zone_optionRequest"/>
+		<output message="tns:Management.Zone.add_zone_optionResponse"/>
+	</operation>
+	<operation name="delete_zone_option">
+	<documentation>
+ Deletes existing options of the specified zones
+ 
+        	</documentation>
+		<input message="tns:Management.Zone.delete_zone_optionRequest"/>
+		<output message="tns:Management.Zone.delete_zone_optionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Management.Zone.get_versionRequest"/>
+		<output message="tns:Management.Zone.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.ZoneBinding" type="tns:Management.ZonePortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="add_zone_file">
+	<documentation>
+ Adds the Zones in the specified views, using the file names specified as 
+ the contents of the zone files. Files must be local to target machine.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Zone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Zone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Zone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_zone_text">
+	<documentation>
+ Adds the Zones in the specified views, using the texts specified as 
+ the contents of the zone files.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Zone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Zone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Zone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="transfer_zone">
+	<documentation>
+ Transfers the Zones from the specified remote named servers,
+ creating them on the local zrd server, using the specified views and zone info
+ (type, file name, etc )
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Zone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Zone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Zone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_zone">
+	<documentation>
+ Deletes the specified Zones in the specified views. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Zone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Zone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Zone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="zone_exist">
+	<documentation>
+ Tests whether the specified zone exists
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Zone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Zone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Zone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_zone_name">
+	<documentation>
+ Gets the list of zone names for the specified views.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Zone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Zone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Zone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_zone">
+	<documentation>
+ Gets the ZoneInfo structs for the specified zones in the specified views.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Zone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Zone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Zone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_zone_option">
+	<documentation>
+ Sets existing options of the specified zones to new values.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Zone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Zone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Zone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_zone_option">
+	<documentation>
+ Adds new options to the specified zones.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Zone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Zone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Zone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_zone_option">
+	<documentation>
+ Deletes existing options of the specified zones
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Zone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Zone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Zone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Zone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Zone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Zone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.Zone">
+	<documentation>
+ The Zone interface enables the user to perform "zone" operations on a dns database
+
+ This interface does not support transactions.
+
+        	</documentation>
+	<port name="Management.ZonePort" binding="tns:Management.ZoneBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

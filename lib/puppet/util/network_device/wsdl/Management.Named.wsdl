@@ -1,0 +1,740 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.Named"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Management.StatementDefinitionSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.StatementDefinition[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.StatementDefinition">
+			<xsd:sequence>
+				<xsd:element name="statement_id" type="xsd:string"/>
+				<xsd:element name="sub_strings" type="tns:Common.StringSequence"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.Named.get_named_configuration_fileRequest">
+</message>
+<message name="Management.Named.get_named_configuration_fileResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.Named.set_acl_statementRequest">
+	<part name="statements" type="tns:Management.StatementDefinitionSequence"/>
+</message>
+<message name="Management.Named.set_acl_statementResponse">
+</message>
+
+<message name="Management.Named.delete_acl_statementRequest">
+	<part name="statement_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Named.delete_acl_statementResponse">
+</message>
+
+<message name="Management.Named.set_controls_statementRequest">
+	<part name="statement" type="tns:Management.StatementDefinition"/>
+</message>
+<message name="Management.Named.set_controls_statementResponse">
+</message>
+
+<message name="Management.Named.delete_controls_statementRequest">
+</message>
+<message name="Management.Named.delete_controls_statementResponse">
+</message>
+
+<message name="Management.Named.set_include_statementRequest">
+	<part name="statements" type="tns:Management.StatementDefinitionSequence"/>
+</message>
+<message name="Management.Named.set_include_statementResponse">
+</message>
+
+<message name="Management.Named.delete_include_statementRequest">
+	<part name="path_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Named.delete_include_statementResponse">
+</message>
+
+<message name="Management.Named.set_key_statementRequest">
+	<part name="statements" type="tns:Management.StatementDefinitionSequence"/>
+</message>
+<message name="Management.Named.set_key_statementResponse">
+</message>
+
+<message name="Management.Named.delete_key_statementRequest">
+	<part name="statement_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Named.delete_key_statementResponse">
+</message>
+
+<message name="Management.Named.set_logging_statementRequest">
+	<part name="statement" type="tns:Management.StatementDefinition"/>
+</message>
+<message name="Management.Named.set_logging_statementResponse">
+</message>
+
+<message name="Management.Named.delete_logging_statementRequest">
+</message>
+<message name="Management.Named.delete_logging_statementResponse">
+</message>
+
+<message name="Management.Named.set_options_statementRequest">
+	<part name="statement" type="tns:Management.StatementDefinition"/>
+</message>
+<message name="Management.Named.set_options_statementResponse">
+</message>
+
+<message name="Management.Named.delete_options_statementRequest">
+</message>
+<message name="Management.Named.delete_options_statementResponse">
+</message>
+
+<message name="Management.Named.set_server_statementRequest">
+	<part name="statements" type="tns:Management.StatementDefinitionSequence"/>
+</message>
+<message name="Management.Named.set_server_statementResponse">
+</message>
+
+<message name="Management.Named.delete_server_statementRequest">
+	<part name="statement_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Named.delete_server_statementResponse">
+</message>
+
+<message name="Management.Named.set_trusted_keys_statementRequest">
+	<part name="statement" type="tns:Management.StatementDefinition"/>
+</message>
+<message name="Management.Named.set_trusted_keys_statementResponse">
+</message>
+
+<message name="Management.Named.delete_trusted_keys_statementRequest">
+</message>
+<message name="Management.Named.delete_trusted_keys_statementResponse">
+</message>
+
+<message name="Management.Named.get_bind_versionRequest">
+</message>
+<message name="Management.Named.get_bind_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="Management.Named.get_versionRequest">
+</message>
+<message name="Management.Named.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.NamedPortType">
+	<operation name="get_named_configuration_file">
+	<documentation>
+ Gets the entire contents of the named.conf file in a sequence of strings, one per line.
+
+        	</documentation>
+		<input message="tns:Management.Named.get_named_configuration_fileRequest"/>
+		<output message="tns:Management.Named.get_named_configuration_fileResponse"/>
+	</operation>
+	<operation name="set_acl_statement">
+	<documentation>
+ Adds the new "acl name" statements if they do not already exist.
+ If the "acl name" statement already exists, it will delete the 
+ existing statement and replace it with this one.
+
+        	</documentation>
+		<input message="tns:Management.Named.set_acl_statementRequest"/>
+		<output message="tns:Management.Named.set_acl_statementResponse"/>
+	</operation>
+	<operation name="delete_acl_statement">
+	<documentation>
+ Deletes the "acl" statements specified by the statement names.
+
+        	</documentation>
+		<input message="tns:Management.Named.delete_acl_statementRequest"/>
+		<output message="tns:Management.Named.delete_acl_statementResponse"/>
+	</operation>
+	<operation name="set_controls_statement">
+	<documentation>
+ Sets the "controls" statement. If there is no existing controls
+ statement, one is added. If one exists, it is deleted and replaced
+ with this new one.  There can only be one "controls" statement in the file.
+
+        	</documentation>
+		<input message="tns:Management.Named.set_controls_statementRequest"/>
+		<output message="tns:Management.Named.set_controls_statementResponse"/>
+	</operation>
+	<operation name="delete_controls_statement">
+	<documentation>
+ Deletes the "controls"  statement. There can only be one "controls" statement in the file.
+
+        	</documentation>
+		<input message="tns:Management.Named.delete_controls_statementRequest"/>
+		<output message="tns:Management.Named.delete_controls_statementResponse"/>
+	</operation>
+	<operation name="set_include_statement">
+	<documentation>
+ Adds the specified "include" statements
+
+        	</documentation>
+		<input message="tns:Management.Named.set_include_statementRequest"/>
+		<output message="tns:Management.Named.set_include_statementResponse"/>
+	</operation>
+	<operation name="delete_include_statement">
+	<documentation>
+ Deletes the "include"  statements.
+
+        	</documentation>
+		<input message="tns:Management.Named.delete_include_statementRequest"/>
+		<output message="tns:Management.Named.delete_include_statementResponse"/>
+	</operation>
+	<operation name="set_key_statement">
+	<documentation>
+ Sets the "key"  statements. If a key statement with this name
+ already exists, it is deleted and the new one is added.
+ Otherwise the key statements will be added.
+
+        	</documentation>
+		<input message="tns:Management.Named.set_key_statementRequest"/>
+		<output message="tns:Management.Named.set_key_statementResponse"/>
+	</operation>
+	<operation name="delete_key_statement">
+	<documentation>
+ Deletes the specified "key" statements.
+
+        	</documentation>
+		<input message="tns:Management.Named.delete_key_statementRequest"/>
+		<output message="tns:Management.Named.delete_key_statementResponse"/>
+	</operation>
+	<operation name="set_logging_statement">
+	<documentation>
+ Sets a new "logging" statement.
+ If the logging statement exists, it is deleted and replaced with
+ the new statement. If there is no logging statement, this one is added.
+ There can only be one "logging" statement in the file.
+
+        	</documentation>
+		<input message="tns:Management.Named.set_logging_statementRequest"/>
+		<output message="tns:Management.Named.set_logging_statementResponse"/>
+	</operation>
+	<operation name="delete_logging_statement">
+	<documentation>
+ Deletes an "logging"  statement. There can only be one "logging" statement in the file.
+
+        	</documentation>
+		<input message="tns:Management.Named.delete_logging_statementRequest"/>
+		<output message="tns:Management.Named.delete_logging_statementResponse"/>
+	</operation>
+	<operation name="set_options_statement">
+	<documentation>
+ If there is an existing "options" statement, it is replaced
+ with this statement. If there is no existing "options" statement, this new one is added.
+ There can only be one "options" statement in the file.
+
+        	</documentation>
+		<input message="tns:Management.Named.set_options_statementRequest"/>
+		<output message="tns:Management.Named.set_options_statementResponse"/>
+	</operation>
+	<operation name="delete_options_statement">
+	<documentation>
+ Deletes the "options"  statement. There can only be one "options" statement in the file.
+
+        	</documentation>
+		<input message="tns:Management.Named.delete_options_statementRequest"/>
+		<output message="tns:Management.Named.delete_options_statementResponse"/>
+	</operation>
+	<operation name="set_server_statement">
+	<documentation>
+ Adds the new "server" statements if they do not exist.
+ If they exist, these statements will replace them.
+
+        	</documentation>
+		<input message="tns:Management.Named.set_server_statementRequest"/>
+		<output message="tns:Management.Named.set_server_statementResponse"/>
+	</operation>
+	<operation name="delete_server_statement">
+	<documentation>
+ Deletes the "server" statements.
+
+        	</documentation>
+		<input message="tns:Management.Named.delete_server_statementRequest"/>
+		<output message="tns:Management.Named.delete_server_statementResponse"/>
+	</operation>
+	<operation name="set_trusted_keys_statement">
+	<documentation>
+ Adds a new "trusted-keys" statement or replaces the existing one.
+ There can only be one "trusted_keys" statement in the file.
+
+        	</documentation>
+		<input message="tns:Management.Named.set_trusted_keys_statementRequest"/>
+		<output message="tns:Management.Named.set_trusted_keys_statementResponse"/>
+	</operation>
+	<operation name="delete_trusted_keys_statement">
+	<documentation>
+ Deletes an "trusted_keys"  statement. There can only be one "trusted_keys" statement in the file.
+
+        	</documentation>
+		<input message="tns:Management.Named.delete_trusted_keys_statementRequest"/>
+		<output message="tns:Management.Named.delete_trusted_keys_statementResponse"/>
+	</operation>
+	<operation name="get_bind_version">
+	<documentation>
+ Get the version of bind (named) running on the server as a string
+
+        	</documentation>
+		<input message="tns:Management.Named.get_bind_versionRequest"/>
+		<output message="tns:Management.Named.get_bind_versionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Management.Named.get_versionRequest"/>
+		<output message="tns:Management.Named.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.NamedBinding" type="tns:Management.NamedPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_named_configuration_file">
+	<documentation>
+ Gets the entire contents of the named.conf file in a sequence of strings, one per line.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Named"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_acl_statement">
+	<documentation>
+ Adds the new "acl name" statements if they do not already exist.
+ If the "acl name" statement already exists, it will delete the 
+ existing statement and replace it with this one.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Named"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_acl_statement">
+	<documentation>
+ Deletes the "acl" statements specified by the statement names.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Named"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_controls_statement">
+	<documentation>
+ Sets the "controls" statement. If there is no existing controls
+ statement, one is added. If one exists, it is deleted and replaced
+ with this new one.  There can only be one "controls" statement in the file.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Named"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_controls_statement">
+	<documentation>
+ Deletes the "controls"  statement. There can only be one "controls" statement in the file.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Named"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_include_statement">
+	<documentation>
+ Adds the specified "include" statements
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Named"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_include_statement">
+	<documentation>
+ Deletes the "include"  statements.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Named"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_key_statement">
+	<documentation>
+ Sets the "key"  statements. If a key statement with this name
+ already exists, it is deleted and the new one is added.
+ Otherwise the key statements will be added.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Named"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_key_statement">
+	<documentation>
+ Deletes the specified "key" statements.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Named"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_logging_statement">
+	<documentation>
+ Sets a new "logging" statement.
+ If the logging statement exists, it is deleted and replaced with
+ the new statement. If there is no logging statement, this one is added.
+ There can only be one "logging" statement in the file.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Named"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_logging_statement">
+	<documentation>
+ Deletes an "logging"  statement. There can only be one "logging" statement in the file.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Named"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_options_statement">
+	<documentation>
+ If there is an existing "options" statement, it is replaced
+ with this statement. If there is no existing "options" statement, this new one is added.
+ There can only be one "options" statement in the file.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Named"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_options_statement">
+	<documentation>
+ Deletes the "options"  statement. There can only be one "options" statement in the file.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Named"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_server_statement">
+	<documentation>
+ Adds the new "server" statements if they do not exist.
+ If they exist, these statements will replace them.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Named"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_server_statement">
+	<documentation>
+ Deletes the "server" statements.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Named"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_trusted_keys_statement">
+	<documentation>
+ Adds a new "trusted-keys" statement or replaces the existing one.
+ There can only be one "trusted_keys" statement in the file.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Named"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_trusted_keys_statement">
+	<documentation>
+ Deletes an "trusted_keys"  statement. There can only be one "trusted_keys" statement in the file.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Named"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_bind_version">
+	<documentation>
+ Get the version of bind (named) running on the server as a string
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Named"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Named"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Named"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.Named">
+	<documentation> 
+ The Named interface provides the calls to manipulate the named.conf and the named server
+
+ This interface does not support transactions.
+
+        	</documentation>
+	<port name="Management.NamedPort" binding="tns:Management.NamedBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

@@ -1,0 +1,1146 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.IPsecManualSecurityAssociation"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Networking.IPsecSaManAlgorithm">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="IPSEC_MANUAL_SA_AUTH_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_MANUAL_SA_AUTH_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_MANUAL_SA_AUTH_SHA1">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_MANUAL_SA_AUTH_SHA1</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.IPsecProtocol">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="IPSEC_PROTOCOL_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_PROTOCOL_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_PROTOCOL_ESP">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_PROTOCOL_ESP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_PROTOCOL_AH">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_PROTOCOL_AH</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Networking.IPsecSaManAlgorithmSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.IPsecSaManAlgorithm[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.IPsecManSaEncrAlgorithmSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.IPsecManSaEncrAlgorithm[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.IPsecManSaEncrAlgorithm">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="IPSEC_MANUAL_SA_ENCR_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_MANUAL_SA_ENCR_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_MANUAL_SA_ENCR_NULL">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_MANUAL_SA_ENCR_NULL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_MANUAL_SA_ENCR_3DES">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_MANUAL_SA_ENCR_3DES</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_MANUAL_SA_ENCR_AES128">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_MANUAL_SA_ENCR_AES128</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_MANUAL_SA_ENCR_AES192">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_MANUAL_SA_ENCR_AES192</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_MANUAL_SA_ENCR_AES256">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_MANUAL_SA_ENCR_AES256</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Networking.IPsecProtocolSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.IPsecProtocol[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.IPsecManualSecurityAssociation.get_listRequest">
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.createRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.createResponse">
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.delete_manual_security_associationRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.delete_manual_security_associationResponse">
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.delete_all_manual_security_associationsRequest">
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.delete_all_manual_security_associationsResponse">
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.set_descriptionRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.set_descriptionResponse">
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.get_descriptionRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.set_auth_algorithmRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+	<part name="algorithms" type="tns:Networking.IPsecSaManAlgorithmSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.set_auth_algorithmResponse">
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.get_auth_algorithmRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.get_auth_algorithmResponse">
+	<part name="return" type="tns:Networking.IPsecSaManAlgorithmSequence"/>
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.set_auth_keyRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.set_auth_keyResponse">
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.set_auth_key_encryptedRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.set_auth_key_encryptedResponse">
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.get_auth_key_encryptedRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.get_auth_key_encryptedResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.set_destination_addressRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.set_destination_addressResponse">
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.get_destination_addressRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.get_destination_addressResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.set_encrypt_algorithmRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+	<part name="algorithms" type="tns:Networking.IPsecManSaEncrAlgorithmSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.set_encrypt_algorithmResponse">
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.get_encrypt_algorithmRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.get_encrypt_algorithmResponse">
+	<part name="return" type="tns:Networking.IPsecManSaEncrAlgorithmSequence"/>
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.set_encrypt_keyRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.set_encrypt_keyResponse">
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.set_encrypt_key_encryptedRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.set_encrypt_key_encryptedResponse">
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.get_encrypt_key_encryptedRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.get_encrypt_key_encryptedResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.set_policyRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.set_policyResponse">
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.get_policyRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.get_policyResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.set_protocolRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+	<part name="protocols" type="tns:Networking.IPsecProtocolSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.set_protocolResponse">
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.get_protocolRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.get_protocolResponse">
+	<part name="return" type="tns:Networking.IPsecProtocolSequence"/>
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.set_source_addressRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.set_source_addressResponse">
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.get_source_addressRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.get_source_addressResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.set_spiRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+	<part name="spis" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.set_spiResponse">
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.get_spiRequest">
+	<part name="associations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.get_spiResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.IPsecManualSecurityAssociation.get_versionRequest">
+</message>
+<message name="Networking.IPsecManualSecurityAssociation.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.IPsecManualSecurityAssociationPortType">
+	<operation name="get_list">
+       	<documentation>
+ Gets the names for all IPsec manual security associations.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.get_listRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a set of IPsec manual security associations.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.createRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.createResponse"/>
+	</operation>
+	<operation name="delete_manual_security_association">
+	<documentation>
+ Deletes a set of IPsec manual security associations.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.delete_manual_security_associationRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.delete_manual_security_associationResponse"/>
+	</operation>
+	<operation name="delete_all_manual_security_associations">
+	<documentation>
+ Deletes all IPsec manual security associations.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.delete_all_manual_security_associationsRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.delete_all_manual_security_associationsResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for each specified IPsec manual security association.
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.set_descriptionRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the description for each specified IPsec manual security association.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.get_descriptionRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.get_descriptionResponse"/>
+	</operation>
+	<operation name="set_auth_algorithm">
+	<documentation>
+ Sets the IPsec authentication algorithm for each specified 
+ IPsec manual security association.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.set_auth_algorithmRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.set_auth_algorithmResponse"/>
+	</operation>
+	<operation name="get_auth_algorithm">
+	<documentation>
+ Gets the IPsec authentication algorithm for each specified IPsec 
+ manual security association.
+ 
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.get_auth_algorithmRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.get_auth_algorithmResponse"/>
+	</operation>
+	<operation name="set_auth_key">
+	<documentation>
+ Sets the IPsec authentication key for each specified IPsec manual security association.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.set_auth_keyRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.set_auth_keyResponse"/>
+	</operation>
+	<operation name="set_auth_key_encrypted">
+	<documentation>
+ Sets the IPsec authentication key (encrypted) for each specified
+ IPsec manual security association.
+ Requires an already encrypted key.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.set_auth_key_encryptedRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.set_auth_key_encryptedResponse"/>
+	</operation>
+	<operation name="get_auth_key_encrypted">
+	<documentation>
+ Gets the IPsec authentication keys (encrypted) for each specified 
+ IPsec manual security association.
+ 
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.get_auth_key_encryptedRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.get_auth_key_encryptedResponse"/>
+	</operation>
+	<operation name="set_destination_address">
+	<documentation>
+ Sets the IPsec destination address for each specified IPsec 
+ manual security association.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.set_destination_addressRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.set_destination_addressResponse"/>
+	</operation>
+	<operation name="get_destination_address">
+	<documentation>
+ Gets the IPsec destination address for each specified IPsec manual security association.
+ 
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.get_destination_addressRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.get_destination_addressResponse"/>
+	</operation>
+	<operation name="set_encrypt_algorithm">
+	<documentation>
+ Sets the IPsec encrypt algorithm for each specified IPsec manual security association.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.set_encrypt_algorithmRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.set_encrypt_algorithmResponse"/>
+	</operation>
+	<operation name="get_encrypt_algorithm">
+	<documentation>
+ Gets the IPsec encrypt algorithm for each specified IPsec manual security association.
+ 
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.get_encrypt_algorithmRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.get_encrypt_algorithmResponse"/>
+	</operation>
+	<operation name="set_encrypt_key">
+	<documentation>
+ Sets the IPsec encryption key for each specified IPsec manual
+ security association.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.set_encrypt_keyRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.set_encrypt_keyResponse"/>
+	</operation>
+	<operation name="set_encrypt_key_encrypted">
+	<documentation>
+ Sets the IPsec encryption key (encrypted) for each specified IPsec manual
+ security association.
+ Requires an already encrypted key.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.set_encrypt_key_encryptedRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.set_encrypt_key_encryptedResponse"/>
+	</operation>
+	<operation name="get_encrypt_key_encrypted">
+	<documentation>
+ Gets the IPsec encryption keys (encrypted) for each specified IPsec
+ manual security association.
+ 
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.get_encrypt_key_encryptedRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.get_encrypt_key_encryptedResponse"/>
+	</operation>
+	<operation name="set_policy">
+	<documentation>
+ Sets the IPsec policy for each specified IPsec manual security association.
+ It specifies the ipsec policy associated with this manual security association.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.set_policyRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.set_policyResponse"/>
+	</operation>
+	<operation name="get_policy">
+	<documentation>
+ Gets the IPsec policy for each specified IPsec manual security association.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.get_policyRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.get_policyResponse"/>
+	</operation>
+	<operation name="set_protocol">
+	<documentation>
+ Sets the IPsec protocol for each specified IPsec manual
+ security association.
+ Possible values are Encapsulating Security Payload - ESP
+ or Authentication Header - AH.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.set_protocolRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.set_protocolResponse"/>
+	</operation>
+	<operation name="get_protocol">
+	<documentation>
+ Gets the IPsec protocol for each specified IPsec manual security association.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.get_protocolRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.get_protocolResponse"/>
+	</operation>
+	<operation name="set_source_address">
+	<documentation>
+ Sets the IPsec manual security association source address for
+ each specified IPsec manual security association.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.set_source_addressRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.set_source_addressResponse"/>
+	</operation>
+	<operation name="get_source_address">
+	<documentation>
+ Gets the IPsec manual security association source address for each 
+  specified IPsec manual security association.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.get_source_addressRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.get_source_addressResponse"/>
+	</operation>
+	<operation name="set_spi">
+	<documentation>
+ Sets the IPsec SPI for each specified IPsec manual security association.
+ SPI specifies the Security Parameters Index.
+ If this is the Security Association(SA) for the outbound traffic, make sure
+ it matches the SPI of the inbound SA configured on the remote site and vice versa.
+ SPI values between 0 and 255 are reserved for the future use by IANA and cannot be used.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.set_spiRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.set_spiResponse"/>
+	</operation>
+	<operation name="get_spi">
+	<documentation>
+ Gets the IPsec SPI for each specified IPsec manual security association.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.get_spiRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.get_spiResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecManualSecurityAssociation.get_versionRequest"/>
+		<output message="tns:Networking.IPsecManualSecurityAssociation.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.IPsecManualSecurityAssociationBinding" type="tns:Networking.IPsecManualSecurityAssociationPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the names for all IPsec manual security associations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a set of IPsec manual security associations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_manual_security_association">
+	<documentation>
+ Deletes a set of IPsec manual security associations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_manual_security_associations">
+	<documentation>
+ Deletes all IPsec manual security associations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for each specified IPsec manual security association.
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the description for each specified IPsec manual security association.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_auth_algorithm">
+	<documentation>
+ Sets the IPsec authentication algorithm for each specified 
+ IPsec manual security association.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_auth_algorithm">
+	<documentation>
+ Gets the IPsec authentication algorithm for each specified IPsec 
+ manual security association.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_auth_key">
+	<documentation>
+ Sets the IPsec authentication key for each specified IPsec manual security association.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_auth_key_encrypted">
+	<documentation>
+ Sets the IPsec authentication key (encrypted) for each specified
+ IPsec manual security association.
+ Requires an already encrypted key.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_auth_key_encrypted">
+	<documentation>
+ Gets the IPsec authentication keys (encrypted) for each specified 
+ IPsec manual security association.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_destination_address">
+	<documentation>
+ Sets the IPsec destination address for each specified IPsec 
+ manual security association.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_destination_address">
+	<documentation>
+ Gets the IPsec destination address for each specified IPsec manual security association.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_encrypt_algorithm">
+	<documentation>
+ Sets the IPsec encrypt algorithm for each specified IPsec manual security association.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_encrypt_algorithm">
+	<documentation>
+ Gets the IPsec encrypt algorithm for each specified IPsec manual security association.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_encrypt_key">
+	<documentation>
+ Sets the IPsec encryption key for each specified IPsec manual
+ security association.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_encrypt_key_encrypted">
+	<documentation>
+ Sets the IPsec encryption key (encrypted) for each specified IPsec manual
+ security association.
+ Requires an already encrypted key.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_encrypt_key_encrypted">
+	<documentation>
+ Gets the IPsec encryption keys (encrypted) for each specified IPsec
+ manual security association.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_policy">
+	<documentation>
+ Sets the IPsec policy for each specified IPsec manual security association.
+ It specifies the ipsec policy associated with this manual security association.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_policy">
+	<documentation>
+ Gets the IPsec policy for each specified IPsec manual security association.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_protocol">
+	<documentation>
+ Sets the IPsec protocol for each specified IPsec manual
+ security association.
+ Possible values are Encapsulating Security Payload - ESP
+ or Authentication Header - AH.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_protocol">
+	<documentation>
+ Gets the IPsec protocol for each specified IPsec manual security association.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_source_address">
+	<documentation>
+ Sets the IPsec manual security association source address for
+ each specified IPsec manual security association.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_source_address">
+	<documentation>
+ Gets the IPsec manual security association source address for each 
+  specified IPsec manual security association.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_spi">
+	<documentation>
+ Sets the IPsec SPI for each specified IPsec manual security association.
+ SPI specifies the Security Parameters Index.
+ If this is the Security Association(SA) for the outbound traffic, make sure
+ it matches the SPI of the inbound SA configured on the remote site and vice versa.
+ SPI values between 0 and 255 are reserved for the future use by IANA and cannot be used.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_spi">
+	<documentation>
+ Gets the IPsec SPI for each specified IPsec manual security association.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecManualSecurityAssociation"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecManualSecurityAssociation"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.IPsecManualSecurityAssociation">
+	<documentation>
+ This interface configures the IPsec Protocol suite for securing 
+ Internet Protocol (IP) communications by authenticating and
+ encrypting each IP packet of a communication session.
+ The Manual Security Association component is used to manually configure
+ the Security Association Database (SAD) entries. The alternative is to
+ use IKE to negotiate automatically keyed security associations. 
+
+        	</documentation>
+	<port name="Networking.IPsecManualSecurityAssociationPort" binding="tns:Networking.IPsecManualSecurityAssociationBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

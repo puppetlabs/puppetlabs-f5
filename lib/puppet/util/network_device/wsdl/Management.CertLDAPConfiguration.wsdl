@@ -1,0 +1,2453 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.CertLDAPConfiguration"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Management.LDAPSSOOptionSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.LDAPSSOOption[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.LDAPSearchScopeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.LDAPSearchScope[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.LDAPSSOOption">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LDAP_SSO_OPTION_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>LDAP_SSO_OPTION_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LDAP_SSO_OPTION_OFF">
+					<xsd:annotation>
+						<xsd:documentation>LDAP_SSO_OPTION_OFF</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LDAP_SSO_OPTION_ON">
+					<xsd:annotation>
+						<xsd:documentation>LDAP_SSO_OPTION_ON</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.LDAPSSLOptionSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.LDAPSSLOption[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.LDAPSSLOption">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LDAP_SSL_OPTION_NONE">
+					<xsd:annotation>
+						<xsd:documentation>LDAP_SSL_OPTION_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LDAP_SSL_OPTION_ON">
+					<xsd:annotation>
+						<xsd:documentation>LDAP_SSL_OPTION_ON</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LDAP_SSL_OPTION_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>LDAP_SSL_OPTION_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.PortSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.LDAPSearchScope">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LDAP_SEARCH_SCOPE_BASE">
+					<xsd:annotation>
+						<xsd:documentation>LDAP_SEARCH_SCOPE_BASE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LDAP_SEARCH_SCOPE_ONE_LEVEL">
+					<xsd:annotation>
+						<xsd:documentation>LDAP_SEARCH_SCOPE_ONE_LEVEL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LDAP_SEARCH_SCOPE_SUBTREE">
+					<xsd:annotation>
+						<xsd:documentation>LDAP_SEARCH_SCOPE_SUBTREE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LDAP_SEARCH_SCOPE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>LDAP_SEARCH_SCOPE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.CertLDAPConfiguration.get_listRequest">
+</message>
+<message name="Management.CertLDAPConfiguration.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.createRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="search_base_dns" type="tns:Common.StringSequence"/>
+	<part name="servers" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.createResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.create_default_authentication_ldap_configurationRequest">
+	<part name="search_base_dn" type="xsd:string"/>
+	<part name="servers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.create_default_authentication_ldap_configurationResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.create_default_authentication_ad_configurationRequest">
+	<part name="search_base_dn" type="xsd:string"/>
+	<part name="servers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.create_default_authentication_ad_configurationResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.delete_configurationRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.delete_configurationResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.delete_all_configurationsRequest">
+</message>
+<message name="Management.CertLDAPConfiguration.delete_all_configurationsResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_debug_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_debug_stateResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_debug_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_debug_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_ignore_unavailable_authentication_information_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_ignore_unavailable_authentication_information_stateResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_ignore_unavailable_authentication_information_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_ignore_unavailable_authentication_information_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_warning_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_warning_stateResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_warning_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_warning_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_portRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="ports" type="tns:Common.PortSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_portResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_portRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_portResponse">
+	<part name="return" type="tns:Common.PortSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_ldap_ssl_optionRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="options" type="tns:Management.LDAPSSLOptionSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_ldap_ssl_optionResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_ldap_ssl_optionRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_ldap_ssl_optionResponse">
+	<part name="return" type="tns:Management.LDAPSSLOptionSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_ssl_check_peer_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_ssl_check_peer_stateResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_ssl_check_peer_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_ssl_check_peer_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_ssl_ca_certificate_fileRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="ca_cert_files" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_ssl_ca_certificate_fileResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_ssl_ca_certificate_fileRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_ssl_ca_certificate_fileResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_ssl_cipherRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="ciphers" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_ssl_cipherResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_ssl_cipherRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_ssl_cipherResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_ssl_client_keyRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_ssl_client_keyResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_ssl_client_keyRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_ssl_client_keyResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_ssl_client_certificateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="certificates" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_ssl_client_certificateResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_ssl_client_certificateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_ssl_client_certificateResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_search_base_distinguished_nameRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="search_base_dns" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_search_base_distinguished_nameResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_search_base_distinguished_nameRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_search_base_distinguished_nameResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_ldap_versionRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="versions" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_ldap_versionResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_ldap_versionRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_ldap_versionResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_bind_distinguished_nameRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="bind_dns" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_bind_distinguished_nameResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_bind_distinguished_nameRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_bind_distinguished_nameResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_bind_passwordRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="bind_passwords" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_bind_passwordResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_bind_passwordRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_bind_passwordResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_search_scopeRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="search_scopes" type="tns:Management.LDAPSearchScopeSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_search_scopeResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_search_scopeRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_search_scopeResponse">
+	<part name="return" type="tns:Management.LDAPSearchScopeSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_search_time_limitRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="time_limits" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_search_time_limitResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_search_time_limitRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_search_time_limitResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_bind_time_limitRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="time_limits" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_bind_time_limitResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_bind_time_limitRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_bind_time_limitResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_idle_time_limitRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="time_limits" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_idle_time_limitResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_idle_time_limitRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_idle_time_limitResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_filterRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="filters" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_filterResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_filterRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_filterResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_check_host_attribute_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_check_host_attribute_stateResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_check_host_attribute_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_check_host_attribute_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_check_roles_group_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_check_roles_group_stateResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_check_roles_group_stateRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_check_roles_group_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_login_attributeRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="login_attributes" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_login_attributeResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_login_attributeRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_login_attributeResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_serverRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_serverResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.add_serverRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="servers" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.add_serverResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.remove_serverRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="servers" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.remove_serverResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_ldap_sso_optionRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="options" type="tns:Management.LDAPSSOOptionSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_ldap_sso_optionResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_ldap_sso_optionRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_ldap_sso_optionResponse">
+	<part name="return" type="tns:Management.LDAPSSOOptionSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_login_name_attributeRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="attributes" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_login_name_attributeResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_login_name_attributeRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_login_name_attributeResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_login_filterRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="filters" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_login_filterResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_login_filterRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_login_filterResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.set_descriptionRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.set_descriptionResponse">
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_descriptionRequest">
+	<part name="config_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.CertLDAPConfiguration.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.CertLDAPConfiguration.get_versionRequest">
+</message>
+<message name="Management.CertLDAPConfiguration.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.CertLDAPConfigurationPortType">
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all CertLDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_listRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates the specified CertLDAP configurations.
+ The key must be specified as "system-auth".
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.createRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.createResponse"/>
+	</operation>
+	<operation name="create_default_authentication_ldap_configuration">
+	<documentation>
+ Creates the default authentication CertLDAP configuration.
+
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.create_default_authentication_ldap_configurationRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.create_default_authentication_ldap_configurationResponse"/>
+	</operation>
+	<operation name="create_default_authentication_ad_configuration">
+	<documentation>
+ Creates the default authentication Active Directory configuration.
+
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.create_default_authentication_ad_configurationRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.create_default_authentication_ad_configurationResponse"/>
+	</operation>
+	<operation name="delete_configuration">
+	<documentation>
+ Deletes the specified CertLDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.delete_configurationRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.delete_configurationResponse"/>
+	</operation>
+	<operation name="delete_all_configurations">
+	<documentation>
+ Deletes all CertLDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.delete_all_configurationsRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.delete_all_configurationsResponse"/>
+	</operation>
+	<operation name="set_debug_state">
+	<documentation>
+ Sets the states indicating whether syslog debugging is enabled/disabled.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_debug_stateRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_debug_stateResponse"/>
+	</operation>
+	<operation name="get_debug_state">
+	<documentation>
+ Gets the states indicating whether syslog debugging is enabled/disabled.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_debug_stateRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_debug_stateResponse"/>
+	</operation>
+	<operation name="set_ignore_unavailable_authentication_information_state">
+	<documentation>
+ Sets the states indicating whether to ignore errors when authentication information is unavailable.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_ignore_unavailable_authentication_information_stateRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_ignore_unavailable_authentication_information_stateResponse"/>
+	</operation>
+	<operation name="get_ignore_unavailable_authentication_information_state">
+	<documentation>
+ Gets the states indicating whether to ignore errors when authentication information is unavailable.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_ignore_unavailable_authentication_information_stateRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_ignore_unavailable_authentication_information_stateResponse"/>
+	</operation>
+	<operation name="set_warning_state">
+	<documentation>
+ Sets the states indicating whether to enable/disable warning messages.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_warning_stateRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_warning_stateResponse"/>
+	</operation>
+	<operation name="get_warning_state">
+	<documentation>
+ Gets the states indicating whether to enable/disable warning messages.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_warning_stateRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_warning_stateResponse"/>
+	</operation>
+	<operation name="set_port">
+	<documentation>
+ Sets the ports used by the LDAP servers to listen for requests.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_portRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_portResponse"/>
+	</operation>
+	<operation name="get_port">
+	<documentation>
+ Gets the ports used by the LDAP servers to listen for requests.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_portRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_portResponse"/>
+	</operation>
+	<operation name="set_ldap_ssl_option">
+	<documentation>
+ Sets the CertLDAP SSL options used by the CertLDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_ldap_ssl_optionRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_ldap_ssl_optionResponse"/>
+	</operation>
+	<operation name="get_ldap_ssl_option">
+	<documentation>
+ Gets the CertLDAP SSL options used by the CertLDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_ldap_ssl_optionRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_ldap_ssl_optionResponse"/>
+	</operation>
+	<operation name="set_ssl_check_peer_state">
+	<documentation>
+ Sets the states indicating whether to require and verify server certificate.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_ssl_check_peer_stateRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_ssl_check_peer_stateResponse"/>
+	</operation>
+	<operation name="get_ssl_check_peer_state">
+	<documentation>
+ Gets the states indicating whether to require and verify server certificate.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_ssl_check_peer_stateRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_ssl_check_peer_stateResponse"/>
+	</operation>
+	<operation name="set_ssl_ca_certificate_file">
+	<documentation>
+ Sets the CA certificate file objects used in server certificate
+ verification for a set of CertLDAP authentication configurations.
+
+ See the Management::KeyCertificate interface for certificate file
+ object management.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_ssl_ca_certificate_fileRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_ssl_ca_certificate_fileResponse"/>
+	</operation>
+	<operation name="get_ssl_ca_certificate_file">
+	<documentation>
+ Gets the CA certificate file object names used in server
+ certificate verification for a set of CertLDAP authentication
+ configurations.
+ 
+ See the Management::KeyCertificate interface for certificate file
+ object management.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_ssl_ca_certificate_fileRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_ssl_ca_certificate_fileResponse"/>
+	</operation>
+	<operation name="set_ssl_cipher">
+	<documentation>
+ Sets the SSL cipher suite used by the CertLDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_ssl_cipherRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_ssl_cipherResponse"/>
+	</operation>
+	<operation name="get_ssl_cipher">
+	<documentation>
+ Gets the SSL cipher suite used by the CertLDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_ssl_cipherRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_ssl_cipherResponse"/>
+	</operation>
+	<operation name="set_ssl_client_key">
+	<documentation>
+ Sets the client key file objects used by a set of CertLDAP
+ authentication configurations.
+
+ See the Management::KeyCertificate interface for certificate file
+ object management.
+
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_ssl_client_keyRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_ssl_client_keyResponse"/>
+	</operation>
+	<operation name="get_ssl_client_key">
+	<documentation>
+ Gets the client key file objects used by a set of CertLDAP
+ authentication configurations.
+ 
+ See the Management::KeyCertificate interface for certificate file
+ object management.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_ssl_client_keyRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_ssl_client_keyResponse"/>
+	</operation>
+	<operation name="set_ssl_client_certificate">
+	<documentation>
+ Sets the client certificate file objects used by a set of CertLDAP
+ authentication configurations.
+ 
+ See the Management::KeyCertificate interface for certificate file
+ object management.
+
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_ssl_client_certificateRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_ssl_client_certificateResponse"/>
+	</operation>
+	<operation name="get_ssl_client_certificate">
+	<documentation>
+ Gets the client certificate file objects used by a set of CertLDAP
+ authentication configurations.
+ 
+ See the Management::KeyCertificate interface for certificate file
+ object management.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_ssl_client_certificateRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_ssl_client_certificateResponse"/>
+	</operation>
+	<operation name="set_search_base_distinguished_name">
+	<documentation>
+ Sets the distinguished names of the search bases used by the CertLDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_search_base_distinguished_nameRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_search_base_distinguished_nameResponse"/>
+	</operation>
+	<operation name="get_search_base_distinguished_name">
+	<documentation>
+ Gets the distinguished names of the search bases used by the CertLDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_search_base_distinguished_nameRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_search_base_distinguished_nameResponse"/>
+	</operation>
+	<operation name="set_ldap_version">
+	<documentation>
+ Sets the LDAP versions to use by the CertLDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_ldap_versionRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_ldap_versionResponse"/>
+	</operation>
+	<operation name="get_ldap_version">
+	<documentation>
+ Gets the LDAP versions to use by the CertLDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_ldap_versionRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_ldap_versionResponse"/>
+	</operation>
+	<operation name="set_bind_distinguished_name">
+	<documentation>
+ Sets the distinguished names used to bind to the servers. Default is to bind anonymously.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_bind_distinguished_nameRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_bind_distinguished_nameResponse"/>
+	</operation>
+	<operation name="get_bind_distinguished_name">
+	<documentation>
+ Gets the distinguished names used to bind to the servers. Default is to bind anonymously.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_bind_distinguished_nameRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_bind_distinguished_nameResponse"/>
+	</operation>
+	<operation name="set_bind_password">
+	<documentation>
+ Sets the credentials used to bind to the servers. Default is to bind with no credentials.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_bind_passwordRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_bind_passwordResponse"/>
+	</operation>
+	<operation name="get_bind_password">
+	<documentation>
+ Gets the credentials used to bind to the servers. Default is to bind with no credentials.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_bind_passwordRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_bind_passwordResponse"/>
+	</operation>
+	<operation name="set_search_scope">
+	<documentation>
+ Sets the search scopes used by the CertLDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_search_scopeRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_search_scopeResponse"/>
+	</operation>
+	<operation name="get_search_scope">
+	<documentation>
+ Gets the search scopes used by the CertLDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_search_scopeRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_search_scopeResponse"/>
+	</operation>
+	<operation name="set_search_time_limit">
+	<documentation>
+ Sets the search time limits in seconds. This is the time to wait for the search to complete.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_search_time_limitRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_search_time_limitResponse"/>
+	</operation>
+	<operation name="get_search_time_limit">
+	<documentation>
+ Gets the search time limits in seconds. This is the time to wait for the search to complete.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_search_time_limitRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_search_time_limitResponse"/>
+	</operation>
+	<operation name="set_bind_time_limit">
+	<documentation>
+ Sets the bind time limits in seconds. This is the time to wait for the bind to complete.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_bind_time_limitRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_bind_time_limitResponse"/>
+	</operation>
+	<operation name="get_bind_time_limit">
+	<documentation>
+ Gets the bind time limits in seconds. This is the time to wait for the bind to complete.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_bind_time_limitRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_bind_time_limitResponse"/>
+	</operation>
+	<operation name="set_idle_time_limit">
+	<documentation>
+ Sets the idle time limits in seconds. This client will close connections if the server has not 
+ been contacted for the number of seconds specified by this value.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_idle_time_limitRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_idle_time_limitResponse"/>
+	</operation>
+	<operation name="get_idle_time_limit">
+	<documentation>
+ Gets the idle time limits in seconds. This client will close connections if the server has not 
+ been contacted for the number of seconds specified by this value.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_idle_time_limitRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_idle_time_limitResponse"/>
+	</operation>
+	<operation name="set_filter">
+	<documentation>
+ Sets the filter strings used by the specified CertLDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_filterRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_filterResponse"/>
+	</operation>
+	<operation name="get_filter">
+	<documentation>
+ Gets the filter strings used by the specified CertLDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_filterRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_filterResponse"/>
+	</operation>
+	<operation name="set_check_host_attribute_state">
+	<documentation>
+ Sets the states indicating whether to check the 'host' attribute for access control. Default is no; 
+ if set to yes, and user has no value for the host attribute, and pam_ldap is configured for account 
+ management (authorization) then the user will not be allowed to login.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_check_host_attribute_stateRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_check_host_attribute_stateResponse"/>
+	</operation>
+	<operation name="get_check_host_attribute_state">
+	<documentation>
+ Gets the states indicating whether to check the 'host' attribute for access control. Default is no; 
+ if set to yes, and user has no value for the host attribute, and pam_ldap is configured for account 
+ management (authorization) then the user will not be allowed to login.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_check_host_attribute_stateRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_check_host_attribute_stateResponse"/>
+	</operation>
+	<operation name="set_check_roles_group_state">
+	<documentation>
+ Sets the states indicating whether to check the membership
+ attribute in groups given in remote-role definitions for
+ access control. Default is no; if set to yes, and user does
+ not belong to any groups given in the remote-role
+ definitions, and pam_ldap is configured for account
+ management (authorization) then the user will only be able
+ to log in using the default remote-role, which can be set
+ to deny access.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_check_roles_group_stateRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_check_roles_group_stateResponse"/>
+	</operation>
+	<operation name="get_check_roles_group_state">
+	<documentation>
+ Gets the states indicating whether to check the membership
+ attribute in groups given in remote-role definitions for
+ access control.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_check_roles_group_stateRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_check_roles_group_stateResponse"/>
+	</operation>
+	<operation name="set_login_attribute">
+	<documentation>
+ Sets the login attributes used by the specified CertLDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_login_attributeRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_login_attributeResponse"/>
+	</operation>
+	<operation name="get_login_attribute">
+	<documentation>
+ Gets the login attributes used by the specified CertLDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_login_attributeRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_login_attributeResponse"/>
+	</operation>
+	<operation name="get_server">
+	<documentation>
+ Gets the lists of servers the specified CertLDAP configurations are associated with.
+
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_serverRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_serverResponse"/>
+	</operation>
+	<operation name="add_server">
+	<documentation>
+ Adds/associates servers to the specified CertLDAP configurations.
+
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.add_serverRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.add_serverResponse"/>
+	</operation>
+	<operation name="remove_server">
+	<documentation>
+ Removes servers from the specified CertLDAP configurations.
+
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.remove_serverRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.remove_serverResponse"/>
+	</operation>
+	<operation name="set_ldap_sso_option">
+	<documentation>
+ Sets the CertLDAP SSO options used by the CertLDAP configurations. 
+ Enabling SSO modifies the httpd configuration object to enable client certificate validation.
+ Make sure your environment is setup to supply client certificate on request from BIG-IP system,
+ or your client will be unable to access the BIG-IP.  
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_ldap_sso_optionRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_ldap_sso_optionResponse"/>
+	</operation>
+	<operation name="get_ldap_sso_option">
+	<documentation>
+ Gets the CertLDAP SSO options used by the CertLDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_ldap_sso_optionRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_ldap_sso_optionResponse"/>
+	</operation>
+	<operation name="set_login_name_attribute">
+	<documentation>
+ Sets the SSO login name attribute used by the specified CertLDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_login_name_attributeRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_login_name_attributeResponse"/>
+	</operation>
+	<operation name="get_login_name_attribute">
+	<documentation>
+ Gets the SSO login name attribute used by the specified CertLDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_login_name_attributeRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_login_name_attributeResponse"/>
+	</operation>
+	<operation name="set_login_filter">
+	<documentation>
+ Sets the SSO login filter used by the specified CertLDAP configurations.
+ This filter extracts substring from login name attribute value. 
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_login_filterRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_login_filterResponse"/>
+	</operation>
+	<operation name="get_login_filter">
+	<documentation>
+ Gets the SSO login filter attribute used by the specified CertLDAP configurations.
+ 
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_login_filterRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_login_filterResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of CertLDAP configurations.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.set_descriptionRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of CertLDAP configurations.
+
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_descriptionRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Management.CertLDAPConfiguration.get_versionRequest"/>
+		<output message="tns:Management.CertLDAPConfiguration.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.CertLDAPConfigurationBinding" type="tns:Management.CertLDAPConfigurationPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all CertLDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates the specified CertLDAP configurations.
+ The key must be specified as "system-auth".
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_default_authentication_ldap_configuration">
+	<documentation>
+ Creates the default authentication CertLDAP configuration.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_default_authentication_ad_configuration">
+	<documentation>
+ Creates the default authentication Active Directory configuration.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_configuration">
+	<documentation>
+ Deletes the specified CertLDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_configurations">
+	<documentation>
+ Deletes all CertLDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_debug_state">
+	<documentation>
+ Sets the states indicating whether syslog debugging is enabled/disabled.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_debug_state">
+	<documentation>
+ Gets the states indicating whether syslog debugging is enabled/disabled.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ignore_unavailable_authentication_information_state">
+	<documentation>
+ Sets the states indicating whether to ignore errors when authentication information is unavailable.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ignore_unavailable_authentication_information_state">
+	<documentation>
+ Gets the states indicating whether to ignore errors when authentication information is unavailable.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_warning_state">
+	<documentation>
+ Sets the states indicating whether to enable/disable warning messages.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_warning_state">
+	<documentation>
+ Gets the states indicating whether to enable/disable warning messages.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_port">
+	<documentation>
+ Sets the ports used by the LDAP servers to listen for requests.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_port">
+	<documentation>
+ Gets the ports used by the LDAP servers to listen for requests.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ldap_ssl_option">
+	<documentation>
+ Sets the CertLDAP SSL options used by the CertLDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ldap_ssl_option">
+	<documentation>
+ Gets the CertLDAP SSL options used by the CertLDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ssl_check_peer_state">
+	<documentation>
+ Sets the states indicating whether to require and verify server certificate.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ssl_check_peer_state">
+	<documentation>
+ Gets the states indicating whether to require and verify server certificate.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ssl_ca_certificate_file">
+	<documentation>
+ Sets the CA certificate file objects used in server certificate
+ verification for a set of CertLDAP authentication configurations.
+
+ See the Management::KeyCertificate interface for certificate file
+ object management.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ssl_ca_certificate_file">
+	<documentation>
+ Gets the CA certificate file object names used in server
+ certificate verification for a set of CertLDAP authentication
+ configurations.
+ 
+ See the Management::KeyCertificate interface for certificate file
+ object management.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ssl_cipher">
+	<documentation>
+ Sets the SSL cipher suite used by the CertLDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ssl_cipher">
+	<documentation>
+ Gets the SSL cipher suite used by the CertLDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ssl_client_key">
+	<documentation>
+ Sets the client key file objects used by a set of CertLDAP
+ authentication configurations.
+
+ See the Management::KeyCertificate interface for certificate file
+ object management.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ssl_client_key">
+	<documentation>
+ Gets the client key file objects used by a set of CertLDAP
+ authentication configurations.
+ 
+ See the Management::KeyCertificate interface for certificate file
+ object management.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ssl_client_certificate">
+	<documentation>
+ Sets the client certificate file objects used by a set of CertLDAP
+ authentication configurations.
+ 
+ See the Management::KeyCertificate interface for certificate file
+ object management.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ssl_client_certificate">
+	<documentation>
+ Gets the client certificate file objects used by a set of CertLDAP
+ authentication configurations.
+ 
+ See the Management::KeyCertificate interface for certificate file
+ object management.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_search_base_distinguished_name">
+	<documentation>
+ Sets the distinguished names of the search bases used by the CertLDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_search_base_distinguished_name">
+	<documentation>
+ Gets the distinguished names of the search bases used by the CertLDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ldap_version">
+	<documentation>
+ Sets the LDAP versions to use by the CertLDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ldap_version">
+	<documentation>
+ Gets the LDAP versions to use by the CertLDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_bind_distinguished_name">
+	<documentation>
+ Sets the distinguished names used to bind to the servers. Default is to bind anonymously.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_bind_distinguished_name">
+	<documentation>
+ Gets the distinguished names used to bind to the servers. Default is to bind anonymously.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_bind_password">
+	<documentation>
+ Sets the credentials used to bind to the servers. Default is to bind with no credentials.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_bind_password">
+	<documentation>
+ Gets the credentials used to bind to the servers. Default is to bind with no credentials.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_search_scope">
+	<documentation>
+ Sets the search scopes used by the CertLDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_search_scope">
+	<documentation>
+ Gets the search scopes used by the CertLDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_search_time_limit">
+	<documentation>
+ Sets the search time limits in seconds. This is the time to wait for the search to complete.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_search_time_limit">
+	<documentation>
+ Gets the search time limits in seconds. This is the time to wait for the search to complete.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_bind_time_limit">
+	<documentation>
+ Sets the bind time limits in seconds. This is the time to wait for the bind to complete.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_bind_time_limit">
+	<documentation>
+ Gets the bind time limits in seconds. This is the time to wait for the bind to complete.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_idle_time_limit">
+	<documentation>
+ Sets the idle time limits in seconds. This client will close connections if the server has not 
+ been contacted for the number of seconds specified by this value.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_idle_time_limit">
+	<documentation>
+ Gets the idle time limits in seconds. This client will close connections if the server has not 
+ been contacted for the number of seconds specified by this value.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_filter">
+	<documentation>
+ Sets the filter strings used by the specified CertLDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_filter">
+	<documentation>
+ Gets the filter strings used by the specified CertLDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_check_host_attribute_state">
+	<documentation>
+ Sets the states indicating whether to check the 'host' attribute for access control. Default is no; 
+ if set to yes, and user has no value for the host attribute, and pam_ldap is configured for account 
+ management (authorization) then the user will not be allowed to login.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_check_host_attribute_state">
+	<documentation>
+ Gets the states indicating whether to check the 'host' attribute for access control. Default is no; 
+ if set to yes, and user has no value for the host attribute, and pam_ldap is configured for account 
+ management (authorization) then the user will not be allowed to login.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_check_roles_group_state">
+	<documentation>
+ Sets the states indicating whether to check the membership
+ attribute in groups given in remote-role definitions for
+ access control. Default is no; if set to yes, and user does
+ not belong to any groups given in the remote-role
+ definitions, and pam_ldap is configured for account
+ management (authorization) then the user will only be able
+ to log in using the default remote-role, which can be set
+ to deny access.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_check_roles_group_state">
+	<documentation>
+ Gets the states indicating whether to check the membership
+ attribute in groups given in remote-role definitions for
+ access control.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_login_attribute">
+	<documentation>
+ Sets the login attributes used by the specified CertLDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_login_attribute">
+	<documentation>
+ Gets the login attributes used by the specified CertLDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_server">
+	<documentation>
+ Gets the lists of servers the specified CertLDAP configurations are associated with.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_server">
+	<documentation>
+ Adds/associates servers to the specified CertLDAP configurations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_server">
+	<documentation>
+ Removes servers from the specified CertLDAP configurations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ldap_sso_option">
+	<documentation>
+ Sets the CertLDAP SSO options used by the CertLDAP configurations. 
+ Enabling SSO modifies the httpd configuration object to enable client certificate validation.
+ Make sure your environment is setup to supply client certificate on request from BIG-IP system,
+ or your client will be unable to access the BIG-IP.  
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ldap_sso_option">
+	<documentation>
+ Gets the CertLDAP SSO options used by the CertLDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_login_name_attribute">
+	<documentation>
+ Sets the SSO login name attribute used by the specified CertLDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_login_name_attribute">
+	<documentation>
+ Gets the SSO login name attribute used by the specified CertLDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_login_filter">
+	<documentation>
+ Sets the SSO login filter used by the specified CertLDAP configurations.
+ This filter extracts substring from login name attribute value. 
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_login_filter">
+	<documentation>
+ Gets the SSO login filter attribute used by the specified CertLDAP configurations.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of CertLDAP configurations.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of CertLDAP configurations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/CertLDAPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/CertLDAPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.CertLDAPConfiguration">
+	<documentation>
+ The CertLDAPConfiguration interface enables you to manage CertLDAP PAM configuration.
+ This LDAP configuration is specific to Certificate based Single Sign On (SSO) feature support.
+ The key in the create method must be "system-auth". This key must be used in all other 
+ methods as well.
+
+ Note: The SSO feature requires configuring httpd object attributes in advance. The 
+ following httpd attributes must be configured appropriately prior to the creation of the 
+ CertLDAP object: sslcacertfile, sslverifyclient, sslverifydepth, sslocspenable, 
+ sslocspdefaultresponder and ssloveroverrideresponder. 
+ "httpd" is an LTConfig class and class instance, and support is available to configure 
+ such objects (through the LTConfig::Field interface and set_values method). Please see the
+ LTConfig module for details. 
+
+        	</documentation>
+	<port name="Management.CertLDAPConfigurationPort" binding="tns:Management.CertLDAPConfigurationBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

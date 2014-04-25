@@ -1,0 +1,1104 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.IPsecTrafficSelector"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.IPsecTrafficSelectorAction">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="IPSEC_TRAFFIC_SELECTOR_ACTION_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_TRAFFIC_SELECTOR_ACTION_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_TRAFFIC_SELECTOR_ACTION_DISCARD">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_TRAFFIC_SELECTOR_ACTION_DISCARD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_TRAFFIC_SELECTOR_ACTION_PROTECT">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_TRAFFIC_SELECTOR_ACTION_PROTECT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Networking.IPsecTrafficSelectorActionSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.IPsecTrafficSelectorAction[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.IPsecDirection">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="IPSEC_DIR_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DIR_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DIR_IN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DIR_IN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DIR_OUT">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DIR_OUT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DIR_BOTH">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DIR_BOTH</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.PortSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.IPsecDirectionSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.IPsecDirection[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.IPsecTrafficSelector.get_listRequest">
+</message>
+<message name="Networking.IPsecTrafficSelector.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.IPsecTrafficSelector.createRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+	<part name="src_addresses" type="tns:Common.IPAddressSequence"/>
+	<part name="src_netmasks" type="tns:Common.IPAddressSequence"/>
+	<part name="dst_addresses" type="tns:Common.IPAddressSequence"/>
+	<part name="dst_netmasks" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.createResponse">
+</message>
+
+<message name="Networking.IPsecTrafficSelector.delete_traffic_selectorRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.delete_traffic_selectorResponse">
+</message>
+
+<message name="Networking.IPsecTrafficSelector.delete_all_traffic_selectorsRequest">
+</message>
+<message name="Networking.IPsecTrafficSelector.delete_all_traffic_selectorsResponse">
+</message>
+
+<message name="Networking.IPsecTrafficSelector.set_descriptionRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.set_descriptionResponse">
+</message>
+
+<message name="Networking.IPsecTrafficSelector.get_descriptionRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.IPsecTrafficSelector.set_actionRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+	<part name="actions" type="tns:Networking.IPsecTrafficSelectorActionSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.set_actionResponse">
+</message>
+
+<message name="Networking.IPsecTrafficSelector.get_actionRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.get_actionResponse">
+	<part name="return" type="tns:Networking.IPsecTrafficSelectorActionSequence"/>
+</message>
+
+<message name="Networking.IPsecTrafficSelector.set_destination_addressRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+	<part name="netmasks" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.set_destination_addressResponse">
+</message>
+
+<message name="Networking.IPsecTrafficSelector.get_destination_addressRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.get_destination_addressResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Networking.IPsecTrafficSelector.get_destination_netmaskRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.get_destination_netmaskResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Networking.IPsecTrafficSelector.set_destination_portRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+	<part name="ports" type="tns:Common.PortSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.set_destination_portResponse">
+</message>
+
+<message name="Networking.IPsecTrafficSelector.get_destination_portRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.get_destination_portResponse">
+	<part name="return" type="tns:Common.PortSequence"/>
+</message>
+
+<message name="Networking.IPsecTrafficSelector.set_directionRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+	<part name="directions" type="tns:Networking.IPsecDirectionSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.set_directionResponse">
+</message>
+
+<message name="Networking.IPsecTrafficSelector.get_directionRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.get_directionResponse">
+	<part name="return" type="tns:Networking.IPsecDirectionSequence"/>
+</message>
+
+<message name="Networking.IPsecTrafficSelector.set_ip_protocolRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+	<part name="ip_protocols" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.set_ip_protocolResponse">
+</message>
+
+<message name="Networking.IPsecTrafficSelector.get_ip_protocolRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.get_ip_protocolResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.IPsecTrafficSelector.set_orderRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+	<part name="orders" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.set_orderResponse">
+</message>
+
+<message name="Networking.IPsecTrafficSelector.get_orderRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.get_orderResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.IPsecTrafficSelector.set_policyRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.set_policyResponse">
+</message>
+
+<message name="Networking.IPsecTrafficSelector.get_policyRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.get_policyResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.IPsecTrafficSelector.set_source_addressRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+	<part name="netmasks" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.set_source_addressResponse">
+</message>
+
+<message name="Networking.IPsecTrafficSelector.get_source_addressRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.get_source_addressResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Networking.IPsecTrafficSelector.get_source_netmaskRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.get_source_netmaskResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Networking.IPsecTrafficSelector.set_source_portRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+	<part name="ports" type="tns:Common.PortSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.set_source_portResponse">
+</message>
+
+<message name="Networking.IPsecTrafficSelector.get_source_portRequest">
+	<part name="selectors" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecTrafficSelector.get_source_portResponse">
+	<part name="return" type="tns:Common.PortSequence"/>
+</message>
+
+<message name="Networking.IPsecTrafficSelector.get_versionRequest">
+</message>
+<message name="Networking.IPsecTrafficSelector.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.IPsecTrafficSelectorPortType">
+	<operation name="get_list">
+ 	<documentation>
+ Gets the names for all IPsec traffic selectors.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.get_listRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a set of IPsec traffic selectors.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.createRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.createResponse"/>
+	</operation>
+	<operation name="delete_traffic_selector">
+	<documentation>
+ Deletes a set of IPsec traffic selectors.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.delete_traffic_selectorRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.delete_traffic_selectorResponse"/>
+	</operation>
+	<operation name="delete_all_traffic_selectors">
+	<documentation>
+ Deletes all IPsec traffic selectors.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.delete_all_traffic_selectorsRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.delete_all_traffic_selectorsResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for each specified IPsec traffic selector.
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.set_descriptionRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the description for each specified IPsec traffic selector.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.get_descriptionRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.get_descriptionResponse"/>
+	</operation>
+	<operation name="set_action">
+	<documentation>
+ Sets the IPsec traffic selector actions for a list of traffic selectors.
+ Specifies how the system handles traffic that matches the criteria
+      in the traffic selector.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.set_actionRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.set_actionResponse"/>
+	</operation>
+	<operation name="get_action">
+	<documentation>
+ Gets the IPsec traffic selector actions for the specified IPsec traffic selectors.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.get_actionRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.get_actionResponse"/>
+	</operation>
+	<operation name="set_destination_address">
+	<documentation>
+ Sets the IPsec destination addresses for a set of traffic selectors.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.set_destination_addressRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.set_destination_addressResponse"/>
+	</operation>
+	<operation name="get_destination_address">
+	<documentation>
+ Gets the IPsec destination addresses for a set of traffic selectors.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.get_destination_addressRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.get_destination_addressResponse"/>
+	</operation>
+	<operation name="get_destination_netmask">
+	<documentation>
+ Gets the IPsec destination netmasks for a set of traffic selectors.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.get_destination_netmaskRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.get_destination_netmaskResponse"/>
+	</operation>
+	<operation name="set_destination_port">
+	<documentation>
+ Sets the IPsec destination ports for a set of traffic selectors.
+ Match on the specified Layer 4 destination port; 0 matches all port numbers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.set_destination_portRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.set_destination_portResponse"/>
+	</operation>
+	<operation name="get_destination_port">
+	<documentation>
+ Gets the IPsec destination ports for a set of traffic selectors.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.get_destination_portRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.get_destination_portResponse"/>
+	</operation>
+	<operation name="set_direction">
+	<documentation>
+ Sets the IPsec traffic selector direction for a set of traffic selectors.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.set_directionRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.set_directionResponse"/>
+	</operation>
+	<operation name="get_direction">
+	<documentation>
+ Gets the IPsec traffic selector direction for a set of traffic selectors.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.get_directionRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.get_directionResponse"/>
+	</operation>
+	<operation name="set_ip_protocol">
+	<documentation>
+ Sets the IPsec traffic selector IP protocols for a set of traffic selectors.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.set_ip_protocolRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.set_ip_protocolResponse"/>
+	</operation>
+	<operation name="get_ip_protocol">
+	<documentation>
+ Gets the IPsec traffic selector IP protocols for a set of traffic selectors.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.get_ip_protocolRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.get_ip_protocolResponse"/>
+	</operation>
+	<operation name="set_order">
+	<documentation>
+ Sets the IPsec traffic selector orders for a set of traffic selectors.
+ Traffic selectors are sorted by their orders. The traffic selector 
+ with the smaller order will be used first.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.set_orderRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.set_orderResponse"/>
+	</operation>
+	<operation name="get_order">
+	<documentation>
+ Gets the IPsec traffic selector orders for a set of traffic selectors.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.get_orderRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.get_orderResponse"/>
+	</operation>
+	<operation name="set_policy">
+	<documentation>
+ Sets the IPsec policies for the set of IPsec traffic selectors.
+ Specifies the name of the IPsec policy to be enforced 
+  on the matched traffic.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.set_policyRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.set_policyResponse"/>
+	</operation>
+	<operation name="get_policy">
+	<documentation>
+ Gets the IPsec policies for the set of IPsec traffic selectors.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.get_policyRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.get_policyResponse"/>
+	</operation>
+	<operation name="set_source_address">
+	<documentation>
+ Sets the IPsec traffic selector source addresses for a set of traffic selectors.
+ Specifies the source IP address of the traffic to be matched.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.set_source_addressRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.set_source_addressResponse"/>
+	</operation>
+	<operation name="get_source_address">
+	<documentation>
+ Gets the IPsec traffic selector source addresses for a set of traffic selectors.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.get_source_addressRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.get_source_addressResponse"/>
+	</operation>
+	<operation name="get_source_netmask">
+	<documentation>
+ Gets the IPsec source netmasks for a set of traffic selectors.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.get_source_netmaskRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.get_source_netmaskResponse"/>
+	</operation>
+	<operation name="set_source_port">
+	<documentation>
+ Sets the IPsec traffic selector source ports for a set of traffic selectors.
+ Match on the specified Layer 4 source port; 0 matches all port numbers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.set_source_portRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.set_source_portResponse"/>
+	</operation>
+	<operation name="get_source_port">
+	<documentation>
+ Gets the IPsec traffic selector source ports for a set of traffic selectors.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.get_source_portRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.get_source_portResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecTrafficSelector.get_versionRequest"/>
+		<output message="tns:Networking.IPsecTrafficSelector.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.IPsecTrafficSelectorBinding" type="tns:Networking.IPsecTrafficSelectorPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the names for all IPsec traffic selectors.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a set of IPsec traffic selectors.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_traffic_selector">
+	<documentation>
+ Deletes a set of IPsec traffic selectors.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_traffic_selectors">
+	<documentation>
+ Deletes all IPsec traffic selectors.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for each specified IPsec traffic selector.
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the description for each specified IPsec traffic selector.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_action">
+	<documentation>
+ Sets the IPsec traffic selector actions for a list of traffic selectors.
+ Specifies how the system handles traffic that matches the criteria
+      in the traffic selector.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_action">
+	<documentation>
+ Gets the IPsec traffic selector actions for the specified IPsec traffic selectors.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_destination_address">
+	<documentation>
+ Sets the IPsec destination addresses for a set of traffic selectors.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_destination_address">
+	<documentation>
+ Gets the IPsec destination addresses for a set of traffic selectors.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_destination_netmask">
+	<documentation>
+ Gets the IPsec destination netmasks for a set of traffic selectors.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_destination_port">
+	<documentation>
+ Sets the IPsec destination ports for a set of traffic selectors.
+ Match on the specified Layer 4 destination port; 0 matches all port numbers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_destination_port">
+	<documentation>
+ Gets the IPsec destination ports for a set of traffic selectors.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_direction">
+	<documentation>
+ Sets the IPsec traffic selector direction for a set of traffic selectors.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_direction">
+	<documentation>
+ Gets the IPsec traffic selector direction for a set of traffic selectors.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ip_protocol">
+	<documentation>
+ Sets the IPsec traffic selector IP protocols for a set of traffic selectors.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ip_protocol">
+	<documentation>
+ Gets the IPsec traffic selector IP protocols for a set of traffic selectors.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_order">
+	<documentation>
+ Sets the IPsec traffic selector orders for a set of traffic selectors.
+ Traffic selectors are sorted by their orders. The traffic selector 
+ with the smaller order will be used first.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_order">
+	<documentation>
+ Gets the IPsec traffic selector orders for a set of traffic selectors.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_policy">
+	<documentation>
+ Sets the IPsec policies for the set of IPsec traffic selectors.
+ Specifies the name of the IPsec policy to be enforced 
+  on the matched traffic.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_policy">
+	<documentation>
+ Gets the IPsec policies for the set of IPsec traffic selectors.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_source_address">
+	<documentation>
+ Sets the IPsec traffic selector source addresses for a set of traffic selectors.
+ Specifies the source IP address of the traffic to be matched.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_source_address">
+	<documentation>
+ Gets the IPsec traffic selector source addresses for a set of traffic selectors.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_source_netmask">
+	<documentation>
+ Gets the IPsec source netmasks for a set of traffic selectors.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_source_port">
+	<documentation>
+ Sets the IPsec traffic selector source ports for a set of traffic selectors.
+ Match on the specified Layer 4 source port; 0 matches all port numbers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_source_port">
+	<documentation>
+ Gets the IPsec traffic selector source ports for a set of traffic selectors.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecTrafficSelector"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecTrafficSelector"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.IPsecTrafficSelector">
+	<documentation>
+ This interface configures the IPsec Protocol suite for securing 
+ Internet Protocol (IP) communications by authenticating and
+ encrypting each IP packet of a communication session.
+ The Traffic Selector component specifies what traffic you want 
+ the system to protect with IPsec.
+
+        	</documentation>
+	<port name="Networking.IPsecTrafficSelectorPort" binding="tns:Networking.IPsecTrafficSelectorBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

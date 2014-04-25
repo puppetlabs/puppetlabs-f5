@@ -1,0 +1,228 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="ASM.PSMProfile"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="ASM.PSMProfile.PSMProfileType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="PSM_PROFILE_FTP">
+					<xsd:annotation>
+						<xsd:documentation>PSM_PROFILE_FTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PSM_PROFILE_SMTP">
+					<xsd:annotation>
+						<xsd:documentation>PSM_PROFILE_SMTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PSM_PROFILE_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>PSM_PROFILE_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.ULong">
+			<xsd:restriction base="xsd:long"/>
+		</xsd:simpleType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="ASM.PSMProfile.get_listRequest">
+	<part name="type" type="tns:ASM.PSMProfile.PSMProfileType"/>
+</message>
+<message name="ASM.PSMProfile.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="ASM.PSMProfile.set_assignmentRequest">
+	<part name="ltm_profiles" type="tns:Common.StringSequence"/>
+	<part name="psm_profiles" type="tns:Common.StringSequence"/>
+	<part name="timeout" type="xsd:long"/>
+</message>
+<message name="ASM.PSMProfile.set_assignmentResponse">
+</message>
+
+<message name="ASM.PSMProfile.get_assignmentRequest">
+	<part name="ltm_profiles" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.PSMProfile.get_assignmentResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="ASM.PSMProfile.get_versionRequest">
+</message>
+<message name="ASM.PSMProfile.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="ASM.PSMProfilePortType">
+	<operation name="get_list">
+  	<documentation>
+ Gets a list of all PSM profiles of the specified type.
+
+        	</documentation>
+		<input message="tns:ASM.PSMProfile.get_listRequest"/>
+		<output message="tns:ASM.PSMProfile.get_listResponse"/>
+	</operation>
+	<operation name="set_assignment">
+	<documentation>
+ Assigns a PSM profile to a preconfigured LTM profile.
+ For information on creating LTM profiles and associating them with virtual servers, see the LocalLB module.
+ The profile type of the PSM profile being assigned to an LTM profile must match the LTM profile type, e.g.: PSM_PROFILE_HTTP for PROFILE_TYPE_HTTP.
+ Note that changes are applied immediately.
+
+        	</documentation>
+		<input message="tns:ASM.PSMProfile.set_assignmentRequest"/>
+		<output message="tns:ASM.PSMProfile.set_assignmentResponse"/>
+	</operation>
+	<operation name="get_assignment">
+	<documentation>
+ Gets the PSM profile assigned to the specified LTM profile.
+
+        	</documentation>
+		<input message="tns:ASM.PSMProfile.get_assignmentRequest"/>
+		<output message="tns:ASM.PSMProfile.get_assignmentResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:ASM.PSMProfile.get_versionRequest"/>
+		<output message="tns:ASM.PSMProfile.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="ASM.PSMProfileBinding" type="tns:ASM.PSMProfilePortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all PSM profiles of the specified type.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/PSMProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/PSMProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/PSMProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_assignment">
+	<documentation>
+ Assigns a PSM profile to a preconfigured LTM profile.
+ For information on creating LTM profiles and associating them with virtual servers, see the LocalLB module.
+ The profile type of the PSM profile being assigned to an LTM profile must match the LTM profile type, e.g.: PSM_PROFILE_HTTP for PROFILE_TYPE_HTTP.
+ Note that changes are applied immediately.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/PSMProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/PSMProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/PSMProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_assignment">
+	<documentation>
+ Gets the PSM profile assigned to the specified LTM profile.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/PSMProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/PSMProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/PSMProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/PSMProfile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/PSMProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/PSMProfile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="ASM.PSMProfile">
+	<documentation>
+ The PSMProfile interface is a private interface to support internal F5 capabilities (hence is subject to change without notice).
+ It enables you partially to manipulate Protocol Security profiles of PSM (lightweight ASM), including HTTP, FTP and SMTP.
+
+ This interface does not support transactions.
+
+        	</documentation>
+	<port name="ASM.PSMProfilePort" binding="tns:ASM.PSMProfileBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

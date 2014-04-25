@@ -1,0 +1,1693 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.UserManagement"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Management.UserManagement.PasswordInfo">
+			<xsd:sequence>
+				<xsd:element name="is_encrypted" type="xsd:boolean"/>
+				<xsd:element name="password" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.UserManagement.UserInfo">
+			<xsd:sequence>
+				<xsd:element name="user" type="tns:Management.UserManagement.UserID"/>
+				<xsd:element name="role" type="tns:Management.UserManagement.UserRole"/>
+				<xsd:element name="password" type="xsd:string"/>
+				<xsd:element name="home_directory" type="xsd:string"/>
+				<xsd:element name="login_shell" type="xsd:string"/>
+				<xsd:element name="user_id" type="xsd:long"/>
+				<xsd:element name="group_id" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.UserManagement.UserInfo3Sequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.UserManagement.UserInfo3[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.BooleanSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:boolean[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.UserManagement.UserInfoSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.UserManagement.UserInfo[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.UserManagement.UserInfo3">
+			<xsd:sequence>
+				<xsd:element name="user" type="tns:Management.UserManagement.UserID"/>
+				<xsd:element name="password" type="tns:Management.UserManagement.PasswordInfo"/>
+				<xsd:element name="permissions" type="tns:Management.UserManagement.UserPermissionSequence"/>
+				<xsd:element name="login_shell" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.UserManagement.UserRoleSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.UserManagement.UserRole[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.UserManagement.UserPermissionSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.UserManagement.UserPermissionSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.UserManagement.UserRole">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="USER_ROLE_ADMINISTRATOR">
+					<xsd:annotation>
+						<xsd:documentation>USER_ROLE_ADMINISTRATOR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_ROLE_TRAFFIC_MANAGER">
+					<xsd:annotation>
+						<xsd:documentation>USER_ROLE_TRAFFIC_MANAGER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_ROLE_GUEST">
+					<xsd:annotation>
+						<xsd:documentation>USER_ROLE_GUEST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_ROLE_ASM_POLICY_EDITOR">
+					<xsd:annotation>
+						<xsd:documentation>USER_ROLE_ASM_POLICY_EDITOR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_ROLE_INVALID">
+					<xsd:annotation>
+						<xsd:documentation>USER_ROLE_INVALID</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_ROLE_MANAGER">
+					<xsd:annotation>
+						<xsd:documentation>USER_ROLE_MANAGER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_ROLE_EDITOR">
+					<xsd:annotation>
+						<xsd:documentation>USER_ROLE_EDITOR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_ROLE_APPLICATION_EDITOR">
+					<xsd:annotation>
+						<xsd:documentation>USER_ROLE_APPLICATION_EDITOR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_ROLE_CERTIFICATE_MANAGER">
+					<xsd:annotation>
+						<xsd:documentation>USER_ROLE_CERTIFICATE_MANAGER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_ROLE_USER_MANAGER">
+					<xsd:annotation>
+						<xsd:documentation>USER_ROLE_USER_MANAGER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_ROLE_RESOURCE_ADMINISTRATOR">
+					<xsd:annotation>
+						<xsd:documentation>USER_ROLE_RESOURCE_ADMINISTRATOR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_ROLE_ASM_EDITOR">
+					<xsd:annotation>
+						<xsd:documentation>USER_ROLE_ASM_EDITOR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_ROLE_ADVANCED_OPERATOR">
+					<xsd:annotation>
+						<xsd:documentation>USER_ROLE_ADVANCED_OPERATOR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_ROLE_AUDITOR">
+					<xsd:annotation>
+						<xsd:documentation>USER_ROLE_AUDITOR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_ROLE_ACCELERATION_POLICY_EDITOR">
+					<xsd:annotation>
+						<xsd:documentation>USER_ROLE_ACCELERATION_POLICY_EDITOR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_ROLE_IRULE_MANAGER">
+					<xsd:annotation>
+						<xsd:documentation>USER_ROLE_IRULE_MANAGER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="USER_ROLE_FIREWALL_MANAGER">
+					<xsd:annotation>
+						<xsd:documentation>USER_ROLE_FIREWALL_MANAGER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.UserManagement.UserPermission">
+			<xsd:sequence>
+				<xsd:element name="role" type="tns:Management.UserManagement.UserRole"/>
+				<xsd:element name="partition" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.UserManagement.UserID">
+			<xsd:sequence>
+				<xsd:element name="name" type="xsd:string"/>
+				<xsd:element name="full_name" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.UserManagement.UserInfo2">
+			<xsd:sequence>
+				<xsd:element name="user" type="tns:Management.UserManagement.UserID"/>
+				<xsd:element name="role" type="tns:Management.UserManagement.UserRole"/>
+				<xsd:element name="password" type="tns:Management.UserManagement.PasswordInfo"/>
+				<xsd:element name="home_directory" type="xsd:string"/>
+				<xsd:element name="login_shell" type="xsd:string"/>
+				<xsd:element name="user_id" type="xsd:long"/>
+				<xsd:element name="group_id" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.UserManagement.UserInfo2Sequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.UserManagement.UserInfo2[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.AuthenticationMethod">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="AUTHENTICATION_METHOD_LOCAL">
+					<xsd:annotation>
+						<xsd:documentation>AUTHENTICATION_METHOD_LOCAL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AUTHENTICATION_METHOD_LDAP">
+					<xsd:annotation>
+						<xsd:documentation>AUTHENTICATION_METHOD_LDAP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AUTHENTICATION_METHOD_ACTIVE_DIRECTORY">
+					<xsd:annotation>
+						<xsd:documentation>AUTHENTICATION_METHOD_ACTIVE_DIRECTORY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AUTHENTICATION_METHOD_RADIUS">
+					<xsd:annotation>
+						<xsd:documentation>AUTHENTICATION_METHOD_RADIUS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AUTHENTICATION_METHOD_TACACS">
+					<xsd:annotation>
+						<xsd:documentation>AUTHENTICATION_METHOD_TACACS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.UserManagement.UserPermissionSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.UserManagement.UserPermission[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.UserManagement.PasswordInfoSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.UserManagement.PasswordInfo[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.UserManagement.UserIDSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.UserManagement.UserID[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.UserManagement.get_listRequest">
+</message>
+<message name="Management.UserManagement.get_listResponse">
+	<part name="return" type="tns:Management.UserManagement.UserIDSequence"/>
+</message>
+
+<message name="Management.UserManagement.create_userRequest">
+	<part name="users" type="tns:Management.UserManagement.UserInfoSequence"/>
+</message>
+<message name="Management.UserManagement.create_userResponse">
+</message>
+
+<message name="Management.UserManagement.create_user_2Request">
+	<part name="users" type="tns:Management.UserManagement.UserInfo2Sequence"/>
+</message>
+<message name="Management.UserManagement.create_user_2Response">
+</message>
+
+<message name="Management.UserManagement.create_user_3Request">
+	<part name="users" type="tns:Management.UserManagement.UserInfo3Sequence"/>
+</message>
+<message name="Management.UserManagement.create_user_3Response">
+</message>
+
+<message name="Management.UserManagement.delete_userRequest">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.UserManagement.delete_userResponse">
+</message>
+
+<message name="Management.UserManagement.change_passwordRequest">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+	<part name="passwords" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.UserManagement.change_passwordResponse">
+</message>
+
+<message name="Management.UserManagement.change_password_2Request">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+	<part name="passwords" type="tns:Management.UserManagement.PasswordInfoSequence"/>
+</message>
+<message name="Management.UserManagement.change_password_2Response">
+</message>
+
+<message name="Management.UserManagement.get_encrypted_passwordRequest">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.UserManagement.get_encrypted_passwordResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.UserManagement.get_roleRequest">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.UserManagement.get_roleResponse">
+	<part name="return" type="tns:Management.UserManagement.UserRoleSequence"/>
+</message>
+
+<message name="Management.UserManagement.set_roleRequest">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+	<part name="roles" type="tns:Management.UserManagement.UserRoleSequence"/>
+</message>
+<message name="Management.UserManagement.set_roleResponse">
+</message>
+
+<message name="Management.UserManagement.get_home_directoryRequest">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.UserManagement.get_home_directoryResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.UserManagement.set_home_directoryRequest">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+	<part name="directories" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.UserManagement.set_home_directoryResponse">
+</message>
+
+<message name="Management.UserManagement.get_login_shellRequest">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.UserManagement.get_login_shellResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.UserManagement.set_login_shellRequest">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+	<part name="shells" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.UserManagement.set_login_shellResponse">
+</message>
+
+<message name="Management.UserManagement.get_user_idRequest">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.UserManagement.get_user_idResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Management.UserManagement.set_user_idRequest">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+	<part name="uids" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Management.UserManagement.set_user_idResponse">
+</message>
+
+<message name="Management.UserManagement.get_group_idRequest">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.UserManagement.get_group_idResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Management.UserManagement.set_group_idRequest">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+	<part name="gids" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Management.UserManagement.set_group_idResponse">
+</message>
+
+<message name="Management.UserManagement.set_authentication_methodRequest">
+	<part name="auth_method" type="tns:Common.AuthenticationMethod"/>
+</message>
+<message name="Management.UserManagement.set_authentication_methodResponse">
+</message>
+
+<message name="Management.UserManagement.get_authentication_methodRequest">
+</message>
+<message name="Management.UserManagement.get_authentication_methodResponse">
+	<part name="return" type="tns:Common.AuthenticationMethod"/>
+</message>
+
+<message name="Management.UserManagement.get_fullnameRequest">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.UserManagement.get_fullnameResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.UserManagement.set_fullnameRequest">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+	<part name="fullnames" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.UserManagement.set_fullnameResponse">
+</message>
+
+<message name="Management.UserManagement.set_descriptionRequest">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.UserManagement.set_descriptionResponse">
+</message>
+
+<message name="Management.UserManagement.get_descriptionRequest">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.UserManagement.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.UserManagement.get_default_roleRequest">
+</message>
+<message name="Management.UserManagement.get_default_roleResponse">
+	<part name="return" type="tns:Management.UserManagement.UserRole"/>
+</message>
+
+<message name="Management.UserManagement.set_default_roleRequest">
+	<part name="role" type="tns:Management.UserManagement.UserRole"/>
+</message>
+<message name="Management.UserManagement.set_default_roleResponse">
+</message>
+
+<message name="Management.UserManagement.get_default_partitionRequest">
+</message>
+<message name="Management.UserManagement.get_default_partitionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="Management.UserManagement.set_default_partitionRequest">
+	<part name="partition" type="xsd:string"/>
+</message>
+<message name="Management.UserManagement.set_default_partitionResponse">
+</message>
+
+<message name="Management.UserManagement.get_remote_console_accessRequest">
+</message>
+<message name="Management.UserManagement.get_remote_console_accessResponse">
+	<part name="return" type="xsd:boolean"/>
+</message>
+
+<message name="Management.UserManagement.set_remote_console_accessRequest">
+	<part name="enabled" type="xsd:boolean"/>
+</message>
+<message name="Management.UserManagement.set_remote_console_accessResponse">
+</message>
+
+<message name="Management.UserManagement.get_home_partitionRequest">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.UserManagement.get_home_partitionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.UserManagement.get_user_permissionRequest">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.UserManagement.get_user_permissionResponse">
+	<part name="return" type="tns:Management.UserManagement.UserPermissionSequenceSequence"/>
+</message>
+
+<message name="Management.UserManagement.set_user_permissionRequest">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+	<part name="permissions" type="tns:Management.UserManagement.UserPermissionSequenceSequence"/>
+</message>
+<message name="Management.UserManagement.set_user_permissionResponse">
+</message>
+
+<message name="Management.UserManagement.get_my_permissionRequest">
+</message>
+<message name="Management.UserManagement.get_my_permissionResponse">
+	<part name="return" type="tns:Management.UserManagement.UserPermissionSequence"/>
+</message>
+
+<message name="Management.UserManagement.change_my_passwordRequest">
+	<part name="password" type="tns:Management.UserManagement.PasswordInfo"/>
+</message>
+<message name="Management.UserManagement.change_my_passwordResponse">
+</message>
+
+<message name="Management.UserManagement.is_locked_outRequest">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.UserManagement.is_locked_outResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="Management.UserManagement.reset_locked_outRequest">
+	<part name="user_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.UserManagement.reset_locked_outResponse">
+</message>
+
+<message name="Management.UserManagement.get_versionRequest">
+</message>
+<message name="Management.UserManagement.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.UserManagementPortType">
+	<operation name="get_list">
+       	<documentation> 
+ List all users.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.get_listRequest"/>
+		<output message="tns:Management.UserManagement.get_listResponse"/>
+	</operation>
+	<operation name="create_user">
+	<documentation> 
+ Note: this method is deprecated; please use create_user_3 and associated data.
+ (home directory, user id, and group id are now computed by the system, and
+ there is now a choice of whether the password is encrypted)
+
+ Create the specified new users.
+
+ Note: as of v10.1.0, this method will silently ignore any
+ of user id, group id, and home directory passed in.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.create_userRequest"/>
+		<output message="tns:Management.UserManagement.create_userResponse"/>
+	</operation>
+	<operation name="create_user_2">
+	<documentation> 
+ Note: this method is deprecated; please use create_user_3 and associated data.
+ (home directory, user id, and group id are now computed by the system)
+
+ Create the specified new users.
+
+ Note: as of v10.1.0, this method will silently ignore any
+ of user id, group id, and home directory passed in.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.create_user_2Request"/>
+		<output message="tns:Management.UserManagement.create_user_2Response"/>
+	</operation>
+	<operation name="create_user_3">
+	<documentation> 
+ Create the specified new users.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.create_user_3Request"/>
+		<output message="tns:Management.UserManagement.create_user_3Response"/>
+	</operation>
+	<operation name="delete_user">
+	<documentation> 
+ Delete the specified users.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.delete_userRequest"/>
+		<output message="tns:Management.UserManagement.delete_userResponse"/>
+	</operation>
+	<operation name="change_password">
+	<documentation>
+ Change the user's password.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.change_passwordRequest"/>
+		<output message="tns:Management.UserManagement.change_passwordResponse"/>
+	</operation>
+	<operation name="change_password_2">
+	<documentation>
+ Change the user's password.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.change_password_2Request"/>
+		<output message="tns:Management.UserManagement.change_password_2Response"/>
+	</operation>
+	<operation name="get_encrypted_password">
+	<documentation> 
+ Gets the encrypted passwords of the specified users.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.get_encrypted_passwordRequest"/>
+		<output message="tns:Management.UserManagement.get_encrypted_passwordResponse"/>
+	</operation>
+	<operation name="get_role">
+	<documentation> 
+ This method is now deprecated.  Please use get_user_permission in
+ its stead, which uses a larger concept of user roles.
+
+ Gets the roles of the specified users.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.get_roleRequest"/>
+		<output message="tns:Management.UserManagement.get_roleResponse"/>
+	</operation>
+	<operation name="set_role">
+	<documentation>
+ This method is now deprecated.  Please use set_user_permission in
+ its stead, which uses a larger concept of user roles.
+
+ Change the user's role.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.set_roleRequest"/>
+		<output message="tns:Management.UserManagement.set_roleResponse"/>
+	</operation>
+	<operation name="get_home_directory">
+	<documentation> 
+ Get the default home directories for the given usernames.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.get_home_directoryRequest"/>
+		<output message="tns:Management.UserManagement.get_home_directoryResponse"/>
+	</operation>
+	<operation name="set_home_directory">
+	<documentation>
+ This method is deprecated, as the operation is not allowed (and will return an error).
+
+ Sets the home directories for the specified users.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.set_home_directoryRequest"/>
+		<output message="tns:Management.UserManagement.set_home_directoryResponse"/>
+	</operation>
+	<operation name="get_login_shell">
+	<documentation> 
+ Get the login shells for the given usernames.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.get_login_shellRequest"/>
+		<output message="tns:Management.UserManagement.get_login_shellResponse"/>
+	</operation>
+	<operation name="set_login_shell">
+	<documentation>
+ Sets the login shells for the specified users.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.set_login_shellRequest"/>
+		<output message="tns:Management.UserManagement.set_login_shellResponse"/>
+	</operation>
+	<operation name="get_user_id">
+	<documentation> 
+ Get the User IDs for the given usernames.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.get_user_idRequest"/>
+		<output message="tns:Management.UserManagement.get_user_idResponse"/>
+	</operation>
+	<operation name="set_user_id">
+	<documentation>
+ This method is deprecated, as the operation is not allowed (and will return an error).
+
+ Sets the User IDs for the specified users.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.set_user_idRequest"/>
+		<output message="tns:Management.UserManagement.set_user_idResponse"/>
+	</operation>
+	<operation name="get_group_id">
+	<documentation> 
+ Get the Group IDs for the given usernames.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.get_group_idRequest"/>
+		<output message="tns:Management.UserManagement.get_group_idResponse"/>
+	</operation>
+	<operation name="set_group_id">
+	<documentation>
+ This method is deprecated, as the operation is not allowed (and will return an error).
+
+ Sets the Group IDs for the specified users.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.set_group_idRequest"/>
+		<output message="tns:Management.UserManagement.set_group_idResponse"/>
+	</operation>
+	<operation name="set_authentication_method">
+	<documentation>
+ Sets the authentication method that the system will use to authenticate users.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.set_authentication_methodRequest"/>
+		<output message="tns:Management.UserManagement.set_authentication_methodResponse"/>
+	</operation>
+	<operation name="get_authentication_method">
+	<documentation> 
+ Get the authentication method that the system will use to authenticate users.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.get_authentication_methodRequest"/>
+		<output message="tns:Management.UserManagement.get_authentication_methodResponse"/>
+	</operation>
+	<operation name="get_fullname">
+	<documentation> 
+ Get the full names for the given users.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.get_fullnameRequest"/>
+		<output message="tns:Management.UserManagement.get_fullnameResponse"/>
+	</operation>
+	<operation name="set_fullname">
+	<documentation>
+ Sets the full names for the specified users.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.set_fullnameRequest"/>
+		<output message="tns:Management.UserManagement.set_fullnameResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of users.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.set_descriptionRequest"/>
+		<output message="tns:Management.UserManagement.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of users.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.get_descriptionRequest"/>
+		<output message="tns:Management.UserManagement.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_default_role">
+	<documentation> 
+ Get the default user role for the device.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.get_default_roleRequest"/>
+		<output message="tns:Management.UserManagement.get_default_roleResponse"/>
+	</operation>
+	<operation name="set_default_role">
+	<documentation>
+ Sets the default user role for the device if the user does not have an explicit role.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.set_default_roleRequest"/>
+		<output message="tns:Management.UserManagement.set_default_roleResponse"/>
+	</operation>
+	<operation name="get_default_partition">
+	<documentation> 
+ Get the default user partition for the device.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.get_default_partitionRequest"/>
+		<output message="tns:Management.UserManagement.get_default_partitionResponse"/>
+	</operation>
+	<operation name="set_default_partition">
+	<documentation>
+ Sets the default user partition for the device if the user does not have an explicit partition.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.set_default_partitionRequest"/>
+		<output message="tns:Management.UserManagement.set_default_partitionResponse"/>
+	</operation>
+	<operation name="get_remote_console_access">
+	<documentation> 
+ Get the user remote console access for the device.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.get_remote_console_accessRequest"/>
+		<output message="tns:Management.UserManagement.get_remote_console_accessResponse"/>
+	</operation>
+	<operation name="set_remote_console_access">
+	<documentation>
+ Sets the user remote console access for the device if the user does not have an explicit remote console access.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.set_remote_console_accessRequest"/>
+		<output message="tns:Management.UserManagement.set_remote_console_accessResponse"/>
+	</operation>
+	<operation name="get_home_partition">
+	<documentation> 
+ Gets the home partitions of the specified users.  This
+ method gets the partition the user is defined in, rather
+ than the partition a user may have a role in.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.get_home_partitionRequest"/>
+		<output message="tns:Management.UserManagement.get_home_partitionResponse"/>
+	</operation>
+	<operation name="get_user_permission">
+	<documentation> 
+ Gets the permissions of the specified users. The permission basically
+ indicates what role a user has on a given partition.  A user could have
+ one role on a partition, and a different role on another partition, hence
+ the return list is a sequence of sequence.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.get_user_permissionRequest"/>
+		<output message="tns:Management.UserManagement.get_user_permissionResponse"/>
+	</operation>
+	<operation name="set_user_permission">
+	<documentation>
+ Sets the permissions of the specified users. The permission basically
+ indicates what role a user has on a given partition. A user could have
+ one role on a partition, and a different role on another partition, hence
+ the permission list is a sequence of sequence.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.set_user_permissionRequest"/>
+		<output message="tns:Management.UserManagement.set_user_permissionResponse"/>
+	</operation>
+	<operation name="get_my_permission">
+	<documentation> 
+ Gets the credentials of the user making the request.  This
+ is useful in getting your own permission information
+ (regardless of which partitions you may otherwise
+ read). The results indicate what role you have on a what
+ partitions.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.get_my_permissionRequest"/>
+		<output message="tns:Management.UserManagement.get_my_permissionResponse"/>
+	</operation>
+	<operation name="change_my_password">
+	<documentation>
+ Change the password of the user making the request.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.change_my_passwordRequest"/>
+		<output message="tns:Management.UserManagement.change_my_passwordResponse"/>
+	</operation>
+	<operation name="is_locked_out">
+	<documentation>
+ Checks to see if a user is locked out due to exceeding the maximum number of
+ allowed login failures.  Return whether the user is locked out.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.is_locked_outRequest"/>
+		<output message="tns:Management.UserManagement.is_locked_outResponse"/>
+	</operation>
+	<operation name="reset_locked_out">
+	<documentation>
+ Resets the lockout status of a user that has exceeded the maximum number of
+ allowed login failures.
+ Unlocks all users provided in user_names unless an error occurs where it
+ may unlock up to that user that caused the error.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.reset_locked_outRequest"/>
+		<output message="tns:Management.UserManagement.reset_locked_outResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Management.UserManagement.get_versionRequest"/>
+		<output message="tns:Management.UserManagement.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.UserManagementBinding" type="tns:Management.UserManagementPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation> 
+ List all users.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_user">
+	<documentation> 
+ Note: this method is deprecated; please use create_user_3 and associated data.
+ (home directory, user id, and group id are now computed by the system, and
+ there is now a choice of whether the password is encrypted)
+
+ Create the specified new users.
+
+ Note: as of v10.1.0, this method will silently ignore any
+ of user id, group id, and home directory passed in.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_user_2">
+	<documentation> 
+ Note: this method is deprecated; please use create_user_3 and associated data.
+ (home directory, user id, and group id are now computed by the system)
+
+ Create the specified new users.
+
+ Note: as of v10.1.0, this method will silently ignore any
+ of user id, group id, and home directory passed in.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_user_3">
+	<documentation> 
+ Create the specified new users.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_user">
+	<documentation> 
+ Delete the specified users.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="change_password">
+	<documentation>
+ Change the user's password.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="change_password_2">
+	<documentation>
+ Change the user's password.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_encrypted_password">
+	<documentation> 
+ Gets the encrypted passwords of the specified users.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_role">
+	<documentation> 
+ This method is now deprecated.  Please use get_user_permission in
+ its stead, which uses a larger concept of user roles.
+
+ Gets the roles of the specified users.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_role">
+	<documentation>
+ This method is now deprecated.  Please use set_user_permission in
+ its stead, which uses a larger concept of user roles.
+
+ Change the user's role.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_home_directory">
+	<documentation> 
+ Get the default home directories for the given usernames.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_home_directory">
+	<documentation>
+ This method is deprecated, as the operation is not allowed (and will return an error).
+
+ Sets the home directories for the specified users.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_login_shell">
+	<documentation> 
+ Get the login shells for the given usernames.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_login_shell">
+	<documentation>
+ Sets the login shells for the specified users.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_user_id">
+	<documentation> 
+ Get the User IDs for the given usernames.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_user_id">
+	<documentation>
+ This method is deprecated, as the operation is not allowed (and will return an error).
+
+ Sets the User IDs for the specified users.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_group_id">
+	<documentation> 
+ Get the Group IDs for the given usernames.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_group_id">
+	<documentation>
+ This method is deprecated, as the operation is not allowed (and will return an error).
+
+ Sets the Group IDs for the specified users.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_authentication_method">
+	<documentation>
+ Sets the authentication method that the system will use to authenticate users.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_authentication_method">
+	<documentation> 
+ Get the authentication method that the system will use to authenticate users.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fullname">
+	<documentation> 
+ Get the full names for the given users.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fullname">
+	<documentation>
+ Sets the full names for the specified users.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of users.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of users.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_default_role">
+	<documentation> 
+ Get the default user role for the device.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_default_role">
+	<documentation>
+ Sets the default user role for the device if the user does not have an explicit role.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_default_partition">
+	<documentation> 
+ Get the default user partition for the device.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_default_partition">
+	<documentation>
+ Sets the default user partition for the device if the user does not have an explicit partition.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_remote_console_access">
+	<documentation> 
+ Get the user remote console access for the device.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_remote_console_access">
+	<documentation>
+ Sets the user remote console access for the device if the user does not have an explicit remote console access.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_home_partition">
+	<documentation> 
+ Gets the home partitions of the specified users.  This
+ method gets the partition the user is defined in, rather
+ than the partition a user may have a role in.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_user_permission">
+	<documentation> 
+ Gets the permissions of the specified users. The permission basically
+ indicates what role a user has on a given partition.  A user could have
+ one role on a partition, and a different role on another partition, hence
+ the return list is a sequence of sequence.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_user_permission">
+	<documentation>
+ Sets the permissions of the specified users. The permission basically
+ indicates what role a user has on a given partition. A user could have
+ one role on a partition, and a different role on another partition, hence
+ the permission list is a sequence of sequence.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_my_permission">
+	<documentation> 
+ Gets the credentials of the user making the request.  This
+ is useful in getting your own permission information
+ (regardless of which partitions you may otherwise
+ read). The results indicate what role you have on a what
+ partitions.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="change_my_password">
+	<documentation>
+ Change the password of the user making the request.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="is_locked_out">
+	<documentation>
+ Checks to see if a user is locked out due to exceeding the maximum number of
+ allowed login failures.  Return whether the user is locked out.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="reset_locked_out">
+	<documentation>
+ Resets the lockout status of a user that has exceeded the maximum number of
+ allowed login failures.
+ Unlocks all users provided in user_names unless an error occurs where it
+ may unlock up to that user that caused the error.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/UserManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/UserManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.UserManagement">
+	<documentation>
+
+ The UserManagement interface deals with adding/deleting and 
+ modifying users and user permission.
+        	</documentation>
+	<port name="Management.UserManagementPort" binding="tns:Management.UserManagementBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

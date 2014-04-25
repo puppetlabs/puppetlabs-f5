@@ -1,0 +1,2370 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.OCSPResponder"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Management.OCSPDigestMethod">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="OCSP_DIGEST_METHOD_SHA1">
+					<xsd:annotation>
+						<xsd:documentation>OCSP_DIGEST_METHOD_SHA1</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="OCSP_DIGEST_METHOD_MD5">
+					<xsd:annotation>
+						<xsd:documentation>OCSP_DIGEST_METHOD_MD5</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.OCSPResponder.SignInformation">
+			<xsd:sequence>
+				<xsd:element name="signer_certificate" type="xsd:string"/>
+				<xsd:element name="private_key" type="xsd:string"/>
+				<xsd:element name="pass_phrase" type="xsd:string"/>
+				<xsd:element name="other_certificate" type="xsd:string"/>
+				<xsd:element name="digest_method" type="tns:Management.OCSPDigestMethod"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.OCSPResponder.ResponderDefinitionSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.OCSPResponder.ResponderDefinition[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.OCSPResponder.ResponderDefinition">
+			<xsd:sequence>
+				<xsd:element name="name" type="xsd:string"/>
+				<xsd:element name="url" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.OCSPResponder.SignInformationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.OCSPResponder.SignInformation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.OCSPDigestMethodSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.OCSPDigestMethod[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.OCSPResponder.get_listRequest">
+</message>
+<message name="Management.OCSPResponder.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.createRequest">
+	<part name="responders" type="tns:Management.OCSPResponder.ResponderDefinitionSequence"/>
+</message>
+<message name="Management.OCSPResponder.createResponse">
+</message>
+
+<message name="Management.OCSPResponder.delete_responderRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.delete_responderResponse">
+</message>
+
+<message name="Management.OCSPResponder.delete_all_respondersRequest">
+</message>
+<message name="Management.OCSPResponder.delete_all_respondersResponse">
+</message>
+
+<message name="Management.OCSPResponder.set_urlRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="urls" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_urlResponse">
+</message>
+
+<message name="Management.OCSPResponder.get_urlRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_urlResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_ca_fileRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="ca_files" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_ca_fileResponse">
+</message>
+
+<message name="Management.OCSPResponder.get_ca_fileRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_ca_fileResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_ca_file_v2Request">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="ca_files" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_ca_file_v2Response">
+</message>
+
+<message name="Management.OCSPResponder.get_ca_file_v2Request">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_ca_file_v2Response">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_ca_pathRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="ca_paths" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_ca_pathResponse">
+</message>
+
+<message name="Management.OCSPResponder.get_ca_pathRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_ca_pathResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_other_certificate_fileRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="other_files" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_other_certificate_fileResponse">
+</message>
+
+<message name="Management.OCSPResponder.get_other_certificate_fileRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_other_certificate_fileResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_other_certificate_file_v2Request">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="other_files" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_other_certificate_file_v2Response">
+</message>
+
+<message name="Management.OCSPResponder.get_other_certificate_file_v2Request">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_other_certificate_file_v2Response">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_trust_other_certificate_stateRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_trust_other_certificate_stateResponse">
+</message>
+
+<message name="Management.OCSPResponder.get_trust_other_certificate_stateRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_trust_other_certificate_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_va_fileRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="va_files" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_va_fileResponse">
+</message>
+
+<message name="Management.OCSPResponder.get_va_fileRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_va_fileResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_va_file_v2Request">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="va_files" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_va_file_v2Response">
+</message>
+
+<message name="Management.OCSPResponder.get_va_file_v2Request">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_va_file_v2Response">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_signing_informationRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="signers" type="tns:Management.OCSPResponder.SignInformationSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_signing_informationResponse">
+</message>
+
+<message name="Management.OCSPResponder.get_signing_informationRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_signing_informationResponse">
+	<part name="return" type="tns:Management.OCSPResponder.SignInformationSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_signing_information_v2Request">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="signers" type="tns:Management.OCSPResponder.SignInformationSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_signing_information_v2Response">
+</message>
+
+<message name="Management.OCSPResponder.get_signing_information_v2Request">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_signing_information_v2Response">
+	<part name="return" type="tns:Management.OCSPResponder.SignInformationSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_certificate_id_digest_methodRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="digest_methods" type="tns:Management.OCSPDigestMethodSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_certificate_id_digest_methodResponse">
+</message>
+
+<message name="Management.OCSPResponder.get_certificate_id_digest_methodRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_certificate_id_digest_methodResponse">
+	<part name="return" type="tns:Management.OCSPDigestMethodSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_ignore_aia_stateRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_ignore_aia_stateResponse">
+</message>
+
+<message name="Management.OCSPResponder.get_ignore_aia_stateRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_ignore_aia_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_allow_additional_certificate_stateRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_allow_additional_certificate_stateResponse">
+</message>
+
+<message name="Management.OCSPResponder.get_allow_additional_certificate_stateRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_allow_additional_certificate_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_verification_stateRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_verification_stateResponse">
+</message>
+
+<message name="Management.OCSPResponder.get_verification_stateRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_verification_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_intern_stateRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_intern_stateResponse">
+</message>
+
+<message name="Management.OCSPResponder.get_intern_stateRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_intern_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_nonce_stateRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_nonce_stateResponse">
+</message>
+
+<message name="Management.OCSPResponder.get_nonce_stateRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_nonce_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_signature_verification_stateRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_signature_verification_stateResponse">
+</message>
+
+<message name="Management.OCSPResponder.get_signature_verification_stateRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_signature_verification_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_certificate_verification_stateRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_certificate_verification_stateResponse">
+</message>
+
+<message name="Management.OCSPResponder.get_certificate_verification_stateRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_certificate_verification_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_chain_stateRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_chain_stateResponse">
+</message>
+
+<message name="Management.OCSPResponder.get_chain_stateRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_chain_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_certificate_check_stateRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_certificate_check_stateResponse">
+</message>
+
+<message name="Management.OCSPResponder.get_certificate_check_stateRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_certificate_check_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_explicit_stateRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_explicit_stateResponse">
+</message>
+
+<message name="Management.OCSPResponder.get_explicit_stateRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_explicit_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_validity_periodRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="ranges" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_validity_periodResponse">
+</message>
+
+<message name="Management.OCSPResponder.get_validity_periodRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_validity_periodResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_status_ageRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="ages" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_status_ageResponse">
+</message>
+
+<message name="Management.OCSPResponder.get_status_ageRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_status_ageResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.set_descriptionRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.set_descriptionResponse">
+</message>
+
+<message name="Management.OCSPResponder.get_descriptionRequest">
+	<part name="responders" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.OCSPResponder.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.OCSPResponder.get_versionRequest">
+</message>
+<message name="Management.OCSPResponder.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.OCSPResponderPortType">
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all OCSP responders.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_listRequest"/>
+		<output message="tns:Management.OCSPResponder.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates the specified OCSP responders.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.createRequest"/>
+		<output message="tns:Management.OCSPResponder.createResponse"/>
+	</operation>
+	<operation name="delete_responder">
+	<documentation>
+ Deletes the specified OCSP responders.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.delete_responderRequest"/>
+		<output message="tns:Management.OCSPResponder.delete_responderResponse"/>
+	</operation>
+	<operation name="delete_all_responders">
+	<documentation>
+ Deletes all OCSP responders.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.delete_all_respondersRequest"/>
+		<output message="tns:Management.OCSPResponder.delete_all_respondersResponse"/>
+	</operation>
+	<operation name="set_url">
+	<documentation>
+ Sets the URLs of the responders.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_urlRequest"/>
+		<output message="tns:Management.OCSPResponder.set_urlResponse"/>
+	</operation>
+	<operation name="get_url">
+	<documentation>
+ Gets the URL or hostnames of the responders.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_urlRequest"/>
+		<output message="tns:Management.OCSPResponder.get_urlResponse"/>
+	</operation>
+	<operation name="set_ca_file">
+	<documentation>
+ Certificate files are officially managed as certificate file
+ objects via the set_ca_file_v2 method and
+ Management::KeyCertificate interface.  Thus this method has been
+ deprecated.
+
+ Sets the names of the trusted CA certificate files used by the
+ responders  to verify the signature on the OCSP response.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_ca_fileRequest"/>
+		<output message="tns:Management.OCSPResponder.set_ca_fileResponse"/>
+	</operation>
+	<operation name="get_ca_file">
+	<documentation>
+ Certificate files are officially managed as certificate file
+ objects via the get_ca_file_v2 method and
+ Management::KeyCertificate interface.  Thus this method has been
+ deprecated.
+
+ Gets the names of the trusted CA certificate files used by the
+ responders to verify the signature on the OCSP response.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_ca_fileRequest"/>
+		<output message="tns:Management.OCSPResponder.get_ca_fileResponse"/>
+	</operation>
+	<operation name="set_ca_file_v2">
+	<documentation>
+ Sets the names of the certificate file objects holding the trusted
+ CA certificates used by the responders to verify the signature on
+ the OCSP response.
+
+ Certificate file objects are managed by the
+ Management::KeyCertificate interface.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_ca_file_v2Request"/>
+		<output message="tns:Management.OCSPResponder.set_ca_file_v2Response"/>
+	</operation>
+	<operation name="get_ca_file_v2">
+	<documentation>
+ Gets the names of the certificate file objects holding the trusted
+ CA certificates used by the responders to verify the signature on
+ the OCSP response.
+
+ Certificate file objects are managed by the
+ Management::KeyCertificate interface.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_ca_file_v2Request"/>
+		<output message="tns:Management.OCSPResponder.get_ca_file_v2Response"/>
+	</operation>
+	<operation name="set_ca_path">
+	<documentation>
+ Sets the paths of the trusted CA certificates used by the responders
+ to verify the signature on the OCSP response.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_ca_pathRequest"/>
+		<output message="tns:Management.OCSPResponder.set_ca_pathResponse"/>
+	</operation>
+	<operation name="get_ca_path">
+	<documentation>
+ Gets the paths of the trusted CA certificates used by the responders
+ to verify the signature on the OCSP response.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_ca_pathRequest"/>
+		<output message="tns:Management.OCSPResponder.get_ca_pathResponse"/>
+	</operation>
+	<operation name="set_other_certificate_file">
+	<documentation>
+ Certificate files are officially managed as certificate file
+ objects via the set_other_certificate_file_v2 method and
+ Management::KeyCertificate interface.  Thus this method has been
+ deprecated.
+
+ Sets the files containing additional certificates to search when attempting to locate
+ the OCSP response signing certificate. Some responders omit the actual signer's
+ certificates from the response: this option can be used to supply the necessary
+ certificates in such cases.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_other_certificate_fileRequest"/>
+		<output message="tns:Management.OCSPResponder.set_other_certificate_fileResponse"/>
+	</operation>
+	<operation name="get_other_certificate_file">
+	<documentation>
+ Certificate files are officially managed as certificate file
+ objects via the get_other_certificate_file_v2 method and
+ Management::KeyCertificate interface.  Thus this method has been
+ deprecated.
+
+ Gets the files containing additional certificates to search when attempting to locate
+ the OCSP response signing certificate. Some responders omit the actual signer's
+ certificates from the response: this option can be used to supply the necessary
+ certificates in such cases.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_other_certificate_fileRequest"/>
+		<output message="tns:Management.OCSPResponder.get_other_certificate_fileResponse"/>
+	</operation>
+	<operation name="set_other_certificate_file_v2">
+	<documentation>
+ Sets the names of the certificate file objects containing
+ additional certificates to search when attempting to locate
+ the OCSP response signing certificate. Some responders omit
+ the actual signer's certificates from the response: this
+ option can be used to supply the necessary certificates in
+ such cases.
+
+ Certificate file objects are managed by the
+ Management::KeyCertificate interface.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_other_certificate_file_v2Request"/>
+		<output message="tns:Management.OCSPResponder.set_other_certificate_file_v2Response"/>
+	</operation>
+	<operation name="get_other_certificate_file_v2">
+	<documentation>
+ Gets the names of the certificate file objects containing
+ additional certificates to search when attempting to locate
+ the OCSP response signing certificate. Some responders omit
+ the actual signer's certificates from the response: this
+ option can be used to supply the necessary certificates in
+ such cases.
+
+ Certificate file objects are managed by the
+ Management::KeyCertificate interface.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_other_certificate_file_v2Request"/>
+		<output message="tns:Management.OCSPResponder.get_other_certificate_file_v2Response"/>
+	</operation>
+	<operation name="set_trust_other_certificate_state">
+	<documentation>
+ Sets the states indicating whether to be explicitly trust the other certificates specified
+ via set_other_certificate_file and no additional checks will be performed on them.
+ This is useful when the complete responder certificate chain is not available or
+ trusting a root CA is not appropriate.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_trust_other_certificate_stateRequest"/>
+		<output message="tns:Management.OCSPResponder.set_trust_other_certificate_stateResponse"/>
+	</operation>
+	<operation name="get_trust_other_certificate_state">
+	<documentation>
+ Gets the states indicating whether to be explicitly trust the other certificates specified
+ via set_other_certificate_file and no additional checks will be performed on them.
+ This is useful when the complete responder certificate chain is not available or
+ trusting a root CA is not appropriate.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_trust_other_certificate_stateRequest"/>
+		<output message="tns:Management.OCSPResponder.get_trust_other_certificate_stateResponse"/>
+	</operation>
+	<operation name="set_va_file">
+	<documentation>
+ Certificate files are officially managed as certificate file
+ objects via the set_va_file_v2 method and
+ Management::KeyCertificate interface.  Thus this method has been
+ deprecated.
+
+ Sets the names of the files containing explicitly trusted responder
+ certificates.  This functionality is equivalent to having the other
+ certificates specified via set_other_certificate_file, and setting
+ the state via set_trust_other_certificate_state.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_va_fileRequest"/>
+		<output message="tns:Management.OCSPResponder.set_va_fileResponse"/>
+	</operation>
+	<operation name="get_va_file">
+	<documentation>
+ Certificate files are officially managed as certificate file
+ objects via the get_va_file_v2 method and
+ Management::KeyCertificate interface.  Thus this method has been
+ deprecated.
+
+ Gets the names of the files containing explicitly trusted responder
+ certificates.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_va_fileRequest"/>
+		<output message="tns:Management.OCSPResponder.get_va_fileResponse"/>
+	</operation>
+	<operation name="set_va_file_v2">
+	<documentation>
+ Sets the name of the certificate file objects containing explicitly
+ trusted responder certificates.  This functionality is equivalent
+ to having the other certificates specified via
+ set_other_certificate_file, and setting the state via
+ set_trust_other_certificate_state.
+
+ Certificate file objects are managed by the
+ Management::KeyCertificate interface.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_va_file_v2Request"/>
+		<output message="tns:Management.OCSPResponder.set_va_file_v2Response"/>
+	</operation>
+	<operation name="get_va_file_v2">
+	<documentation>
+ Gets the names of the certificate file objects containing
+ explicitly trusted responder certificates.
+
+ Certificate file objects are managed by the
+ Management::KeyCertificate interface.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_va_file_v2Request"/>
+		<output message="tns:Management.OCSPResponder.get_va_file_v2Response"/>
+	</operation>
+	<operation name="set_signing_information">
+	<documentation>
+ Certificate and key files are officially managed as
+ certificate and certificate key file objects via the
+ set_signing_information_v2 method and
+ Management::KeyCertificate interface.  Thus this method has
+ been deprecated.
+
+ Sets the signing information necessary to sign the OCSP requests.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_signing_informationRequest"/>
+		<output message="tns:Management.OCSPResponder.set_signing_informationResponse"/>
+	</operation>
+	<operation name="get_signing_information">
+	<documentation>
+ Certificate and key files are officially managed as file
+ objects via the get_signing_information_v2 method and
+ Management::KeyCertificate interface.  Thus this method has
+ been deprecated.
+
+ Gets the signing information necessary to sign the OCSP requests.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_signing_informationRequest"/>
+		<output message="tns:Management.OCSPResponder.get_signing_informationResponse"/>
+	</operation>
+	<operation name="set_signing_information_v2">
+	<documentation>
+ Sets the signing information necessary to sign the OCSP requests.
+
+ Certificate and certificate key file objects are managed by the
+ Management::KeyCertificate interface.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_signing_information_v2Request"/>
+		<output message="tns:Management.OCSPResponder.set_signing_information_v2Response"/>
+	</operation>
+	<operation name="get_signing_information_v2">
+	<documentation>
+ Gets the signing information necessary to sign the OCSP requests.
+
+ Certificate and certificate key file objects are managed by the
+ Management::KeyCertificate interface.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_signing_information_v2Request"/>
+		<output message="tns:Management.OCSPResponder.get_signing_information_v2Response"/>
+	</operation>
+	<operation name="set_certificate_id_digest_method">
+	<documentation>
+ Sets the digest algorithm for hashing the certificate information used to
+ create the certificate ID that is sent to the responder.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_certificate_id_digest_methodRequest"/>
+		<output message="tns:Management.OCSPResponder.set_certificate_id_digest_methodResponse"/>
+	</operation>
+	<operation name="get_certificate_id_digest_method">
+	<documentation>
+ Gets the digest algorithm for hashing the certificate information used to
+ create the certificate ID that is sent to the responder.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_certificate_id_digest_methodRequest"/>
+		<output message="tns:Management.OCSPResponder.get_certificate_id_digest_methodResponse"/>
+	</operation>
+	<operation name="set_ignore_aia_state">
+	<documentation>
+ Sets the states that if true, then always use the URL specified in the configuration file, and ignore
+ any URL contained in the client certificates' authorityInfoAccess OCSP field. If this option is not
+ set (the default) AND the client certificate has a valid AIA OCSP field set, then first attempt to
+ connect to the responder in the client's AIA OCSP field, and fall back to the URL in the responder
+ definition if that server is not available. See RFC2560 for more detail of the authorityInfoAccess
+ x509 extension and its intended usage.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_ignore_aia_stateRequest"/>
+		<output message="tns:Management.OCSPResponder.set_ignore_aia_stateResponse"/>
+	</operation>
+	<operation name="get_ignore_aia_state">
+	<documentation>
+ Gets the states that if true, then always use the URL specified in the configuration file, and ignore
+ any URL contained in the client certificates' authorityInfoAccess OCSP field. If this option is not
+ set (the default) AND the client certificate has a valid AIA OCSP field set, then first attempt to
+ connect to the responder in the client's AIA OCSP field, and fall back to the URL in the responder
+ definition if that server is not available. See RFC2560 for more detail of the authorityInfoAccess
+ x509 extension and its intended usage.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_ignore_aia_stateRequest"/>
+		<output message="tns:Management.OCSPResponder.get_ignore_aia_stateResponse"/>
+	</operation>
+	<operation name="set_allow_additional_certificate_state">
+	<documentation>
+ Sets the states that indicate whether to allow the addition of certificates to the OCSP request.
+ This option should normally only be used for testing purposes.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_allow_additional_certificate_stateRequest"/>
+		<output message="tns:Management.OCSPResponder.set_allow_additional_certificate_stateResponse"/>
+	</operation>
+	<operation name="get_allow_additional_certificate_state">
+	<documentation>
+ Gets the states that that indicate whether to allow the addition of certificates to the OCSP request.
+ This option should normally only be used for testing purposes.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_allow_additional_certificate_stateRequest"/>
+		<output message="tns:Management.OCSPResponder.get_allow_additional_certificate_stateResponse"/>
+	</operation>
+	<operation name="set_verification_state">
+	<documentation>
+ Sets the states that indicate whether to attempt to verify the OCSP response signature or the nonce
+ values. This option will normally only be used for debugging since it disables all verification of
+ the responders certificate.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_verification_stateRequest"/>
+		<output message="tns:Management.OCSPResponder.set_verification_stateResponse"/>
+	</operation>
+	<operation name="get_verification_state">
+	<documentation>
+ Gets the states that indicate whether to attempt to verify the OCSP response signature or the nonce
+ values. This option will normally only be used for debugging since it disables all verification of
+ the responders certificate.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_verification_stateRequest"/>
+		<output message="tns:Management.OCSPResponder.get_verification_stateResponse"/>
+	</operation>
+	<operation name="set_intern_state">
+	<documentation>
+ Sets the states that indicate whether to ignore certificates contained in the OCSP response when searching
+ for the signers certificate. With this option the signers certificate must be specified with either
+ the -verify_certs or -VAfile options.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_intern_stateRequest"/>
+		<output message="tns:Management.OCSPResponder.set_intern_stateResponse"/>
+	</operation>
+	<operation name="get_intern_state">
+	<documentation>
+ Gets the states that that indicate whether to ignore certificates contained in the OCSP response when searching
+ for the signers certificate. With this option the signers certificate must be specified with either
+ the -verify_certs or -VAfile options.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_intern_stateRequest"/>
+		<output message="tns:Management.OCSPResponder.get_intern_stateResponse"/>
+	</operation>
+	<operation name="set_nonce_state">
+	<documentation>
+ Sets the state that indicates whether to send a nonce in the OCSP request.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_nonce_stateRequest"/>
+		<output message="tns:Management.OCSPResponder.set_nonce_stateResponse"/>
+	</operation>
+	<operation name="get_nonce_state">
+	<documentation>
+ Gets the state that indicates whether to send a nonce in the OCSP request.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_nonce_stateRequest"/>
+		<output message="tns:Management.OCSPResponder.get_nonce_stateResponse"/>
+	</operation>
+	<operation name="set_signature_verification_state">
+	<documentation>
+ Sets the states that indicate whether to check the signature on the OCSP response. Since this option
+ tolerates invalid signatures on OCSP responses it will normally only be used for testing purposes.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_signature_verification_stateRequest"/>
+		<output message="tns:Management.OCSPResponder.set_signature_verification_stateResponse"/>
+	</operation>
+	<operation name="get_signature_verification_state">
+	<documentation>
+ Gets the states that indicate whether to check the signature on the OCSP response. Since this option
+ tolerates invalid signatures on OCSP responses it will normally only be used for testing purposes.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_signature_verification_stateRequest"/>
+		<output message="tns:Management.OCSPResponder.get_signature_verification_stateResponse"/>
+	</operation>
+	<operation name="set_certificate_verification_state">
+	<documentation>
+ Sets the states that indicate whether to check the certificates in the OCSP responses.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_certificate_verification_stateRequest"/>
+		<output message="tns:Management.OCSPResponder.set_certificate_verification_stateResponse"/>
+	</operation>
+	<operation name="get_certificate_verification_state">
+	<documentation>
+ Gets the states that indicate whether to check the certificates in the OCSP responses.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_certificate_verification_stateRequest"/>
+		<output message="tns:Management.OCSPResponder.get_certificate_verification_stateResponse"/>
+	</operation>
+	<operation name="set_chain_state">
+	<documentation>
+ Sets the states that indicate whether to use certificates in the response as additional untrusted CA
+ certificates.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_chain_stateRequest"/>
+		<output message="tns:Management.OCSPResponder.set_chain_stateResponse"/>
+	</operation>
+	<operation name="get_chain_state">
+	<documentation>
+ Gets the states that indicate whether to use certificates in the response as additional untrusted CA
+ certificates.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_chain_stateRequest"/>
+		<output message="tns:Management.OCSPResponder.get_chain_stateResponse"/>
+	</operation>
+	<operation name="set_certificate_check_state">
+	<documentation>
+ Sets the states that indicate whether to perform any additional checks on the OCSP response signers
+ certificate. If false, do not make any checks to see if the signers certificate is authorized to
+ provide the necessary status information: as a result this option should only be used for testing
+ purposes.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_certificate_check_stateRequest"/>
+		<output message="tns:Management.OCSPResponder.set_certificate_check_stateResponse"/>
+	</operation>
+	<operation name="get_certificate_check_state">
+	<documentation>
+ Gets the states that indicate whether to perform any additional checks on the OCSP response signers
+ certificate. If false, do not make any checks to see if the signers certificate is authorized to
+ provide the necessary status information: as a result this option should only be used for testing
+ purposes.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_certificate_check_stateRequest"/>
+		<output message="tns:Management.OCSPResponder.get_certificate_check_stateResponse"/>
+	</operation>
+	<operation name="set_explicit_state">
+	<documentation>
+ Sets the states that indicate whether to explicitly trust the OCSP response signers certificate as
+ authorized for OCSP response signing.  Specifying this option causes a response to be untrusted if
+ the signers certificate does not contain the "OCSPSigning" extension.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_explicit_stateRequest"/>
+		<output message="tns:Management.OCSPResponder.set_explicit_stateResponse"/>
+	</operation>
+	<operation name="get_explicit_state">
+	<documentation>
+ Gets the states that indicate whether to explicitly trust the OCSP response signers certificate as
+ authorized for OCSP response signing.  Specifying this option causes a response to be untrusted if
+ the signers certificate does not contain the "OCSPSigning" extension.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_explicit_stateRequest"/>
+		<output message="tns:Management.OCSPResponder.get_explicit_stateResponse"/>
+	</operation>
+	<operation name="set_validity_period">
+	<documentation>
+ Sets the range of times, in seconds, which will be tolerated in an OCSP response. Each certificate
+ status response includes a notBefore time and an optional notAfter time. The current time should fall
+ between these two values, but the interval between the two times may be only a few seconds. In practice
+ the OCSP responder and clients clocks may not be precisely synchronized and so such a check may fail.
+ To avoid this the -validity_period option can be used to specify an acceptable error range in seconds,
+ the default value is 300 seconds.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_validity_periodRequest"/>
+		<output message="tns:Management.OCSPResponder.set_validity_periodResponse"/>
+	</operation>
+	<operation name="get_validity_period">
+	<documentation>
+ Gets the range of times, in seconds, which will be tolerated in an OCSP response. Each certificate
+ status response includes a notBefore time and an optional notAfter time. The current time should fall
+ between these two values, but the interval between the two times may be only a few seconds. In practice
+ the OCSP responder and clients clocks may not be precisely synchronized and so such a check may fail.
+ To avoid this the -validity_period option can be used to specify an acceptable error range in seconds,
+ the default value is 300 seconds.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_validity_periodRequest"/>
+		<output message="tns:Management.OCSPResponder.get_validity_periodResponse"/>
+	</operation>
+	<operation name="set_status_age">
+	<documentation>
+ Sets the status ages (sec) for the OCSP response. If the notAfter time is omitted from a response then
+ this means that new status information is immediately available. In this case the age of the
+ notBefore field is checked to see it is not older than age seconds old. By default this additional
+ check is not performed when -status_age is not specified.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_status_ageRequest"/>
+		<output message="tns:Management.OCSPResponder.set_status_ageResponse"/>
+	</operation>
+	<operation name="get_status_age">
+	<documentation>
+ Gets the status ages (sec) for the OCSP response. If the notAfter time is omitted from a response then
+ this means that new status information is immediately available. In this case the age of the
+ notBefore field is checked to see it is not older than age seconds old. By default this additional
+ check is not performed when -status_age is not specified.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_status_ageRequest"/>
+		<output message="tns:Management.OCSPResponder.get_status_ageResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of OCSP responders.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.set_descriptionRequest"/>
+		<output message="tns:Management.OCSPResponder.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of OCSP responders.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_descriptionRequest"/>
+		<output message="tns:Management.OCSPResponder.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Management.OCSPResponder.get_versionRequest"/>
+		<output message="tns:Management.OCSPResponder.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.OCSPResponderBinding" type="tns:Management.OCSPResponderPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all OCSP responders.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates the specified OCSP responders.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_responder">
+	<documentation>
+ Deletes the specified OCSP responders.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_responders">
+	<documentation>
+ Deletes all OCSP responders.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_url">
+	<documentation>
+ Sets the URLs of the responders.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_url">
+	<documentation>
+ Gets the URL or hostnames of the responders.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ca_file">
+	<documentation>
+ Certificate files are officially managed as certificate file
+ objects via the set_ca_file_v2 method and
+ Management::KeyCertificate interface.  Thus this method has been
+ deprecated.
+
+ Sets the names of the trusted CA certificate files used by the
+ responders  to verify the signature on the OCSP response.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ca_file">
+	<documentation>
+ Certificate files are officially managed as certificate file
+ objects via the get_ca_file_v2 method and
+ Management::KeyCertificate interface.  Thus this method has been
+ deprecated.
+
+ Gets the names of the trusted CA certificate files used by the
+ responders to verify the signature on the OCSP response.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ca_file_v2">
+	<documentation>
+ Sets the names of the certificate file objects holding the trusted
+ CA certificates used by the responders to verify the signature on
+ the OCSP response.
+
+ Certificate file objects are managed by the
+ Management::KeyCertificate interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ca_file_v2">
+	<documentation>
+ Gets the names of the certificate file objects holding the trusted
+ CA certificates used by the responders to verify the signature on
+ the OCSP response.
+
+ Certificate file objects are managed by the
+ Management::KeyCertificate interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ca_path">
+	<documentation>
+ Sets the paths of the trusted CA certificates used by the responders
+ to verify the signature on the OCSP response.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ca_path">
+	<documentation>
+ Gets the paths of the trusted CA certificates used by the responders
+ to verify the signature on the OCSP response.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_other_certificate_file">
+	<documentation>
+ Certificate files are officially managed as certificate file
+ objects via the set_other_certificate_file_v2 method and
+ Management::KeyCertificate interface.  Thus this method has been
+ deprecated.
+
+ Sets the files containing additional certificates to search when attempting to locate
+ the OCSP response signing certificate. Some responders omit the actual signer's
+ certificates from the response: this option can be used to supply the necessary
+ certificates in such cases.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_other_certificate_file">
+	<documentation>
+ Certificate files are officially managed as certificate file
+ objects via the get_other_certificate_file_v2 method and
+ Management::KeyCertificate interface.  Thus this method has been
+ deprecated.
+
+ Gets the files containing additional certificates to search when attempting to locate
+ the OCSP response signing certificate. Some responders omit the actual signer's
+ certificates from the response: this option can be used to supply the necessary
+ certificates in such cases.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_other_certificate_file_v2">
+	<documentation>
+ Sets the names of the certificate file objects containing
+ additional certificates to search when attempting to locate
+ the OCSP response signing certificate. Some responders omit
+ the actual signer's certificates from the response: this
+ option can be used to supply the necessary certificates in
+ such cases.
+
+ Certificate file objects are managed by the
+ Management::KeyCertificate interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_other_certificate_file_v2">
+	<documentation>
+ Gets the names of the certificate file objects containing
+ additional certificates to search when attempting to locate
+ the OCSP response signing certificate. Some responders omit
+ the actual signer's certificates from the response: this
+ option can be used to supply the necessary certificates in
+ such cases.
+
+ Certificate file objects are managed by the
+ Management::KeyCertificate interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_trust_other_certificate_state">
+	<documentation>
+ Sets the states indicating whether to be explicitly trust the other certificates specified
+ via set_other_certificate_file and no additional checks will be performed on them.
+ This is useful when the complete responder certificate chain is not available or
+ trusting a root CA is not appropriate.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_trust_other_certificate_state">
+	<documentation>
+ Gets the states indicating whether to be explicitly trust the other certificates specified
+ via set_other_certificate_file and no additional checks will be performed on them.
+ This is useful when the complete responder certificate chain is not available or
+ trusting a root CA is not appropriate.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_va_file">
+	<documentation>
+ Certificate files are officially managed as certificate file
+ objects via the set_va_file_v2 method and
+ Management::KeyCertificate interface.  Thus this method has been
+ deprecated.
+
+ Sets the names of the files containing explicitly trusted responder
+ certificates.  This functionality is equivalent to having the other
+ certificates specified via set_other_certificate_file, and setting
+ the state via set_trust_other_certificate_state.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_va_file">
+	<documentation>
+ Certificate files are officially managed as certificate file
+ objects via the get_va_file_v2 method and
+ Management::KeyCertificate interface.  Thus this method has been
+ deprecated.
+
+ Gets the names of the files containing explicitly trusted responder
+ certificates.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_va_file_v2">
+	<documentation>
+ Sets the name of the certificate file objects containing explicitly
+ trusted responder certificates.  This functionality is equivalent
+ to having the other certificates specified via
+ set_other_certificate_file, and setting the state via
+ set_trust_other_certificate_state.
+
+ Certificate file objects are managed by the
+ Management::KeyCertificate interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_va_file_v2">
+	<documentation>
+ Gets the names of the certificate file objects containing
+ explicitly trusted responder certificates.
+
+ Certificate file objects are managed by the
+ Management::KeyCertificate interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_signing_information">
+	<documentation>
+ Certificate and key files are officially managed as
+ certificate and certificate key file objects via the
+ set_signing_information_v2 method and
+ Management::KeyCertificate interface.  Thus this method has
+ been deprecated.
+
+ Sets the signing information necessary to sign the OCSP requests.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_signing_information">
+	<documentation>
+ Certificate and key files are officially managed as file
+ objects via the get_signing_information_v2 method and
+ Management::KeyCertificate interface.  Thus this method has
+ been deprecated.
+
+ Gets the signing information necessary to sign the OCSP requests.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_signing_information_v2">
+	<documentation>
+ Sets the signing information necessary to sign the OCSP requests.
+
+ Certificate and certificate key file objects are managed by the
+ Management::KeyCertificate interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_signing_information_v2">
+	<documentation>
+ Gets the signing information necessary to sign the OCSP requests.
+
+ Certificate and certificate key file objects are managed by the
+ Management::KeyCertificate interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_certificate_id_digest_method">
+	<documentation>
+ Sets the digest algorithm for hashing the certificate information used to
+ create the certificate ID that is sent to the responder.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_certificate_id_digest_method">
+	<documentation>
+ Gets the digest algorithm for hashing the certificate information used to
+ create the certificate ID that is sent to the responder.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ignore_aia_state">
+	<documentation>
+ Sets the states that if true, then always use the URL specified in the configuration file, and ignore
+ any URL contained in the client certificates' authorityInfoAccess OCSP field. If this option is not
+ set (the default) AND the client certificate has a valid AIA OCSP field set, then first attempt to
+ connect to the responder in the client's AIA OCSP field, and fall back to the URL in the responder
+ definition if that server is not available. See RFC2560 for more detail of the authorityInfoAccess
+ x509 extension and its intended usage.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ignore_aia_state">
+	<documentation>
+ Gets the states that if true, then always use the URL specified in the configuration file, and ignore
+ any URL contained in the client certificates' authorityInfoAccess OCSP field. If this option is not
+ set (the default) AND the client certificate has a valid AIA OCSP field set, then first attempt to
+ connect to the responder in the client's AIA OCSP field, and fall back to the URL in the responder
+ definition if that server is not available. See RFC2560 for more detail of the authorityInfoAccess
+ x509 extension and its intended usage.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_allow_additional_certificate_state">
+	<documentation>
+ Sets the states that indicate whether to allow the addition of certificates to the OCSP request.
+ This option should normally only be used for testing purposes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_allow_additional_certificate_state">
+	<documentation>
+ Gets the states that that indicate whether to allow the addition of certificates to the OCSP request.
+ This option should normally only be used for testing purposes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_verification_state">
+	<documentation>
+ Sets the states that indicate whether to attempt to verify the OCSP response signature or the nonce
+ values. This option will normally only be used for debugging since it disables all verification of
+ the responders certificate.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_verification_state">
+	<documentation>
+ Gets the states that indicate whether to attempt to verify the OCSP response signature or the nonce
+ values. This option will normally only be used for debugging since it disables all verification of
+ the responders certificate.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_intern_state">
+	<documentation>
+ Sets the states that indicate whether to ignore certificates contained in the OCSP response when searching
+ for the signers certificate. With this option the signers certificate must be specified with either
+ the -verify_certs or -VAfile options.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_intern_state">
+	<documentation>
+ Gets the states that that indicate whether to ignore certificates contained in the OCSP response when searching
+ for the signers certificate. With this option the signers certificate must be specified with either
+ the -verify_certs or -VAfile options.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_nonce_state">
+	<documentation>
+ Sets the state that indicates whether to send a nonce in the OCSP request.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_nonce_state">
+	<documentation>
+ Gets the state that indicates whether to send a nonce in the OCSP request.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_signature_verification_state">
+	<documentation>
+ Sets the states that indicate whether to check the signature on the OCSP response. Since this option
+ tolerates invalid signatures on OCSP responses it will normally only be used for testing purposes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_signature_verification_state">
+	<documentation>
+ Gets the states that indicate whether to check the signature on the OCSP response. Since this option
+ tolerates invalid signatures on OCSP responses it will normally only be used for testing purposes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_certificate_verification_state">
+	<documentation>
+ Sets the states that indicate whether to check the certificates in the OCSP responses.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_certificate_verification_state">
+	<documentation>
+ Gets the states that indicate whether to check the certificates in the OCSP responses.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_chain_state">
+	<documentation>
+ Sets the states that indicate whether to use certificates in the response as additional untrusted CA
+ certificates.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_chain_state">
+	<documentation>
+ Gets the states that indicate whether to use certificates in the response as additional untrusted CA
+ certificates.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_certificate_check_state">
+	<documentation>
+ Sets the states that indicate whether to perform any additional checks on the OCSP response signers
+ certificate. If false, do not make any checks to see if the signers certificate is authorized to
+ provide the necessary status information: as a result this option should only be used for testing
+ purposes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_certificate_check_state">
+	<documentation>
+ Gets the states that indicate whether to perform any additional checks on the OCSP response signers
+ certificate. If false, do not make any checks to see if the signers certificate is authorized to
+ provide the necessary status information: as a result this option should only be used for testing
+ purposes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_explicit_state">
+	<documentation>
+ Sets the states that indicate whether to explicitly trust the OCSP response signers certificate as
+ authorized for OCSP response signing.  Specifying this option causes a response to be untrusted if
+ the signers certificate does not contain the "OCSPSigning" extension.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_explicit_state">
+	<documentation>
+ Gets the states that indicate whether to explicitly trust the OCSP response signers certificate as
+ authorized for OCSP response signing.  Specifying this option causes a response to be untrusted if
+ the signers certificate does not contain the "OCSPSigning" extension.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_validity_period">
+	<documentation>
+ Sets the range of times, in seconds, which will be tolerated in an OCSP response. Each certificate
+ status response includes a notBefore time and an optional notAfter time. The current time should fall
+ between these two values, but the interval between the two times may be only a few seconds. In practice
+ the OCSP responder and clients clocks may not be precisely synchronized and so such a check may fail.
+ To avoid this the -validity_period option can be used to specify an acceptable error range in seconds,
+ the default value is 300 seconds.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_validity_period">
+	<documentation>
+ Gets the range of times, in seconds, which will be tolerated in an OCSP response. Each certificate
+ status response includes a notBefore time and an optional notAfter time. The current time should fall
+ between these two values, but the interval between the two times may be only a few seconds. In practice
+ the OCSP responder and clients clocks may not be precisely synchronized and so such a check may fail.
+ To avoid this the -validity_period option can be used to specify an acceptable error range in seconds,
+ the default value is 300 seconds.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_status_age">
+	<documentation>
+ Sets the status ages (sec) for the OCSP response. If the notAfter time is omitted from a response then
+ this means that new status information is immediately available. In this case the age of the
+ notBefore field is checked to see it is not older than age seconds old. By default this additional
+ check is not performed when -status_age is not specified.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_status_age">
+	<documentation>
+ Gets the status ages (sec) for the OCSP response. If the notAfter time is omitted from a response then
+ this means that new status information is immediately available. In this case the age of the
+ notBefore field is checked to see it is not older than age seconds old. By default this additional
+ check is not performed when -status_age is not specified.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of OCSP responders.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of OCSP responders.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/OCSPResponder"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/OCSPResponder"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.OCSPResponder">
+	<documentation>
+ The OCSPResponder interface enables you to manage OCSP responder configuration.
+
+        	</documentation>
+	<port name="Management.OCSPResponderPort" binding="tns:Management.OCSPResponderBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

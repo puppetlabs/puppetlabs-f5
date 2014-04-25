@@ -1,0 +1,726 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.Provision"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.Provision.ProvisionLevelSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.Provision.ProvisionLevel[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.TMOSModuleSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.TMOSModule[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.Provision.ProvisionLevel">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="PROVISION_LEVEL_NONE">
+					<xsd:annotation>
+						<xsd:documentation>PROVISION_LEVEL_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROVISION_LEVEL_MINIMUM">
+					<xsd:annotation>
+						<xsd:documentation>PROVISION_LEVEL_MINIMUM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROVISION_LEVEL_NOMINAL">
+					<xsd:annotation>
+						<xsd:documentation>PROVISION_LEVEL_NOMINAL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROVISION_LEVEL_DEDICATED">
+					<xsd:annotation>
+						<xsd:documentation>PROVISION_LEVEL_DEDICATED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROVISION_LEVEL_CUSTOM">
+					<xsd:annotation>
+						<xsd:documentation>PROVISION_LEVEL_CUSTOM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROVISION_LEVEL_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>PROVISION_LEVEL_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Common.TMOSModule">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="TMOS_MODULE_ASM">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_ASM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_SAM">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_SAM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_WAM">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_WAM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_PSM">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_PSM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_WOM">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_WOM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_LC">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_LC</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_LTM">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_LTM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_GTM">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_GTM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_WOML">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_WOML</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_APML">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_APML</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_EM">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_EM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_VCMP">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_VCMP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_TMOS">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_TMOS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_HOST">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_HOST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_UI">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_UI</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_MONITORS">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_MONITORS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_AVR">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_AVR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_PEM">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_PEM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_CGNAT">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_CGNAT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TMOS_MODULE_AFM">
+					<xsd:annotation>
+						<xsd:documentation>TMOS_MODULE_AFM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.Provision.set_levelRequest">
+	<part name="modules" type="tns:Common.TMOSModuleSequence"/>
+	<part name="levels" type="tns:Management.Provision.ProvisionLevelSequence"/>
+</message>
+<message name="Management.Provision.set_levelResponse">
+</message>
+
+<message name="Management.Provision.get_levelRequest">
+	<part name="modules" type="tns:Common.TMOSModuleSequence"/>
+</message>
+<message name="Management.Provision.get_levelResponse">
+	<part name="return" type="tns:Management.Provision.ProvisionLevelSequence"/>
+</message>
+
+<message name="Management.Provision.set_custom_cpu_ratioRequest">
+	<part name="modules" type="tns:Common.TMOSModuleSequence"/>
+	<part name="ratios" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Management.Provision.set_custom_cpu_ratioResponse">
+</message>
+
+<message name="Management.Provision.get_custom_cpu_ratioRequest">
+	<part name="modules" type="tns:Common.TMOSModuleSequence"/>
+</message>
+<message name="Management.Provision.get_custom_cpu_ratioResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Management.Provision.set_custom_disk_ratioRequest">
+	<part name="modules" type="tns:Common.TMOSModuleSequence"/>
+	<part name="ratios" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Management.Provision.set_custom_disk_ratioResponse">
+</message>
+
+<message name="Management.Provision.get_custom_disk_ratioRequest">
+	<part name="modules" type="tns:Common.TMOSModuleSequence"/>
+</message>
+<message name="Management.Provision.get_custom_disk_ratioResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Management.Provision.set_custom_memory_ratioRequest">
+	<part name="modules" type="tns:Common.TMOSModuleSequence"/>
+	<part name="ratios" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Management.Provision.set_custom_memory_ratioResponse">
+</message>
+
+<message name="Management.Provision.get_custom_memory_ratioRequest">
+	<part name="modules" type="tns:Common.TMOSModuleSequence"/>
+</message>
+<message name="Management.Provision.get_custom_memory_ratioResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Management.Provision.set_descriptionRequest">
+	<part name="modules" type="tns:Common.TMOSModuleSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.Provision.set_descriptionResponse">
+</message>
+
+<message name="Management.Provision.get_descriptionRequest">
+	<part name="modules" type="tns:Common.TMOSModuleSequence"/>
+</message>
+<message name="Management.Provision.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.Provision.get_listRequest">
+</message>
+<message name="Management.Provision.get_listResponse">
+	<part name="return" type="tns:Common.TMOSModuleSequence"/>
+</message>
+
+<message name="Management.Provision.get_provisioned_listRequest">
+</message>
+<message name="Management.Provision.get_provisioned_listResponse">
+	<part name="return" type="tns:Common.TMOSModuleSequence"/>
+</message>
+
+<message name="Management.Provision.get_versionRequest">
+</message>
+<message name="Management.Provision.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.ProvisionPortType">
+	<operation name="set_level">
+    	<documentation>
+ Sets the provisioning level for the requested modules.  Changing
+ the level for one module may require modifying the level of another
+ module.  For example, changing one module to "dedicated" requires
+ setting all others to "none", or setting one module to "custom"
+ requires setting all other modules to "custom" or "none".  Setting
+ the level of a module to "none" means that the module is not run.
+
+        	</documentation>
+		<input message="tns:Management.Provision.set_levelRequest"/>
+		<output message="tns:Management.Provision.set_levelResponse"/>
+	</operation>
+	<operation name="get_level">
+	<documentation>
+ Gets the provisioning level for the requested modules.
+
+        	</documentation>
+		<input message="tns:Management.Provision.get_levelRequest"/>
+		<output message="tns:Management.Provision.get_levelResponse"/>
+	</operation>
+	<operation name="set_custom_cpu_ratio">
+	<documentation>
+ Sets the ratios of CPU usage above the minimum levels which are
+ allocated to the requested modules.  This value is only valid for
+ the "custom" provisioning level.
+
+        	</documentation>
+		<input message="tns:Management.Provision.set_custom_cpu_ratioRequest"/>
+		<output message="tns:Management.Provision.set_custom_cpu_ratioResponse"/>
+	</operation>
+	<operation name="get_custom_cpu_ratio">
+	<documentation>
+ Gets the ratios of CPU usage above the minimum which are allocated
+ to the requested modules.  This value is only meaningful for the
+ "custom" provisioning level.
+
+        	</documentation>
+		<input message="tns:Management.Provision.get_custom_cpu_ratioRequest"/>
+		<output message="tns:Management.Provision.get_custom_cpu_ratioResponse"/>
+	</operation>
+	<operation name="set_custom_disk_ratio">
+	<documentation>
+ Sets the ratios of disk space above the minimum which are allocated
+ to the requested modules.  This value is only used for the "custom"
+ provisioning level.
+
+        	</documentation>
+		<input message="tns:Management.Provision.set_custom_disk_ratioRequest"/>
+		<output message="tns:Management.Provision.set_custom_disk_ratioResponse"/>
+	</operation>
+	<operation name="get_custom_disk_ratio">
+	<documentation>
+ Gets the ratios of disk space above the minimum which are allocated
+ to the requested modules.  This value is only meaningful for the
+ "custom" provisioning level.
+
+        	</documentation>
+		<input message="tns:Management.Provision.get_custom_disk_ratioRequest"/>
+		<output message="tns:Management.Provision.get_custom_disk_ratioResponse"/>
+	</operation>
+	<operation name="set_custom_memory_ratio">
+	<documentation>
+ Sets the ratios of system memory above the minimum which are
+ allocated to the requested modules.  This value is only valid for
+ the "custom" provisioning level.
+
+        	</documentation>
+		<input message="tns:Management.Provision.set_custom_memory_ratioRequest"/>
+		<output message="tns:Management.Provision.set_custom_memory_ratioResponse"/>
+	</operation>
+	<operation name="get_custom_memory_ratio">
+	<documentation>
+ Gets the ratios of system memory which are allocated to the
+ requested modules.  This value is only meaningful for the "custom"
+ provisioning level.
+
+        	</documentation>
+		<input message="tns:Management.Provision.get_custom_memory_ratioRequest"/>
+		<output message="tns:Management.Provision.get_custom_memory_ratioResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of modules.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Management.Provision.set_descriptionRequest"/>
+		<output message="tns:Management.Provision.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of modules.
+
+        	</documentation>
+		<input message="tns:Management.Provision.get_descriptionRequest"/>
+		<output message="tns:Management.Provision.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_list">
+	<documentation>
+ Gets all provisionable modules
+
+        	</documentation>
+		<input message="tns:Management.Provision.get_listRequest"/>
+		<output message="tns:Management.Provision.get_listResponse"/>
+	</operation>
+	<operation name="get_provisioned_list">
+	<documentation>
+ Gets all provisioned modules, i.e., all modules which have
+ resources to run on the system, i.e., whose provisioning level is
+ not "none".
+
+        	</documentation>
+		<input message="tns:Management.Provision.get_provisioned_listRequest"/>
+		<output message="tns:Management.Provision.get_provisioned_listResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version for this interface.
+
+        	</documentation>
+		<input message="tns:Management.Provision.get_versionRequest"/>
+		<output message="tns:Management.Provision.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.ProvisionBinding" type="tns:Management.ProvisionPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="set_level">
+	<documentation>
+ Sets the provisioning level for the requested modules.  Changing
+ the level for one module may require modifying the level of another
+ module.  For example, changing one module to "dedicated" requires
+ setting all others to "none", or setting one module to "custom"
+ requires setting all other modules to "custom" or "none".  Setting
+ the level of a module to "none" means that the module is not run.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Provision"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_level">
+	<documentation>
+ Gets the provisioning level for the requested modules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Provision"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_custom_cpu_ratio">
+	<documentation>
+ Sets the ratios of CPU usage above the minimum levels which are
+ allocated to the requested modules.  This value is only valid for
+ the "custom" provisioning level.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Provision"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_custom_cpu_ratio">
+	<documentation>
+ Gets the ratios of CPU usage above the minimum which are allocated
+ to the requested modules.  This value is only meaningful for the
+ "custom" provisioning level.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Provision"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_custom_disk_ratio">
+	<documentation>
+ Sets the ratios of disk space above the minimum which are allocated
+ to the requested modules.  This value is only used for the "custom"
+ provisioning level.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Provision"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_custom_disk_ratio">
+	<documentation>
+ Gets the ratios of disk space above the minimum which are allocated
+ to the requested modules.  This value is only meaningful for the
+ "custom" provisioning level.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Provision"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_custom_memory_ratio">
+	<documentation>
+ Sets the ratios of system memory above the minimum which are
+ allocated to the requested modules.  This value is only valid for
+ the "custom" provisioning level.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Provision"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_custom_memory_ratio">
+	<documentation>
+ Gets the ratios of system memory which are allocated to the
+ requested modules.  This value is only meaningful for the "custom"
+ provisioning level.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Provision"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of modules.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Provision"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of modules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Provision"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_list">
+	<documentation>
+ Gets all provisionable modules
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Provision"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_provisioned_list">
+	<documentation>
+ Gets all provisioned modules, i.e., all modules which have
+ resources to run on the system, i.e., whose provisioning level is
+ not "none".
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Provision"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/Provision"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/Provision"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.Provision">
+	<documentation>
+ The Provision interface manages the partitioning of system memory, disk
+ space, and CPU usage among the modules (e.g., LTM, GTM, WOM) licensed
+ to run on the system.  The modules and the "host" system (everything
+ not dedicated to network traffic processing) are first assigned a
+ minimal set of resources, based on pre-determined values and the
+ available system memory.  The remaining resources are distributed among
+ the modules, according to pre-determined rules, which can be modified
+ by values which can be set via this iControl interface.  The
+ pre-defined module resource allocation handles a wide variety of
+ circumstances, so this allocation should only need to be changed for
+ unusual circumstances, such as turning modules on or off and large
+ network traffic or configurations.
+
+        	</documentation>
+	<port name="Management.ProvisionPort" binding="tns:Management.ProvisionBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

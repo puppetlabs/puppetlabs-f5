@@ -1,0 +1,486 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Log.DestinationRemoteHighSpeedLog"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Log.DestinationRemoteHighSpeedLog.HighSpeedLogProtocolSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Log.DestinationRemoteHighSpeedLog.HighSpeedLogProtocol[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Log.DestinationRemoteHighSpeedLog.HighSpeedLogProtocol">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="HIGH_SPEED_LOG_PROTOCOL_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>HIGH_SPEED_LOG_PROTOCOL_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HIGH_SPEED_LOG_PROTOCOL_TCP">
+					<xsd:annotation>
+						<xsd:documentation>HIGH_SPEED_LOG_PROTOCOL_TCP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HIGH_SPEED_LOG_PROTOCOL_UDP">
+					<xsd:annotation>
+						<xsd:documentation>HIGH_SPEED_LOG_PROTOCOL_UDP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Log.DestinationRemoteHighSpeedLog.get_listRequest">
+</message>
+<message name="Log.DestinationRemoteHighSpeedLog.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Log.DestinationRemoteHighSpeedLog.createRequest">
+	<part name="destinations" type="tns:Common.StringSequence"/>
+	<part name="pools" type="tns:Common.StringSequence"/>
+	<part name="protocols" type="tns:Log.DestinationRemoteHighSpeedLog.HighSpeedLogProtocolSequence"/>
+</message>
+<message name="Log.DestinationRemoteHighSpeedLog.createResponse">
+</message>
+
+<message name="Log.DestinationRemoteHighSpeedLog.delete_remote_high_speed_log_destinationRequest">
+	<part name="destinations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.DestinationRemoteHighSpeedLog.delete_remote_high_speed_log_destinationResponse">
+</message>
+
+<message name="Log.DestinationRemoteHighSpeedLog.delete_all_remote_high_speed_log_destinationsRequest">
+</message>
+<message name="Log.DestinationRemoteHighSpeedLog.delete_all_remote_high_speed_log_destinationsResponse">
+</message>
+
+<message name="Log.DestinationRemoteHighSpeedLog.set_descriptionRequest">
+	<part name="destinations" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.DestinationRemoteHighSpeedLog.set_descriptionResponse">
+</message>
+
+<message name="Log.DestinationRemoteHighSpeedLog.get_descriptionRequest">
+	<part name="destinations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.DestinationRemoteHighSpeedLog.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Log.DestinationRemoteHighSpeedLog.set_poolRequest">
+	<part name="destinations" type="tns:Common.StringSequence"/>
+	<part name="pools" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.DestinationRemoteHighSpeedLog.set_poolResponse">
+</message>
+
+<message name="Log.DestinationRemoteHighSpeedLog.get_poolRequest">
+	<part name="destinations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.DestinationRemoteHighSpeedLog.get_poolResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Log.DestinationRemoteHighSpeedLog.set_log_protocolRequest">
+	<part name="destinations" type="tns:Common.StringSequence"/>
+	<part name="protocols" type="tns:Log.DestinationRemoteHighSpeedLog.HighSpeedLogProtocolSequence"/>
+</message>
+<message name="Log.DestinationRemoteHighSpeedLog.set_log_protocolResponse">
+</message>
+
+<message name="Log.DestinationRemoteHighSpeedLog.get_log_protocolRequest">
+	<part name="destinations" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.DestinationRemoteHighSpeedLog.get_log_protocolResponse">
+	<part name="return" type="tns:Log.DestinationRemoteHighSpeedLog.HighSpeedLogProtocolSequence"/>
+</message>
+
+<message name="Log.DestinationRemoteHighSpeedLog.get_versionRequest">
+</message>
+<message name="Log.DestinationRemoteHighSpeedLog.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Log.DestinationRemoteHighSpeedLogPortType">
+	<operation name="get_list">
+       	<documentation>
+ Gets the list of remote high-speed log destinations.
+
+        	</documentation>
+		<input message="tns:Log.DestinationRemoteHighSpeedLog.get_listRequest"/>
+		<output message="tns:Log.DestinationRemoteHighSpeedLog.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a remote high-speed log destination.
+
+        	</documentation>
+		<input message="tns:Log.DestinationRemoteHighSpeedLog.createRequest"/>
+		<output message="tns:Log.DestinationRemoteHighSpeedLog.createResponse"/>
+	</operation>
+	<operation name="delete_remote_high_speed_log_destination">
+	<documentation>
+ Deletes the specified remote high-speed log destinations.
+
+        	</documentation>
+		<input message="tns:Log.DestinationRemoteHighSpeedLog.delete_remote_high_speed_log_destinationRequest"/>
+		<output message="tns:Log.DestinationRemoteHighSpeedLog.delete_remote_high_speed_log_destinationResponse"/>
+	</operation>
+	<operation name="delete_all_remote_high_speed_log_destinations">
+	<documentation>
+ Deletes all remote high-speed log destinations.
+
+        	</documentation>
+		<input message="tns:Log.DestinationRemoteHighSpeedLog.delete_all_remote_high_speed_log_destinationsRequest"/>
+		<output message="tns:Log.DestinationRemoteHighSpeedLog.delete_all_remote_high_speed_log_destinationsResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for the specified high-speed log destinations.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Log.DestinationRemoteHighSpeedLog.set_descriptionRequest"/>
+		<output message="tns:Log.DestinationRemoteHighSpeedLog.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the description for the specified remote high-speed log
+ destinations.
+
+        	</documentation>
+		<input message="tns:Log.DestinationRemoteHighSpeedLog.get_descriptionRequest"/>
+		<output message="tns:Log.DestinationRemoteHighSpeedLog.get_descriptionResponse"/>
+	</operation>
+	<operation name="set_pool">
+	<documentation>
+ Sets the specific pools assigned to the remote high-speed log
+ destinations.
+
+        	</documentation>
+		<input message="tns:Log.DestinationRemoteHighSpeedLog.set_poolRequest"/>
+		<output message="tns:Log.DestinationRemoteHighSpeedLog.set_poolResponse"/>
+	</operation>
+	<operation name="get_pool">
+	<documentation>
+ Gets the pools attached to the specified remote high-speed log
+ destinations.
+
+        	</documentation>
+		<input message="tns:Log.DestinationRemoteHighSpeedLog.get_poolRequest"/>
+		<output message="tns:Log.DestinationRemoteHighSpeedLog.get_poolResponse"/>
+	</operation>
+	<operation name="set_log_protocol">
+	<documentation>
+ Sets the log protocol used to send log messages to the attached ltm
+ pool.
+
+        	</documentation>
+		<input message="tns:Log.DestinationRemoteHighSpeedLog.set_log_protocolRequest"/>
+		<output message="tns:Log.DestinationRemoteHighSpeedLog.set_log_protocolResponse"/>
+	</operation>
+	<operation name="get_log_protocol">
+	<documentation>
+ Gets the log protocol used to send log messages to the pool for the
+ specified remote high-speed log destinations.
+
+        	</documentation>
+		<input message="tns:Log.DestinationRemoteHighSpeedLog.get_log_protocolRequest"/>
+		<output message="tns:Log.DestinationRemoteHighSpeedLog.get_log_protocolResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Log.DestinationRemoteHighSpeedLog.get_versionRequest"/>
+		<output message="tns:Log.DestinationRemoteHighSpeedLog.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Log.DestinationRemoteHighSpeedLogBinding" type="tns:Log.DestinationRemoteHighSpeedLogPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the list of remote high-speed log destinations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationRemoteHighSpeedLog"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationRemoteHighSpeedLog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationRemoteHighSpeedLog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a remote high-speed log destination.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationRemoteHighSpeedLog"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationRemoteHighSpeedLog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationRemoteHighSpeedLog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_remote_high_speed_log_destination">
+	<documentation>
+ Deletes the specified remote high-speed log destinations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationRemoteHighSpeedLog"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationRemoteHighSpeedLog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationRemoteHighSpeedLog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_remote_high_speed_log_destinations">
+	<documentation>
+ Deletes all remote high-speed log destinations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationRemoteHighSpeedLog"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationRemoteHighSpeedLog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationRemoteHighSpeedLog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for the specified high-speed log destinations.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationRemoteHighSpeedLog"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationRemoteHighSpeedLog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationRemoteHighSpeedLog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the description for the specified remote high-speed log
+ destinations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationRemoteHighSpeedLog"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationRemoteHighSpeedLog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationRemoteHighSpeedLog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_pool">
+	<documentation>
+ Sets the specific pools assigned to the remote high-speed log
+ destinations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationRemoteHighSpeedLog"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationRemoteHighSpeedLog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationRemoteHighSpeedLog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_pool">
+	<documentation>
+ Gets the pools attached to the specified remote high-speed log
+ destinations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationRemoteHighSpeedLog"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationRemoteHighSpeedLog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationRemoteHighSpeedLog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_log_protocol">
+	<documentation>
+ Sets the log protocol used to send log messages to the attached ltm
+ pool.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationRemoteHighSpeedLog"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationRemoteHighSpeedLog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationRemoteHighSpeedLog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_log_protocol">
+	<documentation>
+ Gets the log protocol used to send log messages to the pool for the
+ specified remote high-speed log destinations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationRemoteHighSpeedLog"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationRemoteHighSpeedLog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationRemoteHighSpeedLog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/DestinationRemoteHighSpeedLog"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationRemoteHighSpeedLog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/DestinationRemoteHighSpeedLog"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Log.DestinationRemoteHighSpeedLog">
+	<documentation>
+ The DestinationRemoteHighSpeedLog interface enables you to create and modify 
+ remote high-speed log (HSL) destinations. A high-speed log requires you
+ set up a pool of remote log servers via the LocalLB::Pool interface and
+ assign it to the Remote HSL destination pool.
+ 
+ A high-speed log is an unformatted log message which gets sent to a pool
+ of remote log servers. If a particular format is needed use, the Remote 
+ Syslog, ArcSight, or Splunk destinations and set a remote high speed
+ log destination as its forwarding destination.
+
+        	</documentation>
+	<port name="Log.DestinationRemoteHighSpeedLogPort" binding="tns:Log.DestinationRemoteHighSpeedLogBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

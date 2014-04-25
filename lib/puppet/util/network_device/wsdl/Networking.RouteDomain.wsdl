@@ -1,0 +1,646 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.RouteDomain"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.RouteDomain.get_listRequest">
+</message>
+<message name="Networking.RouteDomain.get_listResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.RouteDomain.createRequest">
+	<part name="route_domains" type="tns:Common.ULongSequence"/>
+	<part name="vlans" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomain.createResponse">
+</message>
+
+<message name="Networking.RouteDomain.delete_route_domainRequest">
+	<part name="route_domains" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.RouteDomain.delete_route_domainResponse">
+</message>
+
+<message name="Networking.RouteDomain.delete_all_route_domainsRequest">
+</message>
+<message name="Networking.RouteDomain.delete_all_route_domainsResponse">
+</message>
+
+<message name="Networking.RouteDomain.set_parent_idRequest">
+	<part name="route_domains" type="tns:Common.ULongSequence"/>
+	<part name="parent_ids" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.RouteDomain.set_parent_idResponse">
+</message>
+
+<message name="Networking.RouteDomain.get_parent_idRequest">
+	<part name="route_domains" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.RouteDomain.get_parent_idResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.RouteDomain.set_descriptionRequest">
+	<part name="route_domains" type="tns:Common.ULongSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouteDomain.set_descriptionResponse">
+</message>
+
+<message name="Networking.RouteDomain.get_descriptionRequest">
+	<part name="route_domains" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.RouteDomain.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.RouteDomain.set_strict_stateRequest">
+	<part name="route_domains" type="tns:Common.ULongSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.RouteDomain.set_strict_stateResponse">
+</message>
+
+<message name="Networking.RouteDomain.get_strict_stateRequest">
+	<part name="route_domains" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.RouteDomain.get_strict_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.RouteDomain.get_vlanRequest">
+	<part name="route_domains" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.RouteDomain.get_vlanResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomain.add_vlanRequest">
+	<part name="route_domains" type="tns:Common.ULongSequence"/>
+	<part name="vlans" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomain.add_vlanResponse">
+</message>
+
+<message name="Networking.RouteDomain.remove_vlanRequest">
+	<part name="route_domains" type="tns:Common.ULongSequence"/>
+	<part name="vlans" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomain.remove_vlanResponse">
+</message>
+
+<message name="Networking.RouteDomain.remove_all_vlansRequest">
+	<part name="route_domains" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.RouteDomain.remove_all_vlansResponse">
+</message>
+
+<message name="Networking.RouteDomain.get_versionRequest">
+</message>
+<message name="Networking.RouteDomain.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.RouteDomainPortType">
+	<operation name="get_list">
+  	<documentation>
+ Gets a list of all route domains on this device.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomain.get_listRequest"/>
+		<output message="tns:Networking.RouteDomain.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a route domain.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomain.createRequest"/>
+		<output message="tns:Networking.RouteDomain.createResponse"/>
+	</operation>
+	<operation name="delete_route_domain">
+	<documentation>
+ Deletes the specified route domains.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomain.delete_route_domainRequest"/>
+		<output message="tns:Networking.RouteDomain.delete_route_domainResponse"/>
+	</operation>
+	<operation name="delete_all_route_domains">
+	<documentation>
+ Deletes all route domains.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomain.delete_all_route_domainsRequest"/>
+		<output message="tns:Networking.RouteDomain.delete_all_route_domainsResponse"/>
+	</operation>
+	<operation name="set_parent_id">
+	<documentation>
+ Sets the parent ids for the specified route domains.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomain.set_parent_idRequest"/>
+		<output message="tns:Networking.RouteDomain.set_parent_idResponse"/>
+	</operation>
+	<operation name="get_parent_id">
+	<documentation>
+ Gets the parent ids for the specified route domains.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomain.get_parent_idRequest"/>
+		<output message="tns:Networking.RouteDomain.get_parent_idResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the descriptions for the the specified route domains.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomain.set_descriptionRequest"/>
+		<output message="tns:Networking.RouteDomain.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the the specified route domains.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomain.get_descriptionRequest"/>
+		<output message="tns:Networking.RouteDomain.get_descriptionResponse"/>
+	</operation>
+	<operation name="set_strict_state">
+	<documentation>
+ Sets the state to enforce cross-domain routing restrictions for a
+ set of route domains.
+
+ NOTES
+ = If set, packets cannot cross route domain boundaries, i.e., they
+   are strictly isolated to the current route domain.
+ = For example, if not set, you can add a route to the routing table
+   where the destination is 10.0.0.0%20 (route domain 20) and the
+   gateway is 172.27.84.29%32 (route domain 32).
+ = If set, the system may find invalid iRules that passed
+   validation.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomain.set_strict_stateRequest"/>
+		<output message="tns:Networking.RouteDomain.set_strict_stateResponse"/>
+	</operation>
+	<operation name="get_strict_state">
+	<documentation>
+ Gets the state to enforce cross-domain routing restrictions for a
+ set of route domains.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomain.get_strict_stateRequest"/>
+		<output message="tns:Networking.RouteDomain.get_strict_stateResponse"/>
+	</operation>
+	<operation name="get_vlan">
+	<documentation>
+ Gets the lists of VLANs for the specified route domains.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomain.get_vlanRequest"/>
+		<output message="tns:Networking.RouteDomain.get_vlanResponse"/>
+	</operation>
+	<operation name="add_vlan">
+	<documentation>
+ Adds the specified VLANs to the specified route domains.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomain.add_vlanRequest"/>
+		<output message="tns:Networking.RouteDomain.add_vlanResponse"/>
+	</operation>
+	<operation name="remove_vlan">
+	<documentation>
+ Removes the specified VLANs from the specified route domains.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomain.remove_vlanRequest"/>
+		<output message="tns:Networking.RouteDomain.remove_vlanResponse"/>
+	</operation>
+	<operation name="remove_all_vlans">
+	<documentation>
+ Removes all VLANs from the specified route domains.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomain.remove_all_vlansRequest"/>
+		<output message="tns:Networking.RouteDomain.remove_all_vlansResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomain.get_versionRequest"/>
+		<output message="tns:Networking.RouteDomain.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.RouteDomainBinding" type="tns:Networking.RouteDomainPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all route domains on this device.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomain"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a route domain.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomain"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_route_domain">
+	<documentation>
+ Deletes the specified route domains.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomain"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_route_domains">
+	<documentation>
+ Deletes all route domains.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomain"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_parent_id">
+	<documentation>
+ Sets the parent ids for the specified route domains.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomain"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_parent_id">
+	<documentation>
+ Gets the parent ids for the specified route domains.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomain"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the descriptions for the the specified route domains.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomain"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the the specified route domains.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomain"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_strict_state">
+	<documentation>
+ Sets the state to enforce cross-domain routing restrictions for a
+ set of route domains.
+
+ NOTES
+ = If set, packets cannot cross route domain boundaries, i.e., they
+   are strictly isolated to the current route domain.
+ = For example, if not set, you can add a route to the routing table
+   where the destination is 10.0.0.0%20 (route domain 20) and the
+   gateway is 172.27.84.29%32 (route domain 32).
+ = If set, the system may find invalid iRules that passed
+   validation.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomain"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_strict_state">
+	<documentation>
+ Gets the state to enforce cross-domain routing restrictions for a
+ set of route domains.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomain"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_vlan">
+	<documentation>
+ Gets the lists of VLANs for the specified route domains.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomain"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_vlan">
+	<documentation>
+ Adds the specified VLANs to the specified route domains.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomain"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_vlan">
+	<documentation>
+ Removes the specified VLANs from the specified route domains.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomain"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_vlans">
+	<documentation>
+ Removes all VLANs from the specified route domains.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomain"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomain"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomain"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.RouteDomain">
+	<documentation>
+ *IMPORTANT* This entire interface has been deprecated (as of
+ 11.0.0), due to a change from using numeric identifiers to
+ using names to identify Route Domain objects.  Please use the
+ RouteDomainV2 interface.
+
+ The RouteDomain interface enables you to work with the
+ definitions and attributes contained in a device's route
+ domains.  Route domains allow you to specify overlapping IP
+ addresses for different objects in the system.  This allows a
+ service provider, for example, to have two different pool
+ members at 10.10.10.1 that represent completely different real
+ servers.  The addresses for the two pool members might be
+ 10.10.10.1%1 and 10.10.10.1%2 where the numbers after the
+ percent signs are numeric ids of route domains.
+
+        	</documentation>
+	<port name="Networking.RouteDomainPort" binding="tns:Networking.RouteDomainBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

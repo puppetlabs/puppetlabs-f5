@@ -1,0 +1,1073 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="System.SoftwareManagement"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Common.OctetSequence">
+			<xsd:restriction base="xsd:base64Binary"/>
+		</xsd:simpleType>
+		<xsd:complexType name="System.SoftwareManagement.SoftwareStatusSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.SoftwareManagement.SoftwareStatus[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="System.SoftwareManagement.softwareRepositoryImage">
+			<xsd:sequence>
+				<xsd:element name="chassis_slot_id" type="xsd:long"/>
+				<xsd:element name="filename" type="xsd:string"/>
+				<xsd:element name="product" type="xsd:string"/>
+				<xsd:element name="version" type="xsd:string"/>
+				<xsd:element name="build" type="xsd:string"/>
+				<xsd:element name="chksum" type="xsd:string"/>
+				<xsd:element name="verified" type="xsd:boolean"/>
+				<xsd:element name="build_date" type="xsd:string"/>
+				<xsd:element name="last_modified" type="xsd:string"/>
+				<xsd:element name="file_size" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="System.SoftwareManagement.softwareRepositoryHotfix">
+			<xsd:sequence>
+				<xsd:element name="chassis_slot_id" type="xsd:long"/>
+				<xsd:element name="filename" type="xsd:string"/>
+				<xsd:element name="product" type="xsd:string"/>
+				<xsd:element name="version" type="xsd:string"/>
+				<xsd:element name="build" type="xsd:string"/>
+				<xsd:element name="chksum" type="xsd:string"/>
+				<xsd:element name="verified" type="xsd:boolean"/>
+				<xsd:element name="hotfix_id" type="xsd:string"/>
+				<xsd:element name="hotfix_title" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="System.SoftwareManagement.SoftwareStatus">
+			<xsd:sequence>
+				<xsd:element name="installation_id" type="tns:System.SoftwareManagement.InstallationID"/>
+				<xsd:element name="product" type="xsd:string"/>
+				<xsd:element name="version" type="xsd:string"/>
+				<xsd:element name="build" type="xsd:string"/>
+				<xsd:element name="base_build" type="xsd:string"/>
+				<xsd:element name="active" type="xsd:boolean"/>
+				<xsd:element name="edition" type="xsd:string"/>
+				<xsd:element name="status" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="System.SoftwareManagement.repositoryImageIDSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.SoftwareManagement.repositoryImageID[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="System.SoftwareManagement.HotFixInformationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.SoftwareManagement.HotFixInformation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="System.SoftwareManagement.InstallationID">
+			<xsd:sequence>
+				<xsd:element name="chassis_slot_id" type="xsd:long"/>
+				<xsd:element name="install_volume" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="System.SoftwareManagement.InstallationIDSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.SoftwareManagement.InstallationID[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="System.SoftwareManagement.HotFixInformation">
+			<xsd:sequence>
+				<xsd:element name="description" type="xsd:string"/>
+				<xsd:element name="product" type="xsd:string"/>
+				<xsd:element name="id" type="xsd:string"/>
+				<xsd:element name="version_resolved" type="xsd:string"/>
+				<xsd:element name="packages" type="tns:Common.StringSequence"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="System.SoftwareManagement.repositoryImageID">
+			<xsd:sequence>
+				<xsd:element name="chassis_slot_id" type="xsd:long"/>
+				<xsd:element name="filename" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="System.SoftwareManagement.softwareRepositoryImageSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.SoftwareManagement.softwareRepositoryImage[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="System.SoftwareManagement.softwareRepositoryHotfixSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:System.SoftwareManagement.softwareRepositoryHotfix[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="System.SoftwareManagement.create_ramfsRequest">
+</message>
+<message name="System.SoftwareManagement.create_ramfsResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="System.SoftwareManagement.cleanup_ramfsRequest">
+</message>
+<message name="System.SoftwareManagement.cleanup_ramfsResponse">
+</message>
+
+<message name="System.SoftwareManagement.install_hotfixRequest">
+	<part name="hotfix_files" type="tns:Common.StringSequence"/>
+	<part name="reboot_system" type="xsd:boolean"/>
+</message>
+<message name="System.SoftwareManagement.install_hotfixResponse">
+</message>
+
+<message name="System.SoftwareManagement.install_hotfix_no_daemonsRequest">
+	<part name="hotfix_files" type="tns:Common.StringSequence"/>
+	<part name="reboot_system" type="xsd:boolean"/>
+</message>
+<message name="System.SoftwareManagement.install_hotfix_no_daemonsResponse">
+</message>
+
+<message name="System.SoftwareManagement.get_hotfix_informationRequest">
+</message>
+<message name="System.SoftwareManagement.get_hotfix_informationResponse">
+	<part name="return" type="tns:System.SoftwareManagement.HotFixInformationSequence"/>
+</message>
+
+<message name="System.SoftwareManagement.get_rpm_package_informationRequest">
+</message>
+<message name="System.SoftwareManagement.get_rpm_package_informationResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="System.SoftwareManagement.set_boot_image_informationRequest">
+	<part name="boot_image_information" type="tns:Common.OctetSequence"/>
+</message>
+<message name="System.SoftwareManagement.set_boot_image_informationResponse">
+</message>
+
+<message name="System.SoftwareManagement.get_boot_image_informationRequest">
+	<part name="save_active_config" type="xsd:boolean"/>
+</message>
+<message name="System.SoftwareManagement.get_boot_image_informationResponse">
+	<part name="return" type="tns:Common.OctetSequence"/>
+</message>
+
+<message name="System.SoftwareManagement.set_boot_locationRequest">
+	<part name="location" type="xsd:string"/>
+</message>
+<message name="System.SoftwareManagement.set_boot_locationResponse">
+</message>
+
+<message name="System.SoftwareManagement.get_boot_locationRequest">
+</message>
+<message name="System.SoftwareManagement.get_boot_locationResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="System.SoftwareManagement.set_cluster_boot_locationRequest">
+	<part name="location" type="xsd:string"/>
+</message>
+<message name="System.SoftwareManagement.set_cluster_boot_locationResponse">
+</message>
+
+<message name="System.SoftwareManagement.get_cluster_boot_locationRequest">
+</message>
+<message name="System.SoftwareManagement.get_cluster_boot_locationResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="System.SoftwareManagement.get_software_image_listRequest">
+</message>
+<message name="System.SoftwareManagement.get_software_image_listResponse">
+	<part name="return" type="tns:System.SoftwareManagement.repositoryImageIDSequence"/>
+</message>
+
+<message name="System.SoftwareManagement.get_software_hotfix_listRequest">
+</message>
+<message name="System.SoftwareManagement.get_software_hotfix_listResponse">
+	<part name="return" type="tns:System.SoftwareManagement.repositoryImageIDSequence"/>
+</message>
+
+<message name="System.SoftwareManagement.get_software_imageRequest">
+	<part name="imageIDs" type="tns:System.SoftwareManagement.repositoryImageIDSequence"/>
+</message>
+<message name="System.SoftwareManagement.get_software_imageResponse">
+	<part name="return" type="tns:System.SoftwareManagement.softwareRepositoryImageSequence"/>
+</message>
+
+<message name="System.SoftwareManagement.get_software_hotfixRequest">
+	<part name="imageIDs" type="tns:System.SoftwareManagement.repositoryImageIDSequence"/>
+</message>
+<message name="System.SoftwareManagement.get_software_hotfixResponse">
+	<part name="return" type="tns:System.SoftwareManagement.softwareRepositoryHotfixSequence"/>
+</message>
+
+<message name="System.SoftwareManagement.install_software_imageRequest">
+	<part name="install_volume" type="xsd:string"/>
+	<part name="product" type="xsd:string"/>
+	<part name="version" type="xsd:string"/>
+	<part name="build" type="xsd:string"/>
+</message>
+<message name="System.SoftwareManagement.install_software_imageResponse">
+</message>
+
+<message name="System.SoftwareManagement.install_software_image_v2Request">
+	<part name="volume" type="xsd:string"/>
+	<part name="product" type="xsd:string"/>
+	<part name="version" type="xsd:string"/>
+	<part name="build" type="xsd:string"/>
+	<part name="create_volume" type="xsd:boolean"/>
+	<part name="reboot" type="xsd:boolean"/>
+	<part name="retry" type="xsd:boolean"/>
+</message>
+<message name="System.SoftwareManagement.install_software_image_v2Response">
+</message>
+
+<message name="System.SoftwareManagement.delete_volumeRequest">
+	<part name="volume" type="xsd:string"/>
+</message>
+<message name="System.SoftwareManagement.delete_volumeResponse">
+</message>
+
+<message name="System.SoftwareManagement.delete_software_imageRequest">
+	<part name="image_filenames" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.SoftwareManagement.delete_software_imageResponse">
+</message>
+
+<message name="System.SoftwareManagement.get_live_install_completionRequest">
+	<part name="installation_ids" type="tns:System.SoftwareManagement.InstallationIDSequence"/>
+</message>
+<message name="System.SoftwareManagement.get_live_install_completionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="System.SoftwareManagement.get_software_statusRequest">
+	<part name="installation_ids" type="tns:System.SoftwareManagement.InstallationIDSequence"/>
+</message>
+<message name="System.SoftwareManagement.get_software_statusResponse">
+	<part name="return" type="tns:System.SoftwareManagement.SoftwareStatusSequence"/>
+</message>
+
+<message name="System.SoftwareManagement.get_all_software_statusRequest">
+</message>
+<message name="System.SoftwareManagement.get_all_software_statusResponse">
+	<part name="return" type="tns:System.SoftwareManagement.SoftwareStatusSequence"/>
+</message>
+
+<message name="System.SoftwareManagement.has_logical_volume_managementRequest">
+</message>
+<message name="System.SoftwareManagement.has_logical_volume_managementResponse">
+	<part name="return" type="xsd:boolean"/>
+</message>
+
+<message name="System.SoftwareManagement.get_versionRequest">
+</message>
+<message name="System.SoftwareManagement.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="System.SoftwareManagementPortType">
+	<operation name="create_ramfs">
+       	<documentation>
+ Create a RAM disk and return its path to the caller.
+
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.create_ramfsRequest"/>
+		<output message="tns:System.SoftwareManagement.create_ramfsResponse"/>
+	</operation>
+	<operation name="cleanup_ramfs">
+	<documentation>
+ Cleanup the ramfs mounted at HF_MNT_LOCATION
+
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.cleanup_ramfsRequest"/>
+		<output message="tns:System.SoftwareManagement.cleanup_ramfsResponse"/>
+	</operation>
+	<operation name="install_hotfix">
+	<documentation>
+ Installs the specified hotfixes.
+ 
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.install_hotfixRequest"/>
+		<output message="tns:System.SoftwareManagement.install_hotfixResponse"/>
+	</operation>
+	<operation name="install_hotfix_no_daemons">
+	<documentation>
+ Calls bigstart stop and installs the specified hotfixes.  Upon completion, if reboot_system
+ is set to false, bigstart start is called to bring daemons back up.
+ 
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.install_hotfix_no_daemonsRequest"/>
+		<output message="tns:System.SoftwareManagement.install_hotfix_no_daemonsResponse"/>
+	</operation>
+	<operation name="get_hotfix_information">
+	<documentation>
+ Gets information on any hotfixes applied to the system.  There may not be
+ any hotfix installed, in which case the returned sequence is empty.
+ 
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.get_hotfix_informationRequest"/>
+		<output message="tns:System.SoftwareManagement.get_hotfix_informationResponse"/>
+	</operation>
+	<operation name="get_rpm_package_information">
+	<documentation>
+ Gets the RPM packages installed on the device.
+ 
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.get_rpm_package_informationRequest"/>
+		<output message="tns:System.SoftwareManagement.get_rpm_package_informationResponse"/>
+	</operation>
+	<operation name="set_boot_image_information">
+	<documentation>
+ Sets the boot image information and automatically initiates installation based on the 
+ boot image information.
+ 
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.set_boot_image_informationRequest"/>
+		<output message="tns:System.SoftwareManagement.set_boot_image_informationResponse"/>
+	</operation>
+	<operation name="get_boot_image_information">
+	<documentation>
+ This method is deprecated, as it returns details which are
+ available using more modern techniques (it relies on the
+ "audit script", which is no longer under active
+ development). The functionality is now available using
+ System::SoftwareManagement::get_software_status and methods
+ in the System::Disk interface.
+
+ Gets text which contains boot image information, in the
+ form of "name=value" pairs.  The text includes information
+ about what's installed in each of the boot locations in the
+ device. While this method is not officially deprecated, it
+ is preferred to use get_software_status, as that method is
+ a newer method which yields much the same information in
+ a more rigorous and controlled manner.
+ 
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.get_boot_image_informationRequest"/>
+		<output message="tns:System.SoftwareManagement.get_boot_image_informationResponse"/>
+	</operation>
+	<operation name="set_boot_location">
+	<documentation>
+ Sets the default boot location, which will be the boot location that boots after the next system reboot.
+ This version will not work on a clustered system.
+ 
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.set_boot_locationRequest"/>
+		<output message="tns:System.SoftwareManagement.set_boot_locationResponse"/>
+	</operation>
+	<operation name="get_boot_location">
+	<documentation>
+ Gets the configured default boot location, which will be the location that boots after the system reboots.
+ 
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.get_boot_locationRequest"/>
+		<output message="tns:System.SoftwareManagement.get_boot_locationResponse"/>
+	</operation>
+	<operation name="set_cluster_boot_location">
+	<documentation>
+ Sets the cluster wide boot location, which will be the boot location after the next system reboot.
+ Starting with BIG-IP version 9.6.0, clustered systems will reboot immediately.  
+ 
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.set_cluster_boot_locationRequest"/>
+		<output message="tns:System.SoftwareManagement.set_cluster_boot_locationResponse"/>
+	</operation>
+	<operation name="get_cluster_boot_location">
+	<documentation>
+ Gets the cluster boot location, which will be the location set in the software desired table.
+ 
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.get_cluster_boot_locationRequest"/>
+		<output message="tns:System.SoftwareManagement.get_cluster_boot_locationResponse"/>
+	</operation>
+	<operation name="get_software_image_list">
+	<documentation>
+ Gets a list of software images available in the repository.
+
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.get_software_image_listRequest"/>
+		<output message="tns:System.SoftwareManagement.get_software_image_listResponse"/>
+	</operation>
+	<operation name="get_software_hotfix_list">
+	<documentation> Gets a list of hotfix images available in the repository.
+
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.get_software_hotfix_listRequest"/>
+		<output message="tns:System.SoftwareManagement.get_software_hotfix_listResponse"/>
+	</operation>
+	<operation name="get_software_image">
+	<documentation>
+ Gets a list of image information about specific image in the
+ repository.
+
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.get_software_imageRequest"/>
+		<output message="tns:System.SoftwareManagement.get_software_imageResponse"/>
+	</operation>
+	<operation name="get_software_hotfix">
+	<documentation> Gets a list of hotfix information about specific hotfix image in the repository.
+
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.get_software_hotfixRequest"/>
+		<output message="tns:System.SoftwareManagement.get_software_hotfixResponse"/>
+	</operation>
+	<operation name="install_software_image">
+	<documentation> This method has been deprecated as it does not allow the creation of volumes. Please use install_software_image_v2 in its stead.
+
+ Initiates an install of SW images on all blades installed on one chassis.
+ 
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.install_software_imageRequest"/>
+		<output message="tns:System.SoftwareManagement.install_software_imageResponse"/>
+	</operation>
+	<operation name="install_software_image_v2">
+	<documentation> Initiates an install of a software image on all blades installed
+ on one chassis.
+ 
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.install_software_image_v2Request"/>
+		<output message="tns:System.SoftwareManagement.install_software_image_v2Response"/>
+	</operation>
+	<operation name="delete_volume">
+	<documentation> Deletes a volume from the system, or from all blades on a chassis.
+ 
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.delete_volumeRequest"/>
+		<output message="tns:System.SoftwareManagement.delete_volumeResponse"/>
+	</operation>
+	<operation name="delete_software_image">
+	<documentation> Deletes software images from the repository.
+ 
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.delete_software_imageRequest"/>
+		<output message="tns:System.SoftwareManagement.delete_software_imageResponse"/>
+	</operation>
+	<operation name="get_live_install_completion">
+	<documentation> Gets the percent complete of the current live install processes.
+ 
+ Note: You may wish to use get_software_status instead of
+ this method as it returns more information, such as the
+ product, version, and build, along with the "percent
+ complete"/status field.
+
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.get_live_install_completionRequest"/>
+		<output message="tns:System.SoftwareManagement.get_live_install_completionResponse"/>
+	</operation>
+	<operation name="get_software_status">
+	<documentation> Gets the software status for given installation ids.
+
+ This provides a complete picture of software status, per id.
+
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.get_software_statusRequest"/>
+		<output message="tns:System.SoftwareManagement.get_software_statusResponse"/>
+	</operation>
+	<operation name="get_all_software_status">
+	<documentation> Gets the software status for all installation ids.
+
+ This provides a complete picture of software status, for all ids.
+
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.get_all_software_statusRequest"/>
+		<output message="tns:System.SoftwareManagement.get_all_software_statusResponse"/>
+	</operation>
+	<operation name="has_logical_volume_management">
+	<documentation>
+ Checks to see whether the system disks are managed with logical volumes.
+ 
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.has_logical_volume_managementRequest"/>
+		<output message="tns:System.SoftwareManagement.has_logical_volume_managementResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+ 
+        	</documentation>
+		<input message="tns:System.SoftwareManagement.get_versionRequest"/>
+		<output message="tns:System.SoftwareManagement.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="System.SoftwareManagementBinding" type="tns:System.SoftwareManagementPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="create_ramfs">
+	<documentation>
+ Create a RAM disk and return its path to the caller.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="cleanup_ramfs">
+	<documentation>
+ Cleanup the ramfs mounted at HF_MNT_LOCATION
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="install_hotfix">
+	<documentation>
+ Installs the specified hotfixes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="install_hotfix_no_daemons">
+	<documentation>
+ Calls bigstart stop and installs the specified hotfixes.  Upon completion, if reboot_system
+ is set to false, bigstart start is called to bring daemons back up.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_hotfix_information">
+	<documentation>
+ Gets information on any hotfixes applied to the system.  There may not be
+ any hotfix installed, in which case the returned sequence is empty.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_rpm_package_information">
+	<documentation>
+ Gets the RPM packages installed on the device.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_boot_image_information">
+	<documentation>
+ Sets the boot image information and automatically initiates installation based on the 
+ boot image information.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_boot_image_information">
+	<documentation>
+ This method is deprecated, as it returns details which are
+ available using more modern techniques (it relies on the
+ "audit script", which is no longer under active
+ development). The functionality is now available using
+ System::SoftwareManagement::get_software_status and methods
+ in the System::Disk interface.
+
+ Gets text which contains boot image information, in the
+ form of "name=value" pairs.  The text includes information
+ about what's installed in each of the boot locations in the
+ device. While this method is not officially deprecated, it
+ is preferred to use get_software_status, as that method is
+ a newer method which yields much the same information in
+ a more rigorous and controlled manner.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_boot_location">
+	<documentation>
+ Sets the default boot location, which will be the boot location that boots after the next system reboot.
+ This version will not work on a clustered system.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_boot_location">
+	<documentation>
+ Gets the configured default boot location, which will be the location that boots after the system reboots.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_cluster_boot_location">
+	<documentation>
+ Sets the cluster wide boot location, which will be the boot location after the next system reboot.
+ Starting with BIG-IP version 9.6.0, clustered systems will reboot immediately.  
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cluster_boot_location">
+	<documentation>
+ Gets the cluster boot location, which will be the location set in the software desired table.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_software_image_list">
+	<documentation>
+ Gets a list of software images available in the repository.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_software_hotfix_list">
+	<documentation> Gets a list of hotfix images available in the repository.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_software_image">
+	<documentation>
+ Gets a list of image information about specific image in the
+ repository.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_software_hotfix">
+	<documentation> Gets a list of hotfix information about specific hotfix image in the repository.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="install_software_image">
+	<documentation> This method has been deprecated as it does not allow the creation of volumes. Please use install_software_image_v2 in its stead.
+
+ Initiates an install of SW images on all blades installed on one chassis.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="install_software_image_v2">
+	<documentation> Initiates an install of a software image on all blades installed
+ on one chassis.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_volume">
+	<documentation> Deletes a volume from the system, or from all blades on a chassis.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_software_image">
+	<documentation> Deletes software images from the repository.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_live_install_completion">
+	<documentation> Gets the percent complete of the current live install processes.
+ 
+ Note: You may wish to use get_software_status instead of
+ this method as it returns more information, such as the
+ product, version, and build, along with the "percent
+ complete"/status field.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_software_status">
+	<documentation> Gets the software status for given installation ids.
+
+ This provides a complete picture of software status, per id.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_all_software_status">
+	<documentation> Gets the software status for all installation ids.
+
+ This provides a complete picture of software status, for all ids.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="has_logical_volume_management">
+	<documentation>
+ Checks to see whether the system disks are managed with logical volumes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/SoftwareManagement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/SoftwareManagement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="System.SoftwareManagement">
+	<documentation>
+ The SoftwareManagement interface enables you to manage the software installed on the system.
+
+ This interface does not support transactions.
+ 
+        	</documentation>
+	<port name="System.SoftwareManagementPort" binding="tns:System.SoftwareManagementBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

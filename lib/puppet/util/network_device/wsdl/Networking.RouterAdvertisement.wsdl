@@ -1,0 +1,1067 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.RouterAdvertisement"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.RouterAdvertisement.get_listRequest">
+</message>
+<message name="Networking.RouterAdvertisement.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.RouterAdvertisement.createRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+	<part name="vlans" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.createResponse">
+</message>
+
+<message name="Networking.RouterAdvertisement.delete_router_advertisementRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.delete_router_advertisementResponse">
+</message>
+
+<message name="Networking.RouterAdvertisement.delete_all_router_advertisementsRequest">
+</message>
+<message name="Networking.RouterAdvertisement.delete_all_router_advertisementsResponse">
+</message>
+
+<message name="Networking.RouterAdvertisement.set_vlanRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+	<part name="vlans" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.set_vlanResponse">
+</message>
+
+<message name="Networking.RouterAdvertisement.get_vlanRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.get_vlanResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.RouterAdvertisement.set_enabled_stateRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.set_enabled_stateResponse">
+</message>
+
+<message name="Networking.RouterAdvertisement.get_enabled_stateRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.get_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.RouterAdvertisement.set_maximum_intervalRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+	<part name="intervals" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.set_maximum_intervalResponse">
+</message>
+
+<message name="Networking.RouterAdvertisement.get_maximum_intervalRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.get_maximum_intervalResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.RouterAdvertisement.set_minimum_intervalRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+	<part name="intervals" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.set_minimum_intervalResponse">
+</message>
+
+<message name="Networking.RouterAdvertisement.get_minimum_intervalRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.get_minimum_intervalResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.RouterAdvertisement.set_managed_flag_stateRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.set_managed_flag_stateResponse">
+</message>
+
+<message name="Networking.RouterAdvertisement.get_managed_flag_stateRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.get_managed_flag_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.RouterAdvertisement.set_other_configuration_flag_stateRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.set_other_configuration_flag_stateResponse">
+</message>
+
+<message name="Networking.RouterAdvertisement.get_other_configuration_flag_stateRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.get_other_configuration_flag_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.RouterAdvertisement.set_retransmit_timeRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+	<part name="times" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.set_retransmit_timeResponse">
+</message>
+
+<message name="Networking.RouterAdvertisement.get_retransmit_timeRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.get_retransmit_timeResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.RouterAdvertisement.set_mtuRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+	<part name="mtus" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.set_mtuResponse">
+</message>
+
+<message name="Networking.RouterAdvertisement.get_mtuRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.get_mtuResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.RouterAdvertisement.set_maximum_hopRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+	<part name="values" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.set_maximum_hopResponse">
+</message>
+
+<message name="Networking.RouterAdvertisement.get_maximum_hopRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.get_maximum_hopResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.RouterAdvertisement.set_router_lifetimeRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+	<part name="lifetimes" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.set_router_lifetimeResponse">
+</message>
+
+<message name="Networking.RouterAdvertisement.get_router_lifetimeRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.get_router_lifetimeResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.RouterAdvertisement.set_reachable_timeRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+	<part name="times" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.set_reachable_timeResponse">
+</message>
+
+<message name="Networking.RouterAdvertisement.get_reachable_timeRequest">
+	<part name="ras" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouterAdvertisement.get_reachable_timeResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.RouterAdvertisement.get_versionRequest">
+</message>
+<message name="Networking.RouterAdvertisement.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.RouterAdvertisementPortType">
+	<operation name="get_list">
+  	<documentation>
+ Gets a list of all Router Advertisements on this device.
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.get_listRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates the specified Router Advertisements with specified attributes.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.createRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.createResponse"/>
+	</operation>
+	<operation name="delete_router_advertisement">
+	<documentation>
+ Deletes the specified Router Advertisements.
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.delete_router_advertisementRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.delete_router_advertisementResponse"/>
+	</operation>
+	<operation name="delete_all_router_advertisements">
+	<documentation>
+ Deletes all Router Advertisements.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.delete_all_router_advertisementsRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.delete_all_router_advertisementsResponse"/>
+	</operation>
+	<operation name="set_vlan">
+	<documentation>
+ Sets the VLANs with which the specified Router Advertisements are associated.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.set_vlanRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.set_vlanResponse"/>
+	</operation>
+	<operation name="get_vlan">
+	<documentation>
+ Gets the VLANs with which the specified Router Advertisements are associated.
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.get_vlanRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.get_vlanResponse"/>
+	</operation>
+	<operation name="set_enabled_state">
+	<documentation>
+ Sets the enabled state for the specified Router Advertisements. Enabled Router Advertisements
+  will advertise on their associated VLANs.  
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.set_enabled_stateRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.set_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_enabled_state">
+	<documentation>
+ Gets the enabled state for the specified Router Advertisements. 
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.get_enabled_stateRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.get_enabled_stateResponse"/>
+	</operation>
+	<operation name="set_maximum_interval">
+	<documentation>
+ Sets the maximum interval for the specified Router Advertisements. The maximum interval is 
+ the maximum amount of time allowed between sending unsolicited multicast router
+ advertisements from the specified interface, in seconds.
+ Must have a value greater than the minimum interval and must be between 4 and 1800.
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.set_maximum_intervalRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.set_maximum_intervalResponse"/>
+	</operation>
+	<operation name="get_maximum_interval">
+	<documentation>
+ Gets the maximum interval for the specified Router Advertisements. 
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.get_maximum_intervalRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.get_maximum_intervalResponse"/>
+	</operation>
+	<operation name="set_minimum_interval">
+	<documentation>
+ Sets the minimum interval for the specified Router Advertisements. The minimum interval is 
+ the minimum amount of time allowed between sending unsolicited multicast router
+ advertisements from the specified interface, in seconds.
+ Must have a value between 3 and the maximum interval.
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.set_minimum_intervalRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.set_minimum_intervalResponse"/>
+	</operation>
+	<operation name="get_minimum_interval">
+	<documentation>
+ Gets the minimum interval for the specified Router Advertisements. 
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.get_minimum_intervalRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.get_minimum_intervalResponse"/>
+	</operation>
+	<operation name="set_managed_flag_state">
+	<documentation>
+ Sets the managed flag state for the specified Router Advertisements. The "Managed address configuration" flag
+ indicates that addresses are available via DHCPv6. 
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.set_managed_flag_stateRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.set_managed_flag_stateResponse"/>
+	</operation>
+	<operation name="get_managed_flag_state">
+	<documentation>
+ Gets the managed flag state for the specified Router Advertisements. 
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.get_managed_flag_stateRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.get_managed_flag_stateResponse"/>
+	</operation>
+	<operation name="set_other_configuration_flag_state">
+	<documentation>
+ Sets the other-configuration flag state for the specified Router Advertisements. The "other configuration"
+ flag indicates that other configuration information is available via DHCPv6. Examples of such
+ information are DNS-related information or information on other servers within the network.
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.set_other_configuration_flag_stateRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.set_other_configuration_flag_stateResponse"/>
+	</operation>
+	<operation name="get_other_configuration_flag_state">
+	<documentation>
+ Gets the other-configuration flag state for the specified Router Advertisements. 
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.get_other_configuration_flag_stateRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.get_other_configuration_flag_stateResponse"/>
+	</operation>
+	<operation name="set_retransmit_time">
+	<documentation>
+ Sets the retransmit time for the specified Router Advertisements. This value is the time, in
+ milliseconds, between retransmitted Neighbor Solicitation messages. A value of zero
+ means unspecified (by this router).
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.set_retransmit_timeRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.set_retransmit_timeResponse"/>
+	</operation>
+	<operation name="get_retransmit_time">
+	<documentation>
+ Gets the retransmit time for the specified Router Advertisements. 
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.get_retransmit_timeRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.get_retransmit_timeResponse"/>
+	</operation>
+	<operation name="set_mtu">
+	<documentation>
+ Sets the MTU for the specified Router Advertisements. The MTU or maximum transmission unit,
+ should be adjusted to match the MTU on links that have a variable MTU.
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.set_mtuRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.set_mtuResponse"/>
+	</operation>
+	<operation name="get_mtu">
+	<documentation>
+ Gets the MTU for the specified Router Advertisements. 
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.get_mtuRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.get_mtuResponse"/>
+	</operation>
+	<operation name="set_maximum_hop">
+	<documentation>
+ Sets the maximum hops a Router Advertisement packet may travel before it is discarded. 
+ A value of zero means unspecified (by this router). Has a maximum value of 255.
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.set_maximum_hopRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.set_maximum_hopResponse"/>
+	</operation>
+	<operation name="get_maximum_hop">
+	<documentation>
+ Gets the maximum hops for the specified Router Advertisements. 
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.get_maximum_hopRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.get_maximum_hopResponse"/>
+	</operation>
+	<operation name="set_router_lifetime">
+	<documentation>
+ Sets the router lifetime for the specified Router Advertisements. The router lifetime is
+ the lifetime associated with the default router in seconds. A
+ lifetime of zero indicates that the router is not a default router.
+ Must be a value between the maximum interval and 9000.
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.set_router_lifetimeRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.set_router_lifetimeResponse"/>
+	</operation>
+	<operation name="get_router_lifetime">
+	<documentation>
+ Gets the router lifetime for the specified Router Advertisements. 
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.get_router_lifetimeRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.get_router_lifetimeResponse"/>
+	</operation>
+	<operation name="set_reachable_time">
+	<documentation>
+ Sets the reachable time for the specified Router Advertisements. This is the time, in milliseconds,
+ that a node assumes a neighbor is reachable after having recieved a reachablity
+ confirmation. A value of zero means unspecified (by this router).
+ Has a maximum value of 3600000.
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.set_reachable_timeRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.set_reachable_timeResponse"/>
+	</operation>
+	<operation name="get_reachable_time">
+	<documentation>
+ Gets the reachable time for the specified Router Advertisements. 
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.get_reachable_timeRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.get_reachable_timeResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.RouterAdvertisement.get_versionRequest"/>
+		<output message="tns:Networking.RouterAdvertisement.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.RouterAdvertisementBinding" type="tns:Networking.RouterAdvertisementPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all Router Advertisements on this device.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates the specified Router Advertisements with specified attributes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_router_advertisement">
+	<documentation>
+ Deletes the specified Router Advertisements.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_router_advertisements">
+	<documentation>
+ Deletes all Router Advertisements.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_vlan">
+	<documentation>
+ Sets the VLANs with which the specified Router Advertisements are associated.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_vlan">
+	<documentation>
+ Gets the VLANs with which the specified Router Advertisements are associated.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_enabled_state">
+	<documentation>
+ Sets the enabled state for the specified Router Advertisements. Enabled Router Advertisements
+  will advertise on their associated VLANs.  
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_enabled_state">
+	<documentation>
+ Gets the enabled state for the specified Router Advertisements. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_maximum_interval">
+	<documentation>
+ Sets the maximum interval for the specified Router Advertisements. The maximum interval is 
+ the maximum amount of time allowed between sending unsolicited multicast router
+ advertisements from the specified interface, in seconds.
+ Must have a value greater than the minimum interval and must be between 4 and 1800.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_maximum_interval">
+	<documentation>
+ Gets the maximum interval for the specified Router Advertisements. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_minimum_interval">
+	<documentation>
+ Sets the minimum interval for the specified Router Advertisements. The minimum interval is 
+ the minimum amount of time allowed between sending unsolicited multicast router
+ advertisements from the specified interface, in seconds.
+ Must have a value between 3 and the maximum interval.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_minimum_interval">
+	<documentation>
+ Gets the minimum interval for the specified Router Advertisements. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_managed_flag_state">
+	<documentation>
+ Sets the managed flag state for the specified Router Advertisements. The "Managed address configuration" flag
+ indicates that addresses are available via DHCPv6. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_managed_flag_state">
+	<documentation>
+ Gets the managed flag state for the specified Router Advertisements. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_other_configuration_flag_state">
+	<documentation>
+ Sets the other-configuration flag state for the specified Router Advertisements. The "other configuration"
+ flag indicates that other configuration information is available via DHCPv6. Examples of such
+ information are DNS-related information or information on other servers within the network.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_other_configuration_flag_state">
+	<documentation>
+ Gets the other-configuration flag state for the specified Router Advertisements. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_retransmit_time">
+	<documentation>
+ Sets the retransmit time for the specified Router Advertisements. This value is the time, in
+ milliseconds, between retransmitted Neighbor Solicitation messages. A value of zero
+ means unspecified (by this router).
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_retransmit_time">
+	<documentation>
+ Gets the retransmit time for the specified Router Advertisements. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_mtu">
+	<documentation>
+ Sets the MTU for the specified Router Advertisements. The MTU or maximum transmission unit,
+ should be adjusted to match the MTU on links that have a variable MTU.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_mtu">
+	<documentation>
+ Gets the MTU for the specified Router Advertisements. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_maximum_hop">
+	<documentation>
+ Sets the maximum hops a Router Advertisement packet may travel before it is discarded. 
+ A value of zero means unspecified (by this router). Has a maximum value of 255.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_maximum_hop">
+	<documentation>
+ Gets the maximum hops for the specified Router Advertisements. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_router_lifetime">
+	<documentation>
+ Sets the router lifetime for the specified Router Advertisements. The router lifetime is
+ the lifetime associated with the default router in seconds. A
+ lifetime of zero indicates that the router is not a default router.
+ Must be a value between the maximum interval and 9000.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_router_lifetime">
+	<documentation>
+ Gets the router lifetime for the specified Router Advertisements. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_reachable_time">
+	<documentation>
+ Sets the reachable time for the specified Router Advertisements. This is the time, in milliseconds,
+ that a node assumes a neighbor is reachable after having recieved a reachablity
+ confirmation. A value of zero means unspecified (by this router).
+ Has a maximum value of 3600000.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_reachable_time">
+	<documentation>
+ Gets the reachable time for the specified Router Advertisements. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouterAdvertisement"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouterAdvertisement"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.RouterAdvertisement">
+	<documentation>
+ The RouterAdvertisement interface enables you to create and edit router advertisements defined in the device. 
+ Since version 11.2.0 the functionality for router advertisements (RFC 4861) has been integrated into the system. 
+ This interface allows you to configure its behavior. 
+
+        	</documentation>
+	<port name="Networking.RouterAdvertisementPort" binding="tns:Networking.RouterAdvertisementBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

@@ -1,0 +1,2740 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="LocalLB.ProfilePersistence"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="LocalLB.CookiePersistenceMethod">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="COOKIE_PERSISTENCE_METHOD_NONE">
+					<xsd:annotation>
+						<xsd:documentation>COOKIE_PERSISTENCE_METHOD_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="COOKIE_PERSISTENCE_METHOD_INSERT">
+					<xsd:annotation>
+						<xsd:documentation>COOKIE_PERSISTENCE_METHOD_INSERT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="COOKIE_PERSISTENCE_METHOD_REWRITE">
+					<xsd:annotation>
+						<xsd:documentation>COOKIE_PERSISTENCE_METHOD_REWRITE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="COOKIE_PERSISTENCE_METHOD_PASSIVE">
+					<xsd:annotation>
+						<xsd:documentation>COOKIE_PERSISTENCE_METHOD_PASSIVE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="COOKIE_PERSISTENCE_METHOD_HASH">
+					<xsd:annotation>
+						<xsd:documentation>COOKIE_PERSISTENCE_METHOD_HASH</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="LocalLB.ProfileEnabledState">
+			<xsd:sequence>
+				<xsd:element name="value" type="tns:Common.EnabledState"/>
+				<xsd:element name="default_flag" type="xsd:boolean"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfileIPAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.ProfileIPAddress[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfileStringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.ProfileString[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfileIPAddress">
+			<xsd:sequence>
+				<xsd:element name="value" type="xsd:string"/>
+				<xsd:element name="default_flag" type="xsd:boolean"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.BooleanSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:boolean[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="LocalLB.PersistenceMode">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="PERSISTENCE_MODE_NONE">
+					<xsd:annotation>
+						<xsd:documentation>PERSISTENCE_MODE_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PERSISTENCE_MODE_SOURCE_ADDRESS_AFFINITY">
+					<xsd:annotation>
+						<xsd:documentation>PERSISTENCE_MODE_SOURCE_ADDRESS_AFFINITY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PERSISTENCE_MODE_DESTINATION_ADDRESS_AFFINITY">
+					<xsd:annotation>
+						<xsd:documentation>PERSISTENCE_MODE_DESTINATION_ADDRESS_AFFINITY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PERSISTENCE_MODE_COOKIE">
+					<xsd:annotation>
+						<xsd:documentation>PERSISTENCE_MODE_COOKIE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PERSISTENCE_MODE_MSRDP">
+					<xsd:annotation>
+						<xsd:documentation>PERSISTENCE_MODE_MSRDP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PERSISTENCE_MODE_SSL_SID">
+					<xsd:annotation>
+						<xsd:documentation>PERSISTENCE_MODE_SSL_SID</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PERSISTENCE_MODE_SIP">
+					<xsd:annotation>
+						<xsd:documentation>PERSISTENCE_MODE_SIP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PERSISTENCE_MODE_UIE">
+					<xsd:annotation>
+						<xsd:documentation>PERSISTENCE_MODE_UIE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PERSISTENCE_MODE_HASH">
+					<xsd:annotation>
+						<xsd:documentation>PERSISTENCE_MODE_HASH</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="LocalLB.ProfileCookiePersistenceMethod">
+			<xsd:sequence>
+				<xsd:element name="value" type="tns:LocalLB.CookiePersistenceMethod"/>
+				<xsd:element name="default_flag" type="xsd:boolean"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfileULong">
+			<xsd:sequence>
+				<xsd:element name="value" type="xsd:long"/>
+				<xsd:element name="default_flag" type="xsd:boolean"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfileULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.ProfileULong[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="LocalLB.ProfilePersistence.PersistenceHashMethod">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="PERSISTENCE_HASH_NONE">
+					<xsd:annotation>
+						<xsd:documentation>PERSISTENCE_HASH_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PERSISTENCE_HASH_DEFAULT">
+					<xsd:annotation>
+						<xsd:documentation>PERSISTENCE_HASH_DEFAULT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PERSISTENCE_HASH_CARP">
+					<xsd:annotation>
+						<xsd:documentation>PERSISTENCE_HASH_CARP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PERSISTENCE_HASH_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>PERSISTENCE_HASH_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="LocalLB.ProfilePersistence.ProfilePersistenceHashMethod">
+			<xsd:sequence>
+				<xsd:element name="value" type="tns:LocalLB.ProfilePersistence.PersistenceHashMethod"/>
+				<xsd:element name="default_flag" type="xsd:boolean"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfileString">
+			<xsd:sequence>
+				<xsd:element name="value" type="xsd:string"/>
+				<xsd:element name="default_flag" type="xsd:boolean"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.PersistenceModeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.PersistenceMode[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfileCookiePersistenceMethodSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.ProfileCookiePersistenceMethod[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfilePersistence.ProfilePersistenceHashMethodSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.ProfilePersistence.ProfilePersistenceHashMethod[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfilePersistenceModeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.ProfilePersistenceMode[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfileEnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.ProfileEnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfilePersistenceMode">
+			<xsd:sequence>
+				<xsd:element name="value" type="tns:LocalLB.PersistenceMode"/>
+				<xsd:element name="default_flag" type="xsd:boolean"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="LocalLB.ProfilePersistence.get_listRequest">
+</message>
+<message name="LocalLB.ProfilePersistence.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.createRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="modes" type="tns:LocalLB.PersistenceModeSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.createResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.delete_profileRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.delete_profileResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.delete_all_profilesRequest">
+</message>
+<message name="LocalLB.ProfilePersistence.delete_all_profilesResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.is_base_profileRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.is_base_profileResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.is_system_profileRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.is_system_profileResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_default_profileRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="defaults" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_default_profileResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_default_profileRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_default_profileResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_persistence_modeRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="modes" type="tns:LocalLB.ProfilePersistenceModeSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_persistence_modeResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_persistence_modeRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_persistence_modeResponse">
+	<part name="return" type="tns:LocalLB.ProfilePersistenceModeSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_mirror_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_mirror_stateResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_mirror_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_mirror_stateResponse">
+	<part name="return" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_timeoutRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="timeouts" type="tns:LocalLB.ProfileULongSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_timeoutResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_timeoutRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_timeoutResponse">
+	<part name="return" type="tns:LocalLB.ProfileULongSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_maskRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="masks" type="tns:LocalLB.ProfileIPAddressSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_maskResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_maskRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_maskResponse">
+	<part name="return" type="tns:LocalLB.ProfileIPAddressSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_cookie_persistence_methodRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="methods" type="tns:LocalLB.ProfileCookiePersistenceMethodSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_cookie_persistence_methodResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_cookie_persistence_methodRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_cookie_persistence_methodResponse">
+	<part name="return" type="tns:LocalLB.ProfileCookiePersistenceMethodSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_cookie_nameRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="cookie_names" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_cookie_nameResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_cookie_nameRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_cookie_nameResponse">
+	<part name="return" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_cookie_expirationRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="expirations" type="tns:LocalLB.ProfileULongSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_cookie_expirationResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_cookie_expirationRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_cookie_expirationResponse">
+	<part name="return" type="tns:LocalLB.ProfileULongSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_cookie_hash_offsetRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="offsets" type="tns:LocalLB.ProfileULongSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_cookie_hash_offsetResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_cookie_hash_offsetRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_cookie_hash_offsetResponse">
+	<part name="return" type="tns:LocalLB.ProfileULongSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_cookie_hash_lengthRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="lengths" type="tns:LocalLB.ProfileULongSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_cookie_hash_lengthResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_cookie_hash_lengthRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_cookie_hash_lengthResponse">
+	<part name="return" type="tns:LocalLB.ProfileULongSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_msrdp_without_session_directory_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_msrdp_without_session_directory_stateResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_msrdp_without_session_directory_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_msrdp_without_session_directory_stateResponse">
+	<part name="return" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_map_proxy_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_map_proxy_stateResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_map_proxy_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_map_proxy_stateResponse">
+	<part name="return" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_map_proxy_addressRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:LocalLB.ProfileIPAddressSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_map_proxy_addressResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_map_proxy_addressRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_map_proxy_addressResponse">
+	<part name="return" type="tns:LocalLB.ProfileIPAddressSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_map_proxy_classRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="classes" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_map_proxy_classResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_map_proxy_classRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_map_proxy_classResponse">
+	<part name="return" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_sip_infoRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="sip_info_headers" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_sip_infoResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_sip_infoRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_sip_infoResponse">
+	<part name="return" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_across_service_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_across_service_stateResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_across_service_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_across_service_stateResponse">
+	<part name="return" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_across_virtual_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_across_virtual_stateResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_across_virtual_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_across_virtual_stateResponse">
+	<part name="return" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_across_pool_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_across_pool_stateResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_across_pool_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_across_pool_stateResponse">
+	<part name="return" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_ruleRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_ruleResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_ruleRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_ruleResponse">
+	<part name="return" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_hash_methodRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="methods" type="tns:LocalLB.ProfilePersistence.ProfilePersistenceHashMethodSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_hash_methodResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_hash_methodRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_hash_methodResponse">
+	<part name="return" type="tns:LocalLB.ProfilePersistence.ProfilePersistenceHashMethodSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_hash_offsetRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="offsets" type="tns:LocalLB.ProfileULongSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_hash_offsetResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_hash_offsetRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_hash_offsetResponse">
+	<part name="return" type="tns:LocalLB.ProfileULongSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_hash_lengthRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="lengths" type="tns:LocalLB.ProfileULongSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_hash_lengthResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_hash_lengthRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_hash_lengthResponse">
+	<part name="return" type="tns:LocalLB.ProfileULongSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_starting_hash_patternRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="patterns" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_starting_hash_patternResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_starting_hash_patternRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_starting_hash_patternResponse">
+	<part name="return" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_ending_hash_patternRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="patterns" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_ending_hash_patternResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_ending_hash_patternRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_ending_hash_patternResponse">
+	<part name="return" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_maximum_hash_buffer_sizeRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="sizes" type="tns:LocalLB.ProfileULongSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_maximum_hash_buffer_sizeResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_maximum_hash_buffer_sizeRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_maximum_hash_buffer_sizeResponse">
+	<part name="return" type="tns:LocalLB.ProfileULongSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_hash_more_data_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_hash_more_data_stateResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_hash_more_data_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_hash_more_data_stateResponse">
+	<part name="return" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_override_connection_limit_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_override_connection_limit_stateResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_override_connection_limit_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_override_connection_limit_stateResponse">
+	<part name="return" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.set_descriptionRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.set_descriptionResponse">
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_descriptionRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfilePersistence.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.ProfilePersistence.get_versionRequest">
+</message>
+<message name="LocalLB.ProfilePersistence.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="LocalLB.ProfilePersistencePortType">
+	<operation name="get_list">
+      	<documentation>
+ Gets a list of all Persistence profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_listRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates the specified Persistence profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.createRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.createResponse"/>
+	</operation>
+	<operation name="delete_profile">
+	<documentation>
+ Deletes the specified Persistence profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.delete_profileRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.delete_profileResponse"/>
+	</operation>
+	<operation name="delete_all_profiles">
+	<documentation>
+ Deletes all Persistence profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.delete_all_profilesRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.delete_all_profilesResponse"/>
+	</operation>
+	<operation name="is_base_profile">
+	<documentation>
+ Determines whether the specified persistence profiles are base
+ profiles.  A base profile sits at the base of the profile's
+ inheritance tree, supplying the defaults for every profile derived
+ from it.  (See also is_system_profile).
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.is_base_profileRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.is_base_profileResponse"/>
+	</operation>
+	<operation name="is_system_profile">
+	<documentation>
+ Determines whether the specified persistence profiles are system
+ profiles.  A system profile is a profile pre-configured on the
+ system, ready for use.  Non-system profiles are profiles created or
+ modified by a user.  Note that if a system profile is modified, it
+ is no longer considered a system profile.  (See also
+ is_base_profile).
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.is_system_profileRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.is_system_profileResponse"/>
+	</operation>
+	<operation name="set_default_profile">
+	<documentation>
+ Sets the names of the default profiles from which the specified profiles will derive
+ default values for its attributes.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_default_profileRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_default_profileResponse"/>
+	</operation>
+	<operation name="get_default_profile">
+	<documentation>
+ Gets the names of the default profiles from which the specified profiles will derive
+ default values for its attributes.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_default_profileRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_default_profileResponse"/>
+	</operation>
+	<operation name="set_persistence_mode">
+	<documentation>
+ Sets the persistence modes for the specified Persistence profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_persistence_modeRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_persistence_modeResponse"/>
+	</operation>
+	<operation name="get_persistence_mode">
+	<documentation>
+ Gets the persistence modes for the specified Persistence profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_persistence_modeRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_persistence_modeResponse"/>
+	</operation>
+	<operation name="set_mirror_state">
+	<documentation>
+ Sets the mirror states for the specified Persistence profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_mirror_stateRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_mirror_stateResponse"/>
+	</operation>
+	<operation name="get_mirror_state">
+	<documentation>
+ Gets the mirror states for the specified Persistence profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_mirror_stateRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_mirror_stateResponse"/>
+	</operation>
+	<operation name="set_timeout">
+	<documentation>
+ Sets the timeout for the specified Persistence profiles.
+ The number of seconds to timeout a persistence entry.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_timeoutRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_timeoutResponse"/>
+	</operation>
+	<operation name="get_timeout">
+	<documentation>
+ Gets the timeout for the specified Persistence profiles.
+ The number of seconds to timeout a persistence entry.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_timeoutRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_timeoutResponse"/>
+	</operation>
+	<operation name="set_mask">
+	<documentation>
+ Sets the masks used in either simple or sticky persistence mode.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_maskRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_maskResponse"/>
+	</operation>
+	<operation name="get_mask">
+	<documentation>
+ Gets the masks used in either simple or sticky persistence mode.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_maskRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_maskResponse"/>
+	</operation>
+	<operation name="set_cookie_persistence_method">
+	<documentation>
+ Sets the cookie persistence methods to be used when in cookie persistence mode.
+ Applicable when peristence mode is PERSISTENCE_MODE_COOKIE.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_cookie_persistence_methodRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_cookie_persistence_methodResponse"/>
+	</operation>
+	<operation name="get_cookie_persistence_method">
+	<documentation>
+ Gets the cookie persistence methods to be used when in cookie persistence mode.
+ Applicable when peristence mode is PERSISTENCE_MODE_COOKIE.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_cookie_persistence_methodRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_cookie_persistence_methodResponse"/>
+	</operation>
+	<operation name="set_cookie_name">
+	<documentation>
+ Sets the cookie names for the specified Persistence profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_COOKIE.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_cookie_nameRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_cookie_nameResponse"/>
+	</operation>
+	<operation name="get_cookie_name">
+	<documentation>
+ Gets the cookie names for the specified Persistence profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_COOKIE.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_cookie_nameRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_cookie_nameResponse"/>
+	</operation>
+	<operation name="set_cookie_expiration">
+	<documentation>
+ Sets the cookie expiration in seconds for the specified Persistence profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_COOKIE.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_cookie_expirationRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_cookie_expirationResponse"/>
+	</operation>
+	<operation name="get_cookie_expiration">
+	<documentation>
+ Gets the cookie expiration in seconds for the specified Persistence profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_COOKIE.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_cookie_expirationRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_cookie_expirationResponse"/>
+	</operation>
+	<operation name="set_cookie_hash_offset">
+	<documentation>
+ Sets the cookie hash offsets for the specified profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_COOKIE, and
+ cookie persistence method is COOKIE_PERSISTENCE_METHOD_HASH.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_cookie_hash_offsetRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_cookie_hash_offsetResponse"/>
+	</operation>
+	<operation name="get_cookie_hash_offset">
+	<documentation>
+ Gets the cookie hash offsets for the specified profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_COOKIE, and
+ cookie persistence method is COOKIE_PERSISTENCE_METHOD_HASH.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_cookie_hash_offsetRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_cookie_hash_offsetResponse"/>
+	</operation>
+	<operation name="set_cookie_hash_length">
+	<documentation>
+ Sets the cookie hash lengths for the specified profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_COOKIE, and
+ cookie persistence method is COOKIE_PERSISTENCE_METHOD_HASH.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_cookie_hash_lengthRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_cookie_hash_lengthResponse"/>
+	</operation>
+	<operation name="get_cookie_hash_length">
+	<documentation>
+ Gets the cookie hash lengths for the specified profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_COOKIE, and
+ cookie persistence method is COOKIE_PERSISTENCE_METHOD_HASH.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_cookie_hash_lengthRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_cookie_hash_lengthResponse"/>
+	</operation>
+	<operation name="set_msrdp_without_session_directory_state">
+	<documentation>
+ Sets the states to indicate whether MS terminal services have been configured without
+ a session directory for the specified Persistence profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_msrdp_without_session_directory_stateRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_msrdp_without_session_directory_stateResponse"/>
+	</operation>
+	<operation name="get_msrdp_without_session_directory_state">
+	<documentation>
+ Gets the states to indicate whether MS terminal services have been configured without
+ a session directory for the specified Persistence profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_msrdp_without_session_directory_stateRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_msrdp_without_session_directory_stateResponse"/>
+	</operation>
+	<operation name="set_map_proxy_state">
+	<documentation>
+ Sets the states to indicate whether to map known proxies when the persistence mode
+ is source address affinity.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_map_proxy_stateRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_map_proxy_stateResponse"/>
+	</operation>
+	<operation name="get_map_proxy_state">
+	<documentation>
+ Gets the states to indicate whether to map known proxies when the persistence mode
+ is source address affinity.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_map_proxy_stateRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_map_proxy_stateResponse"/>
+	</operation>
+	<operation name="set_map_proxy_address">
+	<documentation>
+ Sets the mapped address that is used when the map proxies state is enabled
+ and the source address matches the map proxy class.   When this is not set, an 
+ address from the data-group/class is used.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_map_proxy_addressRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_map_proxy_addressResponse"/>
+	</operation>
+	<operation name="get_map_proxy_address">
+	<documentation>
+ Gets the proxy map address used when map proxies state is enabled
+ on source address persistence mode.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_map_proxy_addressRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_map_proxy_addressResponse"/>
+	</operation>
+	<operation name="set_map_proxy_class">
+	<documentation>
+ Sets the data-group/class that is searched to determine whether a source
+ address is behind a proxy and should then be mapped.  This is only relevant
+ when the map proxies state is enabled on a source address persistence profile.
+ If this is not set when the map proxy state is enabled, then the data-group/class
+ defined by the DB variable "Persist.WellKnownProxyClass" will be used.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_map_proxy_classRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_map_proxy_classResponse"/>
+	</operation>
+	<operation name="get_map_proxy_class">
+	<documentation>
+ Gets the proxy map IP address class/datagroup name used when map known proxies
+ state is enabled on source address persistence mode.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_map_proxy_classRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_map_proxy_classResponse"/>
+	</operation>
+	<operation name="set_sip_info">
+	<documentation>
+ Sets the sip_info header for the specified Persistence profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_SIP.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_sip_infoRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_sip_infoResponse"/>
+	</operation>
+	<operation name="get_sip_info">
+	<documentation>
+ Gets the sip_info headers for the specified Persistence profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_SIP.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_sip_infoRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_sip_infoResponse"/>
+	</operation>
+	<operation name="set_across_service_state">
+	<documentation>
+ Sets the states to indicate whether persistence entries added under this profile are
+ available across services.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_across_service_stateRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_across_service_stateResponse"/>
+	</operation>
+	<operation name="get_across_service_state">
+	<documentation>
+ Gets the states to indicate whether persistence entries added under this profile are
+ available across services.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_across_service_stateRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_across_service_stateResponse"/>
+	</operation>
+	<operation name="set_across_virtual_state">
+	<documentation>
+ Sets the states to indicate whether persistence entries added under this profile are
+ available across virtuals.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_across_virtual_stateRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_across_virtual_stateResponse"/>
+	</operation>
+	<operation name="get_across_virtual_state">
+	<documentation>
+ Gets the states to indicate whether persistence entries added under this profile are
+ available across virtuals.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_across_virtual_stateRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_across_virtual_stateResponse"/>
+	</operation>
+	<operation name="set_across_pool_state">
+	<documentation>
+ Sets the states to indicate whether persistence entries added under this profile are
+ available across pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_across_pool_stateRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_across_pool_stateResponse"/>
+	</operation>
+	<operation name="get_across_pool_state">
+	<documentation>
+ Gets the states to indicate whether persistence entries added under this profile are
+ available across pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_across_pool_stateRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_across_pool_stateResponse"/>
+	</operation>
+	<operation name="set_rule">
+	<documentation>
+ Sets the UIE rules for the specified Persistence profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_UIE.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_ruleRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_ruleResponse"/>
+	</operation>
+	<operation name="get_rule">
+	<documentation>
+ Gets the UIE rules for the specified Persistence profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_UIE.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_ruleRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_ruleResponse"/>
+	</operation>
+	<operation name="set_hash_method">
+	<documentation>
+ Sets the hash method used to generate the persistence values for a
+ set of persistence profiles.
+
+ See PersistenceHashMethod for details.
+
+ This is only applicable when the persistence mode is
+ PERSISTENCE_MODE_HASH.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_hash_methodRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_hash_methodResponse"/>
+	</operation>
+	<operation name="get_hash_method">
+	<documentation>
+ Gets the hash method used to generate the persistence values for a
+ set of persistence profiles.
+
+ This only returns useful values if the persistence mode is
+ PERSISTENCE_MODE_HASH.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_hash_methodRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_hash_methodResponse"/>
+	</operation>
+	<operation name="set_hash_offset">
+	<documentation>
+ Sets the offset to the start of the payload data whose hashed value
+ is used as the persistence value for a set of persistence profiles.
+
+ This is only applicable when the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+ The hashed payload data length is specified via set_hash_length.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_hash_offsetRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_hash_offsetResponse"/>
+	</operation>
+	<operation name="get_hash_offset">
+	<documentation>
+ Gets the offset to the start of the payload data whose hashed value
+ is used as the persistence value for a set of persistence profiles.
+
+ This only returns useful values if the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_hash_offsetRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_hash_offsetResponse"/>
+	</operation>
+	<operation name="set_hash_length">
+	<documentation>
+ Sets the length of payload data whose hashed value is used for the
+ persistence value for a set of persistence profiles.
+
+ The start of the data is specified via set_hash_offset.
+
+ The hash payload data is either delimited by this offset and length
+ or the starting and ending string pattern, not both.
+
+ This is only applicable when the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_hash_lengthRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_hash_lengthResponse"/>
+	</operation>
+	<operation name="get_hash_length">
+	<documentation>
+ Gets the length of payload data whose hashed value is used for the
+ persistence value for a set of persistence profiles.
+
+ This only returns useful values if the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_hash_lengthRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_hash_lengthResponse"/>
+	</operation>
+	<operation name="set_starting_hash_pattern">
+	<documentation>
+ Sets the pattern marking the start of the section of payload data
+ whose hashed value is used for the persistence value for a set of
+ persistence profiles.
+
+ This is only applicable when the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_starting_hash_patternRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_starting_hash_patternResponse"/>
+	</operation>
+	<operation name="get_starting_hash_pattern">
+	<documentation>
+ Gets the pattern marking the start of the section of payload data
+ whose hashed value is used for the persistence value for a set of
+ persistence profiles.
+
+ This only returns useful values if the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_starting_hash_patternRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_starting_hash_patternResponse"/>
+	</operation>
+	<operation name="set_ending_hash_pattern">
+	<documentation>
+ Sets the pattern marking the end of the section of payload data
+ whose hashed value is used for the persistence value for a set of
+ persistence profiles.
+
+ The hash payload data is either delimited by this starting and
+ ending string pattern or the offset and length, not both.
+
+ This is only applicable when the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_ending_hash_patternRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_ending_hash_patternResponse"/>
+	</operation>
+	<operation name="get_ending_hash_pattern">
+	<documentation>
+ Gets the pattern marking the end of the section of payload data
+ whose hashed value is used for the persistence value for a set of
+ persistence profiles.
+
+ This only returns useful values if the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_ending_hash_patternRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_ending_hash_patternResponse"/>
+	</operation>
+	<operation name="set_maximum_hash_buffer_size">
+	<documentation>
+ Sets the maximum size of the buffer used to hold the section of the
+ payload data whose hashed value is used for the persistence value
+ for a set of persistence values.
+
+ This is only applicable when the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_maximum_hash_buffer_sizeRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_maximum_hash_buffer_sizeResponse"/>
+	</operation>
+	<operation name="get_maximum_hash_buffer_size">
+	<documentation>
+ Gets the maximum size of the buffer used to hold the section of the
+ payload data whose hashed value is used for the persistence value
+ for a set of persistence values.
+
+ This only returns useful values if the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_maximum_hash_buffer_sizeRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_maximum_hash_buffer_sizeResponse"/>
+	</operation>
+	<operation name="set_hash_more_data_state">
+	<documentation>
+ Sets the enabled state whether to perform another hash operation
+ after the current hash operation completes for a set of persistence
+ profiles.
+
+ This is only applicable when the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_hash_more_data_stateRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_hash_more_data_stateResponse"/>
+	</operation>
+	<operation name="get_hash_more_data_state">
+	<documentation>
+ Gets the enabled state whether to perform another hash operation
+ after the current hash operation completes for a set of persistence
+ profiles.
+
+ This only returns useful values if the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_hash_more_data_stateRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_hash_more_data_stateResponse"/>
+	</operation>
+	<operation name="set_override_connection_limit_state">
+	<documentation>
+ Sets the state indicating, when enabled, that the pool
+ member connection limits are not enforced for persisted
+ clients. Per-virtual connection limits remain hard limits
+ and are not disabled. The default value is disabled.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_override_connection_limit_stateRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_override_connection_limit_stateResponse"/>
+	</operation>
+	<operation name="get_override_connection_limit_state">
+	<documentation>
+ Gets the state indicating, when enabled, that the pool
+ member connection limits are not enforced for persisted
+ clients.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_override_connection_limit_stateRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_override_connection_limit_stateResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of persistence profiles.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.set_descriptionRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of persistence profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_descriptionRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfilePersistence.get_versionRequest"/>
+		<output message="tns:LocalLB.ProfilePersistence.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="LocalLB.ProfilePersistenceBinding" type="tns:LocalLB.ProfilePersistencePortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all Persistence profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates the specified Persistence profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_profile">
+	<documentation>
+ Deletes the specified Persistence profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_profiles">
+	<documentation>
+ Deletes all Persistence profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="is_base_profile">
+	<documentation>
+ Determines whether the specified persistence profiles are base
+ profiles.  A base profile sits at the base of the profile's
+ inheritance tree, supplying the defaults for every profile derived
+ from it.  (See also is_system_profile).
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="is_system_profile">
+	<documentation>
+ Determines whether the specified persistence profiles are system
+ profiles.  A system profile is a profile pre-configured on the
+ system, ready for use.  Non-system profiles are profiles created or
+ modified by a user.  Note that if a system profile is modified, it
+ is no longer considered a system profile.  (See also
+ is_base_profile).
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_default_profile">
+	<documentation>
+ Sets the names of the default profiles from which the specified profiles will derive
+ default values for its attributes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_default_profile">
+	<documentation>
+ Gets the names of the default profiles from which the specified profiles will derive
+ default values for its attributes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_persistence_mode">
+	<documentation>
+ Sets the persistence modes for the specified Persistence profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_persistence_mode">
+	<documentation>
+ Gets the persistence modes for the specified Persistence profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_mirror_state">
+	<documentation>
+ Sets the mirror states for the specified Persistence profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_mirror_state">
+	<documentation>
+ Gets the mirror states for the specified Persistence profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_timeout">
+	<documentation>
+ Sets the timeout for the specified Persistence profiles.
+ The number of seconds to timeout a persistence entry.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_timeout">
+	<documentation>
+ Gets the timeout for the specified Persistence profiles.
+ The number of seconds to timeout a persistence entry.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_mask">
+	<documentation>
+ Sets the masks used in either simple or sticky persistence mode.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_mask">
+	<documentation>
+ Gets the masks used in either simple or sticky persistence mode.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_cookie_persistence_method">
+	<documentation>
+ Sets the cookie persistence methods to be used when in cookie persistence mode.
+ Applicable when peristence mode is PERSISTENCE_MODE_COOKIE.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cookie_persistence_method">
+	<documentation>
+ Gets the cookie persistence methods to be used when in cookie persistence mode.
+ Applicable when peristence mode is PERSISTENCE_MODE_COOKIE.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_cookie_name">
+	<documentation>
+ Sets the cookie names for the specified Persistence profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_COOKIE.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cookie_name">
+	<documentation>
+ Gets the cookie names for the specified Persistence profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_COOKIE.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_cookie_expiration">
+	<documentation>
+ Sets the cookie expiration in seconds for the specified Persistence profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_COOKIE.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cookie_expiration">
+	<documentation>
+ Gets the cookie expiration in seconds for the specified Persistence profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_COOKIE.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_cookie_hash_offset">
+	<documentation>
+ Sets the cookie hash offsets for the specified profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_COOKIE, and
+ cookie persistence method is COOKIE_PERSISTENCE_METHOD_HASH.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cookie_hash_offset">
+	<documentation>
+ Gets the cookie hash offsets for the specified profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_COOKIE, and
+ cookie persistence method is COOKIE_PERSISTENCE_METHOD_HASH.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_cookie_hash_length">
+	<documentation>
+ Sets the cookie hash lengths for the specified profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_COOKIE, and
+ cookie persistence method is COOKIE_PERSISTENCE_METHOD_HASH.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cookie_hash_length">
+	<documentation>
+ Gets the cookie hash lengths for the specified profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_COOKIE, and
+ cookie persistence method is COOKIE_PERSISTENCE_METHOD_HASH.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_msrdp_without_session_directory_state">
+	<documentation>
+ Sets the states to indicate whether MS terminal services have been configured without
+ a session directory for the specified Persistence profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_msrdp_without_session_directory_state">
+	<documentation>
+ Gets the states to indicate whether MS terminal services have been configured without
+ a session directory for the specified Persistence profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_map_proxy_state">
+	<documentation>
+ Sets the states to indicate whether to map known proxies when the persistence mode
+ is source address affinity.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_map_proxy_state">
+	<documentation>
+ Gets the states to indicate whether to map known proxies when the persistence mode
+ is source address affinity.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_map_proxy_address">
+	<documentation>
+ Sets the mapped address that is used when the map proxies state is enabled
+ and the source address matches the map proxy class.   When this is not set, an 
+ address from the data-group/class is used.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_map_proxy_address">
+	<documentation>
+ Gets the proxy map address used when map proxies state is enabled
+ on source address persistence mode.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_map_proxy_class">
+	<documentation>
+ Sets the data-group/class that is searched to determine whether a source
+ address is behind a proxy and should then be mapped.  This is only relevant
+ when the map proxies state is enabled on a source address persistence profile.
+ If this is not set when the map proxy state is enabled, then the data-group/class
+ defined by the DB variable "Persist.WellKnownProxyClass" will be used.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_map_proxy_class">
+	<documentation>
+ Gets the proxy map IP address class/datagroup name used when map known proxies
+ state is enabled on source address persistence mode.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_sip_info">
+	<documentation>
+ Sets the sip_info header for the specified Persistence profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_SIP.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_sip_info">
+	<documentation>
+ Gets the sip_info headers for the specified Persistence profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_SIP.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_across_service_state">
+	<documentation>
+ Sets the states to indicate whether persistence entries added under this profile are
+ available across services.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_across_service_state">
+	<documentation>
+ Gets the states to indicate whether persistence entries added under this profile are
+ available across services.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_across_virtual_state">
+	<documentation>
+ Sets the states to indicate whether persistence entries added under this profile are
+ available across virtuals.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_across_virtual_state">
+	<documentation>
+ Gets the states to indicate whether persistence entries added under this profile are
+ available across virtuals.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_across_pool_state">
+	<documentation>
+ Sets the states to indicate whether persistence entries added under this profile are
+ available across pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_across_pool_state">
+	<documentation>
+ Gets the states to indicate whether persistence entries added under this profile are
+ available across pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_rule">
+	<documentation>
+ Sets the UIE rules for the specified Persistence profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_UIE.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_rule">
+	<documentation>
+ Gets the UIE rules for the specified Persistence profiles.
+ Applicable when peristence mode is PERSISTENCE_MODE_UIE.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_hash_method">
+	<documentation>
+ Sets the hash method used to generate the persistence values for a
+ set of persistence profiles.
+
+ See PersistenceHashMethod for details.
+
+ This is only applicable when the persistence mode is
+ PERSISTENCE_MODE_HASH.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_hash_method">
+	<documentation>
+ Gets the hash method used to generate the persistence values for a
+ set of persistence profiles.
+
+ This only returns useful values if the persistence mode is
+ PERSISTENCE_MODE_HASH.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_hash_offset">
+	<documentation>
+ Sets the offset to the start of the payload data whose hashed value
+ is used as the persistence value for a set of persistence profiles.
+
+ This is only applicable when the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+ The hashed payload data length is specified via set_hash_length.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_hash_offset">
+	<documentation>
+ Gets the offset to the start of the payload data whose hashed value
+ is used as the persistence value for a set of persistence profiles.
+
+ This only returns useful values if the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_hash_length">
+	<documentation>
+ Sets the length of payload data whose hashed value is used for the
+ persistence value for a set of persistence profiles.
+
+ The start of the data is specified via set_hash_offset.
+
+ The hash payload data is either delimited by this offset and length
+ or the starting and ending string pattern, not both.
+
+ This is only applicable when the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_hash_length">
+	<documentation>
+ Gets the length of payload data whose hashed value is used for the
+ persistence value for a set of persistence profiles.
+
+ This only returns useful values if the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_starting_hash_pattern">
+	<documentation>
+ Sets the pattern marking the start of the section of payload data
+ whose hashed value is used for the persistence value for a set of
+ persistence profiles.
+
+ This is only applicable when the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_starting_hash_pattern">
+	<documentation>
+ Gets the pattern marking the start of the section of payload data
+ whose hashed value is used for the persistence value for a set of
+ persistence profiles.
+
+ This only returns useful values if the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ending_hash_pattern">
+	<documentation>
+ Sets the pattern marking the end of the section of payload data
+ whose hashed value is used for the persistence value for a set of
+ persistence profiles.
+
+ The hash payload data is either delimited by this starting and
+ ending string pattern or the offset and length, not both.
+
+ This is only applicable when the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ending_hash_pattern">
+	<documentation>
+ Gets the pattern marking the end of the section of payload data
+ whose hashed value is used for the persistence value for a set of
+ persistence profiles.
+
+ This only returns useful values if the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_maximum_hash_buffer_size">
+	<documentation>
+ Sets the maximum size of the buffer used to hold the section of the
+ payload data whose hashed value is used for the persistence value
+ for a set of persistence values.
+
+ This is only applicable when the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_maximum_hash_buffer_size">
+	<documentation>
+ Gets the maximum size of the buffer used to hold the section of the
+ payload data whose hashed value is used for the persistence value
+ for a set of persistence values.
+
+ This only returns useful values if the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_hash_more_data_state">
+	<documentation>
+ Sets the enabled state whether to perform another hash operation
+ after the current hash operation completes for a set of persistence
+ profiles.
+
+ This is only applicable when the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_hash_more_data_state">
+	<documentation>
+ Gets the enabled state whether to perform another hash operation
+ after the current hash operation completes for a set of persistence
+ profiles.
+
+ This only returns useful values if the persistence mode is
+ PERSISTENCE_MODE_HASH and the hash method is PERSISTENCE_HASH_CARP.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_override_connection_limit_state">
+	<documentation>
+ Sets the state indicating, when enabled, that the pool
+ member connection limits are not enforced for persisted
+ clients. Per-virtual connection limits remain hard limits
+ and are not disabled. The default value is disabled.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_override_connection_limit_state">
+	<documentation>
+ Gets the state indicating, when enabled, that the pool
+ member connection limits are not enforced for persisted
+ clients.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of persistence profiles.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of persistence profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfilePersistence"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfilePersistence"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="LocalLB.ProfilePersistence">
+	<documentation>
+ The ProfilePersistence interface enables you to manipulate a local load balancer's Persistence profile.
+
+        	</documentation>
+	<port name="LocalLB.ProfilePersistencePort" binding="tns:LocalLB.ProfilePersistenceBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

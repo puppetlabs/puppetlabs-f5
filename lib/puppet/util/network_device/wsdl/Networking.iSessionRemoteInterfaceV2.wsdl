@@ -1,0 +1,1307 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.iSessionRemoteInterfaceV2"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Networking.Uuid_128Sequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.Uuid_128[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULong64">
+			<xsd:sequence>
+				<xsd:element name="high" type="xsd:long"/>
+				<xsd:element name="low" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Networking.iSessionRemoteInterfaceV2.NatSourceAddress">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="WOC_NAT_SOURCE_ADDRESS_NONE">
+					<xsd:annotation>
+						<xsd:documentation>WOC_NAT_SOURCE_ADDRESS_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="WOC_NAT_SOURCE_ADDRESS_CLIENT">
+					<xsd:annotation>
+						<xsd:documentation>WOC_NAT_SOURCE_ADDRESS_CLIENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="WOC_NAT_SOURCE_ADDRESS_WOM">
+					<xsd:annotation>
+						<xsd:documentation>WOC_NAT_SOURCE_ADDRESS_WOM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="WOC_NAT_SOURCE_ADDRESS_TUNNEL">
+					<xsd:annotation>
+						<xsd:documentation>WOC_NAT_SOURCE_ADDRESS_TUNNEL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPAddressSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.IPAddressSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.iSessionRemoteInterfaceV2.NatSourceAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.iSessionRemoteInterfaceV2.NatSourceAddress[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.PortSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.iSessionRemoteInterfaceV2.OriginState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="MCP_ORIGIN_DISCOVERED">
+					<xsd:annotation>
+						<xsd:documentation>MCP_ORIGIN_DISCOVERED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="MCP_ORIGIN_CONFIGURED">
+					<xsd:annotation>
+						<xsd:documentation>MCP_ORIGIN_CONFIGURED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="MCP_ORIGIN_PERSISTABLE">
+					<xsd:annotation>
+						<xsd:documentation>MCP_ORIGIN_PERSISTABLE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="MCP_ORIGIN_MANUALLY_SAVED">
+					<xsd:annotation>
+						<xsd:documentation>MCP_ORIGIN_MANUALLY_SAVED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Networking.Uuid_128">
+			<xsd:sequence>
+				<xsd:element name="low_part" type="tns:Common.ULong64"/>
+				<xsd:element name="high_part" type="tns:Common.ULong64"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.iSessionRemoteInterfaceV2.OriginStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.iSessionRemoteInterfaceV2.OriginState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.iSessionRemoteInterfaceV2.get_listRequest">
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.createRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+	<part name="enabled" type="tns:Common.EnabledStateSequence"/>
+	<part name="names" type="tns:Common.StringSequence"/>
+	<part name="serverssl" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.createResponse">
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.delete_peerRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.delete_peerResponse">
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.delete_all_peersRequest">
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.delete_all_peersResponse">
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.get_addressRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.get_addressResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.set_behind_nat_stateRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.set_behind_nat_stateResponse">
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.get_behind_nat_stateRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.get_behind_nat_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.get_dedup_cacheRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.get_dedup_cacheResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.set_descriptionRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.set_descriptionResponse">
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.get_descriptionRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.set_management_addressRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="ips" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.set_management_addressResponse">
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.get_management_addressRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.get_management_addressResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.set_nat_config_statusRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="nat_configs" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.set_nat_config_statusResponse">
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.get_nat_config_statusRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.get_nat_config_statusResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.set_nat_source_addressRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="nat_states" type="tns:Networking.iSessionRemoteInterfaceV2.NatSourceAddressSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.set_nat_source_addressResponse">
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.get_nat_source_addressRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.get_nat_source_addressResponse">
+	<part name="return" type="tns:Networking.iSessionRemoteInterfaceV2.NatSourceAddressSequence"/>
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.set_originRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="origins" type="tns:Networking.iSessionRemoteInterfaceV2.OriginStateSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.set_originResponse">
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.get_originRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.get_originResponse">
+	<part name="return" type="tns:Networking.iSessionRemoteInterfaceV2.OriginStateSequence"/>
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.set_peer_enabled_stateRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.set_peer_enabled_stateResponse">
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.get_peer_enabled_stateRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.get_peer_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.get_peer_ip_listRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.get_peer_ip_listResponse">
+	<part name="return" type="tns:Common.IPAddressSequenceSequence"/>
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.get_peer_nameRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.get_peer_nameResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.set_peer_routing_stateRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.set_peer_routing_stateResponse">
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.get_peer_routing_stateRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.get_peer_routing_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.set_profile_serversslRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="serverssl" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.set_profile_serversslResponse">
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.get_profile_serversslRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.get_profile_serversslResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.set_tunnel_portRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="tunnel_ports" type="tns:Common.PortSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.set_tunnel_portResponse">
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.get_tunnel_portRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.get_tunnel_portResponse">
+	<part name="return" type="tns:Common.PortSequence"/>
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.get_UUIDRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.get_UUIDResponse">
+	<part name="return" type="tns:Networking.Uuid_128Sequence"/>
+</message>
+
+<message name="Networking.iSessionRemoteInterfaceV2.get_versionRequest">
+</message>
+<message name="Networking.iSessionRemoteInterfaceV2.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.iSessionRemoteInterfaceV2PortType">
+	<operation name="get_list">
+    	<documentation>
+ Gets the names of all remote endpoints.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.get_listRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a set of remote endpoints.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.createRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.createResponse"/>
+	</operation>
+	<operation name="delete_peer">
+	<documentation>
+ Deletes a set of remote endpoints.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.delete_peerRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.delete_peerResponse"/>
+	</operation>
+	<operation name="delete_all_peers">
+	<documentation>
+ Deletes all remote endpoints.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.delete_all_peersRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.delete_all_peersResponse"/>
+	</operation>
+	<operation name="get_address">
+	<documentation>
+ Gets the local endpoint IP address for a set of remote endpoints.
+
+ Note: A set_address method is not supported.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.get_addressRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.get_addressResponse"/>
+	</operation>
+	<operation name="set_behind_nat_state">
+	<documentation>
+ Sets the state to indicate that this is located behind a Network
+ Address Translation device for a set of remote endpoints.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.set_behind_nat_stateRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.set_behind_nat_stateResponse"/>
+	</operation>
+	<operation name="get_behind_nat_state">
+	<documentation>
+ Gets the state to indicate that this is located behind a Network
+ Address Translation device for a set of remote endpoints.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.get_behind_nat_stateRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.get_behind_nat_stateResponse"/>
+	</operation>
+	<operation name="get_dedup_cache">
+	<documentation>
+ Gets the total amount of cache available for symmetric data
+ deduplication for a set of remote endpoints. The system apportions
+ this cache according to the number of remote endpoints and the
+ amount of cache available at each endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.get_dedup_cacheRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.get_dedup_cacheResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of remote endpoints.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.set_descriptionRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of remote endpoints.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.get_descriptionRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.get_descriptionResponse"/>
+	</operation>
+	<operation name="set_management_address">
+	<documentation>
+ Sets the management IP address for a set of remote endpoints.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.set_management_addressRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.set_management_addressResponse"/>
+	</operation>
+	<operation name="get_management_address">
+	<documentation>
+ Gets the management IP address for a set of remote endpoints.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.get_management_addressRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.get_management_addressResponse"/>
+	</operation>
+	<operation name="set_nat_config_status">
+	<documentation>
+ Sets the configuration status for a set of remote endpoints.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.set_nat_config_statusRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.set_nat_config_statusResponse"/>
+	</operation>
+	<operation name="get_nat_config_status">
+	<documentation>
+ Gets the configuration status for a set of remote endpoints.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.get_nat_config_statusRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.get_nat_config_statusResponse"/>
+	</operation>
+	<operation name="set_nat_source_address">
+	<documentation>
+ Sets the SNAT address source for a set of remote endpoints.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.set_nat_source_addressRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.set_nat_source_addressResponse"/>
+	</operation>
+	<operation name="get_nat_source_address">
+	<documentation>
+ Gets the SNAT address source for a set of remote endpoints.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.get_nat_source_addressRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.get_nat_source_addressResponse"/>
+	</operation>
+	<operation name="set_origin">
+	<documentation>
+ Sets the how the remote endpoint was created for a set of remote
+ endpoints. You can change the origin from "discovered" to
+ "persistable", if you want to save the endpoint configuration.
+ After a remote endpoint has been saved, this attribute is changed
+ to "manually saved". Any remote endpoints marked as "discovered"
+ are not saved.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.set_originRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.set_originResponse"/>
+	</operation>
+	<operation name="get_origin">
+	<documentation>
+ Gets the how the remote endpoint was created for a set of remote
+ endpoints.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.get_originRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.get_originResponse"/>
+	</operation>
+	<operation name="set_peer_enabled_state">
+	<documentation>
+ Sets the state to optimize traffic between the local endpoint and
+ this remote endpoint for a set of remote endpoints. Disabling a
+ remote endpoint affects only the connection between the local
+ endpoint and this remote endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.set_peer_enabled_stateRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.set_peer_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_peer_enabled_state">
+	<documentation>
+ Gets the state to optimize traffic between the local endpoint and
+ this remote endpoint for a set of remote endpoints.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.get_peer_enabled_stateRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.get_peer_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_peer_ip_list">
+	<documentation>
+ Gets the list of IP addresses that the local endpoint uses to
+ communicate with the WAN Optimization Module on a remote BIG-IP
+ system for a set of remote endpoints.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.get_peer_ip_listRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.get_peer_ip_listResponse"/>
+	</operation>
+	<operation name="get_peer_name">
+	<documentation>
+ Gets the host name of the BIG-IP system that hosts this remote
+ endpoint for a set of remote endpoints.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.get_peer_nameRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.get_peer_nameResponse"/>
+	</operation>
+	<operation name="set_peer_routing_state">
+	<documentation>
+ Sets the state to indicate that a route exists from the local
+ endpoint to this remote endpoint through which the local endpoint
+ can establish connections for a set of remote endpoints. If not
+ set, the local endpoint cannot initiate traffic to the remote
+ endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.set_peer_routing_stateRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.set_peer_routing_stateResponse"/>
+	</operation>
+	<operation name="get_peer_routing_state">
+	<documentation>
+ Gets the state to indicate that a route exists from the local
+ endpoint to this remote endpoint through which the local endpoint
+ can establish connections for a set of remote endpoints.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.get_peer_routing_stateRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.get_peer_routing_stateResponse"/>
+	</operation>
+	<operation name="set_profile_serverssl">
+	<documentation>
+ Sets the sSL profile used for authenticating (encrypting for a set
+ of remote endpoints.) traffic to this remote endpoint. Note that
+ this setting overrides the analogous setting in the local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.set_profile_serversslRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.set_profile_serversslResponse"/>
+	</operation>
+	<operation name="get_profile_serverssl">
+	<documentation>
+ Gets the sSL profile used for authenticating (encrypting for a set
+ of remote endpoints.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.get_profile_serversslRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.get_profile_serversslResponse"/>
+	</operation>
+	<operation name="set_tunnel_port">
+	<documentation>
+ Sets the local endpoint IP service that the WAN Optimization Module
+ uses to control connections for a set of remote endpoints. This
+ must be a service that is allowed access through the firewall.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.set_tunnel_portRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.set_tunnel_portResponse"/>
+	</operation>
+	<operation name="get_tunnel_port">
+	<documentation>
+ Gets the local endpoint IP service that the WAN Optimization Module
+ uses to control connections for a set of remote endpoints.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.get_tunnel_portRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.get_tunnel_portResponse"/>
+	</operation>
+	<operation name="get_UUID">
+	<documentation>
+ Gets the universal Unique Identifier, a 128-bit number that
+ identifies this remote endpoint for a set of remote endpoints.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.get_UUIDRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.get_UUIDResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionRemoteInterfaceV2.get_versionRequest"/>
+		<output message="tns:Networking.iSessionRemoteInterfaceV2.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.iSessionRemoteInterfaceV2Binding" type="tns:Networking.iSessionRemoteInterfaceV2PortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the names of all remote endpoints.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a set of remote endpoints.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_peer">
+	<documentation>
+ Deletes a set of remote endpoints.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_peers">
+	<documentation>
+ Deletes all remote endpoints.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_address">
+	<documentation>
+ Gets the local endpoint IP address for a set of remote endpoints.
+
+ Note: A set_address method is not supported.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_behind_nat_state">
+	<documentation>
+ Sets the state to indicate that this is located behind a Network
+ Address Translation device for a set of remote endpoints.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_behind_nat_state">
+	<documentation>
+ Gets the state to indicate that this is located behind a Network
+ Address Translation device for a set of remote endpoints.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_dedup_cache">
+	<documentation>
+ Gets the total amount of cache available for symmetric data
+ deduplication for a set of remote endpoints. The system apportions
+ this cache according to the number of remote endpoints and the
+ amount of cache available at each endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of remote endpoints.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of remote endpoints.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_management_address">
+	<documentation>
+ Sets the management IP address for a set of remote endpoints.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_management_address">
+	<documentation>
+ Gets the management IP address for a set of remote endpoints.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_nat_config_status">
+	<documentation>
+ Sets the configuration status for a set of remote endpoints.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_nat_config_status">
+	<documentation>
+ Gets the configuration status for a set of remote endpoints.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_nat_source_address">
+	<documentation>
+ Sets the SNAT address source for a set of remote endpoints.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_nat_source_address">
+	<documentation>
+ Gets the SNAT address source for a set of remote endpoints.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_origin">
+	<documentation>
+ Sets the how the remote endpoint was created for a set of remote
+ endpoints. You can change the origin from "discovered" to
+ "persistable", if you want to save the endpoint configuration.
+ After a remote endpoint has been saved, this attribute is changed
+ to "manually saved". Any remote endpoints marked as "discovered"
+ are not saved.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_origin">
+	<documentation>
+ Gets the how the remote endpoint was created for a set of remote
+ endpoints.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_peer_enabled_state">
+	<documentation>
+ Sets the state to optimize traffic between the local endpoint and
+ this remote endpoint for a set of remote endpoints. Disabling a
+ remote endpoint affects only the connection between the local
+ endpoint and this remote endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_peer_enabled_state">
+	<documentation>
+ Gets the state to optimize traffic between the local endpoint and
+ this remote endpoint for a set of remote endpoints.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_peer_ip_list">
+	<documentation>
+ Gets the list of IP addresses that the local endpoint uses to
+ communicate with the WAN Optimization Module on a remote BIG-IP
+ system for a set of remote endpoints.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_peer_name">
+	<documentation>
+ Gets the host name of the BIG-IP system that hosts this remote
+ endpoint for a set of remote endpoints.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_peer_routing_state">
+	<documentation>
+ Sets the state to indicate that a route exists from the local
+ endpoint to this remote endpoint through which the local endpoint
+ can establish connections for a set of remote endpoints. If not
+ set, the local endpoint cannot initiate traffic to the remote
+ endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_peer_routing_state">
+	<documentation>
+ Gets the state to indicate that a route exists from the local
+ endpoint to this remote endpoint through which the local endpoint
+ can establish connections for a set of remote endpoints.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_profile_serverssl">
+	<documentation>
+ Sets the sSL profile used for authenticating (encrypting for a set
+ of remote endpoints.) traffic to this remote endpoint. Note that
+ this setting overrides the analogous setting in the local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_profile_serverssl">
+	<documentation>
+ Gets the sSL profile used for authenticating (encrypting for a set
+ of remote endpoints.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_tunnel_port">
+	<documentation>
+ Sets the local endpoint IP service that the WAN Optimization Module
+ uses to control connections for a set of remote endpoints. This
+ must be a service that is allowed access through the firewall.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_tunnel_port">
+	<documentation>
+ Gets the local endpoint IP service that the WAN Optimization Module
+ uses to control connections for a set of remote endpoints.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_UUID">
+	<documentation>
+ Gets the universal Unique Identifier, a 128-bit number that
+ identifies this remote endpoint for a set of remote endpoints.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionRemoteInterfaceV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionRemoteInterfaceV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.iSessionRemoteInterfaceV2">
+	<documentation>
+ Remote endpoint for the traffic from the local WAN Optimization Module
+ endpoint. A single local endpoint can work with multiple remote
+ endpoints.
+
+        	</documentation>
+	<port name="Networking.iSessionRemoteInterfaceV2Port" binding="tns:Networking.iSessionRemoteInterfaceV2Binding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

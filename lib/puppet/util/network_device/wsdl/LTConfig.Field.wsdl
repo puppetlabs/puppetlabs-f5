@@ -1,0 +1,679 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="LTConfig.Field"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="LTConfig.ClassInstanceKey">
+			<xsd:sequence>
+				<xsd:element name="container" type="xsd:string"/>
+				<xsd:element name="container_class" type="xsd:string"/>
+				<xsd:element name="class_name" type="xsd:string"/>
+				<xsd:element name="name" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LTConfig.Field.EnabledStateSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledStateSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LTConfig.ClassInstanceKeySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LTConfig.ClassInstanceKey[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="LTConfig.Field.get_listRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LTConfig.Field.get_listResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="LTConfig.Field.get_display_nameRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+	<part name="field_names" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="LTConfig.Field.get_display_nameResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="LTConfig.Field.get_type_informationRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+	<part name="field_names" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="LTConfig.Field.get_type_informationResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="LTConfig.Field.get_defaultRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+	<part name="field_names" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="LTConfig.Field.get_defaultResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="LTConfig.Field.get_required_stateRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+	<part name="field_names" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="LTConfig.Field.get_required_stateResponse">
+	<part name="return" type="tns:LTConfig.Field.EnabledStateSequenceSequence"/>
+</message>
+
+<message name="LTConfig.Field.get_application_dataRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+	<part name="field_names" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="LTConfig.Field.get_application_dataResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="LTConfig.Field.get_db_variable_mirror_informationRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+	<part name="field_names" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="LTConfig.Field.get_db_variable_mirror_informationResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="LTConfig.Field.get_clustered_stateRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+	<part name="field_names" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="LTConfig.Field.get_clustered_stateResponse">
+	<part name="return" type="tns:LTConfig.Field.EnabledStateSequenceSequence"/>
+</message>
+
+<message name="LTConfig.Field.get_configsyncd_stateRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+	<part name="field_names" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="LTConfig.Field.get_configsyncd_stateResponse">
+	<part name="return" type="tns:LTConfig.Field.EnabledStateSequenceSequence"/>
+</message>
+
+<message name="LTConfig.Field.set_valuesRequest">
+	<part name="create_instances_if_needed" type="xsd:boolean"/>
+	<part name="class_instance_keys" type="tns:LTConfig.ClassInstanceKeySequence"/>
+	<part name="field_instance_names" type="tns:Common.StringSequenceSequence"/>
+	<part name="values" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="LTConfig.Field.set_valuesResponse">
+</message>
+
+<message name="LTConfig.Field.get_valuesRequest">
+	<part name="class_instance_keys" type="tns:LTConfig.ClassInstanceKeySequence"/>
+	<part name="field_instance_names" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="LTConfig.Field.get_valuesResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="LTConfig.Field.set_valueRequest">
+	<part name="create_instances_if_needed" type="xsd:boolean"/>
+	<part name="class_instance_key" type="tns:LTConfig.ClassInstanceKey"/>
+	<part name="field_instance_name" type="xsd:string"/>
+	<part name="value" type="xsd:string"/>
+</message>
+<message name="LTConfig.Field.set_valueResponse">
+</message>
+
+<message name="LTConfig.Field.get_valueRequest">
+	<part name="class_instance_key" type="tns:LTConfig.ClassInstanceKey"/>
+	<part name="field_instance_name" type="xsd:string"/>
+</message>
+<message name="LTConfig.Field.get_valueResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="LTConfig.Field.get_versionRequest">
+</message>
+<message name="LTConfig.Field.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="LTConfig.FieldPortType">
+	<operation name="get_list">
+  	<documentation>
+ Gets a list of loosely-typed configuration fields for the
+ specified classes.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Field.get_listRequest"/>
+		<output message="tns:LTConfig.Field.get_listResponse"/>
+	</operation>
+	<operation name="get_display_name">
+	<documentation>
+ Gets display name information for one or more loosely-typed
+ configuration fields for the specified classes.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Field.get_display_nameRequest"/>
+		<output message="tns:LTConfig.Field.get_display_nameResponse"/>
+	</operation>
+	<operation name="get_type_information">
+	<documentation>
+ Gets type information for one or more loosely-typed
+ configuration fields for the specified classes.
+ (This is not to be confused with type; type information
+ gives information relevant to the processing of a basic
+ type, for example, type int might have type information
+ specifying min and max value).
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Field.get_type_informationRequest"/>
+		<output message="tns:LTConfig.Field.get_type_informationResponse"/>
+	</operation>
+	<operation name="get_default">
+	<documentation>
+ Gets default value information for one or more loosely-typed
+ configuration fields for the specified classes.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Field.get_defaultRequest"/>
+		<output message="tns:LTConfig.Field.get_defaultResponse"/>
+	</operation>
+	<operation name="get_required_state">
+	<documentation>
+ Gets the required state for one or more specified
+ loosely-typed configuration fields for the specified
+ classes. If the field is required, that means don't use the
+ default.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Field.get_required_stateRequest"/>
+		<output message="tns:LTConfig.Field.get_required_stateResponse"/>
+	</operation>
+	<operation name="get_application_data">
+	<documentation>
+ Gets application data for one or more loosely-typed
+ configuration fields for the specified classes. This is the
+ "back-end application hook".
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Field.get_application_dataRequest"/>
+		<output message="tns:LTConfig.Field.get_application_dataResponse"/>
+	</operation>
+	<operation name="get_db_variable_mirror_information">
+	<documentation>
+ Gets db variable mirror information for one or more
+ loosely-typed configuration fields for the specified
+ classes. This, if non-empty, indicates which db variable
+ should have its value mirrored with this field.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Field.get_db_variable_mirror_informationRequest"/>
+		<output message="tns:LTConfig.Field.get_db_variable_mirror_informationResponse"/>
+	</operation>
+	<operation name="get_clustered_state">
+	<documentation>
+ Gets the clustered state for one or more specified
+ loosely-typed configuration fields for the specified
+ classes. If the field is clustered, that means don't use the
+ default.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Field.get_clustered_stateRequest"/>
+		<output message="tns:LTConfig.Field.get_clustered_stateResponse"/>
+	</operation>
+	<operation name="get_configsyncd_state">
+	<documentation>
+ Gets the configsyncd state for one or more specified
+ loosely-typed configuration fields for the specified
+ classes. If the field is configsyncd, that means don't use the
+ default.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Field.get_configsyncd_stateRequest"/>
+		<output message="tns:LTConfig.Field.get_configsyncd_stateResponse"/>
+	</operation>
+	<operation name="set_values">
+	<documentation>
+ Sets values for one or more loosely-typed configuration
+ field instances for the specified class instances.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Field.set_valuesRequest"/>
+		<output message="tns:LTConfig.Field.set_valuesResponse"/>
+	</operation>
+	<operation name="get_values">
+	<documentation>
+ Gets values for one or more loosely-typed configuration
+ field instances for the specified class instances.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Field.get_valuesRequest"/>
+		<output message="tns:LTConfig.Field.get_valuesResponse"/>
+	</operation>
+	<operation name="set_value">
+	<documentation>
+ Sets the value for one loosely-typed configuration
+ field instance for the specified class instance.
+
+ This is for convenience, when you want to set just one
+ value in just one class instance. Use set_values instead
+ for greater efficiency when setting multiple field values.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Field.set_valueRequest"/>
+		<output message="tns:LTConfig.Field.set_valueResponse"/>
+	</operation>
+	<operation name="get_value">
+	<documentation>
+ Gets the value for one loosely-typed configuration
+ field instance for the specified class instance.
+
+ This is for convenience, when you want to get just one
+ value in just one class instance. Use get_values instead
+ for greater efficiency when getting multiple field values.
+ 
+        	</documentation>
+		<input message="tns:LTConfig.Field.get_valueRequest"/>
+		<output message="tns:LTConfig.Field.get_valueResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:LTConfig.Field.get_versionRequest"/>
+		<output message="tns:LTConfig.Field.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="LTConfig.FieldBinding" type="tns:LTConfig.FieldPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of loosely-typed configuration fields for the
+ specified classes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Field"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_display_name">
+	<documentation>
+ Gets display name information for one or more loosely-typed
+ configuration fields for the specified classes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Field"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_type_information">
+	<documentation>
+ Gets type information for one or more loosely-typed
+ configuration fields for the specified classes.
+ (This is not to be confused with type; type information
+ gives information relevant to the processing of a basic
+ type, for example, type int might have type information
+ specifying min and max value).
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Field"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_default">
+	<documentation>
+ Gets default value information for one or more loosely-typed
+ configuration fields for the specified classes.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Field"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_required_state">
+	<documentation>
+ Gets the required state for one or more specified
+ loosely-typed configuration fields for the specified
+ classes. If the field is required, that means don't use the
+ default.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Field"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_data">
+	<documentation>
+ Gets application data for one or more loosely-typed
+ configuration fields for the specified classes. This is the
+ "back-end application hook".
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Field"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_db_variable_mirror_information">
+	<documentation>
+ Gets db variable mirror information for one or more
+ loosely-typed configuration fields for the specified
+ classes. This, if non-empty, indicates which db variable
+ should have its value mirrored with this field.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Field"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_clustered_state">
+	<documentation>
+ Gets the clustered state for one or more specified
+ loosely-typed configuration fields for the specified
+ classes. If the field is clustered, that means don't use the
+ default.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Field"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_configsyncd_state">
+	<documentation>
+ Gets the configsyncd state for one or more specified
+ loosely-typed configuration fields for the specified
+ classes. If the field is configsyncd, that means don't use the
+ default.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Field"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_values">
+	<documentation>
+ Sets values for one or more loosely-typed configuration
+ field instances for the specified class instances.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Field"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_values">
+	<documentation>
+ Gets values for one or more loosely-typed configuration
+ field instances for the specified class instances.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Field"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_value">
+	<documentation>
+ Sets the value for one loosely-typed configuration
+ field instance for the specified class instance.
+
+ This is for convenience, when you want to set just one
+ value in just one class instance. Use set_values instead
+ for greater efficiency when setting multiple field values.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Field"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_value">
+	<documentation>
+ Gets the value for one loosely-typed configuration
+ field instance for the specified class instance.
+
+ This is for convenience, when you want to get just one
+ value in just one class instance. Use get_values instead
+ for greater efficiency when getting multiple field values.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Field"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LTConfig/Field"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LTConfig/Field"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="LTConfig.Field">
+	<documentation>
+ The Field interface enables you to manage fields and field
+ instances in the Loosely-Typed Configuration system.
+
+        	</documentation>
+	<port name="LTConfig.FieldPort" binding="tns:LTConfig.FieldBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

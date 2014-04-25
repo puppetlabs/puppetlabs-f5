@@ -1,0 +1,448 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Log.Publisher"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Log.Publisher.get_listRequest">
+</message>
+<message name="Log.Publisher.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Log.Publisher.createRequest">
+	<part name="publishers" type="tns:Common.StringSequence"/>
+	<part name="destinations" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Log.Publisher.createResponse">
+</message>
+
+<message name="Log.Publisher.delete_publisherRequest">
+	<part name="publishers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.Publisher.delete_publisherResponse">
+</message>
+
+<message name="Log.Publisher.delete_all_publishersRequest">
+</message>
+<message name="Log.Publisher.delete_all_publishersResponse">
+</message>
+
+<message name="Log.Publisher.get_destinationRequest">
+	<part name="publishers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.Publisher.get_destinationResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Log.Publisher.add_destinationRequest">
+	<part name="publishers" type="tns:Common.StringSequence"/>
+	<part name="destinations" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Log.Publisher.add_destinationResponse">
+</message>
+
+<message name="Log.Publisher.remove_destinationRequest">
+	<part name="publishers" type="tns:Common.StringSequence"/>
+	<part name="destinations" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Log.Publisher.remove_destinationResponse">
+</message>
+
+<message name="Log.Publisher.remove_all_destinationsRequest">
+	<part name="publishers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.Publisher.remove_all_destinationsResponse">
+</message>
+
+<message name="Log.Publisher.set_descriptionRequest">
+	<part name="publishers" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.Publisher.set_descriptionResponse">
+</message>
+
+<message name="Log.Publisher.get_descriptionRequest">
+	<part name="publishers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Log.Publisher.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Log.Publisher.get_versionRequest">
+</message>
+<message name="Log.Publisher.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Log.PublisherPortType">
+	<operation name="get_list">
+   	<documentation>
+ Gets the list of publishers.
+
+        	</documentation>
+		<input message="tns:Log.Publisher.get_listRequest"/>
+		<output message="tns:Log.Publisher.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates new publishers.
+
+        	</documentation>
+		<input message="tns:Log.Publisher.createRequest"/>
+		<output message="tns:Log.Publisher.createResponse"/>
+	</operation>
+	<operation name="delete_publisher">
+	<documentation>
+ Deletes the specified publishers.
+
+        	</documentation>
+		<input message="tns:Log.Publisher.delete_publisherRequest"/>
+		<output message="tns:Log.Publisher.delete_publisherResponse"/>
+	</operation>
+	<operation name="delete_all_publishers">
+	<documentation>
+ Deletes all publishers.
+
+        	</documentation>
+		<input message="tns:Log.Publisher.delete_all_publishersRequest"/>
+		<output message="tns:Log.Publisher.delete_all_publishersResponse"/>
+	</operation>
+	<operation name="get_destination">
+	<documentation>
+ Gets the destinations attached to the specified publishers.
+
+        	</documentation>
+		<input message="tns:Log.Publisher.get_destinationRequest"/>
+		<output message="tns:Log.Publisher.get_destinationResponse"/>
+	</operation>
+	<operation name="add_destination">
+	<documentation>
+ Adds to the list of destinations for the specified publishers.
+
+        	</documentation>
+		<input message="tns:Log.Publisher.add_destinationRequest"/>
+		<output message="tns:Log.Publisher.add_destinationResponse"/>
+	</operation>
+	<operation name="remove_destination">
+	<documentation>
+ Removes a list of destinations for the specified publishers.
+
+        	</documentation>
+		<input message="tns:Log.Publisher.remove_destinationRequest"/>
+		<output message="tns:Log.Publisher.remove_destinationResponse"/>
+	</operation>
+	<operation name="remove_all_destinations">
+	<documentation>
+ Removes all the destinations from the specified publishers.
+
+        	</documentation>
+		<input message="tns:Log.Publisher.remove_all_destinationsRequest"/>
+		<output message="tns:Log.Publisher.remove_all_destinationsResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for the specified publishers.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Log.Publisher.set_descriptionRequest"/>
+		<output message="tns:Log.Publisher.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the specifed publishers.
+
+        	</documentation>
+		<input message="tns:Log.Publisher.get_descriptionRequest"/>
+		<output message="tns:Log.Publisher.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Log.Publisher.get_versionRequest"/>
+		<output message="tns:Log.Publisher.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Log.PublisherBinding" type="tns:Log.PublisherPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the list of publishers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Publisher"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Publisher"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Publisher"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates new publishers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Publisher"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Publisher"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Publisher"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_publisher">
+	<documentation>
+ Deletes the specified publishers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Publisher"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Publisher"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Publisher"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_publishers">
+	<documentation>
+ Deletes all publishers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Publisher"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Publisher"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Publisher"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_destination">
+	<documentation>
+ Gets the destinations attached to the specified publishers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Publisher"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Publisher"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Publisher"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_destination">
+	<documentation>
+ Adds to the list of destinations for the specified publishers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Publisher"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Publisher"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Publisher"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_destination">
+	<documentation>
+ Removes a list of destinations for the specified publishers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Publisher"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Publisher"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Publisher"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_destinations">
+	<documentation>
+ Removes all the destinations from the specified publishers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Publisher"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Publisher"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Publisher"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for the specified publishers.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Publisher"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Publisher"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Publisher"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the specifed publishers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Publisher"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Publisher"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Publisher"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Log/Publisher"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Publisher"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Log/Publisher"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Log.Publisher">
+	<documentation>
+ The Publisher interface enables you to create and modify publishers.
+ Publishers are simply named collections of logging destinations.
+
+        	</documentation>
+	<port name="Log.PublisherPort" binding="tns:Log.PublisherBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

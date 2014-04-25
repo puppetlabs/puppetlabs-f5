@@ -1,0 +1,4672 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.SNMPConfiguration"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Management.SNMPConfiguration.SecurityInformation">
+			<xsd:sequence>
+				<xsd:element name="security_name" type="xsd:string"/>
+				<xsd:element name="source" type="xsd:string"/>
+				<xsd:element name="community_name" type="xsd:string"/>
+				<xsd:element name="ipv6" type="xsd:boolean"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.DiskCheckInformation">
+			<xsd:sequence>
+				<xsd:element name="disk_path" type="xsd:string"/>
+				<xsd:element name="check_type" type="tns:Management.SNMPConfiguration.DiskCheckType"/>
+				<xsd:element name="minimum_space" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.ProcessInformation">
+			<xsd:sequence>
+				<xsd:element name="process_name" type="xsd:string"/>
+				<xsd:element name="max" type="xsd:long"/>
+				<xsd:element name="min" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.UserInformationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SNMPConfiguration.UserInformation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.AccessInformationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SNMPConfiguration.AccessInformation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.SystemInformation">
+			<xsd:sequence>
+				<xsd:element name="sys_name" type="xsd:string"/>
+				<xsd:element name="sys_location" type="xsd:string"/>
+				<xsd:element name="sys_contact" type="xsd:string"/>
+				<xsd:element name="sys_description" type="xsd:string"/>
+				<xsd:element name="sys_object_id" type="xsd:string"/>
+				<xsd:element name="sys_services" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.AgentInterface">
+			<xsd:sequence>
+				<xsd:element name="intf_name" type="xsd:string"/>
+				<xsd:element name="intf_type" type="xsd:string"/>
+				<xsd:element name="intf_speed" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.WrapperUserInformationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SNMPConfiguration.WrapperUserInformation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.GenericSinkInformation2Sequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SNMPConfiguration.GenericSinkInformation2[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.ProcessInformationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SNMPConfiguration.ProcessInformation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Management.SNMPConfiguration.PrivacyProtocolType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="PRIV_PROTOCOL_DES">
+					<xsd:annotation>
+						<xsd:documentation>PRIV_PROTOCOL_DES</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PRIV_PROTOCOL_NONE">
+					<xsd:annotation>
+						<xsd:documentation>PRIV_PROTOCOL_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PRIV_PROTOCOL_AES">
+					<xsd:annotation>
+						<xsd:documentation>PRIV_PROTOCOL_AES</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.SNMPConfiguration.WrapperSecurityInformation">
+			<xsd:sequence>
+				<xsd:element name="community" type="xsd:string"/>
+				<xsd:element name="source" type="xsd:string"/>
+				<xsd:element name="oid" type="xsd:string"/>
+				<xsd:element name="ipv6" type="xsd:boolean"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.NameProgArgs">
+			<xsd:sequence>
+				<xsd:element name="process_name" type="xsd:string"/>
+				<xsd:element name="program_name" type="xsd:string"/>
+				<xsd:element name="program_args" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.SNMPConfiguration.PrefixType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="PREFIX_EXACT">
+					<xsd:annotation>
+						<xsd:documentation>PREFIX_EXACT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PREFIX_PREFIX">
+					<xsd:annotation>
+						<xsd:documentation>PREFIX_PREFIX</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.SNMPConfiguration.GenericSinkInformationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SNMPConfiguration.GenericSinkInformation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.UserInformation">
+			<xsd:sequence>
+				<xsd:element name="user_name" type="xsd:string"/>
+				<xsd:element name="auth_type" type="tns:Management.SNMPConfiguration.AuthType"/>
+				<xsd:element name="auth_pass_phrase" type="xsd:string"/>
+				<xsd:element name="priv_protocol" type="tns:Management.SNMPConfiguration.PrivacyProtocolType"/>
+				<xsd:element name="priv_pass_phrase" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.SNMPConfiguration.DiskCheckType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="DISKCHECK_SIZE">
+					<xsd:annotation>
+						<xsd:documentation>DISKCHECK_SIZE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DISKCHECK_PERCENT">
+					<xsd:annotation>
+						<xsd:documentation>DISKCHECK_PERCENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.SNMPConfiguration.SmuxSubAgentInformation">
+			<xsd:sequence>
+				<xsd:element name="oid" type="xsd:string"/>
+				<xsd:element name="password" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.PassThroughInformationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SNMPConfiguration.PassThroughInformation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.AgentListenAddressPortSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SNMPConfiguration.AgentListenAddressPort[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.SNMPConfiguration.LevelType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LEVEL_NOAUTH">
+					<xsd:annotation>
+						<xsd:documentation>LEVEL_NOAUTH</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LEVEL_AUTH">
+					<xsd:annotation>
+						<xsd:documentation>LEVEL_AUTH</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LEVEL_PRIV">
+					<xsd:annotation>
+						<xsd:documentation>LEVEL_PRIV</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Management.SNMPConfiguration.SinkType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="SINK_TRAPSINK">
+					<xsd:annotation>
+						<xsd:documentation>SINK_TRAPSINK</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SINK_TRAP2SINK">
+					<xsd:annotation>
+						<xsd:documentation>SINK_TRAP2SINK</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SINK_INFORMSINK">
+					<xsd:annotation>
+						<xsd:documentation>SINK_INFORMSINK</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.SNMPConfiguration.FileCheckInformation">
+			<xsd:sequence>
+				<xsd:element name="file_name" type="xsd:string"/>
+				<xsd:element name="maximum_size" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.WrapperUserInformation">
+			<xsd:sequence>
+				<xsd:element name="user" type="xsd:string"/>
+				<xsd:element name="level" type="tns:Management.SNMPConfiguration.LevelType"/>
+				<xsd:element name="oid" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.AccessInformation">
+			<xsd:sequence>
+				<xsd:element name="access_name" type="xsd:string"/>
+				<xsd:element name="access_context" type="xsd:string"/>
+				<xsd:element name="model" type="tns:Management.SNMPConfiguration.ModelType"/>
+				<xsd:element name="level" type="tns:Management.SNMPConfiguration.LevelType"/>
+				<xsd:element name="prefix" type="tns:Management.SNMPConfiguration.PrefixType"/>
+				<xsd:element name="read_access" type="xsd:string"/>
+				<xsd:element name="write_access" type="xsd:string"/>
+				<xsd:element name="notify_access" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.PassThroughInformation">
+			<xsd:sequence>
+				<xsd:element name="mib_oid" type="xsd:string"/>
+				<xsd:element name="exec_name" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.ViewInformationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SNMPConfiguration.ViewInformation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.SmuxSubAgentInformationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SNMPConfiguration.SmuxSubAgentInformation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.SinkInformation">
+			<xsd:sequence>
+				<xsd:element name="sink_host" type="xsd:string"/>
+				<xsd:element name="sink_community" type="xsd:string"/>
+				<xsd:element name="sink_port" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.GenericSinkInformation2">
+			<xsd:sequence>
+				<xsd:element name="snmpcmd_args" type="xsd:string"/>
+				<xsd:element name="sink_host" type="xsd:string"/>
+				<xsd:element name="sink_port" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.LoadAverageInformation">
+			<xsd:sequence>
+				<xsd:element name="max_1_minute_load" type="xsd:long"/>
+				<xsd:element name="max_5_minute_load" type="xsd:long"/>
+				<xsd:element name="max_15_minute_load" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.DynamicLoadableModuleSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SNMPConfiguration.DynamicLoadableModule[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.ULong">
+			<xsd:restriction base="xsd:long"/>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.SNMPConfiguration.DynamicLoadableModule">
+			<xsd:sequence>
+				<xsd:element name="module_name" type="xsd:string"/>
+				<xsd:element name="module_path" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.ClientAccessSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SNMPConfiguration.ClientAccess[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.SNMPConfiguration.AuthType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="AUTH_MD5">
+					<xsd:annotation>
+						<xsd:documentation>AUTH_MD5</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AUTH_SHA">
+					<xsd:annotation>
+						<xsd:documentation>AUTH_SHA</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AUTH_NONE">
+					<xsd:annotation>
+						<xsd:documentation>AUTH_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.SNMPConfiguration.AgentXInformation">
+			<xsd:sequence>
+				<xsd:element name="address" type="xsd:string"/>
+				<xsd:element name="timeout" type="xsd:long"/>
+				<xsd:element name="retries" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.MibnumNameProgArgsSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SNMPConfiguration.MibnumNameProgArgs[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.ViewInformation">
+			<xsd:sequence>
+				<xsd:element name="view_name" type="xsd:string"/>
+				<xsd:element name="type" type="tns:Management.SNMPConfiguration.ViewType"/>
+				<xsd:element name="subtree" type="xsd:string"/>
+				<xsd:element name="masks" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.SNMPConfiguration.ModelType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="MODEL_ANY">
+					<xsd:annotation>
+						<xsd:documentation>MODEL_ANY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="MODEL_V1">
+					<xsd:annotation>
+						<xsd:documentation>MODEL_V1</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="MODEL_V2C">
+					<xsd:annotation>
+						<xsd:documentation>MODEL_V2C</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="MODEL_USM">
+					<xsd:annotation>
+						<xsd:documentation>MODEL_USM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.SNMPConfiguration.ClientAccess">
+			<xsd:sequence>
+				<xsd:element name="address" type="xsd:string"/>
+				<xsd:element name="netmask" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.DiskCheckInformationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SNMPConfiguration.DiskCheckInformation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.WrapperSecurityInformationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SNMPConfiguration.WrapperSecurityInformation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.SinkInformationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SNMPConfiguration.SinkInformation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.GroupInformationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SNMPConfiguration.GroupInformation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.GroupInformation">
+			<xsd:sequence>
+				<xsd:element name="group_name" type="xsd:string"/>
+				<xsd:element name="model" type="tns:Management.SNMPConfiguration.ModelType"/>
+				<xsd:element name="security_name" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.NameProgArgsSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SNMPConfiguration.NameProgArgs[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPPortDefinition">
+			<xsd:sequence>
+				<xsd:element name="address" type="xsd:string"/>
+				<xsd:element name="port" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.SNMPConfiguration.ViewType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="VIEW_INCLUDED">
+					<xsd:annotation>
+						<xsd:documentation>VIEW_INCLUDED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIEW_EXCLUDED">
+					<xsd:annotation>
+						<xsd:documentation>VIEW_EXCLUDED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.SNMPConfiguration.GenericSinkInformation">
+			<xsd:sequence>
+				<xsd:element name="snmpcmd_args" type="xsd:string"/>
+				<xsd:element name="sink_host" type="xsd:string"/>
+				<xsd:element name="sink_community" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.SecurityInformationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SNMPConfiguration.SecurityInformation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.FileCheckInformationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.SNMPConfiguration.FileCheckInformation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.SNMPConfiguration.TransportType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="TRANSPORT_UDP">
+					<xsd:annotation>
+						<xsd:documentation>TRANSPORT_UDP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TRANSPORT_TCP">
+					<xsd:annotation>
+						<xsd:documentation>TRANSPORT_TCP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TRANSPORT_UDP6">
+					<xsd:annotation>
+						<xsd:documentation>TRANSPORT_UDP6</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TRANSPORT_TCP6">
+					<xsd:annotation>
+						<xsd:documentation>TRANSPORT_TCP6</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.SNMPConfiguration.AgentListenAddressPort">
+			<xsd:sequence>
+				<xsd:element name="transport" type="tns:Management.SNMPConfiguration.TransportType"/>
+				<xsd:element name="ipport" type="tns:Common.IPPortDefinition"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.SNMPConfiguration.MibnumNameProgArgs">
+			<xsd:sequence>
+				<xsd:element name="mib_num" type="xsd:string"/>
+				<xsd:element name="name_prog_args" type="tns:Management.SNMPConfiguration.NameProgArgs"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.SNMPConfiguration.set_check_processRequest">
+	<part name="proc_info" type="tns:Management.SNMPConfiguration.ProcessInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_check_processResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_check_processRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_check_processResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.ProcessInformationSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_check_processRequest">
+	<part name="proc_info" type="tns:Management.SNMPConfiguration.ProcessInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_check_processResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_process_fixRequest">
+	<part name="fix_info" type="tns:Management.SNMPConfiguration.NameProgArgsSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_process_fixResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_process_fixRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_process_fixResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.NameProgArgsSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_process_fixRequest">
+	<part name="fix_info" type="tns:Management.SNMPConfiguration.NameProgArgsSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_process_fixResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_execRequest">
+	<part name="exec_info" type="tns:Management.SNMPConfiguration.MibnumNameProgArgsSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_execResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_execRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_execResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.MibnumNameProgArgsSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_execRequest">
+	<part name="exec_info" type="tns:Management.SNMPConfiguration.MibnumNameProgArgsSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_execResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_exec_fixRequest">
+	<part name="exec_info" type="tns:Management.SNMPConfiguration.NameProgArgsSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_exec_fixResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_exec_fixRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_exec_fixResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.NameProgArgsSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_exec_fixRequest">
+	<part name="exec_info" type="tns:Management.SNMPConfiguration.NameProgArgsSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_exec_fixResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_check_diskRequest">
+	<part name="disk_info" type="tns:Management.SNMPConfiguration.DiskCheckInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_check_diskResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_check_diskRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_check_diskResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.DiskCheckInformationSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_check_diskRequest">
+	<part name="disk_info" type="tns:Management.SNMPConfiguration.DiskCheckInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_check_diskResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_ignore_diskRequest">
+	<part name="ignore_disk" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_ignore_diskResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_ignore_diskRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_ignore_diskResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_ignore_diskRequest">
+	<part name="ignore_disk" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_ignore_diskResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_storage_use_nfsRequest">
+	<part name="usage" type="xsd:long"/>
+</message>
+<message name="Management.SNMPConfiguration.set_storage_use_nfsResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_storage_use_nfsRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_storage_use_nfsResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_storage_use_nfsRequest">
+	<part name="usage" type="xsd:long"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_storage_use_nfsResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_check_fileRequest">
+	<part name="file_info" type="tns:Management.SNMPConfiguration.FileCheckInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_check_fileResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_check_fileRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_check_fileResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.FileCheckInformationSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_check_fileRequest">
+	<part name="file_info" type="tns:Management.SNMPConfiguration.FileCheckInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_check_fileResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_check_loadRequest">
+	<part name="load_info" type="tns:Management.SNMPConfiguration.LoadAverageInformation"/>
+</message>
+<message name="Management.SNMPConfiguration.set_check_loadResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_check_loadRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_check_loadResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.LoadAverageInformation"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_check_loadRequest">
+	<part name="load_info" type="tns:Management.SNMPConfiguration.LoadAverageInformation"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_check_loadResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_agentx_informationRequest">
+	<part name="agentx_info" type="tns:Management.SNMPConfiguration.AgentXInformation"/>
+</message>
+<message name="Management.SNMPConfiguration.set_agentx_informationResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_agentx_informationRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_agentx_informationResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.AgentXInformation"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_agentx_informationRequest">
+	<part name="agentx_info" type="tns:Management.SNMPConfiguration.AgentXInformation"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_agentx_informationResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_smux_subagentRequest">
+	<part name="subagent_info" type="tns:Management.SNMPConfiguration.SmuxSubAgentInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_smux_subagentResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_smux_subagentRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_smux_subagentResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.SmuxSubAgentInformationSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_smux_subagentRequest">
+	<part name="subagent_info" type="tns:Management.SNMPConfiguration.SmuxSubAgentInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_smux_subagentResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_dynamic_loadable_moduleRequest">
+	<part name="mod_info" type="tns:Management.SNMPConfiguration.DynamicLoadableModuleSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_dynamic_loadable_moduleResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_dynamic_loadable_moduleRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_dynamic_loadable_moduleResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.DynamicLoadableModuleSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_dynamic_loadable_moduleRequest">
+	<part name="mod_info" type="tns:Management.SNMPConfiguration.DynamicLoadableModuleSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_dynamic_loadable_moduleResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_readonly_communityRequest">
+	<part name="ro_community_info" type="tns:Management.SNMPConfiguration.WrapperSecurityInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_readonly_communityResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_readonly_communityRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_readonly_communityResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.WrapperSecurityInformationSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_readonly_communityRequest">
+	<part name="ro_community_info" type="tns:Management.SNMPConfiguration.WrapperSecurityInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_readonly_communityResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_readwrite_communityRequest">
+	<part name="rw_community_info" type="tns:Management.SNMPConfiguration.WrapperSecurityInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_readwrite_communityResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_readwrite_communityRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_readwrite_communityResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.WrapperSecurityInformationSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_readwrite_communityRequest">
+	<part name="rw_community_info" type="tns:Management.SNMPConfiguration.WrapperSecurityInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_readwrite_communityResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_readonly_userRequest">
+	<part name="ro_user_info" type="tns:Management.SNMPConfiguration.WrapperUserInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_readonly_userResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_readonly_userRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_readonly_userResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.WrapperUserInformationSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_readonly_userRequest">
+	<part name="ro_user_info" type="tns:Management.SNMPConfiguration.WrapperUserInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_readonly_userResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_readwrite_userRequest">
+	<part name="rw_user_info" type="tns:Management.SNMPConfiguration.WrapperUserInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_readwrite_userResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_readwrite_userRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_readwrite_userResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.WrapperUserInformationSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_readwrite_userRequest">
+	<part name="rw_user_info" type="tns:Management.SNMPConfiguration.WrapperUserInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_readwrite_userResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_community_to_security_infoRequest">
+	<part name="security_info" type="tns:Management.SNMPConfiguration.SecurityInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_community_to_security_infoResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_community_to_security_infoRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_community_to_security_infoResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.SecurityInformationSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_community_to_security_infoRequest">
+	<part name="security_info" type="tns:Management.SNMPConfiguration.SecurityInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_community_to_security_infoResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_group_infoRequest">
+	<part name="group_info" type="tns:Management.SNMPConfiguration.GroupInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_group_infoResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_group_infoRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_group_infoResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.GroupInformationSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_group_infoRequest">
+	<part name="group_info" type="tns:Management.SNMPConfiguration.GroupInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_group_infoResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_view_infoRequest">
+	<part name="view_info" type="tns:Management.SNMPConfiguration.ViewInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_view_infoResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_view_infoRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_view_infoResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.ViewInformationSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_view_infoRequest">
+	<part name="view_info" type="tns:Management.SNMPConfiguration.ViewInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_view_infoResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_access_infoRequest">
+	<part name="access_info" type="tns:Management.SNMPConfiguration.AccessInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_access_infoResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_access_infoRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_access_infoResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.AccessInformationSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_access_infoRequest">
+	<part name="access_info" type="tns:Management.SNMPConfiguration.AccessInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_access_infoResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_engine_idRequest">
+	<part name="engine_id" type="xsd:string"/>
+</message>
+<message name="Management.SNMPConfiguration.set_engine_idResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_engine_idRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_engine_idResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_engine_idRequest">
+	<part name="engine_id" type="xsd:string"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_engine_idResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_create_userRequest">
+	<part name="user_info" type="tns:Management.SNMPConfiguration.UserInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_create_userResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_create_userRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_create_userResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.UserInformationSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_create_userRequest">
+	<part name="user_info" type="tns:Management.SNMPConfiguration.UserInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_create_userResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_system_informationRequest">
+	<part name="system_info" type="tns:Management.SNMPConfiguration.SystemInformation"/>
+</message>
+<message name="Management.SNMPConfiguration.set_system_informationResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_system_informationRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_system_informationResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.SystemInformation"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_system_informationRequest">
+	<part name="system_info" type="tns:Management.SNMPConfiguration.SystemInformation"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_system_informationResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_agent_listen_addressRequest">
+	<part name="agent_listen_addresses" type="tns:Management.SNMPConfiguration.AgentListenAddressPortSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_agent_listen_addressResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_agent_listen_addressRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_agent_listen_addressResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.AgentListenAddressPortSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_agent_listen_addressRequest">
+	<part name="agent_listen_addresses" type="tns:Management.SNMPConfiguration.AgentListenAddressPortSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_agent_listen_addressResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_agent_group_idRequest">
+	<part name="group_id" type="xsd:string"/>
+</message>
+<message name="Management.SNMPConfiguration.set_agent_group_idResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_agent_group_idRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_agent_group_idResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_agent_group_idRequest">
+	<part name="group_id" type="xsd:string"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_agent_group_idResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_agent_user_idRequest">
+	<part name="user_id" type="xsd:string"/>
+</message>
+<message name="Management.SNMPConfiguration.set_agent_user_idResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_agent_user_idRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_agent_user_idResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_agent_user_idRequest">
+	<part name="user_id" type="xsd:string"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_agent_user_idResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_agent_interfaceRequest">
+	<part name="agent_intf" type="tns:Management.SNMPConfiguration.AgentInterface"/>
+</message>
+<message name="Management.SNMPConfiguration.set_agent_interfaceResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_agent_interfaceRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_agent_interfaceResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.AgentInterface"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_agent_interfaceRequest">
+	<part name="agent_intf" type="tns:Management.SNMPConfiguration.AgentInterface"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_agent_interfaceResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_auth_trap_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="Management.SNMPConfiguration.set_auth_trap_stateResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_auth_trap_stateRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_auth_trap_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_auth_trap_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_auth_trap_stateResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_agent_trap_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="Management.SNMPConfiguration.set_agent_trap_stateResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_agent_trap_stateRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_agent_trap_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_agent_trap_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_agent_trap_stateResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_trap_communityRequest">
+	<part name="community" type="xsd:string"/>
+</message>
+<message name="Management.SNMPConfiguration.set_trap_communityResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_trap_communityRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_trap_communityResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_trap_communityRequest">
+	<part name="community" type="xsd:string"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_trap_communityResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_trap_sinksRequest">
+	<part name="sink_type" type="tns:Management.SNMPConfiguration.SinkType"/>
+	<part name="sink_info" type="tns:Management.SNMPConfiguration.SinkInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_trap_sinksResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_trap_sinksRequest">
+	<part name="sink_type" type="tns:Management.SNMPConfiguration.SinkType"/>
+</message>
+<message name="Management.SNMPConfiguration.get_trap_sinksResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.SinkInformationSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_trap_sinksRequest">
+	<part name="sink_type" type="tns:Management.SNMPConfiguration.SinkType"/>
+	<part name="sink_info" type="tns:Management.SNMPConfiguration.SinkInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_trap_sinksResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_generic_trapsRequest">
+	<part name="sink_info" type="tns:Management.SNMPConfiguration.GenericSinkInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_generic_trapsResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_generic_trapsRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_generic_trapsResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.GenericSinkInformationSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_generic_trapsRequest">
+	<part name="sink_info" type="tns:Management.SNMPConfiguration.GenericSinkInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_generic_trapsResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_generic_traps_v2Request">
+	<part name="sink_info" type="tns:Management.SNMPConfiguration.GenericSinkInformation2Sequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_generic_traps_v2Response">
+</message>
+
+<message name="Management.SNMPConfiguration.get_generic_traps_v2Request">
+</message>
+<message name="Management.SNMPConfiguration.get_generic_traps_v2Response">
+	<part name="return" type="tns:Management.SNMPConfiguration.GenericSinkInformation2Sequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_generic_traps_v2Request">
+	<part name="sink_info" type="tns:Management.SNMPConfiguration.GenericSinkInformation2Sequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_generic_traps_v2Response">
+</message>
+
+<message name="Management.SNMPConfiguration.set_proxyRequest">
+	<part name="proxy_info" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_proxyResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_proxyRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_proxyResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_proxyRequest">
+	<part name="proxy_info" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_proxyResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_pass_throughRequest">
+	<part name="passthru_info" type="tns:Management.SNMPConfiguration.PassThroughInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_pass_throughResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_pass_throughRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_pass_throughResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.PassThroughInformationSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_pass_throughRequest">
+	<part name="passthru_info" type="tns:Management.SNMPConfiguration.PassThroughInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_pass_throughResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_pass_through_persistRequest">
+	<part name="passthru_info" type="tns:Management.SNMPConfiguration.PassThroughInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_pass_through_persistResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_pass_through_persistRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_pass_through_persistResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.PassThroughInformationSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_pass_through_persistRequest">
+	<part name="passthru_info" type="tns:Management.SNMPConfiguration.PassThroughInformationSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_pass_through_persistResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.set_client_accessRequest">
+	<part name="client_access_info" type="tns:Management.SNMPConfiguration.ClientAccessSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.set_client_accessResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_client_accessRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_client_accessResponse">
+	<part name="return" type="tns:Management.SNMPConfiguration.ClientAccessSequence"/>
+</message>
+
+<message name="Management.SNMPConfiguration.remove_client_accessRequest">
+	<part name="client_access_info" type="tns:Management.SNMPConfiguration.ClientAccessSequence"/>
+</message>
+<message name="Management.SNMPConfiguration.remove_client_accessResponse">
+</message>
+
+<message name="Management.SNMPConfiguration.get_versionRequest">
+</message>
+<message name="Management.SNMPConfiguration.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.SNMPConfigurationPortType">
+	<operation name="set_check_process">
+    	<documentation>
+ Creates a process check.  A process check is used to check to see if the 
+ process_name's processes are running on the agent's machine.  An error flag(1) 
+ and a description message are then passed to the EXTENSIBLEDOTMIB.PROCMIBNUM.1.ERRORFLAG 
+ and EXTENSIBLEDOTMIB.PROCMIBNUM.1.ERRORMSG mib columns if the process_name'd program 
+ is not found on the process table as reported by PSCMD.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_check_processRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_check_processResponse"/>
+	</operation>
+	<operation name="get_check_process">
+	<documentation>
+ Gets a list of process checks.  A process check is used to check to see if the 
+ process_name'd processes are running on the agent's machine.  An error flag(1) and 
+ a description message are then passed to the EXTENSIBLEDOTMIB.PROCMIBNUM.1.ERRORFLAG 
+ and EXTENSIBLEDOTMIB.PROCMIBNUM.1.ERRORMSG mib columns if the process_name'd program 
+ is not found on the process table as reported by PSCMD.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_check_processRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_check_processResponse"/>
+	</operation>
+	<operation name="remove_check_process">
+	<documentation>
+ Removes a process check.  A process check is used to check to see if the 
+ process_name's processes are running on the agent's machine.  An error flag(1) 
+ and a description message are then passed to the EXTENSIBLEDOTMIB.PROCMIBNUM.1.ERRORFLAG 
+ and EXTENSIBLEDOTMIB.PROCMIBNUM.1.ERRORMSG mib columns if the process_name's program 
+ is not found on the process table as reported by PSCMD.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_check_processRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_check_processResponse"/>
+	</operation>
+	<operation name="set_process_fix">
+	<documentation>
+ Sets a process fix instance that registers a command that knows how to fix 
+ errors with the given process.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_process_fixRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_process_fixResponse"/>
+	</operation>
+	<operation name="get_process_fix">
+	<documentation>
+ Retrieves a list of the current process fix instances.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_process_fixRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_process_fixResponse"/>
+	</operation>
+	<operation name="remove_process_fix">
+	<documentation>
+ Removes a process fix instance.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_process_fixRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_process_fixResponse"/>
+	</operation>
+	<operation name="set_exec">
+	<documentation>
+ Creates a program instance, used to signal the agent to execute the named 
+ program with the given arguments and returns the exit status and the first 
+ line of the STDOUT output of the program to queries of the EXTENSIBLEDOTMIB.SHELLMIBNUM.mib_num.ERRORFLAG 
+ and EXTENSIBLEDOTMIB.SHELLMIBNUM.mib_num.ERRORMSG mib columns.  The mib_num.ERRORMSG 
+ mib contains the entire STDOUT output, one mib table entry per line of output.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_execRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_execResponse"/>
+	</operation>
+	<operation name="get_exec">
+	<documentation>
+ Gets a list of program instances.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_execRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_execResponse"/>
+	</operation>
+	<operation name="remove_exec">
+	<documentation>
+ Removes a program instance.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_execRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_execResponse"/>
+	</operation>
+	<operation name="set_exec_fix">
+	<documentation>
+ Sets an exec fix instance that registers a command that knows how to fix 
+ errors with the given program.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_exec_fixRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_exec_fixResponse"/>
+	</operation>
+	<operation name="get_exec_fix">
+	<documentation>
+ Gets a list of exec fix instances.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_exec_fixRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_exec_fixResponse"/>
+	</operation>
+	<operation name="remove_exec_fix">
+	<documentation>
+ Removes an exec fix instance.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_exec_fixRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_exec_fixResponse"/>
+	</operation>
+	<operation name="set_check_disk">
+	<documentation>
+ Creates a disk check instance.  This is used to check the named disks mounted 
+ on path for available disk space.  If the disk space is less than minimum_space 
+ (kb or %), the associated entry in the EXTENSIBLEDOTMIB.DISKMIBNUM.1.ERRORFLAG mib 
+ table will be set to (1) and a descriptive error message will be returned to queries 
+ of EXTENSIBLEDOTMIB.DISKMIBNUM.1.ERRORMSG.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_check_diskRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_check_diskResponse"/>
+	</operation>
+	<operation name="get_check_disk">
+	<documentation>
+ Gets a list of disk check instances.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_check_diskRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_check_diskResponse"/>
+	</operation>
+	<operation name="remove_check_disk">
+	<documentation>
+ Removes a disk check instance.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_check_diskRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_check_diskResponse"/>
+	</operation>
+	<operation name="set_ignore_disk">
+	<documentation>
+ Adds disk devices to the ignore list.  When scanning for available disk 
+ devices the agent might block in trying to open all possible disk devices.  
+ This might lead to a timeout wheen walking the device tree.  Sometimes it will 
+ timeout every time you try it.  Adding a ignore disk directive will specify 
+ device names not to be checked (i.e. opened).
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_ignore_diskRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_ignore_diskResponse"/>
+	</operation>
+	<operation name="get_ignore_disk">
+	<documentation>
+ Return a list of disk devices currently ignored.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_ignore_diskRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_ignore_diskResponse"/>
+	</operation>
+	<operation name="remove_ignore_disk">
+	<documentation>
+ Removes a disk device from the ignore list.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_ignore_diskRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_ignore_diskResponse"/>
+	</operation>
+	<operation name="set_storage_use_nfs">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Adds a directive to indicate how file systems are marked by SNMP.
+ Setting this directive to 1 causes all NFS and NFS-like file systems 
+ to be marked as 'Network Disks' in the hrStorageTable. This is according 
+ to RFC 2790.  Not setting storageUseNFS or setting it to 2 causes NFS 
+ and NFS-like file systems to be marked as 'Fixed Disks' as it has been 
+ in previous versions  of  the  ucd-snmp SNMP agent.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_storage_use_nfsRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_storage_use_nfsResponse"/>
+	</operation>
+	<operation name="get_storage_use_nfs">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Gets directive to indicate how file systems are marked by SNMP.
+ Setting this directive to 1 causes all NFS and NFS-like file systems 
+ to be marked as 'Network Disks' in the hrStorageTable. This is according 
+ to RFC 2790.  Not setting storageUseNFS or setting it to 2 causes NFS 
+ and NFS-like file systems to be marked as 'Fixed Disks' as it has been 
+ in previous versions  of  the  ucd-snmp SNMP agent.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_storage_use_nfsRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_storage_use_nfsResponse"/>
+	</operation>
+	<operation name="remove_storage_use_nfs">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Removes directive to indicate how file systems are marked by SNMP.
+ Setting this directive to 1 causes all NFS and NFS-like file systems 
+ to be marked as 'Network Disks' in the hrStorageTable. This is according 
+ to RFC 2790.  Not setting storageUseNFS or setting it to 2 causes NFS 
+ and NFS-like file systems to be marked as 'Fixed Disks' as it has been 
+ in previous versions  of  the  ucd-snmp SNMP agent.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_storage_use_nfsRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_storage_use_nfsResponse"/>
+	</operation>
+	<operation name="set_check_file">
+	<documentation>
+ Adds a file check used to monitor file sizes and make sure they don't grow 
+ beyond a certain size (in kilobytes).
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_check_fileRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_check_fileResponse"/>
+	</operation>
+	<operation name="get_check_file">
+	<documentation>
+ Gets a list of available file checks.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_check_fileRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_check_fileResponse"/>
+	</operation>
+	<operation name="remove_check_file">
+	<documentation>
+ Removes a file check.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_check_fileRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_check_fileResponse"/>
+	</operation>
+	<operation name="set_check_load">
+	<documentation>
+ Adds a load check used to check the load average of the machine and returns 
+ an error flag (1), and a text-string error message to queries of 
+ EXTENSIBLEDOTMIB.LOADAVEMIBNUM.1.ERRORFLAG and 
+ EXTENSIBLEDOTMIB.LOADAVEMIBNUM.1.ERRORMSG respectively when the 1-minute, 
+ 5-minute, or 15-minute averages exceed the associated maximum values.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_check_loadRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_check_loadResponse"/>
+	</operation>
+	<operation name="get_check_load">
+	<documentation>
+ Gets load check.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_check_loadRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_check_loadResponse"/>
+	</operation>
+	<operation name="remove_check_load">
+	<documentation>
+ Removes a load check.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_check_loadRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_check_loadResponse"/>
+	</operation>
+	<operation name="set_agentx_information">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Sets the AgentX information.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_agentx_informationRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_agentx_informationResponse"/>
+	</operation>
+	<operation name="get_agentx_information">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Gets the AgentX information.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_agentx_informationRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_agentx_informationResponse"/>
+	</operation>
+	<operation name="remove_agentx_information">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Removes the AgentX information.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_agentx_informationRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_agentx_informationResponse"/>
+	</operation>
+	<operation name="set_smux_subagent">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Creates a SMUX based sub-agent, such as gated.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_smux_subagentRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_smux_subagentResponse"/>
+	</operation>
+	<operation name="get_smux_subagent">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Gets a list of SMUX based sub-agents.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_smux_subagentRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_smux_subagentResponse"/>
+	</operation>
+	<operation name="remove_smux_subagent">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Removes a SMUX based sub-agent.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_smux_subagentRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_smux_subagentResponse"/>
+	</operation>
+	<operation name="set_dynamic_loadable_module">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Creates a dynmically loadable module instance.  If the agent is built with 
+ support for the UCD-DLMOD-MIB it is cabable of loading agent MIB modules 
+ dynamically at startup through the dlmod directive and during runtime through 
+ the use of the UCD-DLMOD-MIB.  The directive loads the shared object module 
+ file path which uses the module name prefix.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_dynamic_loadable_moduleRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_dynamic_loadable_moduleResponse"/>
+	</operation>
+	<operation name="get_dynamic_loadable_module">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Gets a list of dynamically loadable module instances.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_dynamic_loadable_moduleRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_dynamic_loadable_moduleResponse"/>
+	</operation>
+	<operation name="remove_dynamic_loadable_module">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Removes a dynamically loadable module instance.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_dynamic_loadable_moduleRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_dynamic_loadable_moduleResponse"/>
+	</operation>
+	<operation name="set_readonly_community">
+	<documentation>
+ Creates read-only communities that can be used to access the agent.  
+ snmpd supports the View-Based Access Control Model (vacm) as defined in RFC 2275.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_readonly_communityRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_readonly_communityResponse"/>
+	</operation>
+	<operation name="get_readonly_community">
+	<documentation>
+ Gets a list of read-only communities.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_readonly_communityRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_readonly_communityResponse"/>
+	</operation>
+	<operation name="remove_readonly_community">
+	<documentation>
+ Removes read-only communities.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_readonly_communityRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_readonly_communityResponse"/>
+	</operation>
+	<operation name="set_readwrite_community">
+	<documentation>
+ Creates read-write communities that can be used to access the agent.  
+ snmpd supports the View-Based Access Control Model (vacm) as defined in RFC 2275.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_readwrite_communityRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_readwrite_communityResponse"/>
+	</operation>
+	<operation name="get_readwrite_community">
+	<documentation>
+ Gets a list of read-write communities.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_readwrite_communityRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_readwrite_communityResponse"/>
+	</operation>
+	<operation name="remove_readwrite_community">
+	<documentation>
+ Removes read-write communities.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_readwrite_communityRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_readwrite_communityResponse"/>
+	</operation>
+	<operation name="set_readonly_user">
+	<documentation>
+ Creates SNMPv3 USM read-only users in the VACM access configuration tables. 
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_readonly_userRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_readonly_userResponse"/>
+	</operation>
+	<operation name="get_readonly_user">
+	<documentation>
+ Gets a list of the SNMPv3 USM read-only users in the VACM access configuration tables.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_readonly_userRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_readonly_userResponse"/>
+	</operation>
+	<operation name="remove_readonly_user">
+	<documentation>
+ Removes SNMPv3 USM read-only users from the VACM access configuration tables. 
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_readonly_userRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_readonly_userResponse"/>
+	</operation>
+	<operation name="set_readwrite_user">
+	<documentation>
+ Creates SNMPv3 USM read-write users in the VACM access configuration tables. 
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_readwrite_userRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_readwrite_userResponse"/>
+	</operation>
+	<operation name="get_readwrite_user">
+	<documentation>
+ Gets a list of the SNMPv3 USM read-write users in the VACM access configuration tables.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_readwrite_userRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_readwrite_userResponse"/>
+	</operation>
+	<operation name="remove_readwrite_user">
+	<documentation>
+ Removes SNMPv3 USM read-write users from the VACM access configuration tables. 
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_readwrite_userRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_readwrite_userResponse"/>
+	</operation>
+	<operation name="set_community_to_security_info">
+	<documentation>
+ Creates mappings from a source/community pair to security names.  The first 
+ source/community combination that matches the incoming packet is selected.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_community_to_security_infoRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_community_to_security_infoResponse"/>
+	</operation>
+	<operation name="get_community_to_security_info">
+	<documentation>
+ Gets a list of mappings from a source/community pair to security name.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_community_to_security_infoRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_community_to_security_infoResponse"/>
+	</operation>
+	<operation name="remove_community_to_security_info">
+	<documentation>
+ Removes mappings from a source/community pair to security names.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_community_to_security_infoRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_community_to_security_infoResponse"/>
+	</operation>
+	<operation name="set_group_info">
+	<documentation>
+ Creates mappings from securitymodel/securityname to group.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_group_infoRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_group_infoResponse"/>
+	</operation>
+	<operation name="get_group_info">
+	<documentation>
+ Gets a list of mappings from securitymodel/securityname to group.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_group_infoRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_group_infoResponse"/>
+	</operation>
+	<operation name="remove_group_info">
+	<documentation>
+ Removes mappings from securitymodel/securityname to group.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_group_infoRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_group_infoResponse"/>
+	</operation>
+	<operation name="set_view_info">
+	<documentation>
+ Creates named views.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_view_infoRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_view_infoResponse"/>
+	</operation>
+	<operation name="get_view_info">
+	<documentation>
+ Gets a list of named views.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_view_infoRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_view_infoResponse"/>
+	</operation>
+	<operation name="remove_view_info">
+	<documentation>
+ Removes a list of named views.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_view_infoRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_view_infoResponse"/>
+	</operation>
+	<operation name="set_access_info">
+	<documentation>
+ Creates access maps from group/securitymodel/security level to a view.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_access_infoRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_access_infoResponse"/>
+	</operation>
+	<operation name="get_access_info">
+	<documentation>
+ Gets a list of access maps from group/securitymodel/security level to a view.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_access_infoRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_access_infoResponse"/>
+	</operation>
+	<operation name="remove_access_info">
+	<documentation>
+ Removes access maps from group/securitymodel/security level to a view.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_access_infoRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_access_infoResponse"/>
+	</operation>
+	<operation name="set_engine_id">
+	<documentation>
+ Sets the snmp engine identifier.  The snmpd agent needs to be configured with 
+ an engine id to be able to respond to SNMPv3 messages.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_engine_idRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_engine_idResponse"/>
+	</operation>
+	<operation name="get_engine_id">
+	<documentation>
+ Gets the snmp engine identifier.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_engine_idRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_engine_idResponse"/>
+	</operation>
+	<operation name="remove_engine_id">
+	<documentation>
+ Removes the snmp engine identifier.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_engine_idRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_engine_idResponse"/>
+	</operation>
+	<operation name="set_create_user">
+	<documentation>
+ Creates SNMPv3 users.
+
+ Note: as of v9.4.2, doing this method without having done
+ set_readonly_user or set_readwrite_user first results in a
+ valid (readonly) user rather than silently creating an
+ incomplete but unusable user. However, such behavior is not
+ guaranteed; please do one of the above methods before this
+ method so as to define your new user fully.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_create_userRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_create_userResponse"/>
+	</operation>
+	<operation name="get_create_user">
+	<documentation>
+ Gets a list of SNMPv3 users. Since the authentication and private passphrases
+ have already been munged by snmpd, this information will not be available in
+ the response.  Only the user_name, the auth_type, and priv_protocol fields in 
+ the UserInformation structure are available.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_create_userRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_create_userResponse"/>
+	</operation>
+	<operation name="remove_create_user">
+	<documentation>
+ Removes SNMPv3 users.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_create_userRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_create_userResponse"/>
+	</operation>
+	<operation name="set_system_information">
+	<documentation>
+ Sets the system location, system contact, and system name for the agent.  This 
+ information is reported in the 'system' group in the mibII tree.
+ 
+ As has always been the case, this method sets values only for the system
+ information items you provide (non-empty/non-zero).
+
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_system_informationRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_system_informationResponse"/>
+	</operation>
+	<operation name="get_system_information">
+	<documentation>
+ Gets the system location, system contact, and system name for the agent.  This 
+ information is reported in the 'system' group in the mibII tree.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_system_informationRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_system_informationResponse"/>
+	</operation>
+	<operation name="remove_system_information">
+	<documentation>
+ Removes the system location, system contact, and system name for the agent.  This 
+ information is reported in the 'system' group in the mibII tree.
+
+ Note: As of v9.4.2, this method actually sets the system location and contact
+ parameters and the system services parameter back to the default.
+ 
+ As has always been the case, this method affects values only for the system
+ information items you provide (non-empty/non-zero).
+
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_system_informationRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_system_informationResponse"/>
+	</operation>
+	<operation name="set_agent_listen_address">
+	<documentation>
+ Sets a list of agent listen addresses.  This makes the agent listen on the 
+ specified list of sockets instead of the default port, which is 161.
+
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_agent_listen_addressRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_agent_listen_addressResponse"/>
+	</operation>
+	<operation name="get_agent_listen_address">
+	<documentation>
+ Gets a list of agent listen addresses.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_agent_listen_addressRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_agent_listen_addressResponse"/>
+	</operation>
+	<operation name="remove_agent_listen_address">
+	<documentation>
+ Removes a list of agent listen addresses.
+
+ Note: As of v9.4.2, this method actually sets the agent
+ listen addresses back to the default.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_agent_listen_addressRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_agent_listen_addressResponse"/>
+	</operation>
+	<operation name="set_agent_group_id">
+	<documentation>
+ Sets the agent group id.  Change to this gid after opening port.  The group id 
+ may refer to a group by name or a number if the group number starts with a #.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_agent_group_idRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_agent_group_idResponse"/>
+	</operation>
+	<operation name="get_agent_group_id">
+	<documentation>
+ Gets the agent group id.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_agent_group_idRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_agent_group_idResponse"/>
+	</operation>
+	<operation name="remove_agent_group_id">
+	<documentation>
+ Removes the agent group id.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_agent_group_idRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_agent_group_idResponse"/>
+	</operation>
+	<operation name="set_agent_user_id">
+	<documentation>
+ Sets the agent user id.  Change to this uid after opening port.  The userid 
+ may refer to a user by name or a number if the user number starts with '#'.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_agent_user_idRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_agent_user_idResponse"/>
+	</operation>
+	<operation name="get_agent_user_id">
+	<documentation>
+ Gets the agent user id.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_agent_user_idRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_agent_user_idResponse"/>
+	</operation>
+	<operation name="remove_agent_user_id">
+	<documentation>
+ Removes the ugent ser id.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_agent_user_idRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_agent_user_idResponse"/>
+	</operation>
+	<operation name="set_agent_interface">
+	<documentation>
+ Sets the interface information for the agent.  For interfaces where the agent 
+ fails to guess correctly on the type and speed, this directive can supply additional 
+ information.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_agent_interfaceRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_agent_interfaceResponse"/>
+	</operation>
+	<operation name="get_agent_interface">
+	<documentation>
+ Gets the agent interface information.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_agent_interfaceRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_agent_interfaceResponse"/>
+	</operation>
+	<operation name="remove_agent_interface">
+	<documentation>
+ Removes the agent interface information.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_agent_interfaceRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_agent_interfaceResponse"/>
+	</operation>
+	<operation name="set_auth_trap_state">
+	<documentation>
+ Sets the authentication trap enabled state.  Setting the trap state to Enabled, 
+ enables the generation of authentication failure traps.  
+ The default value is Disabled.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_auth_trap_stateRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_auth_trap_stateResponse"/>
+	</operation>
+	<operation name="get_auth_trap_state">
+	<documentation>
+ Gets the authentication trap enabled state
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_auth_trap_stateRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_auth_trap_stateResponse"/>
+	</operation>
+	<operation name="remove_auth_trap_state">
+	<documentation>
+ Removes the authentication trap enabled state.
+
+ Note: As of v9.4.2, this method actually sets the authentication
+ trap enabled state back to the default.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_auth_trap_stateRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_auth_trap_stateResponse"/>
+	</operation>
+	<operation name="set_agent_trap_state">
+	<documentation>
+ Sets the agent trap enabled state.  
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_agent_trap_stateRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_agent_trap_stateResponse"/>
+	</operation>
+	<operation name="get_agent_trap_state">
+	<documentation>
+ Gets the agent trap enabled state
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_agent_trap_stateRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_agent_trap_stateResponse"/>
+	</operation>
+	<operation name="remove_agent_trap_state">
+	<documentation>
+ Removes the agent trap enabled state.
+
+ Note: As of v9.4.2, this method actually sets the agent
+ trap enabled state back to the default.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_agent_trap_stateRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_agent_trap_stateResponse"/>
+	</operation>
+	<operation name="set_trap_community">
+	<documentation>
+ Sets the trap community string.  This defines the default community string to be 
+ used when sending traps.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_trap_communityRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_trap_communityResponse"/>
+	</operation>
+	<operation name="get_trap_community">
+	<documentation>
+ Gets the trap community string.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_trap_communityRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_trap_communityResponse"/>
+	</operation>
+	<operation name="remove_trap_community">
+	<documentation>
+ Removes the trap community string.
+
+ Note: As of v9.4.2, this method actually sets the trap
+ community string back to the default.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_trap_communityRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_trap_communityResponse"/>
+	</operation>
+	<operation name="set_trap_sinks">
+	<documentation>
+ Creates a list of trap sinks.  This method create definitions for hosts to 
+ receive traps (and/or inform notifications).  The daemon sends a Cold Start 
+ trap when it starts up.  If enabled, it also sends traps on authentication failures.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_trap_sinksRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_trap_sinksResponse"/>
+	</operation>
+	<operation name="get_trap_sinks">
+	<documentation>
+ Returns a list of trap sinks.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_trap_sinksRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_trap_sinksResponse"/>
+	</operation>
+	<operation name="remove_trap_sinks">
+	<documentation>
+ Removes a list of trap sinks.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_trap_sinksRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_trap_sinksResponse"/>
+	</operation>
+	<operation name="set_generic_traps">
+	<documentation>
+ This method is now deprecated. Use method set_generic_traps_v2 instead.
+
+ Creates generic traps that allows any type of trap destination to be specified 
+ with any version of SNMP.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_generic_trapsRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_generic_trapsResponse"/>
+	</operation>
+	<operation name="get_generic_traps">
+	<documentation>
+ This method is now deprecated. Use method get_generic_traps_v2 instead.
+
+ Gets a list of generic traps.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_generic_trapsRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_generic_trapsResponse"/>
+	</operation>
+	<operation name="remove_generic_traps">
+	<documentation>
+ This method is now deprecated. Use method remove_generic_traps_v2 instead.
+
+ Removes a list of generic traps.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_generic_trapsRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_generic_trapsResponse"/>
+	</operation>
+	<operation name="set_generic_traps_v2">
+	<documentation>
+ Creates generic traps that allows any type of trap destination to be specified 
+ with any version of SNMP.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_generic_traps_v2Request"/>
+		<output message="tns:Management.SNMPConfiguration.set_generic_traps_v2Response"/>
+	</operation>
+	<operation name="get_generic_traps_v2">
+	<documentation>
+ Gets a list of generic traps.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_generic_traps_v2Request"/>
+		<output message="tns:Management.SNMPConfiguration.get_generic_traps_v2Response"/>
+	</operation>
+	<operation name="remove_generic_traps_v2">
+	<documentation>
+ Removes a list of generic traps.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_generic_traps_v2Request"/>
+		<output message="tns:Management.SNMPConfiguration.remove_generic_traps_v2Response"/>
+	</operation>
+	<operation name="set_proxy">
+	<documentation>
+ Creates a list of snmp proxies.  This specifies that any incoming request under 
+ oid should be proxied on to a remote host instead.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_proxyRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_proxyResponse"/>
+	</operation>
+	<operation name="get_proxy">
+	<documentation>
+ Gets a list of snmp proxies.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_proxyRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_proxyResponse"/>
+	</operation>
+	<operation name="remove_proxy">
+	<documentation>
+ Removes a list of snmp proxies.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_proxyRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_proxyResponse"/>
+	</operation>
+	<operation name="set_pass_through">
+	<documentation>
+ Creates a list of pass through controls.  This passes entire control of the mib
+ oid to the executing program.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_pass_throughRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_pass_throughResponse"/>
+	</operation>
+	<operation name="get_pass_through">
+	<documentation>
+ Gets a list of pass through controls.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_pass_throughRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_pass_throughResponse"/>
+	</operation>
+	<operation name="remove_pass_through">
+	<documentation>
+ Removes a list of pass through controls.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_pass_throughRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_pass_throughResponse"/>
+	</operation>
+	<operation name="set_pass_through_persist">
+	<documentation>
+ Creates a list of persist pass through controls.  This passes entire control 
+ of the mib oid to the executing program.  This is similar to set_path_through(), 
+ but the executing program continues to run after the initial request is answered.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_pass_through_persistRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_pass_through_persistResponse"/>
+	</operation>
+	<operation name="get_pass_through_persist">
+	<documentation>
+ Gets a list of persist pass through controls.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_pass_through_persistRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_pass_through_persistResponse"/>
+	</operation>
+	<operation name="remove_pass_through_persist">
+	<documentation>
+ Removes a list of persist pass through controls.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_pass_through_persistRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_pass_through_persistResponse"/>
+	</operation>
+	<operation name="set_client_access">
+	<documentation>
+ Creates a list of client access controls.  These are stored in the /etc/hosts.allow 
+ file.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.set_client_accessRequest"/>
+		<output message="tns:Management.SNMPConfiguration.set_client_accessResponse"/>
+	</operation>
+	<operation name="get_client_access">
+	<documentation>
+ Gets a list of client access controls.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_client_accessRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_client_accessResponse"/>
+	</operation>
+	<operation name="remove_client_access">
+	<documentation>
+ Removes a list of client access controls.
+ 
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.remove_client_accessRequest"/>
+		<output message="tns:Management.SNMPConfiguration.remove_client_accessResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Management.SNMPConfiguration.get_versionRequest"/>
+		<output message="tns:Management.SNMPConfiguration.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.SNMPConfigurationBinding" type="tns:Management.SNMPConfigurationPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="set_check_process">
+	<documentation>
+ Creates a process check.  A process check is used to check to see if the 
+ process_name's processes are running on the agent's machine.  An error flag(1) 
+ and a description message are then passed to the EXTENSIBLEDOTMIB.PROCMIBNUM.1.ERRORFLAG 
+ and EXTENSIBLEDOTMIB.PROCMIBNUM.1.ERRORMSG mib columns if the process_name'd program 
+ is not found on the process table as reported by PSCMD.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_check_process">
+	<documentation>
+ Gets a list of process checks.  A process check is used to check to see if the 
+ process_name'd processes are running on the agent's machine.  An error flag(1) and 
+ a description message are then passed to the EXTENSIBLEDOTMIB.PROCMIBNUM.1.ERRORFLAG 
+ and EXTENSIBLEDOTMIB.PROCMIBNUM.1.ERRORMSG mib columns if the process_name'd program 
+ is not found on the process table as reported by PSCMD.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_check_process">
+	<documentation>
+ Removes a process check.  A process check is used to check to see if the 
+ process_name's processes are running on the agent's machine.  An error flag(1) 
+ and a description message are then passed to the EXTENSIBLEDOTMIB.PROCMIBNUM.1.ERRORFLAG 
+ and EXTENSIBLEDOTMIB.PROCMIBNUM.1.ERRORMSG mib columns if the process_name's program 
+ is not found on the process table as reported by PSCMD.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_process_fix">
+	<documentation>
+ Sets a process fix instance that registers a command that knows how to fix 
+ errors with the given process.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_process_fix">
+	<documentation>
+ Retrieves a list of the current process fix instances.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_process_fix">
+	<documentation>
+ Removes a process fix instance.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_exec">
+	<documentation>
+ Creates a program instance, used to signal the agent to execute the named 
+ program with the given arguments and returns the exit status and the first 
+ line of the STDOUT output of the program to queries of the EXTENSIBLEDOTMIB.SHELLMIBNUM.mib_num.ERRORFLAG 
+ and EXTENSIBLEDOTMIB.SHELLMIBNUM.mib_num.ERRORMSG mib columns.  The mib_num.ERRORMSG 
+ mib contains the entire STDOUT output, one mib table entry per line of output.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_exec">
+	<documentation>
+ Gets a list of program instances.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_exec">
+	<documentation>
+ Removes a program instance.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_exec_fix">
+	<documentation>
+ Sets an exec fix instance that registers a command that knows how to fix 
+ errors with the given program.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_exec_fix">
+	<documentation>
+ Gets a list of exec fix instances.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_exec_fix">
+	<documentation>
+ Removes an exec fix instance.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_check_disk">
+	<documentation>
+ Creates a disk check instance.  This is used to check the named disks mounted 
+ on path for available disk space.  If the disk space is less than minimum_space 
+ (kb or %), the associated entry in the EXTENSIBLEDOTMIB.DISKMIBNUM.1.ERRORFLAG mib 
+ table will be set to (1) and a descriptive error message will be returned to queries 
+ of EXTENSIBLEDOTMIB.DISKMIBNUM.1.ERRORMSG.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_check_disk">
+	<documentation>
+ Gets a list of disk check instances.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_check_disk">
+	<documentation>
+ Removes a disk check instance.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ignore_disk">
+	<documentation>
+ Adds disk devices to the ignore list.  When scanning for available disk 
+ devices the agent might block in trying to open all possible disk devices.  
+ This might lead to a timeout wheen walking the device tree.  Sometimes it will 
+ timeout every time you try it.  Adding a ignore disk directive will specify 
+ device names not to be checked (i.e. opened).
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ignore_disk">
+	<documentation>
+ Return a list of disk devices currently ignored.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_ignore_disk">
+	<documentation>
+ Removes a disk device from the ignore list.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_storage_use_nfs">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Adds a directive to indicate how file systems are marked by SNMP.
+ Setting this directive to 1 causes all NFS and NFS-like file systems 
+ to be marked as 'Network Disks' in the hrStorageTable. This is according 
+ to RFC 2790.  Not setting storageUseNFS or setting it to 2 causes NFS 
+ and NFS-like file systems to be marked as 'Fixed Disks' as it has been 
+ in previous versions  of  the  ucd-snmp SNMP agent.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_storage_use_nfs">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Gets directive to indicate how file systems are marked by SNMP.
+ Setting this directive to 1 causes all NFS and NFS-like file systems 
+ to be marked as 'Network Disks' in the hrStorageTable. This is according 
+ to RFC 2790.  Not setting storageUseNFS or setting it to 2 causes NFS 
+ and NFS-like file systems to be marked as 'Fixed Disks' as it has been 
+ in previous versions  of  the  ucd-snmp SNMP agent.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_storage_use_nfs">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Removes directive to indicate how file systems are marked by SNMP.
+ Setting this directive to 1 causes all NFS and NFS-like file systems 
+ to be marked as 'Network Disks' in the hrStorageTable. This is according 
+ to RFC 2790.  Not setting storageUseNFS or setting it to 2 causes NFS 
+ and NFS-like file systems to be marked as 'Fixed Disks' as it has been 
+ in previous versions  of  the  ucd-snmp SNMP agent.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_check_file">
+	<documentation>
+ Adds a file check used to monitor file sizes and make sure they don't grow 
+ beyond a certain size (in kilobytes).
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_check_file">
+	<documentation>
+ Gets a list of available file checks.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_check_file">
+	<documentation>
+ Removes a file check.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_check_load">
+	<documentation>
+ Adds a load check used to check the load average of the machine and returns 
+ an error flag (1), and a text-string error message to queries of 
+ EXTENSIBLEDOTMIB.LOADAVEMIBNUM.1.ERRORFLAG and 
+ EXTENSIBLEDOTMIB.LOADAVEMIBNUM.1.ERRORMSG respectively when the 1-minute, 
+ 5-minute, or 15-minute averages exceed the associated maximum values.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_check_load">
+	<documentation>
+ Gets load check.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_check_load">
+	<documentation>
+ Removes a load check.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_agentx_information">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Sets the AgentX information.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_agentx_information">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Gets the AgentX information.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_agentx_information">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Removes the AgentX information.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_smux_subagent">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Creates a SMUX based sub-agent, such as gated.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_smux_subagent">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Gets a list of SMUX based sub-agents.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_smux_subagent">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Removes a SMUX based sub-agent.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_dynamic_loadable_module">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Creates a dynmically loadable module instance.  If the agent is built with 
+ support for the UCD-DLMOD-MIB it is cabable of loading agent MIB modules 
+ dynamically at startup through the dlmod directive and during runtime through 
+ the use of the UCD-DLMOD-MIB.  The directive loads the shared object module 
+ file path which uses the module name prefix.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_dynamic_loadable_module">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Gets a list of dynamically loadable module instances.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_dynamic_loadable_module">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used, in order to ensure proper operation of the system.
+ 
+ Removes a dynamically loadable module instance.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_readonly_community">
+	<documentation>
+ Creates read-only communities that can be used to access the agent.  
+ snmpd supports the View-Based Access Control Model (vacm) as defined in RFC 2275.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_readonly_community">
+	<documentation>
+ Gets a list of read-only communities.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_readonly_community">
+	<documentation>
+ Removes read-only communities.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_readwrite_community">
+	<documentation>
+ Creates read-write communities that can be used to access the agent.  
+ snmpd supports the View-Based Access Control Model (vacm) as defined in RFC 2275.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_readwrite_community">
+	<documentation>
+ Gets a list of read-write communities.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_readwrite_community">
+	<documentation>
+ Removes read-write communities.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_readonly_user">
+	<documentation>
+ Creates SNMPv3 USM read-only users in the VACM access configuration tables. 
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_readonly_user">
+	<documentation>
+ Gets a list of the SNMPv3 USM read-only users in the VACM access configuration tables.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_readonly_user">
+	<documentation>
+ Removes SNMPv3 USM read-only users from the VACM access configuration tables. 
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_readwrite_user">
+	<documentation>
+ Creates SNMPv3 USM read-write users in the VACM access configuration tables. 
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_readwrite_user">
+	<documentation>
+ Gets a list of the SNMPv3 USM read-write users in the VACM access configuration tables.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_readwrite_user">
+	<documentation>
+ Removes SNMPv3 USM read-write users from the VACM access configuration tables. 
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_community_to_security_info">
+	<documentation>
+ Creates mappings from a source/community pair to security names.  The first 
+ source/community combination that matches the incoming packet is selected.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_community_to_security_info">
+	<documentation>
+ Gets a list of mappings from a source/community pair to security name.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_community_to_security_info">
+	<documentation>
+ Removes mappings from a source/community pair to security names.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_group_info">
+	<documentation>
+ Creates mappings from securitymodel/securityname to group.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_group_info">
+	<documentation>
+ Gets a list of mappings from securitymodel/securityname to group.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_group_info">
+	<documentation>
+ Removes mappings from securitymodel/securityname to group.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_view_info">
+	<documentation>
+ Creates named views.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_view_info">
+	<documentation>
+ Gets a list of named views.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_view_info">
+	<documentation>
+ Removes a list of named views.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_access_info">
+	<documentation>
+ Creates access maps from group/securitymodel/security level to a view.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_access_info">
+	<documentation>
+ Gets a list of access maps from group/securitymodel/security level to a view.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_access_info">
+	<documentation>
+ Removes access maps from group/securitymodel/security level to a view.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_engine_id">
+	<documentation>
+ Sets the snmp engine identifier.  The snmpd agent needs to be configured with 
+ an engine id to be able to respond to SNMPv3 messages.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_engine_id">
+	<documentation>
+ Gets the snmp engine identifier.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_engine_id">
+	<documentation>
+ Removes the snmp engine identifier.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_create_user">
+	<documentation>
+ Creates SNMPv3 users.
+
+ Note: as of v9.4.2, doing this method without having done
+ set_readonly_user or set_readwrite_user first results in a
+ valid (readonly) user rather than silently creating an
+ incomplete but unusable user. However, such behavior is not
+ guaranteed; please do one of the above methods before this
+ method so as to define your new user fully.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_create_user">
+	<documentation>
+ Gets a list of SNMPv3 users. Since the authentication and private passphrases
+ have already been munged by snmpd, this information will not be available in
+ the response.  Only the user_name, the auth_type, and priv_protocol fields in 
+ the UserInformation structure are available.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_create_user">
+	<documentation>
+ Removes SNMPv3 users.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_system_information">
+	<documentation>
+ Sets the system location, system contact, and system name for the agent.  This 
+ information is reported in the 'system' group in the mibII tree.
+ 
+ As has always been the case, this method sets values only for the system
+ information items you provide (non-empty/non-zero).
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_system_information">
+	<documentation>
+ Gets the system location, system contact, and system name for the agent.  This 
+ information is reported in the 'system' group in the mibII tree.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_system_information">
+	<documentation>
+ Removes the system location, system contact, and system name for the agent.  This 
+ information is reported in the 'system' group in the mibII tree.
+
+ Note: As of v9.4.2, this method actually sets the system location and contact
+ parameters and the system services parameter back to the default.
+ 
+ As has always been the case, this method affects values only for the system
+ information items you provide (non-empty/non-zero).
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_agent_listen_address">
+	<documentation>
+ Sets a list of agent listen addresses.  This makes the agent listen on the 
+ specified list of sockets instead of the default port, which is 161.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_agent_listen_address">
+	<documentation>
+ Gets a list of agent listen addresses.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_agent_listen_address">
+	<documentation>
+ Removes a list of agent listen addresses.
+
+ Note: As of v9.4.2, this method actually sets the agent
+ listen addresses back to the default.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_agent_group_id">
+	<documentation>
+ Sets the agent group id.  Change to this gid after opening port.  The group id 
+ may refer to a group by name or a number if the group number starts with a #.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_agent_group_id">
+	<documentation>
+ Gets the agent group id.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_agent_group_id">
+	<documentation>
+ Removes the agent group id.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_agent_user_id">
+	<documentation>
+ Sets the agent user id.  Change to this uid after opening port.  The userid 
+ may refer to a user by name or a number if the user number starts with '#'.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_agent_user_id">
+	<documentation>
+ Gets the agent user id.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_agent_user_id">
+	<documentation>
+ Removes the ugent ser id.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_agent_interface">
+	<documentation>
+ Sets the interface information for the agent.  For interfaces where the agent 
+ fails to guess correctly on the type and speed, this directive can supply additional 
+ information.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_agent_interface">
+	<documentation>
+ Gets the agent interface information.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_agent_interface">
+	<documentation>
+ Removes the agent interface information.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_auth_trap_state">
+	<documentation>
+ Sets the authentication trap enabled state.  Setting the trap state to Enabled, 
+ enables the generation of authentication failure traps.  
+ The default value is Disabled.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_auth_trap_state">
+	<documentation>
+ Gets the authentication trap enabled state
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_auth_trap_state">
+	<documentation>
+ Removes the authentication trap enabled state.
+
+ Note: As of v9.4.2, this method actually sets the authentication
+ trap enabled state back to the default.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_agent_trap_state">
+	<documentation>
+ Sets the agent trap enabled state.  
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_agent_trap_state">
+	<documentation>
+ Gets the agent trap enabled state
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_agent_trap_state">
+	<documentation>
+ Removes the agent trap enabled state.
+
+ Note: As of v9.4.2, this method actually sets the agent
+ trap enabled state back to the default.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_trap_community">
+	<documentation>
+ Sets the trap community string.  This defines the default community string to be 
+ used when sending traps.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_trap_community">
+	<documentation>
+ Gets the trap community string.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_trap_community">
+	<documentation>
+ Removes the trap community string.
+
+ Note: As of v9.4.2, this method actually sets the trap
+ community string back to the default.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_trap_sinks">
+	<documentation>
+ Creates a list of trap sinks.  This method create definitions for hosts to 
+ receive traps (and/or inform notifications).  The daemon sends a Cold Start 
+ trap when it starts up.  If enabled, it also sends traps on authentication failures.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_trap_sinks">
+	<documentation>
+ Returns a list of trap sinks.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_trap_sinks">
+	<documentation>
+ Removes a list of trap sinks.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_generic_traps">
+	<documentation>
+ This method is now deprecated. Use method set_generic_traps_v2 instead.
+
+ Creates generic traps that allows any type of trap destination to be specified 
+ with any version of SNMP.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_generic_traps">
+	<documentation>
+ This method is now deprecated. Use method get_generic_traps_v2 instead.
+
+ Gets a list of generic traps.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_generic_traps">
+	<documentation>
+ This method is now deprecated. Use method remove_generic_traps_v2 instead.
+
+ Removes a list of generic traps.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_generic_traps_v2">
+	<documentation>
+ Creates generic traps that allows any type of trap destination to be specified 
+ with any version of SNMP.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_generic_traps_v2">
+	<documentation>
+ Gets a list of generic traps.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_generic_traps_v2">
+	<documentation>
+ Removes a list of generic traps.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_proxy">
+	<documentation>
+ Creates a list of snmp proxies.  This specifies that any incoming request under 
+ oid should be proxied on to a remote host instead.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_proxy">
+	<documentation>
+ Gets a list of snmp proxies.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_proxy">
+	<documentation>
+ Removes a list of snmp proxies.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_pass_through">
+	<documentation>
+ Creates a list of pass through controls.  This passes entire control of the mib
+ oid to the executing program.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_pass_through">
+	<documentation>
+ Gets a list of pass through controls.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_pass_through">
+	<documentation>
+ Removes a list of pass through controls.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_pass_through_persist">
+	<documentation>
+ Creates a list of persist pass through controls.  This passes entire control 
+ of the mib oid to the executing program.  This is similar to set_path_through(), 
+ but the executing program continues to run after the initial request is answered.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_pass_through_persist">
+	<documentation>
+ Gets a list of persist pass through controls.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_pass_through_persist">
+	<documentation>
+ Removes a list of persist pass through controls.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_client_access">
+	<documentation>
+ Creates a list of client access controls.  These are stored in the /etc/hosts.allow 
+ file.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_client_access">
+	<documentation>
+ Gets a list of client access controls.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_client_access">
+	<documentation>
+ Removes a list of client access controls.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/SNMPConfiguration"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/SNMPConfiguration"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.SNMPConfiguration">
+	<documentation>
+ The SNMPConfiguration interface allows users to manage the full configurations 
+ for UCD SNMP agent.
+ Please read the manual pages for snmpd.conf for further information.
+
+
+TODO:
+Missing directives:
+- override
+
+        	</documentation>
+	<port name="Management.SNMPConfigurationPort" binding="tns:Management.SNMPConfigurationBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

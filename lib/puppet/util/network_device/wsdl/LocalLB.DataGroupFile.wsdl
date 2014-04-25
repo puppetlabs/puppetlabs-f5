@@ -1,0 +1,971 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="LocalLB.DataGroupFile"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.TimeStampSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.TimeStamp[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULong64">
+			<xsd:sequence>
+				<xsd:element name="high" type="xsd:long"/>
+				<xsd:element name="low" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.TimeStamp">
+			<xsd:sequence>
+				<xsd:element name="year" type="xsd:long"/>
+				<xsd:element name="month" type="xsd:long"/>
+				<xsd:element name="day" type="xsd:long"/>
+				<xsd:element name="hour" type="xsd:long"/>
+				<xsd:element name="minute" type="xsd:long"/>
+				<xsd:element name="second" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULong64Sequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.ULong64[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="LocalLB.DataGroupType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="DATA_GROUP_UNDEFINED">
+					<xsd:annotation>
+						<xsd:documentation>DATA_GROUP_UNDEFINED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DATA_GROUP_ADDRESS">
+					<xsd:annotation>
+						<xsd:documentation>DATA_GROUP_ADDRESS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DATA_GROUP_STRING">
+					<xsd:annotation>
+						<xsd:documentation>DATA_GROUP_STRING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DATA_GROUP_VALUE">
+					<xsd:annotation>
+						<xsd:documentation>DATA_GROUP_VALUE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="LocalLB.DataGroupTypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.DataGroupType[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="LocalLB.DataGroupFile.get_listRequest">
+</message>
+<message name="LocalLB.DataGroupFile.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.DataGroupFile.createRequest">
+	<part name="files" type="tns:Common.StringSequence"/>
+	<part name="paths" type="tns:Common.StringSequence"/>
+	<part name="types" type="tns:LocalLB.DataGroupTypeSequence"/>
+</message>
+<message name="LocalLB.DataGroupFile.createResponse">
+</message>
+
+<message name="LocalLB.DataGroupFile.delete_data_group_fileRequest">
+	<part name="files" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.DataGroupFile.delete_data_group_fileResponse">
+</message>
+
+<message name="LocalLB.DataGroupFile.delete_all_data_group_filesRequest">
+</message>
+<message name="LocalLB.DataGroupFile.delete_all_data_group_filesResponse">
+</message>
+
+<message name="LocalLB.DataGroupFile.get_cache_pathRequest">
+	<part name="files" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.DataGroupFile.get_cache_pathResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.DataGroupFile.get_checksumRequest">
+	<part name="files" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.DataGroupFile.get_checksumResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.DataGroupFile.get_creation_timeRequest">
+	<part name="files" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.DataGroupFile.get_creation_timeResponse">
+	<part name="return" type="tns:Common.TimeStampSequence"/>
+</message>
+
+<message name="LocalLB.DataGroupFile.get_creatorRequest">
+	<part name="files" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.DataGroupFile.get_creatorResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.DataGroupFile.set_data_separatorRequest">
+	<part name="files" type="tns:Common.StringSequence"/>
+	<part name="separators" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.DataGroupFile.set_data_separatorResponse">
+</message>
+
+<message name="LocalLB.DataGroupFile.get_data_separatorRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.DataGroupFile.get_data_separatorResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.DataGroupFile.get_dynamic_stateRequest">
+	<part name="files" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.DataGroupFile.get_dynamic_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.DataGroupFile.set_local_pathRequest">
+	<part name="files" type="tns:Common.StringSequence"/>
+	<part name="paths" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.DataGroupFile.set_local_pathResponse">
+</message>
+
+<message name="LocalLB.DataGroupFile.get_modification_timeRequest">
+	<part name="files" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.DataGroupFile.get_modification_timeResponse">
+	<part name="return" type="tns:Common.TimeStampSequence"/>
+</message>
+
+<message name="LocalLB.DataGroupFile.get_modifierRequest">
+	<part name="files" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.DataGroupFile.get_modifierResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.DataGroupFile.get_modeRequest">
+	<part name="files" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.DataGroupFile.get_modeResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="LocalLB.DataGroupFile.get_revisionRequest">
+	<part name="files" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.DataGroupFile.get_revisionResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="LocalLB.DataGroupFile.get_sizeRequest">
+	<part name="files" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.DataGroupFile.get_sizeResponse">
+	<part name="return" type="tns:Common.ULong64Sequence"/>
+</message>
+
+<message name="LocalLB.DataGroupFile.get_source_pathRequest">
+	<part name="files" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.DataGroupFile.get_source_pathResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.DataGroupFile.get_system_pathRequest">
+	<part name="files" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.DataGroupFile.get_system_pathResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.DataGroupFile.get_system_stateRequest">
+	<part name="files" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.DataGroupFile.get_system_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.DataGroupFile.get_value_typeRequest">
+	<part name="files" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.DataGroupFile.get_value_typeResponse">
+	<part name="return" type="tns:LocalLB.DataGroupTypeSequence"/>
+</message>
+
+<message name="LocalLB.DataGroupFile.get_versionRequest">
+</message>
+<message name="LocalLB.DataGroupFile.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="LocalLB.DataGroupFilePortType">
+	<operation name="get_list">
+   	<documentation>
+ Gets the identifiers of all data group file objects.
+
+        	</documentation>
+		<input message="tns:LocalLB.DataGroupFile.get_listRequest"/>
+		<output message="tns:LocalLB.DataGroupFile.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a set of data group file objects.
+
+ Once the file is imported into the file cache, it is deleted.
+
+        	</documentation>
+		<input message="tns:LocalLB.DataGroupFile.createRequest"/>
+		<output message="tns:LocalLB.DataGroupFile.createResponse"/>
+	</operation>
+	<operation name="delete_data_group_file">
+	<documentation>
+ Deletes a set of data group file objects.
+
+        	</documentation>
+		<input message="tns:LocalLB.DataGroupFile.delete_data_group_fileRequest"/>
+		<output message="tns:LocalLB.DataGroupFile.delete_data_group_fileResponse"/>
+	</operation>
+	<operation name="delete_all_data_group_files">
+	<documentation>
+ Deletes all data group file objects.
+
+        	</documentation>
+		<input message="tns:LocalLB.DataGroupFile.delete_all_data_group_filesRequest"/>
+		<output message="tns:LocalLB.DataGroupFile.delete_all_data_group_filesResponse"/>
+	</operation>
+	<operation name="get_cache_path">
+	<documentation>
+ Gets the full path to the file inside the file cache for a set of
+ data group file objects. For system files outside the cache, like
+ ZebOS.conf, the cached path holds a soft link to the external file.
+
+        	</documentation>
+		<input message="tns:LocalLB.DataGroupFile.get_cache_pathRequest"/>
+		<output message="tns:LocalLB.DataGroupFile.get_cache_pathResponse"/>
+	</operation>
+	<operation name="get_checksum">
+	<documentation>
+ Gets the file checksum, a unique signature used for validation and
+ verification for a set of data group file objects.
+
+        	</documentation>
+		<input message="tns:LocalLB.DataGroupFile.get_checksumRequest"/>
+		<output message="tns:LocalLB.DataGroupFile.get_checksumResponse"/>
+	</operation>
+	<operation name="get_creation_time">
+	<documentation>
+ Gets the file creation date/time for a set of data group file
+ objects.
+
+        	</documentation>
+		<input message="tns:LocalLB.DataGroupFile.get_creation_timeRequest"/>
+		<output message="tns:LocalLB.DataGroupFile.get_creation_timeResponse"/>
+	</operation>
+	<operation name="get_creator">
+	<documentation>
+ Gets the name of the user who originally created the file for a set
+ of data group file objects.
+
+        	</documentation>
+		<input message="tns:LocalLB.DataGroupFile.get_creatorRequest"/>
+		<output message="tns:LocalLB.DataGroupFile.get_creatorResponse"/>
+	</operation>
+	<operation name="set_data_separator">
+	<documentation>
+ Sets the string used to separate a class member value from its
+ optional associated data value for a set of data group files.
+
+        	</documentation>
+		<input message="tns:LocalLB.DataGroupFile.set_data_separatorRequest"/>
+		<output message="tns:LocalLB.DataGroupFile.set_data_separatorResponse"/>
+	</operation>
+	<operation name="get_data_separator">
+	<documentation>
+ Gets the string used to separate a class member value from its
+ optional associated data value for a set of data group files
+
+        	</documentation>
+		<input message="tns:LocalLB.DataGroupFile.get_data_separatorRequest"/>
+		<output message="tns:LocalLB.DataGroupFile.get_data_separatorResponse"/>
+	</operation>
+	<operation name="get_dynamic_state">
+	<documentation>
+ Gets the state for whether this file can be modified by an external
+ process during runtime for a set of data group file objects.
+ Setting this allows validation to skip certain steps, such as
+ checksum verification.
+
+        	</documentation>
+		<input message="tns:LocalLB.DataGroupFile.get_dynamic_stateRequest"/>
+		<output message="tns:LocalLB.DataGroupFile.get_dynamic_stateResponse"/>
+	</operation>
+	<operation name="set_local_path">
+	<documentation>
+ Sets the name of the file to be imported into the configuration
+ file cache for a set of data group file objects. Specifying this
+ attribute for an existing file object triggers importing the
+ specified file into the configuration file cache, replacing the
+ existing file in the file object. Once the file is imported into
+ the file cache, it is deleted. This name must either be a full file
+ path or a path relative to /config or /var/class.
+
+        	</documentation>
+		<input message="tns:LocalLB.DataGroupFile.set_local_pathRequest"/>
+		<output message="tns:LocalLB.DataGroupFile.set_local_pathResponse"/>
+	</operation>
+	<operation name="get_modification_time">
+	<documentation>
+ Gets the date/time of the last file modification for a set of data
+ group file objects.
+
+        	</documentation>
+		<input message="tns:LocalLB.DataGroupFile.get_modification_timeRequest"/>
+		<output message="tns:LocalLB.DataGroupFile.get_modification_timeResponse"/>
+	</operation>
+	<operation name="get_modifier">
+	<documentation>
+ Gets the name of the user who last modified the file for a set of
+ data group file objects.
+
+        	</documentation>
+		<input message="tns:LocalLB.DataGroupFile.get_modifierRequest"/>
+		<output message="tns:LocalLB.DataGroupFile.get_modifierResponse"/>
+	</operation>
+	<operation name="get_mode">
+	<documentation>
+ Gets the bit field holding the file type and permissions, as in the
+ Unix "stat" information for a set of data group file objects.
+
+        	</documentation>
+		<input message="tns:LocalLB.DataGroupFile.get_modeRequest"/>
+		<output message="tns:LocalLB.DataGroupFile.get_modeResponse"/>
+	</operation>
+	<operation name="get_revision">
+	<documentation>
+ Gets the running count of file modifications for a set of data
+ group file objects.
+
+        	</documentation>
+		<input message="tns:LocalLB.DataGroupFile.get_revisionRequest"/>
+		<output message="tns:LocalLB.DataGroupFile.get_revisionResponse"/>
+	</operation>
+	<operation name="get_size">
+	<documentation>
+ Gets the file size for a set of data group file objects.
+
+        	</documentation>
+		<input message="tns:LocalLB.DataGroupFile.get_sizeRequest"/>
+		<output message="tns:LocalLB.DataGroupFile.get_sizeResponse"/>
+	</operation>
+	<operation name="get_source_path">
+	<documentation>
+ Gets the the original source path of the file for a set of data
+ group file objects.
+
+        	</documentation>
+		<input message="tns:LocalLB.DataGroupFile.get_source_pathRequest"/>
+		<output message="tns:LocalLB.DataGroupFile.get_source_pathResponse"/>
+	</operation>
+	<operation name="get_system_path">
+	<documentation>
+ Gets the full path to system files that exist outside the file
+ cache for a set of data group file objects. The cached file is
+ simply a soft link to this file.
+
+        	</documentation>
+		<input message="tns:LocalLB.DataGroupFile.get_system_pathRequest"/>
+		<output message="tns:LocalLB.DataGroupFile.get_system_pathResponse"/>
+	</operation>
+	<operation name="get_system_state">
+	<documentation>
+ Gets the state for whether this is a system file for a set of data
+ group file objects. System files cannot be created, deleted, or
+ modified by users, and file objects holding them cannot be deleted.
+
+        	</documentation>
+		<input message="tns:LocalLB.DataGroupFile.get_system_stateRequest"/>
+		<output message="tns:LocalLB.DataGroupFile.get_system_stateResponse"/>
+	</operation>
+	<operation name="get_value_type">
+	<documentation>
+ Gets the data group value type for a set of data group file
+ objects.
+
+        	</documentation>
+		<input message="tns:LocalLB.DataGroupFile.get_value_typeRequest"/>
+		<output message="tns:LocalLB.DataGroupFile.get_value_typeResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:LocalLB.DataGroupFile.get_versionRequest"/>
+		<output message="tns:LocalLB.DataGroupFile.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="LocalLB.DataGroupFileBinding" type="tns:LocalLB.DataGroupFilePortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the identifiers of all data group file objects.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DataGroupFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a set of data group file objects.
+
+ Once the file is imported into the file cache, it is deleted.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DataGroupFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_data_group_file">
+	<documentation>
+ Deletes a set of data group file objects.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DataGroupFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_data_group_files">
+	<documentation>
+ Deletes all data group file objects.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DataGroupFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cache_path">
+	<documentation>
+ Gets the full path to the file inside the file cache for a set of
+ data group file objects. For system files outside the cache, like
+ ZebOS.conf, the cached path holds a soft link to the external file.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DataGroupFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_checksum">
+	<documentation>
+ Gets the file checksum, a unique signature used for validation and
+ verification for a set of data group file objects.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DataGroupFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_creation_time">
+	<documentation>
+ Gets the file creation date/time for a set of data group file
+ objects.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DataGroupFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_creator">
+	<documentation>
+ Gets the name of the user who originally created the file for a set
+ of data group file objects.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DataGroupFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_data_separator">
+	<documentation>
+ Sets the string used to separate a class member value from its
+ optional associated data value for a set of data group files.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DataGroupFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_data_separator">
+	<documentation>
+ Gets the string used to separate a class member value from its
+ optional associated data value for a set of data group files
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DataGroupFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_dynamic_state">
+	<documentation>
+ Gets the state for whether this file can be modified by an external
+ process during runtime for a set of data group file objects.
+ Setting this allows validation to skip certain steps, such as
+ checksum verification.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DataGroupFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_local_path">
+	<documentation>
+ Sets the name of the file to be imported into the configuration
+ file cache for a set of data group file objects. Specifying this
+ attribute for an existing file object triggers importing the
+ specified file into the configuration file cache, replacing the
+ existing file in the file object. Once the file is imported into
+ the file cache, it is deleted. This name must either be a full file
+ path or a path relative to /config or /var/class.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DataGroupFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_modification_time">
+	<documentation>
+ Gets the date/time of the last file modification for a set of data
+ group file objects.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DataGroupFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_modifier">
+	<documentation>
+ Gets the name of the user who last modified the file for a set of
+ data group file objects.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DataGroupFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_mode">
+	<documentation>
+ Gets the bit field holding the file type and permissions, as in the
+ Unix "stat" information for a set of data group file objects.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DataGroupFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_revision">
+	<documentation>
+ Gets the running count of file modifications for a set of data
+ group file objects.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DataGroupFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_size">
+	<documentation>
+ Gets the file size for a set of data group file objects.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DataGroupFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_source_path">
+	<documentation>
+ Gets the the original source path of the file for a set of data
+ group file objects.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DataGroupFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_system_path">
+	<documentation>
+ Gets the full path to system files that exist outside the file
+ cache for a set of data group file objects. The cached file is
+ simply a soft link to this file.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DataGroupFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_system_state">
+	<documentation>
+ Gets the state for whether this is a system file for a set of data
+ group file objects. System files cannot be created, deleted, or
+ modified by users, and file objects holding them cannot be deleted.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DataGroupFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_value_type">
+	<documentation>
+ Gets the data group value type for a set of data group file
+ objects.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DataGroupFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DataGroupFile"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DataGroupFile"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="LocalLB.DataGroupFile">
+	<documentation>
+ External data group configuration file. These files are intimately tied
+ into the configuration, such that any change to the file itself is
+ treated as a change to the configuration. Such files are also
+ integrated into a file cache for more complete control.
+
+        	</documentation>
+	<port name="LocalLB.DataGroupFilePort" binding="tns:LocalLB.DataGroupFileBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

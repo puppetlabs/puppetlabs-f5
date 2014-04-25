@@ -1,0 +1,963 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="GlobalLB.Application"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="GlobalLB.AvailabilityDependencySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:GlobalLB.AvailabilityDependency[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="GlobalLB.Application.ApplicationContextObject">
+			<xsd:sequence>
+				<xsd:element name="application_name" type="xsd:string"/>
+				<xsd:element name="object_name" type="xsd:string"/>
+				<xsd:element name="object_type" type="tns:GlobalLB.Application.ApplicationObjectType"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="GlobalLB.Application.ApplicationObjectType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="APPLICATION_OBJECT_TYPE_DATACENTER">
+					<xsd:annotation>
+						<xsd:documentation>APPLICATION_OBJECT_TYPE_DATACENTER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="APPLICATION_OBJECT_TYPE_SERVER">
+					<xsd:annotation>
+						<xsd:documentation>APPLICATION_OBJECT_TYPE_SERVER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="APPLICATION_OBJECT_TYPE_LINK">
+					<xsd:annotation>
+						<xsd:documentation>APPLICATION_OBJECT_TYPE_LINK</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="GlobalLB.AvailabilityDependency">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="AVAILABILITY_DEPENDENCY_NONE">
+					<xsd:annotation>
+						<xsd:documentation>AVAILABILITY_DEPENDENCY_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AVAILABILITY_DEPENDENCY_SERVER">
+					<xsd:annotation>
+						<xsd:documentation>AVAILABILITY_DEPENDENCY_SERVER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AVAILABILITY_DEPENDENCY_LINK">
+					<xsd:annotation>
+						<xsd:documentation>AVAILABILITY_DEPENDENCY_LINK</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AVAILABILITY_DEPENDENCY_DATA_CENTER">
+					<xsd:annotation>
+						<xsd:documentation>AVAILABILITY_DEPENDENCY_DATA_CENTER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AVAILABILITY_DEPENDENCY_WIDE_IP">
+					<xsd:annotation>
+						<xsd:documentation>AVAILABILITY_DEPENDENCY_WIDE_IP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledStatus">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="ENABLED_STATUS_NONE">
+					<xsd:annotation>
+						<xsd:documentation>ENABLED_STATUS_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ENABLED_STATUS_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>ENABLED_STATUS_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ENABLED_STATUS_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>ENABLED_STATUS_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ENABLED_STATUS_DISABLED_BY_PARENT">
+					<xsd:annotation>
+						<xsd:documentation>ENABLED_STATUS_DISABLED_BY_PARENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Common.AvailabilityStatus">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="AVAILABILITY_STATUS_NONE">
+					<xsd:annotation>
+						<xsd:documentation>AVAILABILITY_STATUS_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AVAILABILITY_STATUS_GREEN">
+					<xsd:annotation>
+						<xsd:documentation>AVAILABILITY_STATUS_GREEN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AVAILABILITY_STATUS_YELLOW">
+					<xsd:annotation>
+						<xsd:documentation>AVAILABILITY_STATUS_YELLOW</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AVAILABILITY_STATUS_RED">
+					<xsd:annotation>
+						<xsd:documentation>AVAILABILITY_STATUS_RED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AVAILABILITY_STATUS_BLUE">
+					<xsd:annotation>
+						<xsd:documentation>AVAILABILITY_STATUS_BLUE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AVAILABILITY_STATUS_GRAY">
+					<xsd:annotation>
+						<xsd:documentation>AVAILABILITY_STATUS_GRAY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.ObjectStatusSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.ObjectStatus[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="GlobalLB.Application.ApplicationContextObjectSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:GlobalLB.Application.ApplicationContextObject[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ObjectStatus">
+			<xsd:sequence>
+				<xsd:element name="availability_status" type="tns:Common.AvailabilityStatus"/>
+				<xsd:element name="enabled_status" type="tns:Common.EnabledStatus"/>
+				<xsd:element name="status_description" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="GlobalLB.Application.get_object_statusRequest">
+	<part name="applications" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Application.get_object_statusResponse">
+	<part name="return" type="tns:Common.ObjectStatusSequence"/>
+</message>
+
+<message name="GlobalLB.Application.get_listRequest">
+</message>
+<message name="GlobalLB.Application.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="GlobalLB.Application.createRequest">
+	<part name="applications" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Application.createResponse">
+</message>
+
+<message name="GlobalLB.Application.delete_applicationRequest">
+	<part name="applications" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Application.delete_applicationResponse">
+</message>
+
+<message name="GlobalLB.Application.delete_all_applicationsRequest">
+</message>
+<message name="GlobalLB.Application.delete_all_applicationsResponse">
+</message>
+
+<message name="GlobalLB.Application.set_persistence_stateRequest">
+	<part name="applications" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="GlobalLB.Application.set_persistence_stateResponse">
+</message>
+
+<message name="GlobalLB.Application.get_persistence_stateRequest">
+	<part name="applications" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Application.get_persistence_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="GlobalLB.Application.set_persistence_ttlRequest">
+	<part name="applications" type="tns:Common.StringSequence"/>
+	<part name="values" type="tns:Common.ULongSequence"/>
+</message>
+<message name="GlobalLB.Application.set_persistence_ttlResponse">
+</message>
+
+<message name="GlobalLB.Application.get_persistence_ttlRequest">
+	<part name="applications" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Application.get_persistence_ttlResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="GlobalLB.Application.set_availability_dependencyRequest">
+	<part name="applications" type="tns:Common.StringSequence"/>
+	<part name="values" type="tns:GlobalLB.AvailabilityDependencySequence"/>
+</message>
+<message name="GlobalLB.Application.set_availability_dependencyResponse">
+</message>
+
+<message name="GlobalLB.Application.get_availability_dependencyRequest">
+	<part name="applications" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Application.get_availability_dependencyResponse">
+	<part name="return" type="tns:GlobalLB.AvailabilityDependencySequence"/>
+</message>
+
+<message name="GlobalLB.Application.disable_application_context_objectRequest">
+	<part name="application_objects" type="tns:GlobalLB.Application.ApplicationContextObjectSequence"/>
+</message>
+<message name="GlobalLB.Application.disable_application_context_objectResponse">
+</message>
+
+<message name="GlobalLB.Application.enable_application_context_objectRequest">
+	<part name="application_objects" type="tns:GlobalLB.Application.ApplicationContextObjectSequence"/>
+</message>
+<message name="GlobalLB.Application.enable_application_context_objectResponse">
+</message>
+
+<message name="GlobalLB.Application.get_application_context_statusRequest">
+	<part name="application_objects" type="tns:GlobalLB.Application.ApplicationContextObjectSequence"/>
+</message>
+<message name="GlobalLB.Application.get_application_context_statusResponse">
+	<part name="return" type="tns:Common.ObjectStatusSequence"/>
+</message>
+
+<message name="GlobalLB.Application.get_data_centersRequest">
+	<part name="applications" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Application.get_data_centersResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="GlobalLB.Application.get_serversRequest">
+	<part name="applications" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Application.get_serversResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="GlobalLB.Application.get_wide_ipsRequest">
+	<part name="applications" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Application.get_wide_ipsResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="GlobalLB.Application.set_descriptionRequest">
+	<part name="applications" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Application.set_descriptionResponse">
+</message>
+
+<message name="GlobalLB.Application.get_descriptionRequest">
+	<part name="applications" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Application.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="GlobalLB.Application.get_versionRequest">
+</message>
+<message name="GlobalLB.Application.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="GlobalLB.ApplicationPortType">
+	<operation name="get_object_status">
+    	<documentation>
+ Gets the statuses of the specified applications.
+ 
+
+        	</documentation>
+		<input message="tns:GlobalLB.Application.get_object_statusRequest"/>
+		<output message="tns:GlobalLB.Application.get_object_statusResponse"/>
+	</operation>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of applications.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Application.get_listRequest"/>
+		<output message="tns:GlobalLB.Application.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates the specified applications. 
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Application.createRequest"/>
+		<output message="tns:GlobalLB.Application.createResponse"/>
+	</operation>
+	<operation name="delete_application">
+	<documentation>
+ Deletes the specified applications. 
+  
+
+        	</documentation>
+		<input message="tns:GlobalLB.Application.delete_applicationRequest"/>
+		<output message="tns:GlobalLB.Application.delete_applicationResponse"/>
+	</operation>
+	<operation name="delete_all_applications">
+	<documentation>
+ Deletes all applications.
+ 
+
+        	</documentation>
+		<input message="tns:GlobalLB.Application.delete_all_applicationsRequest"/>
+		<output message="tns:GlobalLB.Application.delete_all_applicationsResponse"/>
+	</operation>
+	<operation name="set_persistence_state">
+	<documentation>
+ Sets the persistence states for the specified applications.
+ 
+
+        	</documentation>
+		<input message="tns:GlobalLB.Application.set_persistence_stateRequest"/>
+		<output message="tns:GlobalLB.Application.set_persistence_stateResponse"/>
+	</operation>
+	<operation name="get_persistence_state">
+	<documentation>
+ Gets the persistence states for the specified applications.
+ 
+
+        	</documentation>
+		<input message="tns:GlobalLB.Application.get_persistence_stateRequest"/>
+		<output message="tns:GlobalLB.Application.get_persistence_stateResponse"/>
+	</operation>
+	<operation name="set_persistence_ttl">
+	<documentation>
+ Sets the persistence TTL values of the specified applications.  
+ 
+
+        	</documentation>
+		<input message="tns:GlobalLB.Application.set_persistence_ttlRequest"/>
+		<output message="tns:GlobalLB.Application.set_persistence_ttlResponse"/>
+	</operation>
+	<operation name="get_persistence_ttl">
+	<documentation>
+ Gets the persistence TTL values of the specified applications.  
+ 
+
+        	</documentation>
+		<input message="tns:GlobalLB.Application.get_persistence_ttlRequest"/>
+		<output message="tns:GlobalLB.Application.get_persistence_ttlResponse"/>
+	</operation>
+	<operation name="set_availability_dependency">
+	<documentation>
+ Sets the availability dependency for the specified applications.
+ 
+
+        	</documentation>
+		<input message="tns:GlobalLB.Application.set_availability_dependencyRequest"/>
+		<output message="tns:GlobalLB.Application.set_availability_dependencyResponse"/>
+	</operation>
+	<operation name="get_availability_dependency">
+	<documentation>
+ Gets the availability dependency for the specified applications.
+ 
+
+        	</documentation>
+		<input message="tns:GlobalLB.Application.get_availability_dependencyRequest"/>
+		<output message="tns:GlobalLB.Application.get_availability_dependencyResponse"/>
+	</operation>
+	<operation name="disable_application_context_object">
+	<documentation>
+ Disables the specified objects within the applications' context.
+ 
+
+        	</documentation>
+		<input message="tns:GlobalLB.Application.disable_application_context_objectRequest"/>
+		<output message="tns:GlobalLB.Application.disable_application_context_objectResponse"/>
+	</operation>
+	<operation name="enable_application_context_object">
+	<documentation>
+ Enables the specified objects within the applications' context.
+ 
+
+        	</documentation>
+		<input message="tns:GlobalLB.Application.enable_application_context_objectRequest"/>
+		<output message="tns:GlobalLB.Application.enable_application_context_objectResponse"/>
+	</operation>
+	<operation name="get_application_context_status">
+	<documentation>
+ Gets the statuses of the specified application context objects.
+ 
+
+        	</documentation>
+		<input message="tns:GlobalLB.Application.get_application_context_statusRequest"/>
+		<output message="tns:GlobalLB.Application.get_application_context_statusResponse"/>
+	</operation>
+	<operation name="get_data_centers">
+	<documentation>
+ Gets the data centers associated with a set of distributed
+ applications.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Application.get_data_centersRequest"/>
+		<output message="tns:GlobalLB.Application.get_data_centersResponse"/>
+	</operation>
+	<operation name="get_servers">
+	<documentation>
+ Gets the servers associated with a set of distributed applications.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Application.get_serversRequest"/>
+		<output message="tns:GlobalLB.Application.get_serversResponse"/>
+	</operation>
+	<operation name="get_wide_ips">
+	<documentation>
+ Gets the wide IPs associated with a set of distributed
+ applications.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Application.get_wide_ipsRequest"/>
+		<output message="tns:GlobalLB.Application.get_wide_ipsResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of distributed applications.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Application.set_descriptionRequest"/>
+		<output message="tns:GlobalLB.Application.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of distributed applications.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Application.get_descriptionRequest"/>
+		<output message="tns:GlobalLB.Application.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Application.get_versionRequest"/>
+		<output message="tns:GlobalLB.Application.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="GlobalLB.ApplicationBinding" type="tns:GlobalLB.ApplicationPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_object_status">
+	<documentation>
+ Gets the statuses of the specified applications.
+ 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Application"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_list">
+	<documentation>
+ Gets a list of applications.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Application"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates the specified applications. 
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Application"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_application">
+	<documentation>
+ Deletes the specified applications. 
+  
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Application"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_applications">
+	<documentation>
+ Deletes all applications.
+ 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Application"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_persistence_state">
+	<documentation>
+ Sets the persistence states for the specified applications.
+ 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Application"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_persistence_state">
+	<documentation>
+ Gets the persistence states for the specified applications.
+ 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Application"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_persistence_ttl">
+	<documentation>
+ Sets the persistence TTL values of the specified applications.  
+ 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Application"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_persistence_ttl">
+	<documentation>
+ Gets the persistence TTL values of the specified applications.  
+ 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Application"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_availability_dependency">
+	<documentation>
+ Sets the availability dependency for the specified applications.
+ 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Application"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_availability_dependency">
+	<documentation>
+ Gets the availability dependency for the specified applications.
+ 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Application"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="disable_application_context_object">
+	<documentation>
+ Disables the specified objects within the applications' context.
+ 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Application"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="enable_application_context_object">
+	<documentation>
+ Enables the specified objects within the applications' context.
+ 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Application"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_application_context_status">
+	<documentation>
+ Gets the statuses of the specified application context objects.
+ 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Application"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_data_centers">
+	<documentation>
+ Gets the data centers associated with a set of distributed
+ applications.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Application"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_servers">
+	<documentation>
+ Gets the servers associated with a set of distributed applications.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Application"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_wide_ips">
+	<documentation>
+ Gets the wide IPs associated with a set of distributed
+ applications.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Application"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of distributed applications.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Application"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of distributed applications.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Application"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Application"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Application"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="GlobalLB.Application">
+	<documentation>
+ The Application interface enables you to work with applications running within Wide IPs.
+
+        	</documentation>
+	<port name="GlobalLB.ApplicationPort" binding="tns:GlobalLB.ApplicationBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

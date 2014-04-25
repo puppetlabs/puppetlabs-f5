@@ -1,0 +1,553 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="WebAccelerator.Policies"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.TimeStampSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.TimeStamp[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.TimeStamp">
+			<xsd:sequence>
+				<xsd:element name="year" type="xsd:long"/>
+				<xsd:element name="month" type="xsd:long"/>
+				<xsd:element name="day" type="xsd:long"/>
+				<xsd:element name="hour" type="xsd:long"/>
+				<xsd:element name="minute" type="xsd:long"/>
+				<xsd:element name="second" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.BooleanSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:boolean[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="WebAccelerator.Policies.get_listRequest">
+</message>
+<message name="WebAccelerator.Policies.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="WebAccelerator.Policies.import_policyRequest">
+	<part name="filename" type="xsd:string"/>
+	<part name="overwrite" type="xsd:boolean"/>
+</message>
+<message name="WebAccelerator.Policies.import_policyResponse">
+</message>
+
+<message name="WebAccelerator.Policies.import_policy_v2Request">
+	<part name="filenames" type="tns:Common.StringSequence"/>
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="overwrites" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="WebAccelerator.Policies.import_policy_v2Response">
+</message>
+
+<message name="WebAccelerator.Policies.export_policyRequest">
+	<part name="filenames" type="tns:Common.StringSequence"/>
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="overwrites" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="WebAccelerator.Policies.export_policyResponse">
+</message>
+
+<message name="WebAccelerator.Policies.delete_policyRequest">
+	<part name="name" type="xsd:string"/>
+</message>
+<message name="WebAccelerator.Policies.delete_policyResponse">
+</message>
+
+<message name="WebAccelerator.Policies.delete_policy_v2Request">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="WebAccelerator.Policies.delete_policy_v2Response">
+</message>
+
+<message name="WebAccelerator.Policies.delete_all_policiesRequest">
+</message>
+<message name="WebAccelerator.Policies.delete_all_policiesResponse">
+</message>
+
+<message name="WebAccelerator.Policies.publish_policyRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="comments" type="tns:Common.StringSequence"/>
+</message>
+<message name="WebAccelerator.Policies.publish_policyResponse">
+</message>
+
+<message name="WebAccelerator.Policies.is_predefinedRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="WebAccelerator.Policies.is_predefinedResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="WebAccelerator.Policies.get_publish_commentRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="WebAccelerator.Policies.get_publish_commentResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="WebAccelerator.Policies.get_publish_timeRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="WebAccelerator.Policies.get_publish_timeResponse">
+	<part name="return" type="tns:Common.TimeStampSequence"/>
+</message>
+
+<message name="WebAccelerator.Policies.get_versionRequest">
+</message>
+<message name="WebAccelerator.Policies.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="WebAccelerator.PoliciesPortType">
+	<operation name="get_list">
+ 	<documentation>
+ Get a list of policies present on this WebAccelerator. You will only view
+ the policies of the active folder. You may change the active folder you are working
+ on in the System::Session module using set_active_folder. To view all folders recursively
+ under the active folder you may use the set_recursive_query_state also in that module.
+
+        	</documentation>
+		<input message="tns:WebAccelerator.Policies.get_listRequest"/>
+		<output message="tns:WebAccelerator.Policies.get_listResponse"/>
+	</operation>
+	<operation name="import_policy">
+	<documentation>
+ This method is deprecated. Please use import_policy_v2 instead
+
+ Import a policy onto this WebAccelerator. The policy file must be
+ in an XML format. The policy's name will be extracted from the file.
+ If overwrite is false and the policy to be imported has the same 
+ name as a previously defined policy, then an error will be thrown.
+
+        	</documentation>
+		<input message="tns:WebAccelerator.Policies.import_policyRequest"/>
+		<output message="tns:WebAccelerator.Policies.import_policyResponse"/>
+	</operation>
+	<operation name="import_policy_v2">
+	<documentation>
+ Import multiple policies onto this WebAccelerator. The policy file
+ may be in either XML or TMSH format. The policy name will be specified
+ as an argument and may or may not match the name in the file.
+ If overwrite is false and a policy to be imported has the same 
+ name as a previously defined policy, then an error will be thrown.
+
+        	</documentation>
+		<input message="tns:WebAccelerator.Policies.import_policy_v2Request"/>
+		<output message="tns:WebAccelerator.Policies.import_policy_v2Response"/>
+	</operation>
+	<operation name="export_policy">
+	<documentation>
+ Export multiple policies from this WebAccelerator. The policy file
+ will be in TMSH format corresponding to the given policy name.
+ If overwrite is false and a policy file to be exported has the same 
+ filename as a previously exported policy file, then an error will be thrown.
+
+        	</documentation>
+		<input message="tns:WebAccelerator.Policies.export_policyRequest"/>
+		<output message="tns:WebAccelerator.Policies.export_policyResponse"/>
+	</operation>
+	<operation name="delete_policy">
+	<documentation>
+ This method has been deprecated, please use delete_policy_v2 instead.
+ If the policy is in use by an application, then an error will be thrown.
+
+ Delete a named policy.
+
+        	</documentation>
+		<input message="tns:WebAccelerator.Policies.delete_policyRequest"/>
+		<output message="tns:WebAccelerator.Policies.delete_policyResponse"/>
+	</operation>
+	<operation name="delete_policy_v2">
+	<documentation>
+ Delete a list of named policies. Attempting to delete policies
+ in use by an application or default policies, will result
+ in an error.
+
+        	</documentation>
+		<input message="tns:WebAccelerator.Policies.delete_policy_v2Request"/>
+		<output message="tns:WebAccelerator.Policies.delete_policy_v2Response"/>
+	</operation>
+	<operation name="delete_all_policies">
+	<documentation>
+ Delete all policies. However, default policies
+ will not be deleted. If any policies deleted are in use
+ by an application, then an error will be thrown.
+ If this function is being used as a cleanup method,
+ it is recommended to run delete_all_applications first.
+ This can be found in the WebAccelerator::Applications module.
+
+        	</documentation>
+		<input message="tns:WebAccelerator.Policies.delete_all_policiesRequest"/>
+		<output message="tns:WebAccelerator.Policies.delete_all_policiesResponse"/>
+	</operation>
+	<operation name="publish_policy">
+	<documentation>
+ Publish a list of policies. This allows a custom policy to be
+ used by an application.
+
+        	</documentation>
+		<input message="tns:WebAccelerator.Policies.publish_policyRequest"/>
+		<output message="tns:WebAccelerator.Policies.publish_policyResponse"/>
+	</operation>
+	<operation name="is_predefined">
+	<documentation>
+ Checks if the policies listed are predefined. If they
+ are predefined, then they cannot be deleted in a
+ delete policy call. This setting cannot be changed by the user.
+
+        	</documentation>
+		<input message="tns:WebAccelerator.Policies.is_predefinedRequest"/>
+		<output message="tns:WebAccelerator.Policies.is_predefinedResponse"/>
+	</operation>
+	<operation name="get_publish_comment">
+	<documentation>
+ Gets the publish comments of the given published policies.
+
+        	</documentation>
+		<input message="tns:WebAccelerator.Policies.get_publish_commentRequest"/>
+		<output message="tns:WebAccelerator.Policies.get_publish_commentResponse"/>
+	</operation>
+	<operation name="get_publish_time">
+	<documentation>
+ Gets the time of last publishing of the given policies.
+
+        	</documentation>
+		<input message="tns:WebAccelerator.Policies.get_publish_timeRequest"/>
+		<output message="tns:WebAccelerator.Policies.get_publish_timeResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:WebAccelerator.Policies.get_versionRequest"/>
+		<output message="tns:WebAccelerator.Policies.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="WebAccelerator.PoliciesBinding" type="tns:WebAccelerator.PoliciesPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Get a list of policies present on this WebAccelerator. You will only view
+ the policies of the active folder. You may change the active folder you are working
+ on in the System::Session module using set_active_folder. To view all folders recursively
+ under the active folder you may use the set_recursive_query_state also in that module.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:WebAccelerator/Policies"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="import_policy">
+	<documentation>
+ This method is deprecated. Please use import_policy_v2 instead
+
+ Import a policy onto this WebAccelerator. The policy file must be
+ in an XML format. The policy's name will be extracted from the file.
+ If overwrite is false and the policy to be imported has the same 
+ name as a previously defined policy, then an error will be thrown.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:WebAccelerator/Policies"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="import_policy_v2">
+	<documentation>
+ Import multiple policies onto this WebAccelerator. The policy file
+ may be in either XML or TMSH format. The policy name will be specified
+ as an argument and may or may not match the name in the file.
+ If overwrite is false and a policy to be imported has the same 
+ name as a previously defined policy, then an error will be thrown.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:WebAccelerator/Policies"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="export_policy">
+	<documentation>
+ Export multiple policies from this WebAccelerator. The policy file
+ will be in TMSH format corresponding to the given policy name.
+ If overwrite is false and a policy file to be exported has the same 
+ filename as a previously exported policy file, then an error will be thrown.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:WebAccelerator/Policies"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_policy">
+	<documentation>
+ This method has been deprecated, please use delete_policy_v2 instead.
+ If the policy is in use by an application, then an error will be thrown.
+
+ Delete a named policy.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:WebAccelerator/Policies"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_policy_v2">
+	<documentation>
+ Delete a list of named policies. Attempting to delete policies
+ in use by an application or default policies, will result
+ in an error.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:WebAccelerator/Policies"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_policies">
+	<documentation>
+ Delete all policies. However, default policies
+ will not be deleted. If any policies deleted are in use
+ by an application, then an error will be thrown.
+ If this function is being used as a cleanup method,
+ it is recommended to run delete_all_applications first.
+ This can be found in the WebAccelerator::Applications module.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:WebAccelerator/Policies"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="publish_policy">
+	<documentation>
+ Publish a list of policies. This allows a custom policy to be
+ used by an application.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:WebAccelerator/Policies"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="is_predefined">
+	<documentation>
+ Checks if the policies listed are predefined. If they
+ are predefined, then they cannot be deleted in a
+ delete policy call. This setting cannot be changed by the user.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:WebAccelerator/Policies"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_publish_comment">
+	<documentation>
+ Gets the publish comments of the given published policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:WebAccelerator/Policies"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_publish_time">
+	<documentation>
+ Gets the time of last publishing of the given policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:WebAccelerator/Policies"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:WebAccelerator/Policies"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:WebAccelerator/Policies"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="WebAccelerator.Policies">
+	<documentation>
+ Allows manipulation of policies.
+
+        	</documentation>
+	<port name="WebAccelerator.PoliciesPort" binding="tns:WebAccelerator.PoliciesBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

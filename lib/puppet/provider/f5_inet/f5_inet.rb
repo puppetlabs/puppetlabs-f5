@@ -15,28 +15,27 @@ Puppet::Type.type(:f5_inet).provide(:f5_inet, :parent => Puppet::Provider::F5) d
   end
 
   def self.instances
-    [new(:name => transport[wsdl].get_hostname)]
-  end
-  
-  methods = [
-    'hostname',
-    'ntp_server_address',
-  ]
-
-  methods.each do |method|
-    define_method(method.to_sym) do
-      if transport[wsdl].respond_to?("get_#{method}".to_sym)
-        transport[wsdl].send("get_#{method}").first.to_s
-      end
-    end
+    [new(:name => transport[wsdl].call(:get_hostname).body[:get_hostname_response][:return])]
   end
 
-  methods.each do |method|
-    define_method("#{method}=") do |value|
-      if transport[wsdl].respond_to?("set_#{method}".to_sym)
-        transport[wsdl].send("set_#{method}", resource[method.to_sym])
-      end
-    end
+  def hostname
+    transport[wsdl].call(:get_hostname).body[:get_hostname_response][:return]
   end
-  
+
+  def hostname=(value)
+    transport[wsdl].call(:set_hostname, message: { hostname: resource[:hostname]})
+  end
+
+  def ntp_server_address
+    value = transport[wsdl].call(:get_ntp_server_address).body[:get_ntp_server_address_response][:return]
+    # The API returns <null> if an ntp server has been added and removed.
+    # Otherwise it returns no [:item] and the return of value[:item] will
+    # return nil.  F5's can be weird.
+    value[:item] == '<null>' ? '' : value[:item]
+  end
+
+  def ntp_server_address=(value)
+    transport[wsdl].call(:set_ntp_server_address, message: {ntp_addresses: {item: resource[:ntp_server_address]}})
+  end
+
 end

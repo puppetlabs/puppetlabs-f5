@@ -2,20 +2,7 @@ Puppet::Type.newtype(:f5_snat) do
   @doc = "Manage F5 snat."
 
   apply_to_device
-
-  ensurable do
-    desc "F5 snat resource state. Valid values are present, absent."
-
-    defaultto(:present)
-
-    newvalue(:present) do
-      provider.create
-    end
-
-    newvalue(:absent) do
-      provider.destroy
-    end
-  end
+  ensurable
 
   newparam(:name, :namevar=>true) do
     desc "The snat name."
@@ -30,8 +17,6 @@ Puppet::Type.newtype(:f5_snat) do
   newproperty(:original_address) do
     desc "The list of original client addresses used to filter the traffic to
     the SNATs."
-
-    #TODO validate network address and netmask.
   end
 
   newproperty(:source_port_behavior) do
@@ -45,6 +30,9 @@ Puppet::Type.newtype(:f5_snat) do
     is SNAT_TYPE_AUTOMAP, then the translation object should be empty."
 
     #TODO validate target and network address.
+    validate do |value|
+      fail("Hash required in the form of { type => 'x', translation_object => 'x' }.") unless value.is_a?(Hash)
+    end
   end
 
   newproperty(:vlan) do

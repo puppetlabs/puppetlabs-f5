@@ -1,0 +1,818 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.iSessionPeerDiscovery"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Networking.iSessionPeerDiscovery.DiscoveryModeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.iSessionPeerDiscovery.DiscoveryMode[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Networking.iSessionPeerDiscovery.FilterModeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.iSessionPeerDiscovery.FilterMode[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.iSessionPeerDiscovery.DiscoveryMode">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="DISCOVERY_MODE_ENABLE_ALL">
+					<xsd:annotation>
+						<xsd:documentation>DISCOVERY_MODE_ENABLE_ALL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DISCOVERY_MODE_DISABLE">
+					<xsd:annotation>
+						<xsd:documentation>DISCOVERY_MODE_DISABLE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DISCOVERY_MODE_ENABLE_ICMP">
+					<xsd:annotation>
+						<xsd:documentation>DISCOVERY_MODE_ENABLE_ICMP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DISCOVERY_MODE_ENABLE_TCP">
+					<xsd:annotation>
+						<xsd:documentation>DISCOVERY_MODE_ENABLE_TCP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.UShortSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:int[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.iSessionPeerDiscovery.FilterMode">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="DISCOVERY_FILTER_MODE_EXCLUDE">
+					<xsd:annotation>
+						<xsd:documentation>DISCOVERY_FILTER_MODE_EXCLUDE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DISCOVERY_FILTER_MODE_INCLUDE">
+					<xsd:annotation>
+						<xsd:documentation>DISCOVERY_FILTER_MODE_INCLUDE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.iSessionPeerDiscovery.get_listRequest">
+</message>
+<message name="Networking.iSessionPeerDiscovery.get_listResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.iSessionPeerDiscovery.get_discovered_peer_enabled_stateRequest">
+	<part name="dynpeerlist" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.iSessionPeerDiscovery.get_discovered_peer_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.iSessionPeerDiscovery.set_discovered_peer_enabled_stateRequest">
+	<part name="dynpeerlist" type="tns:Common.ULongSequence"/>
+	<part name="discover_peer" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.iSessionPeerDiscovery.set_discovered_peer_enabled_stateResponse">
+</message>
+
+<message name="Networking.iSessionPeerDiscovery.get_discoverable_peer_enabled_stateRequest">
+	<part name="dynpeerlist" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.iSessionPeerDiscovery.get_discoverable_peer_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.iSessionPeerDiscovery.set_discoverable_peer_enabled_stateRequest">
+	<part name="dynpeerlist" type="tns:Common.ULongSequence"/>
+	<part name="discoverable_peer" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.iSessionPeerDiscovery.set_discoverable_peer_enabled_stateResponse">
+</message>
+
+<message name="Networking.iSessionPeerDiscovery.get_discovery_mode_enabled_stateRequest">
+	<part name="dynpeerlist" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.iSessionPeerDiscovery.get_discovery_mode_enabled_stateResponse">
+	<part name="return" type="tns:Networking.iSessionPeerDiscovery.FilterModeSequence"/>
+</message>
+
+<message name="Networking.iSessionPeerDiscovery.set_discovery_mode_enabled_stateRequest">
+	<part name="dynpeerlist" type="tns:Common.ULongSequence"/>
+	<part name="discovery_mode" type="tns:Networking.iSessionPeerDiscovery.FilterModeSequence"/>
+</message>
+<message name="Networking.iSessionPeerDiscovery.set_discovery_mode_enabled_stateResponse">
+</message>
+
+<message name="Networking.iSessionPeerDiscovery.get_discovery_modeRequest">
+	<part name="dynpeerlist" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.iSessionPeerDiscovery.get_discovery_modeResponse">
+	<part name="return" type="tns:Networking.iSessionPeerDiscovery.DiscoveryModeSequence"/>
+</message>
+
+<message name="Networking.iSessionPeerDiscovery.set_discovery_modeRequest">
+	<part name="dynpeerlist" type="tns:Common.ULongSequence"/>
+	<part name="discovery_modes" type="tns:Networking.iSessionPeerDiscovery.DiscoveryModeSequence"/>
+</message>
+<message name="Networking.iSessionPeerDiscovery.set_discovery_modeResponse">
+</message>
+
+<message name="Networking.iSessionPeerDiscovery.get_icmp_max_requestsRequest">
+	<part name="dynpeerlist" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.iSessionPeerDiscovery.get_icmp_max_requestsResponse">
+	<part name="return" type="tns:Common.UShortSequence"/>
+</message>
+
+<message name="Networking.iSessionPeerDiscovery.set_icmp_max_requestsRequest">
+	<part name="dynpeerlist" type="tns:Common.ULongSequence"/>
+	<part name="max_requests" type="tns:Common.UShortSequence"/>
+</message>
+<message name="Networking.iSessionPeerDiscovery.set_icmp_max_requestsResponse">
+</message>
+
+<message name="Networking.iSessionPeerDiscovery.get_max_peer_countRequest">
+	<part name="dynpeerlist" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.iSessionPeerDiscovery.get_max_peer_countResponse">
+	<part name="return" type="tns:Common.UShortSequence"/>
+</message>
+
+<message name="Networking.iSessionPeerDiscovery.set_max_peer_countRequest">
+	<part name="dynpeerlist" type="tns:Common.ULongSequence"/>
+	<part name="max_peers" type="tns:Common.UShortSequence"/>
+</message>
+<message name="Networking.iSessionPeerDiscovery.set_max_peer_countResponse">
+</message>
+
+<message name="Networking.iSessionPeerDiscovery.get_icmp_max_retriesRequest">
+	<part name="dynpeerlist" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.iSessionPeerDiscovery.get_icmp_max_retriesResponse">
+	<part name="return" type="tns:Common.UShortSequence"/>
+</message>
+
+<message name="Networking.iSessionPeerDiscovery.set_icmp_max_retriesRequest">
+	<part name="dynpeerlist" type="tns:Common.ULongSequence"/>
+	<part name="max_retries" type="tns:Common.UShortSequence"/>
+</message>
+<message name="Networking.iSessionPeerDiscovery.set_icmp_max_retriesResponse">
+</message>
+
+<message name="Networking.iSessionPeerDiscovery.get_icmp_backoff_timeRequest">
+	<part name="dynpeerlist" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.iSessionPeerDiscovery.get_icmp_backoff_timeResponse">
+	<part name="return" type="tns:Common.UShortSequence"/>
+</message>
+
+<message name="Networking.iSessionPeerDiscovery.set_icmp_backoff_timeRequest">
+	<part name="dynpeerlist" type="tns:Common.ULongSequence"/>
+	<part name="max_backoff_time" type="tns:Common.UShortSequence"/>
+</message>
+<message name="Networking.iSessionPeerDiscovery.set_icmp_backoff_timeResponse">
+</message>
+
+<message name="Networking.iSessionPeerDiscovery.get_versionRequest">
+</message>
+<message name="Networking.iSessionPeerDiscovery.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.iSessionPeerDiscoveryPortType">
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all endpoint discovery objects.
+
+ This method is useless, as one and only one endpoint discovery
+ object exists.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionPeerDiscovery.get_listRequest"/>
+		<output message="tns:Networking.iSessionPeerDiscovery.get_listResponse"/>
+	</operation>
+	<operation name="get_discovered_peer_enabled_state">
+	<documentation>
+ Gets the current setting allows other remote endpoints to discover
+ this local endpoint and enables and disables the logic that detects
+ this condition.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionPeerDiscovery.get_discovered_peer_enabled_stateRequest"/>
+		<output message="tns:Networking.iSessionPeerDiscovery.get_discovered_peer_enabled_stateResponse"/>
+	</operation>
+	<operation name="set_discovered_peer_enabled_state">
+	<documentation>
+ Sets the current setting that allows other remote endpoints to
+ discover this local endpoint and enables and disables the logic
+ that detects this condition.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionPeerDiscovery.set_discovered_peer_enabled_stateRequest"/>
+		<output message="tns:Networking.iSessionPeerDiscovery.set_discovered_peer_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_discoverable_peer_enabled_state">
+	<documentation>
+ Gets the setting allows other remote endpoints to discover this
+ local endpoint and advertises the local ability to connect.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionPeerDiscovery.get_discoverable_peer_enabled_stateRequest"/>
+		<output message="tns:Networking.iSessionPeerDiscovery.get_discoverable_peer_enabled_stateResponse"/>
+	</operation>
+	<operation name="set_discoverable_peer_enabled_state">
+	<documentation>
+ Sets the setting allows other remote endpoints to discover this
+ local endpoint and advertises the local ability to connect.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionPeerDiscovery.set_discoverable_peer_enabled_stateRequest"/>
+		<output message="tns:Networking.iSessionPeerDiscovery.set_discoverable_peer_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_discovery_mode_enabled_state">
+	<documentation>
+ Gets the setting that allows other remote endpoints to enable
+ automatic discovery of this local iSession endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionPeerDiscovery.get_discovery_mode_enabled_stateRequest"/>
+		<output message="tns:Networking.iSessionPeerDiscovery.get_discovery_mode_enabled_stateResponse"/>
+	</operation>
+	<operation name="set_discovery_mode_enabled_state">
+	<documentation>
+ Sets the setting that allows other remote endpoints to enable
+ automatic discovery of this local iSession endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionPeerDiscovery.set_discovery_mode_enabled_stateRequest"/>
+		<output message="tns:Networking.iSessionPeerDiscovery.set_discovery_mode_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_discovery_mode">
+	<documentation>
+ Gets the modes that allows other remote endpoints to enable
+ automatic discovery of this local iSession endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionPeerDiscovery.get_discovery_modeRequest"/>
+		<output message="tns:Networking.iSessionPeerDiscovery.get_discovery_modeResponse"/>
+	</operation>
+	<operation name="set_discovery_mode">
+	<documentation>
+ Sets the modes that allows other remote endpoints to enable
+ automatic discovery of this local iSession endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionPeerDiscovery.set_discovery_modeRequest"/>
+		<output message="tns:Networking.iSessionPeerDiscovery.set_discovery_modeResponse"/>
+	</operation>
+	<operation name="get_icmp_max_requests">
+	<documentation>
+ Gets the maximum number of ICMP requests allowed for other remote
+ endpoints to discover this local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionPeerDiscovery.get_icmp_max_requestsRequest"/>
+		<output message="tns:Networking.iSessionPeerDiscovery.get_icmp_max_requestsResponse"/>
+	</operation>
+	<operation name="set_icmp_max_requests">
+	<documentation>
+ Sets the maximum number of ICMP requests allowed for other remote
+ endpoints to discover this local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionPeerDiscovery.set_icmp_max_requestsRequest"/>
+		<output message="tns:Networking.iSessionPeerDiscovery.set_icmp_max_requestsResponse"/>
+	</operation>
+	<operation name="get_max_peer_count">
+	<documentation>
+ Gets the maximum number of remote endpoints allowed to discover
+ this local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionPeerDiscovery.get_max_peer_countRequest"/>
+		<output message="tns:Networking.iSessionPeerDiscovery.get_max_peer_countResponse"/>
+	</operation>
+	<operation name="set_max_peer_count">
+	<documentation>
+ Sets the maximum number of remote endpoints allowed to discover
+ this local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionPeerDiscovery.set_max_peer_countRequest"/>
+		<output message="tns:Networking.iSessionPeerDiscovery.set_max_peer_countResponse"/>
+	</operation>
+	<operation name="get_icmp_max_retries">
+	<documentation>
+ Gets the maximum number of ICMP retries allowed for other remote
+ endpoints to discover this local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionPeerDiscovery.get_icmp_max_retriesRequest"/>
+		<output message="tns:Networking.iSessionPeerDiscovery.get_icmp_max_retriesResponse"/>
+	</operation>
+	<operation name="set_icmp_max_retries">
+	<documentation>
+ Sets the maximum number of ICMP retries allowed for other remote
+ endpoints to discover this local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionPeerDiscovery.set_icmp_max_retriesRequest"/>
+		<output message="tns:Networking.iSessionPeerDiscovery.set_icmp_max_retriesResponse"/>
+	</operation>
+	<operation name="get_icmp_backoff_time">
+	<documentation>
+ Gets the minimum wait time before abandoning an ICMP probe message
+ request and resending it for remote endpoints discovering this
+ local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionPeerDiscovery.get_icmp_backoff_timeRequest"/>
+		<output message="tns:Networking.iSessionPeerDiscovery.get_icmp_backoff_timeResponse"/>
+	</operation>
+	<operation name="set_icmp_backoff_time">
+	<documentation>
+ Sets the minimum wait time before abandoning an ICMP probe message
+ request and resending it for remote endpoints discovering this
+ local endpoint.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionPeerDiscovery.set_icmp_backoff_timeRequest"/>
+		<output message="tns:Networking.iSessionPeerDiscovery.set_icmp_backoff_timeResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionPeerDiscovery.get_versionRequest"/>
+		<output message="tns:Networking.iSessionPeerDiscovery.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.iSessionPeerDiscoveryBinding" type="tns:Networking.iSessionPeerDiscoveryPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all endpoint discovery objects.
+
+ This method is useless, as one and only one endpoint discovery
+ object exists.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionPeerDiscovery"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_discovered_peer_enabled_state">
+	<documentation>
+ Gets the current setting allows other remote endpoints to discover
+ this local endpoint and enables and disables the logic that detects
+ this condition.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionPeerDiscovery"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_discovered_peer_enabled_state">
+	<documentation>
+ Sets the current setting that allows other remote endpoints to
+ discover this local endpoint and enables and disables the logic
+ that detects this condition.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionPeerDiscovery"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_discoverable_peer_enabled_state">
+	<documentation>
+ Gets the setting allows other remote endpoints to discover this
+ local endpoint and advertises the local ability to connect.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionPeerDiscovery"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_discoverable_peer_enabled_state">
+	<documentation>
+ Sets the setting allows other remote endpoints to discover this
+ local endpoint and advertises the local ability to connect.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionPeerDiscovery"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_discovery_mode_enabled_state">
+	<documentation>
+ Gets the setting that allows other remote endpoints to enable
+ automatic discovery of this local iSession endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionPeerDiscovery"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_discovery_mode_enabled_state">
+	<documentation>
+ Sets the setting that allows other remote endpoints to enable
+ automatic discovery of this local iSession endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionPeerDiscovery"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_discovery_mode">
+	<documentation>
+ Gets the modes that allows other remote endpoints to enable
+ automatic discovery of this local iSession endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionPeerDiscovery"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_discovery_mode">
+	<documentation>
+ Sets the modes that allows other remote endpoints to enable
+ automatic discovery of this local iSession endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionPeerDiscovery"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_icmp_max_requests">
+	<documentation>
+ Gets the maximum number of ICMP requests allowed for other remote
+ endpoints to discover this local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionPeerDiscovery"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_icmp_max_requests">
+	<documentation>
+ Sets the maximum number of ICMP requests allowed for other remote
+ endpoints to discover this local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionPeerDiscovery"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_max_peer_count">
+	<documentation>
+ Gets the maximum number of remote endpoints allowed to discover
+ this local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionPeerDiscovery"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_max_peer_count">
+	<documentation>
+ Sets the maximum number of remote endpoints allowed to discover
+ this local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionPeerDiscovery"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_icmp_max_retries">
+	<documentation>
+ Gets the maximum number of ICMP retries allowed for other remote
+ endpoints to discover this local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionPeerDiscovery"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_icmp_max_retries">
+	<documentation>
+ Sets the maximum number of ICMP retries allowed for other remote
+ endpoints to discover this local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionPeerDiscovery"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_icmp_backoff_time">
+	<documentation>
+ Gets the minimum wait time before abandoning an ICMP probe message
+ request and resending it for remote endpoints discovering this
+ local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionPeerDiscovery"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_icmp_backoff_time">
+	<documentation>
+ Sets the minimum wait time before abandoning an ICMP probe message
+ request and resending it for remote endpoints discovering this
+ local endpoint.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionPeerDiscovery"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionPeerDiscovery"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionPeerDiscovery"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.iSessionPeerDiscovery">
+	<documentation>
+ The Dynamic Peer Discovery interface enables you to work with the
+ definitions and attributes contained in a device's endpoint discovery
+ objects.
+
+ This interface includes an object key which is a Common::ULong value.
+ This value is meaningless in itself, and since only one endpoint
+ discovery object can exist, it is of no real use.  Its value is ignored
+ in all methods in this interface.
+
+        	</documentation>
+	<port name="Networking.iSessionPeerDiscoveryPort" binding="tns:Networking.iSessionPeerDiscoveryBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

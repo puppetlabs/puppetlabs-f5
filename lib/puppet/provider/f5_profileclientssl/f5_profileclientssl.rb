@@ -9,67 +9,144 @@ Puppet::Type.type(:f5_profileclientssl).provide(:f5_profileclientssl, :parent =>
   def self.wsdl
     'LocalLB.ProfileClientSSL'
   end
-
   def wsdl
     self.class.wsdl
   end
 
   def self.instances
-    transport[wsdl].get_list.collect do |name|
-      new(:name => name)
+    Array(transport[wsdl].get(:get_list)).collect do |name|
+      new(:name => name, :ensure => :present)
     end
   end
 
-  methods = [
-    'certificate_file',
-    'key_file',
-    'ca_file',
-    'client_certificate_ca_file',
-    'peer_certification_mode',
-    'chain_file',
-  ]
-
-  methods.each do |method|
-    define_method(method.to_sym) do
-      if transport[wsdl].respond_to?("get_#{method}".to_sym)
-        profile_string = transport[wsdl].send("get_#{method}", resource[:name]).first
-        {"value" => profile_string.value, "default_flag" => profile_string.default_flag}
+  def self.prefetch(resources)
+    profileclientssl = instances
+    resources.keys.each do |name|
+      if provider = profileclientssl.find { |ssl| ssl.name == name }
+        resources[name].provider = provider
       end
     end
   end
 
-  methods = [
-    'certificate_file',
-    'key_file',
-    'ca_file',
-    'client_certificate_ca_file',
-    'chain_file',
-  ]
+  # Does the filtering of the responses for us.
+  def return_value(response)
+    value = response[:value].is_a?(String) ? response[:value] : ''
+    { :value => value, :default_flag => response[:default_flag].to_s }
+  end
 
-  methods.each do |method|
-    define_method("#{method}=") do |profile_string|
-      if transport[wsdl].respond_to?("set_#{method}".to_sym)
-        transport[wsdl].send("set_#{method}", resource[:name],
-                             [ :value        => profile_string["value"],
-                               :default_flag => profile_string["default_flag"] ])
-      end
-    end
+  def certificate_file
+    message = { profile_names: { item: resource[:name] }}
+    response = transport[wsdl].get(:get_certificate_file_v2, message)
+    return_value(response)
+  end
+
+  def certificate_file=(value)
+    existing_key = key_file
+    message = {
+      profile_names: { item: resource[:name] },
+      keys: { item: { value: existing_key[:value], default_flag: existing_key[:default_flag] }},
+      certs: { item: { value: value[:value], default_flag: value[:default_flag] }},
+    }
+    transport[wsdl].call(:set_key_certificate_file, message: message)
+  end
+
+  def key_file
+    message = { profile_names: { item: resource[:name] }}
+    response = transport[wsdl].get(:get_key_file_v2, message)
+    return_value(response)
+  end
+
+  def key_file=(value)
+    existing_cert = certificate_file
+    message = {
+      profile_names: { item: resource[:name] },
+      certs: { item: { value: existing_cert[:value], default_flag: existing_cert[:default_flag] }},
+      keys: { item: { value: value[:value], default_flag: value[:default_flag] }},
+    }
+    transport[wsdl].call(:set_key_certificate_file, message: message)
+  end
+
+  def ca_file
+    message = { profile_names: { item: resource[:name] }}
+    response = transport[wsdl].get(:get_ca_file_v2, message)
+    return_value(response)
+  end
+
+  def ca_file=(value)
+    message = {
+      profile_names: { item: resource[:name] },
+      cas: { item: { value: value[:value], default_flag: value[:default_flag] }},
+    }
+    transport[wsdl].call(:set_ca_file_v2, message: message)
+  end
+
+  def client_certificate_ca_file
+    message = { profile_names: { item: resource[:name] }}
+    response = transport[wsdl].get(:get_client_certificate_ca_file_v2, message)
+    return_value(response)
+  end
+
+  def client_certificate_ca_file=(value)
+    message = {
+      profile_names: { item: resource[:name] },
+      client_cert_cas: { item: { value: value[:value], default_flag: value[:default_flag] }},
+    }
+    transport[wsdl].call(:set_client_certificate_ca_file_v2, message: message)
+  end
+
+  def peer_certification_mode
+    message = { profile_names: { item: resource[:name] }}
+    response = transport[wsdl].get(:get_peer_certification_mode, message)
+    return_value(response)
   end
 
   def peer_certification_mode=(value)
-    transport[wsdl].set_peer_certificate_mode( resource[:name],
-                                             [ :value        => resource[:peer_certification_mode]["value"],
-                                               :default_flag => resource[:peer_certification_mode]["default_flag"] ])
+    message = {
+      profile_names: { item: resource[:name] },
+      modes: { item: { value: value[:value], default_flag: value[:default_flag] }},
+    }
+    transport[wsdl].call(:set_peer_certificate_mode, message: message)
+  end
+
+  def chain_file
+    message = { profile_names: { item: resource[:name] }}
+    response = transport[wsdl].get(:get_chain_file_v2, message)
+    return_value(response)
+  end
+
+  def chain_file=(value)
+    message = {
+      profile_names: { item: resource[:name] },
+      chains: { item: { value: value[:value], default_flag: value[:default_flag] }},
+    }
+    transport[wsdl].call(:set_chain_file_v2, message: message)
+  end
+
+  def peer_certification_mode=(value)
+    message = {
+      profile_names: { item: resource[:name] },
+      modes: { item: { value: value[:value], default_flag: value[:default_flag] }},
+    }
+    transport[wsdl].call(:set_peer_certificate_mode, message: message)
   end
 
   def create
-    Puppet.debug("Puppet::Provider::F5_ProfileClientSSL: creating F5 client ssl profile #{resource[:name]}")
-
-    transport[wsdl].create([ resource[:name]],
-                           [ :value        => resource[:key_file]["value"] ,
-                             :default_flag => resource[:key_file]["default_flag"] ],
-                           [ :value        => resource[:certificate_file]["value"] ,
-                             :default_flag => resource[:certificate_file]["default_flag"] ])
+    message = {
+      profile_names: { item: resource[:name] },
+      keys: {
+        item: {
+          value: resource['key_file'][:value],
+          default_flag: resource['key_file'][:default_flag]
+        }
+      },
+      certs: {
+        item: {
+          value: resource['certificate_file'][:value],
+          default_flag: resource['certificate_file'][:default_flag]
+        }
+      }
+    }
+    transport[wsdl].call(:create_v2, message: message)
 
     # It's not clear to me the difference between these two.  We've been
     # setting them to be the same thing.
@@ -86,14 +163,16 @@ Puppet::Type.type(:f5_profileclientssl).provide(:f5_profileclientssl, :parent =>
     if resource[:chain_file]
       self.chain_file = resource[:chain_file]
     end
+    @property_hash[:ensure] = :present
   end
 
   def destroy
-    Puppet.debug("Puppet::Provider::F5_ProfileClientSSL: destroying F5 client ssl profile #{resource[:name]}")
-    transport[wsdl].delete_profile([resource[:name]])
+    message = { profile_names: { item: resource[:name] }}
+    transport[wsdl].call(:delete_profile, message: message)
+    @property_hash[:ensure] = :absent
   end
 
   def exists?
-    transport[wsdl].get_list.include?(resource[:name])
+    @property_hash[:ensure] == :present
   end
 end

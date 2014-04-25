@@ -1,0 +1,2228 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="GlobalLB.Monitor"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="GlobalLB.Monitor.CommonAttributes">
+			<xsd:sequence>
+				<xsd:element name="parent_template" type="xsd:string"/>
+				<xsd:element name="interval" type="xsd:long"/>
+				<xsd:element name="timeout" type="xsd:long"/>
+				<xsd:element name="dest_ipport" type="tns:GlobalLB.MonitorIPPort"/>
+				<xsd:element name="is_read_only" type="xsd:boolean"/>
+				<xsd:element name="is_directly_usable" type="xsd:boolean"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="GlobalLB.Monitor.CommonAttributesSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:GlobalLB.Monitor.CommonAttributes[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="GlobalLB.Monitor.MonitorTemplate">
+			<xsd:sequence>
+				<xsd:element name="template_name" type="xsd:string"/>
+				<xsd:element name="template_type" type="tns:GlobalLB.Monitor.TemplateType"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="GlobalLB.Monitor.StrPropertyType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STYPE_UNSET">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_UNSET</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_SEND">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_SEND</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_GET">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_GET</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_RECEIVE">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_RECEIVE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_USERNAME">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_USERNAME</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_PASSWORD">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_PASSWORD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_RUN">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_RUN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_NEWSGROUP">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_NEWSGROUP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_DATABASE">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_DATABASE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_DOMAIN">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_DOMAIN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_ARGUMENTS">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_ARGUMENTS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_FOLDER">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_FOLDER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_BASE">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_BASE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_FILTER">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_FILTER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_SECRET">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_SECRET</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_METHOD">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_METHOD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_URL">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_URL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_COMMAND">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_COMMAND</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_METRICS">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_METRICS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_POST">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_POST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_USERAGENT">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_USERAGENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_AGENT_TYPE">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_AGENT_TYPE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_CPU_COEFFICIENT">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_CPU_COEFFICIENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_CPU_THRESHOLD">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_CPU_THRESHOLD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_MEMORY_COEFFICIENT">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_MEMORY_COEFFICIENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_MEMORY_THRESHOLD">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_MEMORY_THRESHOLD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_DISK_COEFFICIENT">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_DISK_COEFFICIENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_DISK_THRESHOLD">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_DISK_THRESHOLD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_SNMP_VERSION">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_SNMP_VERSION</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_COMMUNITY">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_COMMUNITY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_SEND_PACKETS">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_SEND_PACKETS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_TIMEOUT_PACKETS">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_TIMEOUT_PACKETS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_RECEIVE_DRAIN">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_RECEIVE_DRAIN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_RECEIVE_ROW">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_RECEIVE_ROW</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_RECEIVE_COLUMN">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_RECEIVE_COLUMN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_DEBUG">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_DEBUG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_SECURITY">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_SECURITY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_MODE">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_MODE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_CIPHER_LIST">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_CIPHER_LIST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_NAMESPACE">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_NAMESPACE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_PARAMETER_NAME">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_PARAMETER_NAME</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_PARAMETER_VALUE">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_PARAMETER_VALUE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_PARAMETER_TYPE">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_PARAMETER_TYPE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_RETURN_TYPE">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_RETURN_TYPE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_RETURN_VALUE">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_RETURN_VALUE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_SOAP_FAULT">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_SOAP_FAULT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_SSL_OPTIONS">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_SSL_OPTIONS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_CLIENT_CERTIFICATE">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_CLIENT_CERTIFICATE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_PROTOCOL">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_PROTOCOL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_MANDATORY_ATTRS">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_MANDATORY_ATTRS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_FILENAME">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_FILENAME</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_ACCOUNTING_NODE">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_ACCOUNTING_NODE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_ACCOUNTING_PORT">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_ACCOUNTING_PORT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_SERVER_ID">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_SERVER_ID</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_CALL_ID">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_CALL_ID</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_SESSION_ID">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_SESSION_ID</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_FRAMED_ADDRESS">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_FRAMED_ADDRESS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_SNMP_PORT">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_SNMP_PORT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_AGGREGATE_DYNAMIC_RATIOS">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_AGGREGATE_DYNAMIC_RATIOS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_DB_COUNT">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_DB_COUNT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_NAS_IP">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_NAS_IP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_CLIENT_KEY">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_CLIENT_KEY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_MAX_LOAD_AVERAGE">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_MAX_LOAD_AVERAGE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_CONCURRENCY_LIMIT">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_CONCURRENCY_LIMIT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_FILTER_NEG">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_FILTER_NEG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_REQUEST">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_REQUEST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_HEADERS">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_HEADERS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_DIAMETER_ACCT_APPLICATION_ID">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_DIAMETER_ACCT_APPLICATION_ID</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_DIAMETER_AUTH_APPLICATION_ID">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_DIAMETER_AUTH_APPLICATION_ID</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_DIAMETER_ORIGIN_HOST">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_DIAMETER_ORIGIN_HOST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_DIAMETER_ORIGIN_REALM">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_DIAMETER_ORIGIN_REALM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_DIAMETER_HOST_IP_ADDRESS">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_DIAMETER_HOST_IP_ADDRESS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_DIAMETER_VENDOR_ID">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_DIAMETER_VENDOR_ID</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_DIAMETER_PRODUCT_NAME">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_DIAMETER_PRODUCT_NAME</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_DIAMETER_VENDOR_SPECIFIC_VENDOR_ID">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_DIAMETER_VENDOR_SPECIFIC_VENDOR_ID</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_DIAMETER_VENDOR_SPECIFIC_ACCT_APPLICATION_ID">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_DIAMETER_VENDOR_SPECIFIC_ACCT_APPLICATION_ID</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_DIAMETER_VENDOR_SPECIFIC_AUTH_APPLICATION_ID">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_DIAMETER_VENDOR_SPECIFIC_AUTH_APPLICATION_ID</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_RUN_V2">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_RUN_V2</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_CLIENT_CERTIFICATE_V2">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_CLIENT_CERTIFICATE_V2</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_CLIENT_KEY_V2">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_CLIENT_KEY_V2</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_CHASE_REFERRALS">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_CHASE_REFERRALS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="GlobalLB.Monitor.TemplateTypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:GlobalLB.Monitor.TemplateType[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="GlobalLB.AddressType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="ATYPE_UNSET">
+					<xsd:annotation>
+						<xsd:documentation>ATYPE_UNSET</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ATYPE_STAR_ADDRESS_STAR_PORT">
+					<xsd:annotation>
+						<xsd:documentation>ATYPE_STAR_ADDRESS_STAR_PORT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ATYPE_STAR_ADDRESS_EXPLICIT_PORT">
+					<xsd:annotation>
+						<xsd:documentation>ATYPE_STAR_ADDRESS_EXPLICIT_PORT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ATYPE_EXPLICIT_ADDRESS_EXPLICIT_PORT">
+					<xsd:annotation>
+						<xsd:documentation>ATYPE_EXPLICIT_ADDRESS_EXPLICIT_PORT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ATYPE_STAR_ADDRESS">
+					<xsd:annotation>
+						<xsd:documentation>ATYPE_STAR_ADDRESS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ATYPE_EXPLICIT_ADDRESS">
+					<xsd:annotation>
+						<xsd:documentation>ATYPE_EXPLICIT_ADDRESS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="GlobalLB.Monitor.StrPropertyTypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:GlobalLB.Monitor.StrPropertyType[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="GlobalLB.Monitor.StringValue">
+			<xsd:sequence>
+				<xsd:element name="type" type="tns:GlobalLB.Monitor.StrPropertyType"/>
+				<xsd:element name="value" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="GlobalLB.Monitor.IntPropertyTypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:GlobalLB.Monitor.IntPropertyType[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.BooleanSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:boolean[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="GlobalLB.MonitorInstanceStateType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="INSTANCE_STATE_UNCHECKED">
+					<xsd:annotation>
+						<xsd:documentation>INSTANCE_STATE_UNCHECKED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="INSTANCE_STATE_CHECKING">
+					<xsd:annotation>
+						<xsd:documentation>INSTANCE_STATE_CHECKING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="INSTANCE_STATE_UP">
+					<xsd:annotation>
+						<xsd:documentation>INSTANCE_STATE_UP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="INSTANCE_STATE_DOWN">
+					<xsd:annotation>
+						<xsd:documentation>INSTANCE_STATE_DOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="INSTANCE_STATE_FORCED_DOWN">
+					<xsd:annotation>
+						<xsd:documentation>INSTANCE_STATE_FORCED_DOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="INSTANCE_STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>INSTANCE_STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="INSTANCE_STATE_DOWN_BY_IRULE">
+					<xsd:annotation>
+						<xsd:documentation>INSTANCE_STATE_DOWN_BY_IRULE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="INSTANCE_STATE_DOWN_WAIT_FOR_MANUAL_RESUME">
+					<xsd:annotation>
+						<xsd:documentation>INSTANCE_STATE_DOWN_WAIT_FOR_MANUAL_RESUME</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="GlobalLB.MonitorInstanceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:GlobalLB.MonitorInstance[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="GlobalLB.Monitor.StringValueSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:GlobalLB.Monitor.StringValue[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="GlobalLB.Monitor.UserDefinedStringValue">
+			<xsd:sequence>
+				<xsd:element name="name" type="xsd:string"/>
+				<xsd:element name="value" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="GlobalLB.Monitor.TemplateType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="TTYPE_UNSET">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_UNSET</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_ICMP">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_ICMP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_TCP">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_TCP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_TCP_ECHO">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_TCP_ECHO</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_EXTERNAL">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_EXTERNAL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_NNTP">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_NNTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_FTP">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_FTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_POP3">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_POP3</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_SMTP">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_SMTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_MSSQL">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_MSSQL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_GATEWAY">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_GATEWAY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_IMAP">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_IMAP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_RADIUS">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_RADIUS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_LDAP">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_LDAP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_WMI">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_WMI</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_SNMP_DCA">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_SNMP_DCA</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_SNMP_DCA_BASE">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_SNMP_DCA_BASE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_REAL_SERVER">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_REAL_SERVER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_UDP">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_UDP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_NONE">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_ORACLE">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_ORACLE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_SOAP">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_SOAP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_GATEWAY_ICMP">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_GATEWAY_ICMP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_SIP">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_SIP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_TCP_HALF_OPEN">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_TCP_HALF_OPEN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_SCRIPTED">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_SCRIPTED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_WAP">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_WAP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_BIGIP">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_BIGIP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_BIGIP_LINK">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_BIGIP_LINK</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_SNMP_GTM">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_SNMP_GTM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_SNMP_LINK">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_SNMP_LINK</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_FIREPASS_GTM">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_FIREPASS_GTM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_RADIUS_ACCOUNTING">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_RADIUS_ACCOUNTING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_DIAMETER">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_DIAMETER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_MYSQL">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_MYSQL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="TTYPE_POSTGRESQL">
+					<xsd:annotation>
+						<xsd:documentation>TTYPE_POSTGRESQL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="GlobalLB.MonitorInstanceState">
+			<xsd:sequence>
+				<xsd:element name="instance" type="tns:GlobalLB.MonitorInstance"/>
+				<xsd:element name="instance_state" type="tns:GlobalLB.MonitorInstanceStateType"/>
+				<xsd:element name="enabled_state" type="xsd:boolean"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="GlobalLB.Monitor.IntegerValueSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:GlobalLB.Monitor.IntegerValue[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="GlobalLB.MonitorInstance">
+			<xsd:sequence>
+				<xsd:element name="template_name" type="xsd:string"/>
+				<xsd:element name="instance_definition" type="tns:GlobalLB.MonitorIPPort"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="GlobalLB.MonitorIPPortSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:GlobalLB.MonitorIPPort[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="GlobalLB.Monitor.MonitorTemplateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:GlobalLB.Monitor.MonitorTemplate[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="GlobalLB.Monitor.IntegerValue">
+			<xsd:sequence>
+				<xsd:element name="type" type="tns:GlobalLB.Monitor.IntPropertyType"/>
+				<xsd:element name="value" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPPortDefinition">
+			<xsd:sequence>
+				<xsd:element name="address" type="xsd:string"/>
+				<xsd:element name="port" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="GlobalLB.MonitorInstanceStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:GlobalLB.MonitorInstanceState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="GlobalLB.AddressTypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:GlobalLB.AddressType[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="GlobalLB.Monitor.UserDefinedStringValueSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:GlobalLB.Monitor.UserDefinedStringValue[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="GlobalLB.Monitor.IntPropertyType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="ITYPE_UNSET">
+					<xsd:annotation>
+						<xsd:documentation>ITYPE_UNSET</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ITYPE_INTERVAL">
+					<xsd:annotation>
+						<xsd:documentation>ITYPE_INTERVAL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ITYPE_TIMEOUT">
+					<xsd:annotation>
+						<xsd:documentation>ITYPE_TIMEOUT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ITYPE_PROBE_INTERVAL">
+					<xsd:annotation>
+						<xsd:documentation>ITYPE_PROBE_INTERVAL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ITYPE_PROBE_TIMEOUT">
+					<xsd:annotation>
+						<xsd:documentation>ITYPE_PROBE_TIMEOUT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ITYPE_PROBE_NUM_PROBES">
+					<xsd:annotation>
+						<xsd:documentation>ITYPE_PROBE_NUM_PROBES</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ITYPE_PROBE_NUM_SUCCESSES">
+					<xsd:annotation>
+						<xsd:documentation>ITYPE_PROBE_NUM_SUCCESSES</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="GlobalLB.MonitorIPPort">
+			<xsd:sequence>
+				<xsd:element name="address_type" type="tns:GlobalLB.AddressType"/>
+				<xsd:element name="ipport" type="tns:Common.IPPortDefinition"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="GlobalLB.Monitor.get_template_listRequest">
+</message>
+<message name="GlobalLB.Monitor.get_template_listResponse">
+	<part name="return" type="tns:GlobalLB.Monitor.MonitorTemplateSequence"/>
+</message>
+
+<message name="GlobalLB.Monitor.create_templateRequest">
+	<part name="templates" type="tns:GlobalLB.Monitor.MonitorTemplateSequence"/>
+	<part name="template_attributes" type="tns:GlobalLB.Monitor.CommonAttributesSequence"/>
+</message>
+<message name="GlobalLB.Monitor.create_templateResponse">
+</message>
+
+<message name="GlobalLB.Monitor.delete_templateRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Monitor.delete_templateResponse">
+</message>
+
+<message name="GlobalLB.Monitor.delete_all_templatesRequest">
+</message>
+<message name="GlobalLB.Monitor.delete_all_templatesResponse">
+</message>
+
+<message name="GlobalLB.Monitor.is_template_rootRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Monitor.is_template_rootResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="GlobalLB.Monitor.is_template_directly_usableRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Monitor.is_template_directly_usableResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="GlobalLB.Monitor.is_template_read_onlyRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Monitor.is_template_read_onlyResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="GlobalLB.Monitor.get_parent_templateRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Monitor.get_parent_templateResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="GlobalLB.Monitor.get_template_address_typeRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Monitor.get_template_address_typeResponse">
+	<part name="return" type="tns:GlobalLB.AddressTypeSequence"/>
+</message>
+
+<message name="GlobalLB.Monitor.get_template_typeRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Monitor.get_template_typeResponse">
+	<part name="return" type="tns:GlobalLB.Monitor.TemplateTypeSequence"/>
+</message>
+
+<message name="GlobalLB.Monitor.set_template_stateRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="GlobalLB.Monitor.set_template_stateResponse">
+</message>
+
+<message name="GlobalLB.Monitor.get_template_stateRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Monitor.get_template_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="GlobalLB.Monitor.set_template_reverse_modeRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+	<part name="reverse_modes" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="GlobalLB.Monitor.set_template_reverse_modeResponse">
+</message>
+
+<message name="GlobalLB.Monitor.get_template_reverse_modeRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Monitor.get_template_reverse_modeResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="GlobalLB.Monitor.set_template_transparent_modeRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+	<part name="transparent_modes" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="GlobalLB.Monitor.set_template_transparent_modeResponse">
+</message>
+
+<message name="GlobalLB.Monitor.get_template_transparent_modeRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Monitor.get_template_transparent_modeResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="GlobalLB.Monitor.set_manual_resume_stateRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="GlobalLB.Monitor.set_manual_resume_stateResponse">
+</message>
+
+<message name="GlobalLB.Monitor.get_manual_resume_stateRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Monitor.get_manual_resume_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="GlobalLB.Monitor.set_ignore_down_response_stateRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="GlobalLB.Monitor.set_ignore_down_response_stateResponse">
+</message>
+
+<message name="GlobalLB.Monitor.get_ignore_down_response_stateRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Monitor.get_ignore_down_response_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="GlobalLB.Monitor.set_template_destinationRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+	<part name="destinations" type="tns:GlobalLB.MonitorIPPortSequence"/>
+</message>
+<message name="GlobalLB.Monitor.set_template_destinationResponse">
+</message>
+
+<message name="GlobalLB.Monitor.get_template_destinationRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Monitor.get_template_destinationResponse">
+	<part name="return" type="tns:GlobalLB.MonitorIPPortSequence"/>
+</message>
+
+<message name="GlobalLB.Monitor.set_descriptionRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Monitor.set_descriptionResponse">
+</message>
+
+<message name="GlobalLB.Monitor.get_descriptionRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Monitor.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="GlobalLB.Monitor.set_template_integer_propertyRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+	<part name="values" type="tns:GlobalLB.Monitor.IntegerValueSequence"/>
+</message>
+<message name="GlobalLB.Monitor.set_template_integer_propertyResponse">
+</message>
+
+<message name="GlobalLB.Monitor.get_template_integer_propertyRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+	<part name="property_types" type="tns:GlobalLB.Monitor.IntPropertyTypeSequence"/>
+</message>
+<message name="GlobalLB.Monitor.get_template_integer_propertyResponse">
+	<part name="return" type="tns:GlobalLB.Monitor.IntegerValueSequence"/>
+</message>
+
+<message name="GlobalLB.Monitor.set_template_string_propertyRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+	<part name="values" type="tns:GlobalLB.Monitor.StringValueSequence"/>
+</message>
+<message name="GlobalLB.Monitor.set_template_string_propertyResponse">
+</message>
+
+<message name="GlobalLB.Monitor.get_template_string_propertyRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+	<part name="property_types" type="tns:GlobalLB.Monitor.StrPropertyTypeSequence"/>
+</message>
+<message name="GlobalLB.Monitor.get_template_string_propertyResponse">
+	<part name="return" type="tns:GlobalLB.Monitor.StringValueSequence"/>
+</message>
+
+<message name="GlobalLB.Monitor.set_template_user_defined_string_propertyRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+	<part name="values" type="tns:GlobalLB.Monitor.UserDefinedStringValueSequence"/>
+</message>
+<message name="GlobalLB.Monitor.set_template_user_defined_string_propertyResponse">
+</message>
+
+<message name="GlobalLB.Monitor.get_template_user_defined_string_propertyRequest">
+	<part name="template_names" type="tns:Common.StringSequence"/>
+	<part name="property_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.Monitor.get_template_user_defined_string_propertyResponse">
+	<part name="return" type="tns:GlobalLB.Monitor.UserDefinedStringValueSequence"/>
+</message>
+
+<message name="GlobalLB.Monitor.set_instance_stateRequest">
+	<part name="instance_states" type="tns:GlobalLB.MonitorInstanceStateSequence"/>
+</message>
+<message name="GlobalLB.Monitor.set_instance_stateResponse">
+</message>
+
+<message name="GlobalLB.Monitor.get_instance_stateRequest">
+	<part name="instances" type="tns:GlobalLB.MonitorInstanceSequence"/>
+</message>
+<message name="GlobalLB.Monitor.get_instance_stateResponse">
+	<part name="return" type="tns:GlobalLB.MonitorInstanceStateSequence"/>
+</message>
+
+<message name="GlobalLB.Monitor.get_versionRequest">
+</message>
+<message name="GlobalLB.Monitor.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="GlobalLB.MonitorPortType">
+	<operation name="get_template_list">
+	<documentation>
+ Gets the list of monitor templates.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.get_template_listRequest"/>
+		<output message="tns:GlobalLB.Monitor.get_template_listResponse"/>
+	</operation>
+	<operation name="create_template">
+	<documentation>
+ Creates monitor templates with some basic attributes.  
+ If the "parent_template" attribute in "template_attributes" is empty, then the 
+ new template is based on the template type field given in "templates".
+ If the "parent_template" attribute in "template_attributes" is specified, then 
+ the new template is derived from the "parent_template", and template type field
+ in "templates" is ignored. 
+ If "parent_template" is empty, and the template type field in "templates" is not
+ specified, then the new template is a root template.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.create_templateRequest"/>
+		<output message="tns:GlobalLB.Monitor.create_templateResponse"/>
+	</operation>
+	<operation name="delete_template">
+	<documentation>
+ Deletes the specified monitor templates.  
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.delete_templateRequest"/>
+		<output message="tns:GlobalLB.Monitor.delete_templateResponse"/>
+	</operation>
+	<operation name="delete_all_templates">
+	<documentation>
+ Deletes all user-defined (non-root) monitor templates.  
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.delete_all_templatesRequest"/>
+		<output message="tns:GlobalLB.Monitor.delete_all_templatesResponse"/>
+	</operation>
+	<operation name="is_template_root">
+	<documentation>
+ Determines if the specified monitor templates are of the base monitor templates.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.is_template_rootRequest"/>
+		<output message="tns:GlobalLB.Monitor.is_template_rootResponse"/>
+	</operation>
+	<operation name="is_template_directly_usable">
+	<documentation>
+ Determines if the specified monitor templates can be used directly,
+ or a user-defined monitor based on each monitor must be created first 
+ before it can be used.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.is_template_directly_usableRequest"/>
+		<output message="tns:GlobalLB.Monitor.is_template_directly_usableResponse"/>
+	</operation>
+	<operation name="is_template_read_only">
+	<documentation>
+ Determines if the specified monitor templates are read-only.
+ The user can only modify properties for read/write monitor templates.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.is_template_read_onlyRequest"/>
+		<output message="tns:GlobalLB.Monitor.is_template_read_onlyResponse"/>
+	</operation>
+	<operation name="get_parent_template">
+	<documentation>
+ Gets the parent monitor templates from which the specified monitor templates are derived.
+ A user-defined monitor template will get its defaults from its parent monitor template.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.get_parent_templateRequest"/>
+		<output message="tns:GlobalLB.Monitor.get_parent_templateResponse"/>
+	</operation>
+	<operation name="get_template_address_type">
+	<documentation>
+ Gets the destination address types of the monitor templates.  This allows the user to determine
+ what node IP:port can be associated with this monitor when creating a monitor instance.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.get_template_address_typeRequest"/>
+		<output message="tns:GlobalLB.Monitor.get_template_address_typeResponse"/>
+	</operation>
+	<operation name="get_template_type">
+	<documentation>
+ Gets the template types of the specified monitor templates.  
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.get_template_typeRequest"/>
+		<output message="tns:GlobalLB.Monitor.get_template_typeResponse"/>
+	</operation>
+	<operation name="set_template_state">
+	<documentation>
+ Sets the monitor templates' enabled/disabled states. 
+ This will enable/disable all instances that use the specified templates.
+ This serves as a quick and convenient method to enable/disable all instances,
+ but if you want only to enable/disable a specific instance, use set_instance_enabled.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.set_template_stateRequest"/>
+		<output message="tns:GlobalLB.Monitor.set_template_stateResponse"/>
+	</operation>
+	<operation name="get_template_state">
+	<documentation>
+ Gets the enabled/disabled states of the specified monitor templates.  
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.get_template_stateRequest"/>
+		<output message="tns:GlobalLB.Monitor.get_template_stateResponse"/>
+	</operation>
+	<operation name="set_template_reverse_mode">
+	<documentation>
+ Sets the reverse mode states of the specified monitor templates.
+ When in reverse mode, a successful test marks the node down instead of up.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.set_template_reverse_modeRequest"/>
+		<output message="tns:GlobalLB.Monitor.set_template_reverse_modeResponse"/>
+	</operation>
+	<operation name="get_template_reverse_mode">
+	<documentation>
+ Gets the reverse mode states of the specified monitor templates.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.get_template_reverse_modeRequest"/>
+		<output message="tns:GlobalLB.Monitor.get_template_reverse_modeResponse"/>
+	</operation>
+	<operation name="set_template_transparent_mode">
+	<documentation>
+ Sets the transparent mode states of the specified monitor templates.
+ Transparent mode is used when a user has to go through a firewall to do monitoring.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.set_template_transparent_modeRequest"/>
+		<output message="tns:GlobalLB.Monitor.set_template_transparent_modeResponse"/>
+	</operation>
+	<operation name="get_template_transparent_mode">
+	<documentation>
+ Gets the transparent mode states of the specified monitor templates.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.get_template_transparent_modeRequest"/>
+		<output message="tns:GlobalLB.Monitor.get_template_transparent_modeResponse"/>
+	</operation>
+	<operation name="set_manual_resume_state">
+	<documentation>
+ Sets the monitor templates' manual resume states. When enabled and a monitor has
+ marked an object down, that object will not be marked up by the monitor, i.e. the
+ object will be manually marked up.
+ 
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.set_manual_resume_stateRequest"/>
+		<output message="tns:GlobalLB.Monitor.set_manual_resume_stateResponse"/>
+	</operation>
+	<operation name="get_manual_resume_state">
+	<documentation>
+ Gets the monitor templates' manual resume states. When enabled and a monitor has
+ marked an object down, that object will not be marked up by the monitor, i.e. the
+ object will be manually marked up.
+ 
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.get_manual_resume_stateRequest"/>
+		<output message="tns:GlobalLB.Monitor.get_manual_resume_stateResponse"/>
+	</operation>
+	<operation name="set_ignore_down_response_state">
+	<documentation>
+ Sets the monitor templates' ignore down response states.
+ When enabled, the system will mark objects down only if the
+ monitor timer expires without receiving an "up" response.
+
+ This is useful because probe_num_probes is not effective
+ with ECV monitors.  To get similar functionality, enable
+ ignore down response, and set timeout and probe timeout.
+ 
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.set_ignore_down_response_stateRequest"/>
+		<output message="tns:GlobalLB.Monitor.set_ignore_down_response_stateResponse"/>
+	</operation>
+	<operation name="get_ignore_down_response_state">
+	<documentation>
+ Gets the monitor templates' ignore down response states.
+ When enabled, the system will mark objects down only if the
+ monitor timer expires without receiving an "up" response.
+ 
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.get_ignore_down_response_stateRequest"/>
+		<output message="tns:GlobalLB.Monitor.get_ignore_down_response_stateResponse"/>
+	</operation>
+	<operation name="set_template_destination">
+	<documentation>
+ Sets the destination IP:port values for the specified templates.
+ NOTE: This should only be done when the monitor templates in "template_names"
+ have NOT been associated to any node addresses or pool members.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.set_template_destinationRequest"/>
+		<output message="tns:GlobalLB.Monitor.set_template_destinationResponse"/>
+	</operation>
+	<operation name="get_template_destination">
+	<documentation>
+ Gets the destination IP:port values of the specified monitor templates.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.get_template_destinationRequest"/>
+		<output message="tns:GlobalLB.Monitor.get_template_destinationResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of monitor templates.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.set_descriptionRequest"/>
+		<output message="tns:GlobalLB.Monitor.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of monitor templates.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.get_descriptionRequest"/>
+		<output message="tns:GlobalLB.Monitor.get_descriptionResponse"/>
+	</operation>
+	<operation name="set_template_integer_property">
+	<documentation>
+ Sets an integer property values of the specified monitor templates.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.set_template_integer_propertyRequest"/>
+		<output message="tns:GlobalLB.Monitor.set_template_integer_propertyResponse"/>
+	</operation>
+	<operation name="get_template_integer_property">
+	<documentation>
+ Gets the integer property values of the specified monitor templates.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.get_template_integer_propertyRequest"/>
+		<output message="tns:GlobalLB.Monitor.get_template_integer_propertyResponse"/>
+	</operation>
+	<operation name="set_template_string_property">
+	<documentation>
+ Sets a string property values of the specified monitor templates.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.set_template_string_propertyRequest"/>
+		<output message="tns:GlobalLB.Monitor.set_template_string_propertyResponse"/>
+	</operation>
+	<operation name="get_template_string_property">
+	<documentation>
+ Gets a string property values of the specified monitor templates.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.get_template_string_propertyRequest"/>
+		<output message="tns:GlobalLB.Monitor.get_template_string_propertyResponse"/>
+	</operation>
+	<operation name="set_template_user_defined_string_property">
+	<documentation>
+ Sets the user-defined string property values of the specified
+ monitor templates.  The user-defined string property is an
+ arbitrary name/value pair used as configuration information for the
+ monitor.  Only certain monitors accept such user-defined properties
+ and the meaning of these name/value pairs is dependent on the
+ specific monitor.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.set_template_user_defined_string_propertyRequest"/>
+		<output message="tns:GlobalLB.Monitor.set_template_user_defined_string_propertyResponse"/>
+	</operation>
+	<operation name="get_template_user_defined_string_property">
+	<documentation>
+ Gets the user-defined string property values of the specified
+ monitor templates.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.get_template_user_defined_string_propertyRequest"/>
+		<output message="tns:GlobalLB.Monitor.get_template_user_defined_string_propertyResponse"/>
+	</operation>
+	<operation name="set_instance_state">
+	<documentation>
+ Sets the enabled/disabled states of the monitor instances.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.set_instance_stateRequest"/>
+		<output message="tns:GlobalLB.Monitor.set_instance_stateResponse"/>
+	</operation>
+	<operation name="get_instance_state">
+	<documentation>
+ Gets the enabled/disabled states of the monitor instances.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.get_instance_stateRequest"/>
+		<output message="tns:GlobalLB.Monitor.get_instance_stateResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Monitor.get_versionRequest"/>
+		<output message="tns:GlobalLB.Monitor.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="GlobalLB.MonitorBinding" type="tns:GlobalLB.MonitorPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_template_list">
+	<documentation>
+ Gets the list of monitor templates.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_template">
+	<documentation>
+ Creates monitor templates with some basic attributes.  
+ If the "parent_template" attribute in "template_attributes" is empty, then the 
+ new template is based on the template type field given in "templates".
+ If the "parent_template" attribute in "template_attributes" is specified, then 
+ the new template is derived from the "parent_template", and template type field
+ in "templates" is ignored. 
+ If "parent_template" is empty, and the template type field in "templates" is not
+ specified, then the new template is a root template.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_template">
+	<documentation>
+ Deletes the specified monitor templates.  
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_templates">
+	<documentation>
+ Deletes all user-defined (non-root) monitor templates.  
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="is_template_root">
+	<documentation>
+ Determines if the specified monitor templates are of the base monitor templates.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="is_template_directly_usable">
+	<documentation>
+ Determines if the specified monitor templates can be used directly,
+ or a user-defined monitor based on each monitor must be created first 
+ before it can be used.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="is_template_read_only">
+	<documentation>
+ Determines if the specified monitor templates are read-only.
+ The user can only modify properties for read/write monitor templates.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_parent_template">
+	<documentation>
+ Gets the parent monitor templates from which the specified monitor templates are derived.
+ A user-defined monitor template will get its defaults from its parent monitor template.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_template_address_type">
+	<documentation>
+ Gets the destination address types of the monitor templates.  This allows the user to determine
+ what node IP:port can be associated with this monitor when creating a monitor instance.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_template_type">
+	<documentation>
+ Gets the template types of the specified monitor templates.  
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_template_state">
+	<documentation>
+ Sets the monitor templates' enabled/disabled states. 
+ This will enable/disable all instances that use the specified templates.
+ This serves as a quick and convenient method to enable/disable all instances,
+ but if you want only to enable/disable a specific instance, use set_instance_enabled.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_template_state">
+	<documentation>
+ Gets the enabled/disabled states of the specified monitor templates.  
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_template_reverse_mode">
+	<documentation>
+ Sets the reverse mode states of the specified monitor templates.
+ When in reverse mode, a successful test marks the node down instead of up.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_template_reverse_mode">
+	<documentation>
+ Gets the reverse mode states of the specified monitor templates.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_template_transparent_mode">
+	<documentation>
+ Sets the transparent mode states of the specified monitor templates.
+ Transparent mode is used when a user has to go through a firewall to do monitoring.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_template_transparent_mode">
+	<documentation>
+ Gets the transparent mode states of the specified monitor templates.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_manual_resume_state">
+	<documentation>
+ Sets the monitor templates' manual resume states. When enabled and a monitor has
+ marked an object down, that object will not be marked up by the monitor, i.e. the
+ object will be manually marked up.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_manual_resume_state">
+	<documentation>
+ Gets the monitor templates' manual resume states. When enabled and a monitor has
+ marked an object down, that object will not be marked up by the monitor, i.e. the
+ object will be manually marked up.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ignore_down_response_state">
+	<documentation>
+ Sets the monitor templates' ignore down response states.
+ When enabled, the system will mark objects down only if the
+ monitor timer expires without receiving an "up" response.
+
+ This is useful because probe_num_probes is not effective
+ with ECV monitors.  To get similar functionality, enable
+ ignore down response, and set timeout and probe timeout.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ignore_down_response_state">
+	<documentation>
+ Gets the monitor templates' ignore down response states.
+ When enabled, the system will mark objects down only if the
+ monitor timer expires without receiving an "up" response.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_template_destination">
+	<documentation>
+ Sets the destination IP:port values for the specified templates.
+ NOTE: This should only be done when the monitor templates in "template_names"
+ have NOT been associated to any node addresses or pool members.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_template_destination">
+	<documentation>
+ Gets the destination IP:port values of the specified monitor templates.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of monitor templates.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of monitor templates.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_template_integer_property">
+	<documentation>
+ Sets an integer property values of the specified monitor templates.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_template_integer_property">
+	<documentation>
+ Gets the integer property values of the specified monitor templates.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_template_string_property">
+	<documentation>
+ Sets a string property values of the specified monitor templates.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_template_string_property">
+	<documentation>
+ Gets a string property values of the specified monitor templates.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_template_user_defined_string_property">
+	<documentation>
+ Sets the user-defined string property values of the specified
+ monitor templates.  The user-defined string property is an
+ arbitrary name/value pair used as configuration information for the
+ monitor.  Only certain monitors accept such user-defined properties
+ and the meaning of these name/value pairs is dependent on the
+ specific monitor.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_template_user_defined_string_property">
+	<documentation>
+ Gets the user-defined string property values of the specified
+ monitor templates.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_instance_state">
+	<documentation>
+ Sets the enabled/disabled states of the monitor instances.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_instance_state">
+	<documentation>
+ Gets the enabled/disabled states of the monitor instances.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Monitor"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Monitor"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="GlobalLB.Monitor">
+	<documentation>
+ The Monitor interface enables you to manipulate a load balancer's monitor templates and instances.  
+ For example, use the Monitor interface to enable or disable a monitor instance, or to create a monitor template,
+ or to get and set different attributes of a monitor template.
+
+        	</documentation>
+	<port name="GlobalLB.MonitorPort" binding="tns:GlobalLB.MonitorBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

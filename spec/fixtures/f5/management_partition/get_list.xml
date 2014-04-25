@@ -1,0 +1,29 @@
+<E:Envelope
+  xmlns:E="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:A="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:s="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:y="http://www.w3.org/2001/XMLSchema"
+  xmlns:iControl="urn:iControl"
+  E:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+  <E:Body>
+    <m:get_listResponse
+      xmlns:m="urn:iControl:Management/UserManagement">
+      <return
+        s:type="A:Array"
+        A:arrayType="iControl:Management.UserManagement.UserID[2]">
+        <item>
+          <name
+            s:type="y:string">root</name>
+          <full_name
+            s:type="y:string">root</full_name>
+        </item>
+        <item>
+          <name
+            s:type="y:string">admin</name>
+          <full_name
+            s:type="y:string">Admin User</full_name>
+        </item>
+      </return>
+    </m:get_listResponse>
+  </E:Body>
+</E:Envelope>

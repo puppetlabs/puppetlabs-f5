@@ -1,0 +1,26 @@
+<E:Envelope
+        xmlns:E="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:A="http://schemas.xmlsoap.org/soap/encoding/"
+        xmlns:s="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:y="http://www.w3.org/2001/XMLSchema"
+        xmlns:iControl="urn:iControl"
+        E:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+<E:Body>
+<m:get_listResponse
+        xmlns:m="urn:iControl:LocalLB/Rule">
+<return
+        s:type="A:Array"
+        A:arrayType="y:string[9]">
+<item>/Common/_sys_APM_ExchangeSupport_OA_BasicAuth</item>
+<item>/Common/_sys_APM_activesync</item>
+<item>/Common/_sys_APM_ExchangeSupport_main</item>
+<item>/Common/_sys_APM_ExchangeSupport_helper</item>
+<item>/Common/_sys_auth_ssl_crldp</item>
+<item>/Common/_sys_auth_ssl_cc_ldap</item>
+<item>/Common/_sys_auth_ssl_ocsp</item>
+<item>/Common/_sys_auth_krbdelegate</item>
+<item>/Common/_sys_https_redirect</item>
+</return>
+</m:get_listResponse>
+</E:Body>
+</E:Envelope>

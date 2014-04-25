@@ -1,0 +1,664 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="GlobalLB.DNSSECZone"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledStatus">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="ENABLED_STATUS_NONE">
+					<xsd:annotation>
+						<xsd:documentation>ENABLED_STATUS_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ENABLED_STATUS_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>ENABLED_STATUS_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ENABLED_STATUS_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>ENABLED_STATUS_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ENABLED_STATUS_DISABLED_BY_PARENT">
+					<xsd:annotation>
+						<xsd:documentation>ENABLED_STATUS_DISABLED_BY_PARENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Common.AvailabilityStatus">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="AVAILABILITY_STATUS_NONE">
+					<xsd:annotation>
+						<xsd:documentation>AVAILABILITY_STATUS_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AVAILABILITY_STATUS_GREEN">
+					<xsd:annotation>
+						<xsd:documentation>AVAILABILITY_STATUS_GREEN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AVAILABILITY_STATUS_YELLOW">
+					<xsd:annotation>
+						<xsd:documentation>AVAILABILITY_STATUS_YELLOW</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AVAILABILITY_STATUS_RED">
+					<xsd:annotation>
+						<xsd:documentation>AVAILABILITY_STATUS_RED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AVAILABILITY_STATUS_BLUE">
+					<xsd:annotation>
+						<xsd:documentation>AVAILABILITY_STATUS_BLUE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="AVAILABILITY_STATUS_GRAY">
+					<xsd:annotation>
+						<xsd:documentation>AVAILABILITY_STATUS_GRAY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.ObjectStatusSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.ObjectStatus[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ObjectStatus">
+			<xsd:sequence>
+				<xsd:element name="availability_status" type="tns:Common.AvailabilityStatus"/>
+				<xsd:element name="enabled_status" type="tns:Common.EnabledStatus"/>
+				<xsd:element name="status_description" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="GlobalLB.DNSSECZone.get_listRequest">
+</message>
+<message name="GlobalLB.DNSSECZone.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECZone.createRequest">
+	<part name="zones" type="tns:Common.StringSequence"/>
+	<part name="keys" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="GlobalLB.DNSSECZone.createResponse">
+</message>
+
+<message name="GlobalLB.DNSSECZone.delete_zoneRequest">
+	<part name="zones" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.DNSSECZone.delete_zoneResponse">
+</message>
+
+<message name="GlobalLB.DNSSECZone.delete_all_zonesRequest">
+</message>
+<message name="GlobalLB.DNSSECZone.delete_all_zonesResponse">
+</message>
+
+<message name="GlobalLB.DNSSECZone.set_enabled_stateRequest">
+	<part name="zones" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="GlobalLB.DNSSECZone.set_enabled_stateResponse">
+</message>
+
+<message name="GlobalLB.DNSSECZone.get_enabled_stateRequest">
+	<part name="zones" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.DNSSECZone.get_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECZone.add_keyRequest">
+	<part name="zones" type="tns:Common.StringSequence"/>
+	<part name="keys" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="GlobalLB.DNSSECZone.add_keyResponse">
+</message>
+
+<message name="GlobalLB.DNSSECZone.remove_keyRequest">
+	<part name="zones" type="tns:Common.StringSequence"/>
+	<part name="keys" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="GlobalLB.DNSSECZone.remove_keyResponse">
+</message>
+
+<message name="GlobalLB.DNSSECZone.remove_all_keysRequest">
+	<part name="zones" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.DNSSECZone.remove_all_keysResponse">
+</message>
+
+<message name="GlobalLB.DNSSECZone.get_keyRequest">
+	<part name="zones" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.DNSSECZone.get_keyResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECZone.get_object_statusRequest">
+	<part name="zones" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.DNSSECZone.get_object_statusResponse">
+	<part name="return" type="tns:Common.ObjectStatusSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECZone.set_descriptionRequest">
+	<part name="zones" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.DNSSECZone.set_descriptionResponse">
+</message>
+
+<message name="GlobalLB.DNSSECZone.get_descriptionRequest">
+	<part name="zones" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.DNSSECZone.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECZone.get_versionRequest">
+</message>
+<message name="GlobalLB.DNSSECZone.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="GlobalLB.DNSSECZonePortType">
+	<operation name="get_list">
+     	<documentation>
+ Gets the names of all DNSSEC zones.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECZone.get_listRequest"/>
+		<output message="tns:GlobalLB.DNSSECZone.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a set of DNSSEC zones.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECZone.createRequest"/>
+		<output message="tns:GlobalLB.DNSSECZone.createResponse"/>
+	</operation>
+	<operation name="delete_zone">
+	<documentation>
+ Deletes a set of DNSSEC zones.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECZone.delete_zoneRequest"/>
+		<output message="tns:GlobalLB.DNSSECZone.delete_zoneResponse"/>
+	</operation>
+	<operation name="delete_all_zones">
+	<documentation>
+ Deletes all DNSSEC zones.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECZone.delete_all_zonesRequest"/>
+		<output message="tns:GlobalLB.DNSSECZone.delete_all_zonesResponse"/>
+	</operation>
+	<operation name="set_enabled_state">
+	<documentation>
+ Sets the enabled state for a set of DNSSEC zones.
+
+ Note that individual keys can also be enabled and disabled.  See
+ the DNSSECKey interface for details.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECZone.set_enabled_stateRequest"/>
+		<output message="tns:GlobalLB.DNSSECZone.set_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_enabled_state">
+	<documentation>
+ Gets the enabled state for a set of DNSSEC zones.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECZone.get_enabled_stateRequest"/>
+		<output message="tns:GlobalLB.DNSSECZone.get_enabled_stateResponse"/>
+	</operation>
+	<operation name="add_key">
+	<documentation>
+ Adds DNSSEC keys to a set of DNSSEC zones.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECZone.add_keyRequest"/>
+		<output message="tns:GlobalLB.DNSSECZone.add_keyResponse"/>
+	</operation>
+	<operation name="remove_key">
+	<documentation>
+ Removes DNSSEC keys from a set of DNSSEC zones.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECZone.remove_keyRequest"/>
+		<output message="tns:GlobalLB.DNSSECZone.remove_keyResponse"/>
+	</operation>
+	<operation name="remove_all_keys">
+	<documentation>
+ Removes all DNSSEC keys from a set of DNSSEC zones.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECZone.remove_all_keysRequest"/>
+		<output message="tns:GlobalLB.DNSSECZone.remove_all_keysResponse"/>
+	</operation>
+	<operation name="get_key">
+	<documentation>
+ Gets the DNSSEC keys for a set of DNSSEC zones.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECZone.get_keyRequest"/>
+		<output message="tns:GlobalLB.DNSSECZone.get_keyResponse"/>
+	</operation>
+	<operation name="get_object_status">
+	<documentation>
+ Gets the status of a set of DNSSEC zones.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECZone.get_object_statusRequest"/>
+		<output message="tns:GlobalLB.DNSSECZone.get_object_statusResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of DNSSEC zones.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECZone.set_descriptionRequest"/>
+		<output message="tns:GlobalLB.DNSSECZone.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of DNSSEC zones.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECZone.get_descriptionRequest"/>
+		<output message="tns:GlobalLB.DNSSECZone.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Get the version information for this interface.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECZone.get_versionRequest"/>
+		<output message="tns:GlobalLB.DNSSECZone.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="GlobalLB.DNSSECZoneBinding" type="tns:GlobalLB.DNSSECZonePortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the names of all DNSSEC zones.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECZone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a set of DNSSEC zones.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECZone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_zone">
+	<documentation>
+ Deletes a set of DNSSEC zones.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECZone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_zones">
+	<documentation>
+ Deletes all DNSSEC zones.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECZone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_enabled_state">
+	<documentation>
+ Sets the enabled state for a set of DNSSEC zones.
+
+ Note that individual keys can also be enabled and disabled.  See
+ the DNSSECKey interface for details.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECZone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_enabled_state">
+	<documentation>
+ Gets the enabled state for a set of DNSSEC zones.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECZone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_key">
+	<documentation>
+ Adds DNSSEC keys to a set of DNSSEC zones.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECZone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_key">
+	<documentation>
+ Removes DNSSEC keys from a set of DNSSEC zones.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECZone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_keys">
+	<documentation>
+ Removes all DNSSEC keys from a set of DNSSEC zones.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECZone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_key">
+	<documentation>
+ Gets the DNSSEC keys for a set of DNSSEC zones.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECZone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_object_status">
+	<documentation>
+ Gets the status of a set of DNSSEC zones.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECZone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of DNSSEC zones.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECZone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of DNSSEC zones.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECZone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Get the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECZone"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECZone"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="GlobalLB.DNSSECZone">
+	<documentation>
+ The DNSSECZone interface manages the zones in which securing DNS
+ information, i.e., DNSSEC, is active.  When a zone is active, its DNS
+ record groups are digitally signed, the DNS record names are hashed,
+ and keys sent to upstream DNS servers are digitally signed.
+
+ A DNSSEC zone can contain any number of DNSSEC keys, and a single
+ DNSSEC key can be used in more than one DNSSEC zone.  Note that a large
+ number of DNSSEC keys in a single DNSSEC zone can affect the
+ responsiveness to DNS requests.
+
+ Note that the term "zone" in this interface is not necessarily "zone"
+ in a DNS sense.
+
+ See the DNSSECKey interface for managing the keys themselves.
+
+        	</documentation>
+	<port name="GlobalLB.DNSSECZonePort" binding="tns:GlobalLB.DNSSECZoneBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

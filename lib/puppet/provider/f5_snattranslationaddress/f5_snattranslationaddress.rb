@@ -7,7 +7,7 @@ Puppet::Type.type(:f5_snattranslationaddress).provide(:f5_snattranslationaddress
   defaultfor :feature => :posix
 
   def self.wsdl
-    'LocalLB.SNATTranslationAddress'
+    'LocalLB.SNATTranslationAddressV2'
   end
 
   def wsdl
@@ -15,58 +15,59 @@ Puppet::Type.type(:f5_snattranslationaddress).provide(:f5_snattranslationaddress
   end
 
   def self.instances
-    transport[wsdl].get_list.collect do |name|
-      new(:name => name)
+    Array(transport[wsdl].get(:get_list)).collect do |item|
+      new(:name => item)
     end
   end
 
-  methods = [ 'arp_state',
-    'enabled_state',
-    'ip_timeout',
-    'tcp_timeout',
-    'udp_timeout',
-    'unit_id']
+  methods = {
+    'arp_state'         => 'states',
+    'connection_limit'  => 'limits',
+    'enabled_state'     => 'states',
+    'ip_timeout'        => 'timeouts',
+    'tcp_timeout'       => 'timeouts',
+    'udp_timeout'       => 'timeouts'
+  }
 
-  methods.each do |method|
+  methods.each do |method, arg|
     define_method(method.to_sym) do
-      if transport[wsdl].respond_to?("get_#{method}".to_sym)
-        transport[wsdl].send("get_#{method}", resource[:name]).first
-      end
+      transport[wsdl].get("get_#{method}".to_sym, { translation_addresses: { item: resource[:name] } })
     end
-  end
-
-  methods.each do |method|
     define_method("#{method}=") do |value|
-      if transport[wsdl].respond_to?("set_#{method}".to_sym)
-        transport[wsdl].send("set_#{method}", resource[:name], resource[method.to_sym])
-      end
+      message = { translation_addresses: { item: resource[:name] }, arg => { item: resource[method.to_sym] } }
+      transport[wsdl].call("set_#{method}".to_sym, message: message)
     end
-  end
-
-  def connection_limit
-    val = transport[wsdl].get_connection_limit(resource[:name]).first
-    to_64s(val)
-  end
-
-  def connection_limit=(value)
-    val = transport[wsdl].set_connection_limit(resource[:name], [ to_32h(resource[:connection_limit]) ])
   end
 
   def create
     Puppet.debug("Puppet::Provider::F5_SNATTranslationAddress: creating F5 snattranslationaddress #{resource[:name]}")
-    transport[wsdl].create(resource[:name])
+    message = {
+      translation_addresses: { item: resource[:name] },
+      addresses: { item: resource[:addresses] },
+      traffic_groups: { item: '' }
+    }
+    transport[wsdl].call(:create, message: message)
+
+    methods = [
+      'arp_state',
+      'enabled_state',
+      'ip_timeout',
+      'tcp_timeout',
+      'udp_timeout'
+    ]
+
+    methods.each do |method|
+      self.send("#{method}=", resource[method.to_sym]) if resource[method.to_sym]
+    end
   end
 
   def destroy
     Puppet.debug("Puppet::Provider::F5_SNATTranslationAddress: destroying F5 snattranslationaddress #{resource[:name]}")
-    transport[wsdl].delete_translation_address(resource[:name])
-  end
-
-  def ensure
-    transport[wsdl].get_enabled_state(resource[:name])
+    message = { translation_addresses: { item: resource[:name] } }
+    transport[wsdl].call(:delete_translation_address, message: message)
   end
 
   def exists?
-    transport[wsdl].get_list.include?(resource[:name])
+    transport[wsdl].get(:get_list).include?(resource[:name])
   end
 end

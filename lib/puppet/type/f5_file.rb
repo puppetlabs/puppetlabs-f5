@@ -3,19 +3,7 @@ Puppet::Type.newtype(:f5_file) do
 
   apply_to_device
 
-  ensurable do
-    desc "F5 file resource state. Valid values are present, absent."
-
-    defaultto(:present)
-
-    newvalue(:present) do
-      provider.create
-    end
-
-    newvalue(:absent) do
-      provider.destroy
-    end
-  end
+  ensurable
 
   newparam(:path, :namevar=>true) do
     desc "The path to file on F5 device, must be absolute file path."

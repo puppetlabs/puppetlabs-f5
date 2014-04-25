@@ -1,0 +1,688 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.DeviceGroup"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Management.DeviceGroup.TypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.DeviceGroup.Type[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.BooleanSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:boolean[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.DeviceGroup.Type">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="DGT_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>DGT_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DGT_SYNC_ONLY">
+					<xsd:annotation>
+						<xsd:documentation>DGT_SYNC_ONLY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DGT_FAILOVER">
+					<xsd:annotation>
+						<xsd:documentation>DGT_FAILOVER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.DeviceGroup.get_listRequest">
+</message>
+<message name="Management.DeviceGroup.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.DeviceGroup.createRequest">
+	<part name="device_groups" type="tns:Common.StringSequence"/>
+	<part name="types" type="tns:Management.DeviceGroup.TypeSequence"/>
+</message>
+<message name="Management.DeviceGroup.createResponse">
+</message>
+
+<message name="Management.DeviceGroup.delete_device_groupRequest">
+	<part name="device_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.DeviceGroup.delete_device_groupResponse">
+</message>
+
+<message name="Management.DeviceGroup.add_deviceRequest">
+	<part name="device_groups" type="tns:Common.StringSequence"/>
+	<part name="devices" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.DeviceGroup.add_deviceResponse">
+</message>
+
+<message name="Management.DeviceGroup.remove_deviceRequest">
+	<part name="device_groups" type="tns:Common.StringSequence"/>
+	<part name="devices" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Management.DeviceGroup.remove_deviceResponse">
+</message>
+
+<message name="Management.DeviceGroup.remove_all_devicesRequest">
+	<part name="device_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.DeviceGroup.remove_all_devicesResponse">
+</message>
+
+<message name="Management.DeviceGroup.get_deviceRequest">
+	<part name="device_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.DeviceGroup.get_deviceResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Management.DeviceGroup.set_network_failover_enabled_stateRequest">
+	<part name="device_groups" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.DeviceGroup.set_network_failover_enabled_stateResponse">
+</message>
+
+<message name="Management.DeviceGroup.get_network_failover_enabled_stateRequest">
+	<part name="device_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.DeviceGroup.get_network_failover_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.DeviceGroup.get_autosync_enabled_stateRequest">
+	<part name="device_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.DeviceGroup.get_autosync_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.DeviceGroup.set_autosync_enabled_stateRequest">
+	<part name="device_groups" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.DeviceGroup.set_autosync_enabled_stateResponse">
+</message>
+
+<message name="Management.DeviceGroup.get_typeRequest">
+	<part name="device_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.DeviceGroup.get_typeResponse">
+	<part name="return" type="tns:Management.DeviceGroup.TypeSequence"/>
+</message>
+
+<message name="Management.DeviceGroup.set_descriptionRequest">
+	<part name="device_groups" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.DeviceGroup.set_descriptionResponse">
+</message>
+
+<message name="Management.DeviceGroup.get_descriptionRequest">
+	<part name="device_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.DeviceGroup.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.DeviceGroup.get_all_preferred_activeRequest">
+	<part name="device_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.DeviceGroup.get_all_preferred_activeResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="Management.DeviceGroup.get_versionRequest">
+</message>
+<message name="Management.DeviceGroup.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.DeviceGroupPortType">
+	<operation name="get_list">
+  	<documentation>
+ Gets a list of all device groups.
+
+        	</documentation>
+		<input message="tns:Management.DeviceGroup.get_listRequest"/>
+		<output message="tns:Management.DeviceGroup.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates device groups.
+
+        	</documentation>
+		<input message="tns:Management.DeviceGroup.createRequest"/>
+		<output message="tns:Management.DeviceGroup.createResponse"/>
+	</operation>
+	<operation name="delete_device_group">
+	<documentation>
+ Deletes device groups.
+
+        	</documentation>
+		<input message="tns:Management.DeviceGroup.delete_device_groupRequest"/>
+		<output message="tns:Management.DeviceGroup.delete_device_groupResponse"/>
+	</operation>
+	<operation name="add_device">
+	<documentation>
+ Add devices to device groups.
+
+        	</documentation>
+		<input message="tns:Management.DeviceGroup.add_deviceRequest"/>
+		<output message="tns:Management.DeviceGroup.add_deviceResponse"/>
+	</operation>
+	<operation name="remove_device">
+	<documentation>
+ Remove devices from device groups.
+
+        	</documentation>
+		<input message="tns:Management.DeviceGroup.remove_deviceRequest"/>
+		<output message="tns:Management.DeviceGroup.remove_deviceResponse"/>
+	</operation>
+	<operation name="remove_all_devices">
+	<documentation>
+ Remove all devices from device groups.
+
+        	</documentation>
+		<input message="tns:Management.DeviceGroup.remove_all_devicesRequest"/>
+		<output message="tns:Management.DeviceGroup.remove_all_devicesResponse"/>
+	</operation>
+	<operation name="get_device">
+	<documentation>
+ Get devices from device groups.
+
+        	</documentation>
+		<input message="tns:Management.DeviceGroup.get_deviceRequest"/>
+		<output message="tns:Management.DeviceGroup.get_deviceResponse"/>
+	</operation>
+	<operation name="set_network_failover_enabled_state">
+	<documentation>
+ Sets the state of network failover for the device groups.
+
+ If set, allows failover daemon to communicate with the devices
+ in the device group to determine whether they are running.
+
+        	</documentation>
+		<input message="tns:Management.DeviceGroup.set_network_failover_enabled_stateRequest"/>
+		<output message="tns:Management.DeviceGroup.set_network_failover_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_network_failover_enabled_state">
+	<documentation>
+ Gets the state of network failover for the device groups.
+
+        	</documentation>
+		<input message="tns:Management.DeviceGroup.get_network_failover_enabled_stateRequest"/>
+		<output message="tns:Management.DeviceGroup.get_network_failover_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_autosync_enabled_state">
+	<documentation>
+ Gets the state of autosync for the device groups.
+
+        	</documentation>
+		<input message="tns:Management.DeviceGroup.get_autosync_enabled_stateRequest"/>
+		<output message="tns:Management.DeviceGroup.get_autosync_enabled_stateResponse"/>
+	</operation>
+	<operation name="set_autosync_enabled_state">
+	<documentation>
+ Sets the state of autosync for the device groups.
+
+ If set, allows automatic synchronization between the devices
+ in the device group.
+
+        	</documentation>
+		<input message="tns:Management.DeviceGroup.set_autosync_enabled_stateRequest"/>
+		<output message="tns:Management.DeviceGroup.set_autosync_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_type">
+	<documentation>
+ Gets the type of device group.
+
+        	</documentation>
+		<input message="tns:Management.DeviceGroup.get_typeRequest"/>
+		<output message="tns:Management.DeviceGroup.get_typeResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the descriptions for the device groups.
+
+        	</documentation>
+		<input message="tns:Management.DeviceGroup.set_descriptionRequest"/>
+		<output message="tns:Management.DeviceGroup.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions of the device groups.
+
+        	</documentation>
+		<input message="tns:Management.DeviceGroup.get_descriptionRequest"/>
+		<output message="tns:Management.DeviceGroup.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_all_preferred_active">
+	<documentation>
+ Gets the "all preferred active" flag for each device group.
+
+        	</documentation>
+		<input message="tns:Management.DeviceGroup.get_all_preferred_activeRequest"/>
+		<output message="tns:Management.DeviceGroup.get_all_preferred_activeResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the interface version
+
+        	</documentation>
+		<input message="tns:Management.DeviceGroup.get_versionRequest"/>
+		<output message="tns:Management.DeviceGroup.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.DeviceGroupBinding" type="tns:Management.DeviceGroupPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all device groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/DeviceGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates device groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/DeviceGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_device_group">
+	<documentation>
+ Deletes device groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/DeviceGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_device">
+	<documentation>
+ Add devices to device groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/DeviceGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_device">
+	<documentation>
+ Remove devices from device groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/DeviceGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_devices">
+	<documentation>
+ Remove all devices from device groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/DeviceGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_device">
+	<documentation>
+ Get devices from device groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/DeviceGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_network_failover_enabled_state">
+	<documentation>
+ Sets the state of network failover for the device groups.
+
+ If set, allows failover daemon to communicate with the devices
+ in the device group to determine whether they are running.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/DeviceGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_network_failover_enabled_state">
+	<documentation>
+ Gets the state of network failover for the device groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/DeviceGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_autosync_enabled_state">
+	<documentation>
+ Gets the state of autosync for the device groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/DeviceGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_autosync_enabled_state">
+	<documentation>
+ Sets the state of autosync for the device groups.
+
+ If set, allows automatic synchronization between the devices
+ in the device group.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/DeviceGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_type">
+	<documentation>
+ Gets the type of device group.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/DeviceGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the descriptions for the device groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/DeviceGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions of the device groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/DeviceGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_all_preferred_active">
+	<documentation>
+ Gets the "all preferred active" flag for each device group.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/DeviceGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the interface version
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/DeviceGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/DeviceGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.DeviceGroup">
+	<documentation>
+ The Device Group interface contains the methods for creating and manipulating
+ device groups.  Device groups are collections of devices used for traffic 
+ management and failover. 
+
+        	</documentation>
+	<port name="Management.DeviceGroupPort" binding="tns:Management.DeviceGroupBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

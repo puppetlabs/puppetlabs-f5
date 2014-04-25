@@ -2,26 +2,17 @@ Puppet::Type.newtype(:f5_rule) do
   @doc = "Manage F5 rule."
 
   apply_to_device
+  ensurable
 
-  ensurable do
-    desc "F5 rule resource state. Valid values are present, absent."
+  newparam(:name, :namevar => true) do
+    desc 'The rule name.'
 
-    defaultto(:present)
-
-    newvalue(:present) do
-      provider.create
+    validate do |value|
+      raise(ArgumentError, "v11.0+ requires a folder or partition in the name, such as /Common/rule") unless value =~ /^\/.*\//
     end
-
-    newvalue(:absent) do
-      provider.destroy
-    end
-  end
-
-  newparam(:name, :namevar=>true) do
-    desc "The rule name."
   end
 
   newproperty(:definition) do
-    desc "The rule definition."
+    desc 'The rule definition.'
   end
 end

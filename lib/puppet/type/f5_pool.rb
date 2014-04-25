@@ -4,20 +4,7 @@ Puppet::Type.newtype(:f5_pool) do
   @doc = "Manage F5 pool."
 
   apply_to_device
-
-  ensurable do
-    desc "F5 pool resource state. Valid values are present, absent."
-
-    defaultto(:present)
-
-    newvalue(:present) do
-      provider.create
-    end
-
-    newvalue(:absent) do
-      provider.destroy
-    end
-  end
+  ensurable
 
   newparam(:name, :namevar=>true) do
     desc "The pool name."
@@ -57,11 +44,6 @@ Puppet::Type.newtype(:f5_pool) do
 
   newproperty(:gateway_failsafe_device) do
     desc "The gateway failsafe devices for the specified pools. (v11.0)"
-  end
-
-  newproperty(:gateway_failsafe_unit_id) do
-    desc "The gateway failsafe unit IDs for the specified pools. (v9.0)"
-    newvalues(/^\d+$/)
   end
 
   newproperty(:lb_method) do
@@ -193,7 +175,7 @@ Puppet::Type.newtype(:f5_pool) do
 
     newvalues(/^\d+$/)
   end
-  
+
   autorequire(:f5_monitor) do
     monitors=[]
     if self[:monitor_association] && self[:monitor_association].class == Hash && self[:monitor_association]['monitor_templates'] && self[:monitor_association]['monitor_templates'].class == Array
@@ -202,5 +184,5 @@ Puppet::Type.newtype(:f5_pool) do
       end
     end
     monitors
-  end  
+  end
 end

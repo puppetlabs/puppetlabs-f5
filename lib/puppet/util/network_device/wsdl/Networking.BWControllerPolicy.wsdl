@@ -1,0 +1,1107 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.BWControllerPolicy"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.ULongSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.ULongSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULong64">
+			<xsd:sequence>
+				<xsd:element name="high" type="xsd:long"/>
+				<xsd:element name="low" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.UnitType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="UNIT_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>UNIT_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="UNIT_BPS">
+					<xsd:annotation>
+						<xsd:documentation>UNIT_BPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="UNIT_KBPS">
+					<xsd:annotation>
+						<xsd:documentation>UNIT_KBPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="UNIT_MBPS">
+					<xsd:annotation>
+						<xsd:documentation>UNIT_MBPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="UNIT_GBPS">
+					<xsd:annotation>
+						<xsd:documentation>UNIT_GBPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.RateUnitSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.RateUnit[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.RateUnit">
+			<xsd:sequence>
+				<xsd:element name="rate" type="xsd:long"/>
+				<xsd:element name="unit" type="tns:Common.UnitType"/>
+				<xsd:element name="use64" type="xsd:boolean"/>
+				<xsd:element name="rate64" type="tns:Common.ULong64"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.RateUnitSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.RateUnitSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.BWControllerPolicy.get_listRequest">
+</message>
+<message name="Networking.BWControllerPolicy.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.BWControllerPolicy.createRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="rates" type="tns:Common.RateUnitSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+	<part name="user_rates" type="tns:Common.RateUnitSequence"/>
+</message>
+<message name="Networking.BWControllerPolicy.createResponse">
+</message>
+
+<message name="Networking.BWControllerPolicy.delete_policyRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.BWControllerPolicy.delete_policyResponse">
+</message>
+
+<message name="Networking.BWControllerPolicy.delete_all_policiesRequest">
+</message>
+<message name="Networking.BWControllerPolicy.delete_all_policiesResponse">
+</message>
+
+<message name="Networking.BWControllerPolicy.set_descriptionRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.BWControllerPolicy.set_descriptionResponse">
+</message>
+
+<message name="Networking.BWControllerPolicy.get_descriptionRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.BWControllerPolicy.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.BWControllerPolicy.get_dynamic_stateRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.BWControllerPolicy.get_dynamic_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.BWControllerPolicy.set_ip_tosRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="values" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.BWControllerPolicy.set_ip_tosResponse">
+</message>
+
+<message name="Networking.BWControllerPolicy.get_ip_tosRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.BWControllerPolicy.get_ip_tosResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.BWControllerPolicy.set_link_qosRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="values" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.BWControllerPolicy.set_link_qosResponse">
+</message>
+
+<message name="Networking.BWControllerPolicy.get_link_qosRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.BWControllerPolicy.get_link_qosResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.BWControllerPolicy.set_maximum_rateRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="rates" type="tns:Common.RateUnitSequence"/>
+</message>
+<message name="Networking.BWControllerPolicy.set_maximum_rateResponse">
+</message>
+
+<message name="Networking.BWControllerPolicy.get_maximum_rateRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.BWControllerPolicy.get_maximum_rateResponse">
+	<part name="return" type="tns:Common.RateUnitSequence"/>
+</message>
+
+<message name="Networking.BWControllerPolicy.set_maximum_user_rateRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="rates" type="tns:Common.RateUnitSequence"/>
+</message>
+<message name="Networking.BWControllerPolicy.set_maximum_user_rateResponse">
+</message>
+
+<message name="Networking.BWControllerPolicy.get_maximum_user_rateRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.BWControllerPolicy.get_maximum_user_rateResponse">
+	<part name="return" type="tns:Common.RateUnitSequence"/>
+</message>
+
+<message name="Networking.BWControllerPolicy.get_categoryRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.BWControllerPolicy.get_categoryResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Networking.BWControllerPolicy.add_category_maximum_rateRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="categories" type="tns:Common.StringSequenceSequence"/>
+	<part name="rates" type="tns:Common.RateUnitSequenceSequence"/>
+</message>
+<message name="Networking.BWControllerPolicy.add_category_maximum_rateResponse">
+</message>
+
+<message name="Networking.BWControllerPolicy.add_category_maximum_percentageRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="categories" type="tns:Common.StringSequenceSequence"/>
+	<part name="percentages" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="Networking.BWControllerPolicy.add_category_maximum_percentageResponse">
+</message>
+
+<message name="Networking.BWControllerPolicy.remove_categoryRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="categories" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.BWControllerPolicy.remove_categoryResponse">
+</message>
+
+<message name="Networking.BWControllerPolicy.remove_all_categoriesRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.BWControllerPolicy.remove_all_categoriesResponse">
+</message>
+
+<message name="Networking.BWControllerPolicy.set_category_maximum_rateRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="categories" type="tns:Common.StringSequenceSequence"/>
+	<part name="rates" type="tns:Common.RateUnitSequenceSequence"/>
+</message>
+<message name="Networking.BWControllerPolicy.set_category_maximum_rateResponse">
+</message>
+
+<message name="Networking.BWControllerPolicy.get_category_maximum_rateRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="categories" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.BWControllerPolicy.get_category_maximum_rateResponse">
+	<part name="return" type="tns:Common.RateUnitSequenceSequence"/>
+</message>
+
+<message name="Networking.BWControllerPolicy.set_category_maximum_percentageRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="categories" type="tns:Common.StringSequenceSequence"/>
+	<part name="percentages" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="Networking.BWControllerPolicy.set_category_maximum_percentageResponse">
+</message>
+
+<message name="Networking.BWControllerPolicy.get_category_maximum_percentageRequest">
+	<part name="policies" type="tns:Common.StringSequence"/>
+	<part name="categories" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.BWControllerPolicy.get_category_maximum_percentageResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="Networking.BWControllerPolicy.get_versionRequest">
+</message>
+<message name="Networking.BWControllerPolicy.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.BWControllerPolicyPortType">
+	<operation name="get_list">
+   	<documentation>
+ Gets the names of all Bandwidth Controller policies.
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.get_listRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a set of Bandwidth Controller policies.
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.createRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.createResponse"/>
+	</operation>
+	<operation name="delete_policy">
+	<documentation>
+ Deletes a set of Bandwidth Controller policies.
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.delete_policyRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.delete_policyResponse"/>
+	</operation>
+	<operation name="delete_all_policies">
+	<documentation>
+ Deletes all Bandwidth Controller policies.
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.delete_all_policiesRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.delete_all_policiesResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the descriptions for the specified Bandwidth Controller policies.
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.set_descriptionRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the specified Bandwidth Controller policies.
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.get_descriptionRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_dynamic_state">
+	<documentation>
+ Gets the dynamic states of the specified Bandwidth Controller policies.
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.get_dynamic_stateRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.get_dynamic_stateResponse"/>
+	</operation>
+	<operation name="set_ip_tos">
+	<documentation>
+ Sets the IP-TOS value for the specified Bandwidth Controller policies.
+ If set then all non-conforming Layer 3 packets are set with this value.
+ A non-conforming packet is one which exceeds the rate limit of
+ the configured Bandwidth policy. A value of 65535 means it's a pass 
+ through and all the Layer 3 packets are passed as seen by the Bandwidth 
+ Controller.
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.set_ip_tosRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.set_ip_tosResponse"/>
+	</operation>
+	<operation name="get_ip_tos">
+	<documentation>
+ Gets the IP-TOS value for the specified Bandwidth Controller policies.
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.get_ip_tosRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.get_ip_tosResponse"/>
+	</operation>
+	<operation name="set_link_qos">
+	<documentation>
+ Sets the Link-QOS for the specified Bandwidth Controller policies.
+ All non-conforming Layer 2 packets are set with this value.
+ A non-conforming packet is one which exceeds the rate limit of
+ the configured Bandwidth policy. A value of 65535 means it's a 
+ pass through and all the Layer 2 packets are passed as seen by
+ the Bandwidth Controller.
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.set_link_qosRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.set_link_qosResponse"/>
+	</operation>
+	<operation name="get_link_qos">
+	<documentation>
+ Gets the Link-QOS for the specified Bandwidth Controller policies.
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.get_link_qosRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.get_link_qosResponse"/>
+	</operation>
+	<operation name="set_maximum_rate">
+	<documentation>
+ Sets the maximum rate for the specified Bandwidth Controller policies.
+ Maximum rates is maximum bandwidth allowed for all the flows going 
+ going through this policy. Maximum rates value should be between
+ 1000000bps and 320000000000 bps. 
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.set_maximum_rateRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.set_maximum_rateResponse"/>
+	</operation>
+	<operation name="get_maximum_rate">
+	<documentation>
+ Gets the maximum rate for the specified Bandwidth Controller policies.
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.get_maximum_rateRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.get_maximum_rateResponse"/>
+	</operation>
+	<operation name="set_maximum_user_rate">
+	<documentation>
+ Sets the maximum user rate for the specified Bandwidth Controller policies.
+ Maximum user rates is maximum bandwidth allowed for all the flows
+ going through this dynamically created instance of the Bandwidth Controller 
+ policy. Maximum user rate value should be between 1000000 bps and 2000000000 bps.
+ Maximum user rate cannot be higher than maximum rate specified for that 
+ Bandwidth Controller policy.  
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.set_maximum_user_rateRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.set_maximum_user_rateResponse"/>
+	</operation>
+	<operation name="get_maximum_user_rate">
+	<documentation>
+ Gets the maximum user rate for the specified Bandwidth Controller policies.
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.get_maximum_user_rateRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.get_maximum_user_rateResponse"/>
+	</operation>
+	<operation name="get_category">
+	<documentation>
+ Gets the names of all Bandwidth Controller policy categories.
+ Categories is a sub-policy of dynamically created instances
+ from a dynamic enabled policy.
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.get_categoryRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.get_categoryResponse"/>
+	</operation>
+	<operation name="add_category_maximum_rate">
+	<documentation>
+ Creates a set of Bandwidth Controller policy categories with the
+ specified maximum rates. Categories is a sub-policy of dynamically 
+ created instances from a dynamic enabled policies. Maximum rates 
+ cannot exceed the maximum user rate of the parent Bandwidth 
+ Controller policy.
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.add_category_maximum_rateRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.add_category_maximum_rateResponse"/>
+	</operation>
+	<operation name="add_category_maximum_percentage">
+	<documentation>
+ Creates a set of Bandwidth Controller policy categories with the specified
+ maximum rate percentages. Categories is a sub-policy of dynamically 
+ created instances from a dynamic enabled policies. Maximum rate percentage
+ is the maximum percentage of maximum user rate of dynamically enabled
+ policy.
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.add_category_maximum_percentageRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.add_category_maximum_percentageResponse"/>
+	</operation>
+	<operation name="remove_category">
+	<documentation>
+ Remove categories of the specified Bandwidth Controller policy.
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.remove_categoryRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.remove_categoryResponse"/>
+	</operation>
+	<operation name="remove_all_categories">
+	<documentation>
+ Remove all categories of the specified Bandwidth Controller policy.
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.remove_all_categoriesRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.remove_all_categoriesResponse"/>
+	</operation>
+	<operation name="set_category_maximum_rate">
+	<documentation>
+ Sets the Bandwidth Controller policy categories with the specified
+ specified maximum rates. Maximum rate is the maximum bandwidth allowed for
+ all the flows going through this policy category. Maximum rates 
+ cannot exceed the maximum user rate of the parent Bandwidth 
+ Controller policy.
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.set_category_maximum_rateRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.set_category_maximum_rateResponse"/>
+	</operation>
+	<operation name="get_category_maximum_rate">
+	<documentation>
+ Gets the maximum rates of the Bandwidth Controller policy categories. 
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.get_category_maximum_rateRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.get_category_maximum_rateResponse"/>
+	</operation>
+	<operation name="set_category_maximum_percentage">
+	<documentation>
+ Sets a set of Bandwidth Controller policy categories with specified rate 
+ percentages. Rate percentages is maximum percentage of the maximum
+ user rate allowed for all the flows going through this Bandwidth Controller 
+ policy category.
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.set_category_maximum_percentageRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.set_category_maximum_percentageResponse"/>
+	</operation>
+	<operation name="get_category_maximum_percentage">
+	<documentation>
+ Gets the maximum percentages of Bandwidth Controller policy categories.
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.get_category_maximum_percentageRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.get_category_maximum_percentageResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.BWControllerPolicy.get_versionRequest"/>
+		<output message="tns:Networking.BWControllerPolicy.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.BWControllerPolicyBinding" type="tns:Networking.BWControllerPolicyPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the names of all Bandwidth Controller policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a set of Bandwidth Controller policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_policy">
+	<documentation>
+ Deletes a set of Bandwidth Controller policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_policies">
+	<documentation>
+ Deletes all Bandwidth Controller policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the descriptions for the specified Bandwidth Controller policies.
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the specified Bandwidth Controller policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_dynamic_state">
+	<documentation>
+ Gets the dynamic states of the specified Bandwidth Controller policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ip_tos">
+	<documentation>
+ Sets the IP-TOS value for the specified Bandwidth Controller policies.
+ If set then all non-conforming Layer 3 packets are set with this value.
+ A non-conforming packet is one which exceeds the rate limit of
+ the configured Bandwidth policy. A value of 65535 means it's a pass 
+ through and all the Layer 3 packets are passed as seen by the Bandwidth 
+ Controller.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ip_tos">
+	<documentation>
+ Gets the IP-TOS value for the specified Bandwidth Controller policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_link_qos">
+	<documentation>
+ Sets the Link-QOS for the specified Bandwidth Controller policies.
+ All non-conforming Layer 2 packets are set with this value.
+ A non-conforming packet is one which exceeds the rate limit of
+ the configured Bandwidth policy. A value of 65535 means it's a 
+ pass through and all the Layer 2 packets are passed as seen by
+ the Bandwidth Controller.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_link_qos">
+	<documentation>
+ Gets the Link-QOS for the specified Bandwidth Controller policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_maximum_rate">
+	<documentation>
+ Sets the maximum rate for the specified Bandwidth Controller policies.
+ Maximum rates is maximum bandwidth allowed for all the flows going 
+ going through this policy. Maximum rates value should be between
+ 1000000bps and 320000000000 bps. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_maximum_rate">
+	<documentation>
+ Gets the maximum rate for the specified Bandwidth Controller policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_maximum_user_rate">
+	<documentation>
+ Sets the maximum user rate for the specified Bandwidth Controller policies.
+ Maximum user rates is maximum bandwidth allowed for all the flows
+ going through this dynamically created instance of the Bandwidth Controller 
+ policy. Maximum user rate value should be between 1000000 bps and 2000000000 bps.
+ Maximum user rate cannot be higher than maximum rate specified for that 
+ Bandwidth Controller policy.  
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_maximum_user_rate">
+	<documentation>
+ Gets the maximum user rate for the specified Bandwidth Controller policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_category">
+	<documentation>
+ Gets the names of all Bandwidth Controller policy categories.
+ Categories is a sub-policy of dynamically created instances
+ from a dynamic enabled policy.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_category_maximum_rate">
+	<documentation>
+ Creates a set of Bandwidth Controller policy categories with the
+ specified maximum rates. Categories is a sub-policy of dynamically 
+ created instances from a dynamic enabled policies. Maximum rates 
+ cannot exceed the maximum user rate of the parent Bandwidth 
+ Controller policy.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_category_maximum_percentage">
+	<documentation>
+ Creates a set of Bandwidth Controller policy categories with the specified
+ maximum rate percentages. Categories is a sub-policy of dynamically 
+ created instances from a dynamic enabled policies. Maximum rate percentage
+ is the maximum percentage of maximum user rate of dynamically enabled
+ policy.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_category">
+	<documentation>
+ Remove categories of the specified Bandwidth Controller policy.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_categories">
+	<documentation>
+ Remove all categories of the specified Bandwidth Controller policy.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_category_maximum_rate">
+	<documentation>
+ Sets the Bandwidth Controller policy categories with the specified
+ specified maximum rates. Maximum rate is the maximum bandwidth allowed for
+ all the flows going through this policy category. Maximum rates 
+ cannot exceed the maximum user rate of the parent Bandwidth 
+ Controller policy.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_category_maximum_rate">
+	<documentation>
+ Gets the maximum rates of the Bandwidth Controller policy categories. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_category_maximum_percentage">
+	<documentation>
+ Sets a set of Bandwidth Controller policy categories with specified rate 
+ percentages. Rate percentages is maximum percentage of the maximum
+ user rate allowed for all the flows going through this Bandwidth Controller 
+ policy category.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_category_maximum_percentage">
+	<documentation>
+ Gets the maximum percentages of Bandwidth Controller policy categories.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/BWControllerPolicy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/BWControllerPolicy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.BWControllerPolicy">
+	<documentation>
+ This interface configures the Bandwidth Controller policy components 
+ to manage the egress bandwidth per policy, per session or subscriber,
+ per application and various combinations of these.
+
+        	</documentation>
+	<port name="Networking.BWControllerPolicyPort" binding="tns:Networking.BWControllerPolicyBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

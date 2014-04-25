@@ -1,0 +1,654 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.TrafficGroup"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.BooleanSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:boolean[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.TrafficGroup.get_listRequest">
+</message>
+<message name="Management.TrafficGroup.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.TrafficGroup.createRequest">
+	<part name="traffic_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TrafficGroup.createResponse">
+</message>
+
+<message name="Management.TrafficGroup.delete_traffic_groupRequest">
+	<part name="traffic_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TrafficGroup.delete_traffic_groupResponse">
+</message>
+
+<message name="Management.TrafficGroup.set_descriptionRequest">
+	<part name="traffic_groups" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TrafficGroup.set_descriptionResponse">
+</message>
+
+<message name="Management.TrafficGroup.get_descriptionRequest">
+	<part name="traffic_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TrafficGroup.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.TrafficGroup.get_is_floatingRequest">
+	<part name="traffic_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TrafficGroup.get_is_floatingResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="Management.TrafficGroup.get_unit_idRequest">
+	<part name="traffic_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TrafficGroup.get_unit_idResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Management.TrafficGroup.set_default_deviceRequest">
+	<part name="traffic_groups" type="tns:Common.StringSequence"/>
+	<part name="devices" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TrafficGroup.set_default_deviceResponse">
+</message>
+
+<message name="Management.TrafficGroup.get_default_deviceRequest">
+	<part name="traffic_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TrafficGroup.get_default_deviceResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.TrafficGroup.set_mac_masquerade_addressRequest">
+	<part name="traffic_groups" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TrafficGroup.set_mac_masquerade_addressResponse">
+</message>
+
+<message name="Management.TrafficGroup.get_mac_masquerade_addressRequest">
+	<part name="traffic_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TrafficGroup.get_mac_masquerade_addressResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.TrafficGroup.set_auto_failback_enabled_stateRequest">
+	<part name="traffic_groups" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Management.TrafficGroup.set_auto_failback_enabled_stateResponse">
+</message>
+
+<message name="Management.TrafficGroup.get_auto_failback_enabled_stateRequest">
+	<part name="traffic_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TrafficGroup.get_auto_failback_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Management.TrafficGroup.set_auto_failback_timeRequest">
+	<part name="traffic_groups" type="tns:Common.StringSequence"/>
+	<part name="times" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Management.TrafficGroup.set_auto_failback_timeResponse">
+</message>
+
+<message name="Management.TrafficGroup.get_auto_failback_timeRequest">
+	<part name="traffic_groups" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.TrafficGroup.get_auto_failback_timeResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Management.TrafficGroup.get_versionRequest">
+</message>
+<message name="Management.TrafficGroup.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.TrafficGroupPortType">
+	<operation name="get_list">
+ 	<documentation>
+ Gets a list of all traffic groups.
+
+        	</documentation>
+		<input message="tns:Management.TrafficGroup.get_listRequest"/>
+		<output message="tns:Management.TrafficGroup.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates traffic groups.
+
+        	</documentation>
+		<input message="tns:Management.TrafficGroup.createRequest"/>
+		<output message="tns:Management.TrafficGroup.createResponse"/>
+	</operation>
+	<operation name="delete_traffic_group">
+	<documentation>
+ Deletes traffic groups.
+
+        	</documentation>
+		<input message="tns:Management.TrafficGroup.delete_traffic_groupRequest"/>
+		<output message="tns:Management.TrafficGroup.delete_traffic_groupResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for the specified traffic groups.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Management.TrafficGroup.set_descriptionRequest"/>
+		<output message="tns:Management.TrafficGroup.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the specified traffic groups.
+
+        	</documentation>
+		<input message="tns:Management.TrafficGroup.get_descriptionRequest"/>
+		<output message="tns:Management.TrafficGroup.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_is_floating">
+	<documentation>
+ Gets the is floating state of the specified traffic group.
+
+        	</documentation>
+		<input message="tns:Management.TrafficGroup.get_is_floatingRequest"/>
+		<output message="tns:Management.TrafficGroup.get_is_floatingResponse"/>
+	</operation>
+	<operation name="get_unit_id">
+	<documentation>
+ Gets the unit IDs for the specified traffic groups.
+
+        	</documentation>
+		<input message="tns:Management.TrafficGroup.get_unit_idRequest"/>
+		<output message="tns:Management.TrafficGroup.get_unit_idResponse"/>
+	</operation>
+	<operation name="set_default_device">
+	<documentation>
+ Sets the default devices for the specified traffic groups.
+
+        	</documentation>
+		<input message="tns:Management.TrafficGroup.set_default_deviceRequest"/>
+		<output message="tns:Management.TrafficGroup.set_default_deviceResponse"/>
+	</operation>
+	<operation name="get_default_device">
+	<documentation>
+ Gets the default devices for the specified traffic groups.
+
+        	</documentation>
+		<input message="tns:Management.TrafficGroup.get_default_deviceRequest"/>
+		<output message="tns:Management.TrafficGroup.get_default_deviceResponse"/>
+	</operation>
+	<operation name="set_mac_masquerade_address">
+	<documentation>
+ Sets the MAC masquerade addresses for the specified traffic groups.
+
+        	</documentation>
+		<input message="tns:Management.TrafficGroup.set_mac_masquerade_addressRequest"/>
+		<output message="tns:Management.TrafficGroup.set_mac_masquerade_addressResponse"/>
+	</operation>
+	<operation name="get_mac_masquerade_address">
+	<documentation>
+ Gets the MAC masquerade addresses for the specified traffic groups.
+
+        	</documentation>
+		<input message="tns:Management.TrafficGroup.get_mac_masquerade_addressRequest"/>
+		<output message="tns:Management.TrafficGroup.get_mac_masquerade_addressResponse"/>
+	</operation>
+	<operation name="set_auto_failback_enabled_state">
+	<documentation>
+ Sets the auto failback states for the specified traffic groups.
+
+        	</documentation>
+		<input message="tns:Management.TrafficGroup.set_auto_failback_enabled_stateRequest"/>
+		<output message="tns:Management.TrafficGroup.set_auto_failback_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_auto_failback_enabled_state">
+	<documentation>
+ Gets the auto failback enabled states for the specified traffic groups.
+
+        	</documentation>
+		<input message="tns:Management.TrafficGroup.get_auto_failback_enabled_stateRequest"/>
+		<output message="tns:Management.TrafficGroup.get_auto_failback_enabled_stateResponse"/>
+	</operation>
+	<operation name="set_auto_failback_time">
+	<documentation>
+ Sets the auto failback times for the specified traffic groups.
+
+        	</documentation>
+		<input message="tns:Management.TrafficGroup.set_auto_failback_timeRequest"/>
+		<output message="tns:Management.TrafficGroup.set_auto_failback_timeResponse"/>
+	</operation>
+	<operation name="get_auto_failback_time">
+	<documentation>
+ Gets the traffic group auto failback times for the specified traffic grups.
+
+        	</documentation>
+		<input message="tns:Management.TrafficGroup.get_auto_failback_timeRequest"/>
+		<output message="tns:Management.TrafficGroup.get_auto_failback_timeResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the interface version.
+
+        	</documentation>
+		<input message="tns:Management.TrafficGroup.get_versionRequest"/>
+		<output message="tns:Management.TrafficGroup.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.TrafficGroupBinding" type="tns:Management.TrafficGroupPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all traffic groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TrafficGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates traffic groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TrafficGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_traffic_group">
+	<documentation>
+ Deletes traffic groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TrafficGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for the specified traffic groups.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TrafficGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the specified traffic groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TrafficGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_is_floating">
+	<documentation>
+ Gets the is floating state of the specified traffic group.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TrafficGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_unit_id">
+	<documentation>
+ Gets the unit IDs for the specified traffic groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TrafficGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_default_device">
+	<documentation>
+ Sets the default devices for the specified traffic groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TrafficGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_default_device">
+	<documentation>
+ Gets the default devices for the specified traffic groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TrafficGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_mac_masquerade_address">
+	<documentation>
+ Sets the MAC masquerade addresses for the specified traffic groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TrafficGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_mac_masquerade_address">
+	<documentation>
+ Gets the MAC masquerade addresses for the specified traffic groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TrafficGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_auto_failback_enabled_state">
+	<documentation>
+ Sets the auto failback states for the specified traffic groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TrafficGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_auto_failback_enabled_state">
+	<documentation>
+ Gets the auto failback enabled states for the specified traffic groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TrafficGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_auto_failback_time">
+	<documentation>
+ Sets the auto failback times for the specified traffic groups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TrafficGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_auto_failback_time">
+	<documentation>
+ Gets the traffic group auto failback times for the specified traffic grups.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TrafficGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the interface version.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/TrafficGroup"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/TrafficGroup"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.TrafficGroup">
+	<documentation>
+ The Traffic Group interface contains the methods for creating and manipulating
+ traffic groups.  Traffic groups are a means to associate network objects with 
+ devices used in device failover.
+
+        	</documentation>
+	<port name="Management.TrafficGroupPort" binding="tns:Management.TrafficGroupBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

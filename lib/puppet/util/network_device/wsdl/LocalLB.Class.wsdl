@@ -1,0 +1,2153 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="LocalLB.Class"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.BooleanSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.BooleanSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.Class.MetaInformationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.Class.MetaInformation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.Class.AddressEntry">
+			<xsd:sequence>
+				<xsd:element name="address" type="xsd:string"/>
+				<xsd:element name="netmask" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.Class.MetaInformation">
+			<xsd:sequence>
+				<xsd:element name="class_name" type="xsd:string"/>
+				<xsd:element name="class_type" type="tns:LocalLB.Class.ClassType"/>
+				<xsd:element name="file_name" type="xsd:string"/>
+				<xsd:element name="file_mode" type="tns:LocalLB.Class.FileModeType"/>
+				<xsd:element name="file_format" type="tns:LocalLB.Class.FileFormatType"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.BooleanSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:boolean[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="LocalLB.Class.ClassType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="CLASS_TYPE_UNDEFINED">
+					<xsd:annotation>
+						<xsd:documentation>CLASS_TYPE_UNDEFINED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CLASS_TYPE_ADDRESS">
+					<xsd:annotation>
+						<xsd:documentation>CLASS_TYPE_ADDRESS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CLASS_TYPE_STRING">
+					<xsd:annotation>
+						<xsd:documentation>CLASS_TYPE_STRING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CLASS_TYPE_VALUE">
+					<xsd:annotation>
+						<xsd:documentation>CLASS_TYPE_VALUE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.Class.AddressEntrySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.Class.AddressEntry[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.Class.ClassTypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.Class.ClassType[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.Class.FileModeTypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.Class.FileModeType[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="LocalLB.Class.FileFormatType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="FILE_FORMAT_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>FILE_FORMAT_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILE_FORMAT_CSV">
+					<xsd:annotation>
+						<xsd:documentation>FILE_FORMAT_CSV</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="LocalLB.Class.ValueClassSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.Class.ValueClass[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.Class.StringClass">
+			<xsd:sequence>
+				<xsd:element name="name" type="xsd:string"/>
+				<xsd:element name="members" type="tns:Common.StringSequence"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.Class.AddressClass">
+			<xsd:sequence>
+				<xsd:element name="name" type="xsd:string"/>
+				<xsd:element name="members" type="tns:LocalLB.Class.AddressEntrySequence"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.Class.FileFormatTypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.Class.FileFormatType[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.Class.ValueClass">
+			<xsd:sequence>
+				<xsd:element name="name" type="xsd:string"/>
+				<xsd:element name="members" type="tns:Common.ULongSequence"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.Class.AddressClassSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.Class.AddressClass[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.Class.StringClassSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.Class.StringClass[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="LocalLB.Class.FileModeType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="FILE_MODE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>FILE_MODE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILE_MODE_TYPE_READ">
+					<xsd:annotation>
+						<xsd:documentation>FILE_MODE_TYPE_READ</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILE_MODE_TYPE_READ_WRITE">
+					<xsd:annotation>
+						<xsd:documentation>FILE_MODE_TYPE_READ_WRITE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="LocalLB.Class.get_address_class_listRequest">
+</message>
+<message name="LocalLB.Class.get_address_class_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.Class.create_address_classRequest">
+	<part name="classes" type="tns:LocalLB.Class.AddressClassSequence"/>
+</message>
+<message name="LocalLB.Class.create_address_classResponse">
+</message>
+
+<message name="LocalLB.Class.modify_address_classRequest">
+	<part name="classes" type="tns:LocalLB.Class.AddressClassSequence"/>
+</message>
+<message name="LocalLB.Class.modify_address_classResponse">
+</message>
+
+<message name="LocalLB.Class.get_address_classRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.Class.get_address_classResponse">
+	<part name="return" type="tns:LocalLB.Class.AddressClassSequence"/>
+</message>
+
+<message name="LocalLB.Class.add_address_class_memberRequest">
+	<part name="class_members" type="tns:LocalLB.Class.AddressClassSequence"/>
+</message>
+<message name="LocalLB.Class.add_address_class_memberResponse">
+</message>
+
+<message name="LocalLB.Class.delete_address_class_memberRequest">
+	<part name="class_members" type="tns:LocalLB.Class.AddressClassSequence"/>
+</message>
+<message name="LocalLB.Class.delete_address_class_memberResponse">
+</message>
+
+<message name="LocalLB.Class.find_address_class_memberRequest">
+	<part name="class_members" type="tns:LocalLB.Class.AddressClassSequence"/>
+</message>
+<message name="LocalLB.Class.find_address_class_memberResponse">
+	<part name="return" type="tns:Common.BooleanSequenceSequence"/>
+</message>
+
+<message name="LocalLB.Class.set_address_class_member_data_valueRequest">
+	<part name="class_members" type="tns:LocalLB.Class.AddressClassSequence"/>
+	<part name="values" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="LocalLB.Class.set_address_class_member_data_valueResponse">
+</message>
+
+<message name="LocalLB.Class.get_address_class_member_data_valueRequest">
+	<part name="class_members" type="tns:LocalLB.Class.AddressClassSequence"/>
+</message>
+<message name="LocalLB.Class.get_address_class_member_data_valueResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="LocalLB.Class.get_string_class_listRequest">
+</message>
+<message name="LocalLB.Class.get_string_class_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.Class.create_string_classRequest">
+	<part name="classes" type="tns:LocalLB.Class.StringClassSequence"/>
+</message>
+<message name="LocalLB.Class.create_string_classResponse">
+</message>
+
+<message name="LocalLB.Class.modify_string_classRequest">
+	<part name="classes" type="tns:LocalLB.Class.StringClassSequence"/>
+</message>
+<message name="LocalLB.Class.modify_string_classResponse">
+</message>
+
+<message name="LocalLB.Class.get_string_classRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.Class.get_string_classResponse">
+	<part name="return" type="tns:LocalLB.Class.StringClassSequence"/>
+</message>
+
+<message name="LocalLB.Class.add_string_class_memberRequest">
+	<part name="class_members" type="tns:LocalLB.Class.StringClassSequence"/>
+</message>
+<message name="LocalLB.Class.add_string_class_memberResponse">
+</message>
+
+<message name="LocalLB.Class.delete_string_class_memberRequest">
+	<part name="class_members" type="tns:LocalLB.Class.StringClassSequence"/>
+</message>
+<message name="LocalLB.Class.delete_string_class_memberResponse">
+</message>
+
+<message name="LocalLB.Class.find_string_class_memberRequest">
+	<part name="class_members" type="tns:LocalLB.Class.StringClassSequence"/>
+</message>
+<message name="LocalLB.Class.find_string_class_memberResponse">
+	<part name="return" type="tns:Common.BooleanSequenceSequence"/>
+</message>
+
+<message name="LocalLB.Class.set_string_class_member_data_valueRequest">
+	<part name="class_members" type="tns:LocalLB.Class.StringClassSequence"/>
+	<part name="values" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="LocalLB.Class.set_string_class_member_data_valueResponse">
+</message>
+
+<message name="LocalLB.Class.get_string_class_member_data_valueRequest">
+	<part name="class_members" type="tns:LocalLB.Class.StringClassSequence"/>
+</message>
+<message name="LocalLB.Class.get_string_class_member_data_valueResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="LocalLB.Class.get_value_class_listRequest">
+</message>
+<message name="LocalLB.Class.get_value_class_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.Class.create_value_classRequest">
+	<part name="classes" type="tns:LocalLB.Class.ValueClassSequence"/>
+</message>
+<message name="LocalLB.Class.create_value_classResponse">
+</message>
+
+<message name="LocalLB.Class.modify_value_classRequest">
+	<part name="classes" type="tns:LocalLB.Class.ValueClassSequence"/>
+</message>
+<message name="LocalLB.Class.modify_value_classResponse">
+</message>
+
+<message name="LocalLB.Class.get_value_classRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.Class.get_value_classResponse">
+	<part name="return" type="tns:LocalLB.Class.ValueClassSequence"/>
+</message>
+
+<message name="LocalLB.Class.add_value_class_memberRequest">
+	<part name="class_members" type="tns:LocalLB.Class.ValueClassSequence"/>
+</message>
+<message name="LocalLB.Class.add_value_class_memberResponse">
+</message>
+
+<message name="LocalLB.Class.delete_value_class_memberRequest">
+	<part name="class_members" type="tns:LocalLB.Class.ValueClassSequence"/>
+</message>
+<message name="LocalLB.Class.delete_value_class_memberResponse">
+</message>
+
+<message name="LocalLB.Class.find_value_class_memberRequest">
+	<part name="class_members" type="tns:LocalLB.Class.ValueClassSequence"/>
+</message>
+<message name="LocalLB.Class.find_value_class_memberResponse">
+	<part name="return" type="tns:Common.BooleanSequenceSequence"/>
+</message>
+
+<message name="LocalLB.Class.set_value_class_member_data_valueRequest">
+	<part name="class_members" type="tns:LocalLB.Class.ValueClassSequence"/>
+	<part name="values" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="LocalLB.Class.set_value_class_member_data_valueResponse">
+</message>
+
+<message name="LocalLB.Class.get_value_class_member_data_valueRequest">
+	<part name="class_members" type="tns:LocalLB.Class.ValueClassSequence"/>
+</message>
+<message name="LocalLB.Class.get_value_class_member_data_valueResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="LocalLB.Class.delete_classRequest">
+	<part name="classes" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.Class.delete_classResponse">
+</message>
+
+<message name="LocalLB.Class.delete_all_address_classesRequest">
+</message>
+<message name="LocalLB.Class.delete_all_address_classesResponse">
+</message>
+
+<message name="LocalLB.Class.delete_all_string_classesRequest">
+</message>
+<message name="LocalLB.Class.delete_all_string_classesResponse">
+</message>
+
+<message name="LocalLB.Class.delete_all_value_classesRequest">
+</message>
+<message name="LocalLB.Class.delete_all_value_classesResponse">
+</message>
+
+<message name="LocalLB.Class.get_external_class_listRequest">
+</message>
+<message name="LocalLB.Class.get_external_class_listResponse">
+	<part name="return" type="tns:LocalLB.Class.MetaInformationSequence"/>
+</message>
+
+<message name="LocalLB.Class.get_external_class_list_v2Request">
+</message>
+<message name="LocalLB.Class.get_external_class_list_v2Response">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.Class.create_external_classRequest">
+	<part name="external_classes" type="tns:LocalLB.Class.MetaInformationSequence"/>
+</message>
+<message name="LocalLB.Class.create_external_classResponse">
+</message>
+
+<message name="LocalLB.Class.create_external_class_v2Request">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+	<part name="file_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.Class.create_external_class_v2Response">
+</message>
+
+<message name="LocalLB.Class.set_external_class_file_nameRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+	<part name="file_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.Class.set_external_class_file_nameResponse">
+</message>
+
+<message name="LocalLB.Class.get_external_class_file_nameRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.Class.get_external_class_file_nameResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.Class.set_external_class_file_name_v2Request">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+	<part name="file_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.Class.set_external_class_file_name_v2Response">
+</message>
+
+<message name="LocalLB.Class.get_external_class_file_name_v2Request">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.Class.get_external_class_file_name_v2Response">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.Class.set_external_class_file_modeRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+	<part name="file_modes" type="tns:LocalLB.Class.FileModeTypeSequence"/>
+</message>
+<message name="LocalLB.Class.set_external_class_file_modeResponse">
+</message>
+
+<message name="LocalLB.Class.get_external_class_file_modeRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.Class.get_external_class_file_modeResponse">
+	<part name="return" type="tns:LocalLB.Class.FileModeTypeSequence"/>
+</message>
+
+<message name="LocalLB.Class.set_external_class_file_formatRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+	<part name="file_formats" type="tns:LocalLB.Class.FileFormatTypeSequence"/>
+</message>
+<message name="LocalLB.Class.set_external_class_file_formatResponse">
+</message>
+
+<message name="LocalLB.Class.get_external_class_file_formatRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.Class.get_external_class_file_formatResponse">
+	<part name="return" type="tns:LocalLB.Class.FileFormatTypeSequence"/>
+</message>
+
+<message name="LocalLB.Class.set_data_separatorRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+	<part name="separators" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.Class.set_data_separatorResponse">
+</message>
+
+<message name="LocalLB.Class.get_data_separatorRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.Class.get_data_separatorResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.Class.get_class_meta_informationRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.Class.get_class_meta_informationResponse">
+	<part name="return" type="tns:LocalLB.Class.MetaInformationSequence"/>
+</message>
+
+<message name="LocalLB.Class.get_class_meta_information_v2Request">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.Class.get_class_meta_information_v2Response">
+	<part name="return" type="tns:LocalLB.Class.MetaInformationSequence"/>
+</message>
+
+<message name="LocalLB.Class.get_class_typeRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.Class.get_class_typeResponse">
+	<part name="return" type="tns:LocalLB.Class.ClassTypeSequence"/>
+</message>
+
+<message name="LocalLB.Class.set_descriptionRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.Class.set_descriptionResponse">
+</message>
+
+<message name="LocalLB.Class.get_descriptionRequest">
+	<part name="class_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.Class.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.Class.get_versionRequest">
+</message>
+<message name="LocalLB.Class.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="LocalLB.ClassPortType">
+	<operation name="get_address_class_list">
+   	<documentation>
+ Gets the list of available address classes.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.get_address_class_listRequest"/>
+		<output message="tns:LocalLB.Class.get_address_class_listResponse"/>
+	</operation>
+	<operation name="create_address_class">
+	<documentation>
+ Creates address classes. The specified classes must not already exist.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.create_address_classRequest"/>
+		<output message="tns:LocalLB.Class.create_address_classResponse"/>
+	</operation>
+	<operation name="modify_address_class">
+	<documentation>
+ Modifies address classes. The specified classes must already exist.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.modify_address_classRequest"/>
+		<output message="tns:LocalLB.Class.modify_address_classResponse"/>
+	</operation>
+	<operation name="get_address_class">
+	<documentation>
+ Gets the specified address classes.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.get_address_classRequest"/>
+		<output message="tns:LocalLB.Class.get_address_classResponse"/>
+	</operation>
+	<operation name="add_address_class_member">
+	<documentation>
+ Incrementally adds address class members.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.add_address_class_memberRequest"/>
+		<output message="tns:LocalLB.Class.add_address_class_memberResponse"/>
+	</operation>
+	<operation name="delete_address_class_member">
+	<documentation>
+ Incrementally deletes address class members.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.delete_address_class_memberRequest"/>
+		<output message="tns:LocalLB.Class.delete_address_class_memberResponse"/>
+	</operation>
+	<operation name="find_address_class_member">
+	<documentation>
+ Checks to see if the specified class members are in the specified class names.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.find_address_class_memberRequest"/>
+		<output message="tns:LocalLB.Class.find_address_class_memberResponse"/>
+	</operation>
+	<operation name="set_address_class_member_data_value">
+	<documentation>
+ Sets the data values associated with a set of address class
+ members.  This data value is an optional arbitrary string, which
+ can be retrieved given the class member information, allowing the
+ class to be used as a value map.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.set_address_class_member_data_valueRequest"/>
+		<output message="tns:LocalLB.Class.set_address_class_member_data_valueResponse"/>
+	</operation>
+	<operation name="get_address_class_member_data_value">
+	<documentation>
+ Gets the data values associated with a set of address class
+ members.  This method is effectively the lookup method for using
+ the class as a value map.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.get_address_class_member_data_valueRequest"/>
+		<output message="tns:LocalLB.Class.get_address_class_member_data_valueResponse"/>
+	</operation>
+	<operation name="get_string_class_list">
+	<documentation>
+ Gets the list of available string classes.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.get_string_class_listRequest"/>
+		<output message="tns:LocalLB.Class.get_string_class_listResponse"/>
+	</operation>
+	<operation name="create_string_class">
+	<documentation>
+ Creates string classes. The specified classes must not already exist.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.create_string_classRequest"/>
+		<output message="tns:LocalLB.Class.create_string_classResponse"/>
+	</operation>
+	<operation name="modify_string_class">
+	<documentation>
+ Modifies  string classes. The specified classes must already exist.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.modify_string_classRequest"/>
+		<output message="tns:LocalLB.Class.modify_string_classResponse"/>
+	</operation>
+	<operation name="get_string_class">
+	<documentation>
+ Gets the specified string classes.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.get_string_classRequest"/>
+		<output message="tns:LocalLB.Class.get_string_classResponse"/>
+	</operation>
+	<operation name="add_string_class_member">
+	<documentation>
+ Incrementally adds string class members.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.add_string_class_memberRequest"/>
+		<output message="tns:LocalLB.Class.add_string_class_memberResponse"/>
+	</operation>
+	<operation name="delete_string_class_member">
+	<documentation>
+ Incrementally deletes string class members.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.delete_string_class_memberRequest"/>
+		<output message="tns:LocalLB.Class.delete_string_class_memberResponse"/>
+	</operation>
+	<operation name="find_string_class_member">
+	<documentation>
+ Checks to see if the specified class members are in the specified class names.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.find_string_class_memberRequest"/>
+		<output message="tns:LocalLB.Class.find_string_class_memberResponse"/>
+	</operation>
+	<operation name="set_string_class_member_data_value">
+	<documentation>
+ Sets the data values associated with a set of string class members.
+ This data value is an optional arbitrary string, which can be
+ retrieved given the class member information, allowing the class to
+ be used as a value map.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.set_string_class_member_data_valueRequest"/>
+		<output message="tns:LocalLB.Class.set_string_class_member_data_valueResponse"/>
+	</operation>
+	<operation name="get_string_class_member_data_value">
+	<documentation>
+ Gets the data values associated with a set of string class members.
+ This method is effectively the lookup method for using the class as
+ a value map.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.get_string_class_member_data_valueRequest"/>
+		<output message="tns:LocalLB.Class.get_string_class_member_data_valueResponse"/>
+	</operation>
+	<operation name="get_value_class_list">
+	<documentation>
+ Gets the list of available value classes.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.get_value_class_listRequest"/>
+		<output message="tns:LocalLB.Class.get_value_class_listResponse"/>
+	</operation>
+	<operation name="create_value_class">
+	<documentation>
+ Creates value classes. The specified classes must not already exist.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.create_value_classRequest"/>
+		<output message="tns:LocalLB.Class.create_value_classResponse"/>
+	</operation>
+	<operation name="modify_value_class">
+	<documentation>
+ Modifies value classes. The specified classes must already exist.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.modify_value_classRequest"/>
+		<output message="tns:LocalLB.Class.modify_value_classResponse"/>
+	</operation>
+	<operation name="get_value_class">
+	<documentation>
+ Gets the specified value classes.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.get_value_classRequest"/>
+		<output message="tns:LocalLB.Class.get_value_classResponse"/>
+	</operation>
+	<operation name="add_value_class_member">
+	<documentation>
+ Incrementally adds value class members.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.add_value_class_memberRequest"/>
+		<output message="tns:LocalLB.Class.add_value_class_memberResponse"/>
+	</operation>
+	<operation name="delete_value_class_member">
+	<documentation>
+ Incrementally deletes value class members.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.delete_value_class_memberRequest"/>
+		<output message="tns:LocalLB.Class.delete_value_class_memberResponse"/>
+	</operation>
+	<operation name="find_value_class_member">
+	<documentation>
+ Checks to see if the specified class members are in the specified class names.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.find_value_class_memberRequest"/>
+		<output message="tns:LocalLB.Class.find_value_class_memberResponse"/>
+	</operation>
+	<operation name="set_value_class_member_data_value">
+	<documentation>
+ Sets the data values associated with a set of value class members.
+ This data value is an arbitrary optional string, which can be
+ retrieved given the class member information, allowing the class to
+ be used as a value map.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.set_value_class_member_data_valueRequest"/>
+		<output message="tns:LocalLB.Class.set_value_class_member_data_valueResponse"/>
+	</operation>
+	<operation name="get_value_class_member_data_value">
+	<documentation>
+ Gets the data values associated with a set of value class members.
+ This method is effectively the lookup method for using the class as
+ a value map.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.get_value_class_member_data_valueRequest"/>
+		<output message="tns:LocalLB.Class.get_value_class_member_data_valueResponse"/>
+	</operation>
+	<operation name="delete_class">
+	<documentation>
+ Deletes the specified classes.  The specified classes can be of any class type, even external classes.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.delete_classRequest"/>
+		<output message="tns:LocalLB.Class.delete_classResponse"/>
+	</operation>
+	<operation name="delete_all_address_classes">
+	<documentation>
+ Deletes all address classes.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.delete_all_address_classesRequest"/>
+		<output message="tns:LocalLB.Class.delete_all_address_classesResponse"/>
+	</operation>
+	<operation name="delete_all_string_classes">
+	<documentation>
+ Deletes all string classes.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.delete_all_string_classesRequest"/>
+		<output message="tns:LocalLB.Class.delete_all_string_classesResponse"/>
+	</operation>
+	<operation name="delete_all_value_classes">
+	<documentation>
+ Deletes all value classes.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.delete_all_value_classesRequest"/>
+		<output message="tns:LocalLB.Class.delete_all_value_classesResponse"/>
+	</operation>
+	<operation name="get_external_class_list">
+	<documentation>
+ This method is deprecated, since data group files are officially
+ managed as data group file objects via the
+ get_external_class_list_v2 method and System::DataGroupFile
+ interface.
+
+ Gets the list of all available external classes.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.get_external_class_listRequest"/>
+		<output message="tns:LocalLB.Class.get_external_class_listResponse"/>
+	</operation>
+	<operation name="get_external_class_list_v2">
+	<documentation>
+ Gets the list of all available external classes.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.get_external_class_list_v2Request"/>
+		<output message="tns:LocalLB.Class.get_external_class_list_v2Response"/>
+	</operation>
+	<operation name="create_external_class">
+	<documentation>
+ This method is deprecated, since data group files are officially
+ managed as data group file objects via the create_external_class_v2
+ method and System::DataGroupFile interface.
+
+ Creates external classes.
+
+ Note: As of v9.6.0, the validation on the file_name field
+ in external_classes was improved to ensure the class file
+ exists on pain of Common::OperationFailed exception.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.create_external_classRequest"/>
+		<output message="tns:LocalLB.Class.create_external_classResponse"/>
+	</operation>
+	<operation name="create_external_class_v2">
+	<documentation>
+ Creates external classes.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.create_external_class_v2Request"/>
+		<output message="tns:LocalLB.Class.create_external_class_v2Response"/>
+	</operation>
+	<operation name="set_external_class_file_name">
+	<documentation>
+ This method is deprecated, since data group files are officially
+ managed as data group file objects via the
+ set_external_class_file_name_v2 method and System::DataGroupFile
+ interface.
+
+ Sets the file names for the specified external classes. This should only be called
+ for external classes, since it does not make sense for non-external classes.
+ If called for non-external classes, it will silently accept it, but nothing
+ will be done.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.set_external_class_file_nameRequest"/>
+		<output message="tns:LocalLB.Class.set_external_class_file_nameResponse"/>
+	</operation>
+	<operation name="get_external_class_file_name">
+	<documentation>
+ This method is deprecated, since data group files are officially
+ managed as data group file objects via the
+ get_external_class_file_name_v2 method and System::DataGroupFile
+ interface.
+
+ Gets the file names for the specified classes. This should only be called
+ for external classes, since it does not make sense for non-external classes.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.get_external_class_file_nameRequest"/>
+		<output message="tns:LocalLB.Class.get_external_class_file_nameResponse"/>
+	</operation>
+	<operation name="set_external_class_file_name_v2">
+	<documentation>
+ Sets the names of the data group file objects for a set of external
+ classes.  This should only be called for external classes, since it
+ does not make sense for non-external classes.  If called for
+ non-external classes, it will silently accept it, but nothing will
+ be done.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.set_external_class_file_name_v2Request"/>
+		<output message="tns:LocalLB.Class.set_external_class_file_name_v2Response"/>
+	</operation>
+	<operation name="get_external_class_file_name_v2">
+	<documentation>
+ Gets the names of the data group file objects for a set of
+ classes.  For non-external classes, an empty name will be returned.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.get_external_class_file_name_v2Request"/>
+		<output message="tns:LocalLB.Class.get_external_class_file_name_v2Response"/>
+	</operation>
+	<operation name="set_external_class_file_mode">
+	<documentation>
+ Sets the file mode for the specified classes. This should only be called
+ for external classes, since it does not make sense for non-external classes.
+ If called for non-external classes, it will silently accept it, but nothing
+ will be done.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.set_external_class_file_modeRequest"/>
+		<output message="tns:LocalLB.Class.set_external_class_file_modeResponse"/>
+	</operation>
+	<operation name="get_external_class_file_mode">
+	<documentation>
+ Gets the file modes for the specified classes. This should only be called
+ for external classes, since it does not make sense for non-external classes.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.get_external_class_file_modeRequest"/>
+		<output message="tns:LocalLB.Class.get_external_class_file_modeResponse"/>
+	</operation>
+	<operation name="set_external_class_file_format">
+	<documentation>
+ Sets the file format for the specified classes. This should only be called
+ for external classes, since it does not make sense for non-external classes.
+ If called for non-external classes, it will silently accept it, but nothing
+ will be done.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.set_external_class_file_formatRequest"/>
+		<output message="tns:LocalLB.Class.set_external_class_file_formatResponse"/>
+	</operation>
+	<operation name="get_external_class_file_format">
+	<documentation>
+ Gets the file format for the specified classes. This should only be called
+ for external classes, since it does not make sense for non-external classes.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.get_external_class_file_formatRequest"/>
+		<output message="tns:LocalLB.Class.get_external_class_file_formatResponse"/>
+	</operation>
+	<operation name="set_data_separator">
+	<documentation>
+ This has been deprecated, as its functionality has been taken over
+ by the DataGroupFile interface.  Note that it is valid only for
+ external classes in 11.0.0 and beyond (it really never was
+ appropriate for other classes, and is deprecated in any case).
+
+ Sets the strings used to separate a class member value from its
+ optional associated data value for a set of classes.  This is used
+ for listing and storing both external and internal classes.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.set_data_separatorRequest"/>
+		<output message="tns:LocalLB.Class.set_data_separatorResponse"/>
+	</operation>
+	<operation name="get_data_separator">
+	<documentation>
+ This has been deprecated, as its functionality has been taken over
+ by the DataGroupFile interface. Note that it is valid only for
+ external classes in 11.0.0 and beyond (it really never was
+ appropriate for other classes, and is deprecated in any case).
+
+ Gets the strings used to separate a class member value from its
+ optional associated data value for a set of classes.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.get_data_separatorRequest"/>
+		<output message="tns:LocalLB.Class.get_data_separatorResponse"/>
+	</operation>
+	<operation name="get_class_meta_information">
+	<documentation>
+ This method is deprecated, since data group files are officially
+ managed as data group file objects via the
+ get_class_meta_information_v2 method and System::DataGroupFile
+ interface.
+
+ Gets the meta data information for the specified classes. For external classes,
+ the meta information will indicate the external file and other relevant information.
+ For non-external classes, only applicable information such as class name/type will be
+ of importance.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.get_class_meta_informationRequest"/>
+		<output message="tns:LocalLB.Class.get_class_meta_informationResponse"/>
+	</operation>
+	<operation name="get_class_meta_information_v2">
+	<documentation>
+ Gets the meta data information for the specified classes. For external classes,
+ the meta information will indicate the external file and other relevant information.
+ For non-external classes, only applicable information such as class name/type will be
+ of importance.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.get_class_meta_information_v2Request"/>
+		<output message="tns:LocalLB.Class.get_class_meta_information_v2Response"/>
+	</operation>
+	<operation name="get_class_type">
+	<documentation>
+ Gets the class types for the specified classes.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.get_class_typeRequest"/>
+		<output message="tns:LocalLB.Class.get_class_typeResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of classes.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.set_descriptionRequest"/>
+		<output message="tns:LocalLB.Class.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of classes.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.get_descriptionRequest"/>
+		<output message="tns:LocalLB.Class.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:LocalLB.Class.get_versionRequest"/>
+		<output message="tns:LocalLB.Class.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="LocalLB.ClassBinding" type="tns:LocalLB.ClassPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_address_class_list">
+	<documentation>
+ Gets the list of available address classes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_address_class">
+	<documentation>
+ Creates address classes. The specified classes must not already exist.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="modify_address_class">
+	<documentation>
+ Modifies address classes. The specified classes must already exist.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_address_class">
+	<documentation>
+ Gets the specified address classes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_address_class_member">
+	<documentation>
+ Incrementally adds address class members.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_address_class_member">
+	<documentation>
+ Incrementally deletes address class members.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="find_address_class_member">
+	<documentation>
+ Checks to see if the specified class members are in the specified class names.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_address_class_member_data_value">
+	<documentation>
+ Sets the data values associated with a set of address class
+ members.  This data value is an optional arbitrary string, which
+ can be retrieved given the class member information, allowing the
+ class to be used as a value map.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_address_class_member_data_value">
+	<documentation>
+ Gets the data values associated with a set of address class
+ members.  This method is effectively the lookup method for using
+ the class as a value map.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_string_class_list">
+	<documentation>
+ Gets the list of available string classes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_string_class">
+	<documentation>
+ Creates string classes. The specified classes must not already exist.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="modify_string_class">
+	<documentation>
+ Modifies  string classes. The specified classes must already exist.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_string_class">
+	<documentation>
+ Gets the specified string classes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_string_class_member">
+	<documentation>
+ Incrementally adds string class members.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_string_class_member">
+	<documentation>
+ Incrementally deletes string class members.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="find_string_class_member">
+	<documentation>
+ Checks to see if the specified class members are in the specified class names.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_string_class_member_data_value">
+	<documentation>
+ Sets the data values associated with a set of string class members.
+ This data value is an optional arbitrary string, which can be
+ retrieved given the class member information, allowing the class to
+ be used as a value map.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_string_class_member_data_value">
+	<documentation>
+ Gets the data values associated with a set of string class members.
+ This method is effectively the lookup method for using the class as
+ a value map.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_value_class_list">
+	<documentation>
+ Gets the list of available value classes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_value_class">
+	<documentation>
+ Creates value classes. The specified classes must not already exist.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="modify_value_class">
+	<documentation>
+ Modifies value classes. The specified classes must already exist.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_value_class">
+	<documentation>
+ Gets the specified value classes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_value_class_member">
+	<documentation>
+ Incrementally adds value class members.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_value_class_member">
+	<documentation>
+ Incrementally deletes value class members.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="find_value_class_member">
+	<documentation>
+ Checks to see if the specified class members are in the specified class names.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_value_class_member_data_value">
+	<documentation>
+ Sets the data values associated with a set of value class members.
+ This data value is an arbitrary optional string, which can be
+ retrieved given the class member information, allowing the class to
+ be used as a value map.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_value_class_member_data_value">
+	<documentation>
+ Gets the data values associated with a set of value class members.
+ This method is effectively the lookup method for using the class as
+ a value map.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_class">
+	<documentation>
+ Deletes the specified classes.  The specified classes can be of any class type, even external classes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_address_classes">
+	<documentation>
+ Deletes all address classes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_string_classes">
+	<documentation>
+ Deletes all string classes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_value_classes">
+	<documentation>
+ Deletes all value classes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_external_class_list">
+	<documentation>
+ This method is deprecated, since data group files are officially
+ managed as data group file objects via the
+ get_external_class_list_v2 method and System::DataGroupFile
+ interface.
+
+ Gets the list of all available external classes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_external_class_list_v2">
+	<documentation>
+ Gets the list of all available external classes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_external_class">
+	<documentation>
+ This method is deprecated, since data group files are officially
+ managed as data group file objects via the create_external_class_v2
+ method and System::DataGroupFile interface.
+
+ Creates external classes.
+
+ Note: As of v9.6.0, the validation on the file_name field
+ in external_classes was improved to ensure the class file
+ exists on pain of Common::OperationFailed exception.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_external_class_v2">
+	<documentation>
+ Creates external classes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_external_class_file_name">
+	<documentation>
+ This method is deprecated, since data group files are officially
+ managed as data group file objects via the
+ set_external_class_file_name_v2 method and System::DataGroupFile
+ interface.
+
+ Sets the file names for the specified external classes. This should only be called
+ for external classes, since it does not make sense for non-external classes.
+ If called for non-external classes, it will silently accept it, but nothing
+ will be done.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_external_class_file_name">
+	<documentation>
+ This method is deprecated, since data group files are officially
+ managed as data group file objects via the
+ get_external_class_file_name_v2 method and System::DataGroupFile
+ interface.
+
+ Gets the file names for the specified classes. This should only be called
+ for external classes, since it does not make sense for non-external classes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_external_class_file_name_v2">
+	<documentation>
+ Sets the names of the data group file objects for a set of external
+ classes.  This should only be called for external classes, since it
+ does not make sense for non-external classes.  If called for
+ non-external classes, it will silently accept it, but nothing will
+ be done.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_external_class_file_name_v2">
+	<documentation>
+ Gets the names of the data group file objects for a set of
+ classes.  For non-external classes, an empty name will be returned.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_external_class_file_mode">
+	<documentation>
+ Sets the file mode for the specified classes. This should only be called
+ for external classes, since it does not make sense for non-external classes.
+ If called for non-external classes, it will silently accept it, but nothing
+ will be done.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_external_class_file_mode">
+	<documentation>
+ Gets the file modes for the specified classes. This should only be called
+ for external classes, since it does not make sense for non-external classes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_external_class_file_format">
+	<documentation>
+ Sets the file format for the specified classes. This should only be called
+ for external classes, since it does not make sense for non-external classes.
+ If called for non-external classes, it will silently accept it, but nothing
+ will be done.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_external_class_file_format">
+	<documentation>
+ Gets the file format for the specified classes. This should only be called
+ for external classes, since it does not make sense for non-external classes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_data_separator">
+	<documentation>
+ This has been deprecated, as its functionality has been taken over
+ by the DataGroupFile interface.  Note that it is valid only for
+ external classes in 11.0.0 and beyond (it really never was
+ appropriate for other classes, and is deprecated in any case).
+
+ Sets the strings used to separate a class member value from its
+ optional associated data value for a set of classes.  This is used
+ for listing and storing both external and internal classes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_data_separator">
+	<documentation>
+ This has been deprecated, as its functionality has been taken over
+ by the DataGroupFile interface. Note that it is valid only for
+ external classes in 11.0.0 and beyond (it really never was
+ appropriate for other classes, and is deprecated in any case).
+
+ Gets the strings used to separate a class member value from its
+ optional associated data value for a set of classes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_class_meta_information">
+	<documentation>
+ This method is deprecated, since data group files are officially
+ managed as data group file objects via the
+ get_class_meta_information_v2 method and System::DataGroupFile
+ interface.
+
+ Gets the meta data information for the specified classes. For external classes,
+ the meta information will indicate the external file and other relevant information.
+ For non-external classes, only applicable information such as class name/type will be
+ of importance.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_class_meta_information_v2">
+	<documentation>
+ Gets the meta data information for the specified classes. For external classes,
+ the meta information will indicate the external file and other relevant information.
+ For non-external classes, only applicable information such as class name/type will be
+ of importance.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_class_type">
+	<documentation>
+ Gets the class types for the specified classes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of classes.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of classes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/Class"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/Class"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="LocalLB.Class">
+	<documentation>
+ The Class interface enables you to manipulate a local load balancer's Class attributes.
+ There are 3 different Class types: Address, String, and Value.
+
+        	</documentation>
+	<port name="LocalLB.ClassPort" binding="tns:LocalLB.ClassBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

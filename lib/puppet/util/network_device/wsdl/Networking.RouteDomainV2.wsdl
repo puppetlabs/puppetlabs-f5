@@ -1,0 +1,3942 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.RouteDomainV2"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Common.FirewallRulePlacementType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="FW_RULE_PLACEMENT_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_PLACEMENT_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_RULE_PLACEMENT_BEFORE">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_PLACEMENT_BEFORE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_RULE_PLACEMENT_AFTER">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_PLACEMENT_AFTER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_RULE_PLACEMENT_ORDER">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_PLACEMENT_ORDER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.NetAddressSequenceSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.NetAddressSequenceSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.ULongSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.FirewallRuleActionSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.FirewallRuleActionSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.FirewallRuleICMPTypeCodeSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.FirewallRuleICMPTypeCodeSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.NetAddressSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.NetAddressSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.PortRangeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.PortRange[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.FirewallRuleActionSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.FirewallRuleAction[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.RouteDomainV2.RoutingProtocolSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.RouteDomainV2.RoutingProtocolSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.FirewallRuleICMPTypeCodeSequenceSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.FirewallRuleICMPTypeCodeSequenceSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.ProtocolType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="PROTOCOL_ANY">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_ANY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_IPV6">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_IPV6</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_ROUTING">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_ROUTING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_NONE">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_FRAGMENT">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_FRAGMENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_DSTOPTS">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_DSTOPTS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_TCP">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_TCP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_UDP">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_UDP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_ICMP">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_ICMP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_ICMPV6">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_ICMPV6</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_OSPF">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_OSPF</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_SCTP">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_SCTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.NetAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequenceSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.FirewallRuleAction">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="FW_RULE_ACTION_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_ACTION_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_RULE_ACTION_ACCEPT">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_ACTION_ACCEPT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_RULE_ACTION_ACCEPT_DECISIVELY">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_ACTION_ACCEPT_DECISIVELY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_RULE_ACTION_REJECT">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_ACTION_REJECT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_RULE_ACTION_DROP">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_ACTION_DROP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.FirewallRuleStateSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.FirewallRuleStateSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.RouteDomainV2.RoutingProtocol">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="ROUTING_PROTOCOL_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>ROUTING_PROTOCOL_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ROUTING_PROTOCOL_BGP">
+					<xsd:annotation>
+						<xsd:documentation>ROUTING_PROTOCOL_BGP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ROUTING_PROTOCOL_ISIS">
+					<xsd:annotation>
+						<xsd:documentation>ROUTING_PROTOCOL_ISIS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ROUTING_PROTOCOL_OSPF_V2">
+					<xsd:annotation>
+						<xsd:documentation>ROUTING_PROTOCOL_OSPF_V2</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ROUTING_PROTOCOL_OSPF_V3">
+					<xsd:annotation>
+						<xsd:documentation>ROUTING_PROTOCOL_OSPF_V3</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ROUTING_PROTOCOL_RIP">
+					<xsd:annotation>
+						<xsd:documentation>ROUTING_PROTOCOL_RIP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ROUTING_PROTOCOL_RIP_NG">
+					<xsd:annotation>
+						<xsd:documentation>ROUTING_PROTOCOL_RIP_NG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ROUTING_PROTOCOL_BFD">
+					<xsd:annotation>
+						<xsd:documentation>ROUTING_PROTOCOL_BFD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Networking.RouteDomainV2.RoutingProtocolSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.RouteDomainV2.RoutingProtocol[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.FirewallRuleState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="FW_RULE_STATE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_STATE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_RULE_STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_RULE_STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_RULE_STATE_SCHEDULED">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_STATE_SCHEDULED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FW_RULE_STATE_INVALID">
+					<xsd:annotation>
+						<xsd:documentation>FW_RULE_STATE_INVALID</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.FirewallRulePlacement">
+			<xsd:sequence>
+				<xsd:element name="type" type="tns:Common.FirewallRulePlacementType"/>
+				<xsd:element name="target" type="xsd:string"/>
+				<xsd:element name="order" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.FirewallRuleICMPTypeCode">
+			<xsd:sequence>
+				<xsd:element name="type" type="xsd:long"/>
+				<xsd:element name="code" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.FirewallRuleICMPTypeCodeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.FirewallRuleICMPTypeCode[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.FirewallRuleStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.FirewallRuleState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.PortRange">
+			<xsd:sequence>
+				<xsd:element name="begin" type="xsd:long"/>
+				<xsd:element name="end" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.FirewallRulePlacementSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.FirewallRulePlacementSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ProtocolTypeSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.ProtocolTypeSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.FirewallRulePlacementSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.FirewallRulePlacement[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.PortRangeSequenceSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.PortRangeSequenceSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.PortRangeSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.PortRangeSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ProtocolTypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.ProtocolType[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.RouteDomainV2.get_listRequest">
+</message>
+<message name="Networking.RouteDomainV2.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.createRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="ids" type="tns:Common.ULongSequence"/>
+	<part name="vlans" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.createResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.delete_route_domainRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.delete_route_domainResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.delete_all_route_domainsRequest">
+</message>
+<message name="Networking.RouteDomainV2.delete_all_route_domainsResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_identifierRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_identifierResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.set_parentRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.set_parentResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_parentRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_parentResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.set_descriptionRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.set_descriptionResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_descriptionRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.set_bw_controller_policyRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="policies" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.set_bw_controller_policyResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_bw_controller_policyRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_bw_controller_policyResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.set_strict_stateRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.set_strict_stateResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_strict_stateRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_strict_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.get_vlanRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_vlanResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.add_vlanRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="vlans" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.add_vlanResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_vlanRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="vlans" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_vlanResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_all_vlansRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_all_vlansResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_routing_protocolRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_routing_protocolResponse">
+	<part name="return" type="tns:Networking.RouteDomainV2.RoutingProtocolSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.add_routing_protocolRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="protocols" type="tns:Networking.RouteDomainV2.RoutingProtocolSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.add_routing_protocolResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_routing_protocolRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="protocols" type="tns:Networking.RouteDomainV2.RoutingProtocolSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_routing_protocolResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_all_routing_protocolsRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_all_routing_protocolsResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_ruleRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_ruleResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.add_fw_ruleRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="placements" type="tns:Common.FirewallRulePlacementSequenceSequence"/>
+	<part name="actions" type="tns:Common.FirewallRuleActionSequenceSequence"/>
+	<part name="states" type="tns:Common.FirewallRuleStateSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.add_fw_ruleResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.add_fw_rule_with_rule_listRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="placements" type="tns:Common.FirewallRulePlacementSequenceSequence"/>
+	<part name="lists" type="tns:Common.StringSequenceSequence"/>
+	<part name="states" type="tns:Common.FirewallRuleStateSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.add_fw_rule_with_rule_listResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_fw_ruleRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_fw_ruleResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_all_fw_rulesRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_all_fw_rulesResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.set_fw_rule_stateRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="states" type="tns:Common.FirewallRuleStateSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.set_fw_rule_stateResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_stateRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_stateResponse">
+	<part name="return" type="tns:Common.FirewallRuleStateSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.set_fw_rule_orderRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="orders" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.set_fw_rule_orderResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_orderRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_orderResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_source_address_listRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_source_address_listResponse">
+	<part name="return" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.add_fw_rule_source_address_listRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="lists" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.add_fw_rule_source_address_listResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_fw_rule_source_address_listRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="lists" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_fw_rule_source_address_listResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_all_fw_rule_source_address_listsRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_all_fw_rule_source_address_listsResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_source_addressRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_source_addressResponse">
+	<part name="return" type="tns:Common.NetAddressSequenceSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.add_fw_rule_source_addressRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="addresses" type="tns:Common.NetAddressSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.add_fw_rule_source_addressResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_fw_rule_source_addressRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="addresses" type="tns:Common.NetAddressSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_fw_rule_source_addressResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_all_fw_rule_source_addressesRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_all_fw_rule_source_addressesResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.set_fw_rule_source_address_descriptionRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="addresses" type="tns:Common.NetAddressSequenceSequenceSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.set_fw_rule_source_address_descriptionResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_source_address_descriptionRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="addresses" type="tns:Common.NetAddressSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_source_address_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_destination_address_listRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_destination_address_listResponse">
+	<part name="return" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.add_fw_rule_destination_address_listRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="lists" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.add_fw_rule_destination_address_listResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_fw_rule_destination_address_listRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="lists" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_fw_rule_destination_address_listResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_all_fw_rule_destination_address_listsRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_all_fw_rule_destination_address_listsResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_destination_addressRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_destination_addressResponse">
+	<part name="return" type="tns:Common.NetAddressSequenceSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.add_fw_rule_destination_addressRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="addresses" type="tns:Common.NetAddressSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.add_fw_rule_destination_addressResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_fw_rule_destination_addressRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="addresses" type="tns:Common.NetAddressSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_fw_rule_destination_addressResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_all_fw_rule_destination_addressesRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_all_fw_rule_destination_addressesResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.set_fw_rule_destination_address_descriptionRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="addresses" type="tns:Common.NetAddressSequenceSequenceSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.set_fw_rule_destination_address_descriptionResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_destination_address_descriptionRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="addresses" type="tns:Common.NetAddressSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_destination_address_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_source_port_listRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_source_port_listResponse">
+	<part name="return" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.add_fw_rule_source_port_listRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="lists" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.add_fw_rule_source_port_listResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_fw_rule_source_port_listRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="lists" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_fw_rule_source_port_listResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_all_fw_rule_source_port_listsRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_all_fw_rule_source_port_listsResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_source_portRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_source_portResponse">
+	<part name="return" type="tns:Common.PortRangeSequenceSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.add_fw_rule_source_portRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="ports" type="tns:Common.PortRangeSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.add_fw_rule_source_portResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_fw_rule_source_portRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="ports" type="tns:Common.PortRangeSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_fw_rule_source_portResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_all_fw_rule_source_portsRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_all_fw_rule_source_portsResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.set_fw_rule_source_port_descriptionRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="ports" type="tns:Common.PortRangeSequenceSequenceSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.set_fw_rule_source_port_descriptionResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_source_port_descriptionRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="ports" type="tns:Common.PortRangeSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_source_port_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_destination_port_listRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_destination_port_listResponse">
+	<part name="return" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.add_fw_rule_destination_port_listRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="lists" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.add_fw_rule_destination_port_listResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_fw_rule_destination_port_listRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="lists" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_fw_rule_destination_port_listResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_all_fw_rule_destination_port_listsRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_all_fw_rule_destination_port_listsResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_destination_portRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_destination_portResponse">
+	<part name="return" type="tns:Common.PortRangeSequenceSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.add_fw_rule_destination_portRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="ports" type="tns:Common.PortRangeSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.add_fw_rule_destination_portResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_fw_rule_destination_portRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="ports" type="tns:Common.PortRangeSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_fw_rule_destination_portResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_all_fw_rule_destination_portsRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_all_fw_rule_destination_portsResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.set_fw_rule_destination_port_descriptionRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="ports" type="tns:Common.PortRangeSequenceSequenceSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.set_fw_rule_destination_port_descriptionResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_destination_port_descriptionRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="ports" type="tns:Common.PortRangeSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_destination_port_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_icmp_typecodeRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_icmp_typecodeResponse">
+	<part name="return" type="tns:Common.FirewallRuleICMPTypeCodeSequenceSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.add_fw_rule_icmp_typecodeRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="typecodes" type="tns:Common.FirewallRuleICMPTypeCodeSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.add_fw_rule_icmp_typecodeResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_fw_rule_icmp_typecodeRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="typecodes" type="tns:Common.FirewallRuleICMPTypeCodeSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_fw_rule_icmp_typecodeResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_all_fw_rule_icmp_typecodesRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_all_fw_rule_icmp_typecodesResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.set_fw_rule_icmp_typecode_descriptionRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="typecodes" type="tns:Common.FirewallRuleICMPTypeCodeSequenceSequenceSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.set_fw_rule_icmp_typecode_descriptionResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_icmp_typecode_descriptionRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="typecodes" type="tns:Common.FirewallRuleICMPTypeCodeSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_icmp_typecode_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_source_vlanRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_source_vlanResponse">
+	<part name="return" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.add_fw_rule_source_vlanRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="vlans" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.add_fw_rule_source_vlanResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_fw_rule_source_vlanRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="vlans" type="tns:Common.StringSequenceSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_fw_rule_source_vlanResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.remove_all_fw_rule_source_vlansRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.remove_all_fw_rule_source_vlansResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.set_fw_rule_weekly_scheduleRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="schedules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.set_fw_rule_weekly_scheduleResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_weekly_scheduleRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_weekly_scheduleResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.set_fw_rule_protocolRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="protocols" type="tns:Common.ProtocolTypeSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.set_fw_rule_protocolResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_protocolRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_protocolResponse">
+	<part name="return" type="tns:Common.ProtocolTypeSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.set_fw_rule_protocol_numericRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="protocols" type="tns:Common.ULongSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.set_fw_rule_protocol_numericResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_protocol_numericRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_protocol_numericResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.set_fw_rule_actionRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="actions" type="tns:Common.FirewallRuleActionSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.set_fw_rule_actionResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_actionRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_actionResponse">
+	<part name="return" type="tns:Common.FirewallRuleActionSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.set_fw_rule_rule_listRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="lists" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.set_fw_rule_rule_listResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_rule_listRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_rule_listResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.set_fw_rule_descriptionRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.set_fw_rule_descriptionResponse">
+</message>
+
+<message name="Networking.RouteDomainV2.get_fw_rule_descriptionRequest">
+	<part name="route_domains" type="tns:Common.StringSequence"/>
+	<part name="rules" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="Networking.RouteDomainV2.get_fw_rule_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Networking.RouteDomainV2.get_versionRequest">
+</message>
+<message name="Networking.RouteDomainV2.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.RouteDomainV2PortType">
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all route domains on this device.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_listRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a route domain.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.createRequest"/>
+		<output message="tns:Networking.RouteDomainV2.createResponse"/>
+	</operation>
+	<operation name="delete_route_domain">
+	<documentation>
+ Deletes the specified route domains.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.delete_route_domainRequest"/>
+		<output message="tns:Networking.RouteDomainV2.delete_route_domainResponse"/>
+	</operation>
+	<operation name="delete_all_route_domains">
+	<documentation>
+ Deletes all route domains.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.delete_all_route_domainsRequest"/>
+		<output message="tns:Networking.RouteDomainV2.delete_all_route_domainsResponse"/>
+	</operation>
+	<operation name="get_identifier">
+	<documentation>
+ Gets the identifiers for the specified route domains.
+
+ Note: A set_identifier method is not supported.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_identifierRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_identifierResponse"/>
+	</operation>
+	<operation name="set_parent">
+	<documentation>
+ Sets the parent ids for the specified route domains.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.set_parentRequest"/>
+		<output message="tns:Networking.RouteDomainV2.set_parentResponse"/>
+	</operation>
+	<operation name="get_parent">
+	<documentation>
+ Gets the parent ids for the specified route domains.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_parentRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_parentResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the descriptions for the the specified route domains.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.set_descriptionRequest"/>
+		<output message="tns:Networking.RouteDomainV2.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the the specified route domains.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_descriptionRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_descriptionResponse"/>
+	</operation>
+	<operation name="set_bw_controller_policy">
+	<documentation>
+ Sets the bandwidth controller policy for the the specified route domains.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.set_bw_controller_policyRequest"/>
+		<output message="tns:Networking.RouteDomainV2.set_bw_controller_policyResponse"/>
+	</operation>
+	<operation name="get_bw_controller_policy">
+	<documentation>
+ Gets the bandwidth controller policy for the the specified route domains.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_bw_controller_policyRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_bw_controller_policyResponse"/>
+	</operation>
+	<operation name="set_strict_state">
+	<documentation>
+/**
+ Sets the state to enforce cross-domain routing restrictions for a
+ set of route domains.
+
+ NOTES
+ = If set, packets cannot cross route domain boundaries, i.e., they
+   are strictly isolated to the current route domain.
+ = For example, if not set, you can add a route to the routing table
+   where the destination is 10.0.0.0%20 (route domain 20) and the
+   gateway is 172.27.84.29%32 (route domain 32).
+ = If set, the system may find invalid iRules that passed
+   validation.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.set_strict_stateRequest"/>
+		<output message="tns:Networking.RouteDomainV2.set_strict_stateResponse"/>
+	</operation>
+	<operation name="get_strict_state">
+	<documentation>
+ Gets the state to enforce cross-domain routing restrictions for a
+ set of route domains.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_strict_stateRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_strict_stateResponse"/>
+	</operation>
+	<operation name="get_vlan">
+	<documentation>
+ Gets the lists of VLANs for the specified route domains.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_vlanRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_vlanResponse"/>
+	</operation>
+	<operation name="add_vlan">
+	<documentation>
+ Adds the specified VLANs to the specified route domains.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.add_vlanRequest"/>
+		<output message="tns:Networking.RouteDomainV2.add_vlanResponse"/>
+	</operation>
+	<operation name="remove_vlan">
+	<documentation>
+ Removes the specified VLANs from the specified route domains.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_vlanRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_vlanResponse"/>
+	</operation>
+	<operation name="remove_all_vlans">
+	<documentation>
+ Removes all VLANs from the specified route domains.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_all_vlansRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_all_vlansResponse"/>
+	</operation>
+	<operation name="get_routing_protocol">
+	<documentation>
+ Gets the lists of routing protocols enabled for a given route domain.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_routing_protocolRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_routing_protocolResponse"/>
+	</operation>
+	<operation name="add_routing_protocol">
+	<documentation>
+ Adds to the list of enabled routing protocols for specified route domains.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.add_routing_protocolRequest"/>
+		<output message="tns:Networking.RouteDomainV2.add_routing_protocolResponse"/>
+	</operation>
+	<operation name="remove_routing_protocol">
+	<documentation>
+ Removes the list of enabled routing protocols from the specified route domains.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_routing_protocolRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_routing_protocolResponse"/>
+	</operation>
+	<operation name="remove_all_routing_protocols">
+	<documentation>
+ Removes all routing protocols from the list of enabled protocols for the specified route domains.
+ By default a route-domain has no routing protocols enabled.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_all_routing_protocolsRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_all_routing_protocolsResponse"/>
+	</operation>
+	<operation name="get_fw_rule">
+	<documentation>
+ Gets the firewall rules for the specified route domains.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_ruleRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_ruleResponse"/>
+	</operation>
+	<operation name="add_fw_rule">
+	<documentation>
+ Adds firewall rules to the specified route domains.
+
+ Note that the abilities to add more than one rule or,
+ especially, to add partial rules and to build them up
+ introduce a need for best practices: (1) introduce the rule
+ or rules initially disabled (using the states parameter)
+ and enable them (or set them as scheduled) as a whole when
+ you have them complete or (2) use transactions (see
+ System::Session::start_transaction) to avoid accidentally
+ putting partial rules or incomplete rule sets into place.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.add_fw_ruleRequest"/>
+		<output message="tns:Networking.RouteDomainV2.add_fw_ruleResponse"/>
+	</operation>
+	<operation name="add_fw_rule_with_rule_list">
+	<documentation>
+ Adds firewall rules to the specified route domains, having
+ each of those rules point at a rule list. This method is
+ intended as a convenience to prevent you from having to add
+ firewall rules as a transaction.
+
+ See the Security::FirewallRuleList interface for more
+ information on rule lists.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.add_fw_rule_with_rule_listRequest"/>
+		<output message="tns:Networking.RouteDomainV2.add_fw_rule_with_rule_listResponse"/>
+	</operation>
+	<operation name="remove_fw_rule">
+	<documentation>
+ Removes firewall rules from the specified route domains.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_fw_ruleRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_fw_ruleResponse"/>
+	</operation>
+	<operation name="remove_all_fw_rules">
+	<documentation>
+ Removes all firewall rules from the specified route domains.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_all_fw_rulesRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_all_fw_rulesResponse"/>
+	</operation>
+	<operation name="set_fw_rule_state">
+	<documentation>
+ Sets the state for the specified firewall rules.
+
+ You can add a rule as enabled or disabled initially, build
+ it up, then enable it.  You can temporarily disable a rule
+ with no other effect on it, so that it can be enabled
+ easily later without having to rebuild it.  You can use the
+ state of FW_RULE_STATE_SCHEDULED to enable scheduling for the
+ rule. See add_fw_rule for more information.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.set_fw_rule_stateRequest"/>
+		<output message="tns:Networking.RouteDomainV2.set_fw_rule_stateResponse"/>
+	</operation>
+	<operation name="get_fw_rule_state">
+	<documentation>
+ Gets the state for the specified firewall rules.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_stateRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_stateResponse"/>
+	</operation>
+	<operation name="set_fw_rule_order">
+	<documentation>
+ Sets the order (numerically) for the specified firewall rules.
+
+ Two rules can't have the same order, so one must manage
+ order carefully if using numeric order to arrange firewall
+ rules. See add_fw_rule for more information.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.set_fw_rule_orderRequest"/>
+		<output message="tns:Networking.RouteDomainV2.set_fw_rule_orderResponse"/>
+	</operation>
+	<operation name="get_fw_rule_order">
+	<documentation>
+ Gets the order (numerically) for the specified firewall rules.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_orderRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_orderResponse"/>
+	</operation>
+	<operation name="get_fw_rule_source_address_list">
+	<documentation>
+ Gets source address lists for the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_source_address_listRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_source_address_listResponse"/>
+	</operation>
+	<operation name="add_fw_rule_source_address_list">
+	<documentation>
+ Adds source address lists to the specified firewall rules.
+
+ See the Security::FirewallAddressList interface for more
+ information on address lists.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.add_fw_rule_source_address_listRequest"/>
+		<output message="tns:Networking.RouteDomainV2.add_fw_rule_source_address_listResponse"/>
+	</operation>
+	<operation name="remove_fw_rule_source_address_list">
+	<documentation>
+ Removes source address lists from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_fw_rule_source_address_listRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_fw_rule_source_address_listResponse"/>
+	</operation>
+	<operation name="remove_all_fw_rule_source_address_lists">
+	<documentation>
+ Removes all source address lists from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_all_fw_rule_source_address_listsRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_all_fw_rule_source_address_listsResponse"/>
+	</operation>
+	<operation name="get_fw_rule_source_address">
+	<documentation>
+ Gets (inlined) source addresses for the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_source_addressRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_source_addressResponse"/>
+	</operation>
+	<operation name="add_fw_rule_source_address">
+	<documentation>
+ Adds (inlined) source addresses to the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.add_fw_rule_source_addressRequest"/>
+		<output message="tns:Networking.RouteDomainV2.add_fw_rule_source_addressResponse"/>
+	</operation>
+	<operation name="remove_fw_rule_source_address">
+	<documentation>
+ Removes (inlined) source addresses from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_fw_rule_source_addressRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_fw_rule_source_addressResponse"/>
+	</operation>
+	<operation name="remove_all_fw_rule_source_addresses">
+	<documentation>
+ Removes all (inlined) source addresses from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_all_fw_rule_source_addressesRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_all_fw_rule_source_addressesResponse"/>
+	</operation>
+	<operation name="set_fw_rule_source_address_description">
+	<documentation>
+ Sets the description for the specified firewall rules' source addresses.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.set_fw_rule_source_address_descriptionRequest"/>
+		<output message="tns:Networking.RouteDomainV2.set_fw_rule_source_address_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_source_address_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules' source addresses.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_source_address_descriptionRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_source_address_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_destination_address_list">
+	<documentation>
+ Gets destination address lists for the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_destination_address_listRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_destination_address_listResponse"/>
+	</operation>
+	<operation name="add_fw_rule_destination_address_list">
+	<documentation>
+ Adds destination address lists to the specified firewall rules.
+
+ See the Security::FirewallAddressList interface for more
+ information on address lists.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.add_fw_rule_destination_address_listRequest"/>
+		<output message="tns:Networking.RouteDomainV2.add_fw_rule_destination_address_listResponse"/>
+	</operation>
+	<operation name="remove_fw_rule_destination_address_list">
+	<documentation>
+ Removes destination address lists from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_fw_rule_destination_address_listRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_fw_rule_destination_address_listResponse"/>
+	</operation>
+	<operation name="remove_all_fw_rule_destination_address_lists">
+	<documentation>
+ Removes all destination address lists from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_all_fw_rule_destination_address_listsRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_all_fw_rule_destination_address_listsResponse"/>
+	</operation>
+	<operation name="get_fw_rule_destination_address">
+	<documentation>
+ Gets (inlined) destination addresses for the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_destination_addressRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_destination_addressResponse"/>
+	</operation>
+	<operation name="add_fw_rule_destination_address">
+	<documentation>
+ Adds (inlined) destination addresses to the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.add_fw_rule_destination_addressRequest"/>
+		<output message="tns:Networking.RouteDomainV2.add_fw_rule_destination_addressResponse"/>
+	</operation>
+	<operation name="remove_fw_rule_destination_address">
+	<documentation>
+ Removes (inlined) destination addresses from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_fw_rule_destination_addressRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_fw_rule_destination_addressResponse"/>
+	</operation>
+	<operation name="remove_all_fw_rule_destination_addresses">
+	<documentation>
+ Removes all (inlined) destination addresses from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_all_fw_rule_destination_addressesRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_all_fw_rule_destination_addressesResponse"/>
+	</operation>
+	<operation name="set_fw_rule_destination_address_description">
+	<documentation>
+ Sets the description for the specified firewall rules' destination addresses.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.set_fw_rule_destination_address_descriptionRequest"/>
+		<output message="tns:Networking.RouteDomainV2.set_fw_rule_destination_address_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_destination_address_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules' destination addresses.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_destination_address_descriptionRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_destination_address_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_source_port_list">
+	<documentation>
+ Gets source port lists for the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_source_port_listRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_source_port_listResponse"/>
+	</operation>
+	<operation name="add_fw_rule_source_port_list">
+	<documentation>
+ Adds source port lists to the specified firewall rules.
+
+ See the Security::FirewallPortList interface for more
+ information on port lists.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.add_fw_rule_source_port_listRequest"/>
+		<output message="tns:Networking.RouteDomainV2.add_fw_rule_source_port_listResponse"/>
+	</operation>
+	<operation name="remove_fw_rule_source_port_list">
+	<documentation>
+ Removes source port lists from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_fw_rule_source_port_listRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_fw_rule_source_port_listResponse"/>
+	</operation>
+	<operation name="remove_all_fw_rule_source_port_lists">
+	<documentation>
+ Removes all source port lists from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_all_fw_rule_source_port_listsRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_all_fw_rule_source_port_listsResponse"/>
+	</operation>
+	<operation name="get_fw_rule_source_port">
+	<documentation>
+ Gets (inlined) source ports for the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_source_portRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_source_portResponse"/>
+	</operation>
+	<operation name="add_fw_rule_source_port">
+	<documentation>
+ Adds (inlined) source ports to the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.add_fw_rule_source_portRequest"/>
+		<output message="tns:Networking.RouteDomainV2.add_fw_rule_source_portResponse"/>
+	</operation>
+	<operation name="remove_fw_rule_source_port">
+	<documentation>
+ Removes (inlined) source ports from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_fw_rule_source_portRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_fw_rule_source_portResponse"/>
+	</operation>
+	<operation name="remove_all_fw_rule_source_ports">
+	<documentation>
+ Removes all (inlined) source ports from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_all_fw_rule_source_portsRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_all_fw_rule_source_portsResponse"/>
+	</operation>
+	<operation name="set_fw_rule_source_port_description">
+	<documentation>
+ Sets the description for the specified firewall rules' (inlined) source ports.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.set_fw_rule_source_port_descriptionRequest"/>
+		<output message="tns:Networking.RouteDomainV2.set_fw_rule_source_port_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_source_port_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules' (inlined) source ports.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_source_port_descriptionRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_source_port_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_destination_port_list">
+	<documentation>
+ Gets destination port lists for the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_destination_port_listRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_destination_port_listResponse"/>
+	</operation>
+	<operation name="add_fw_rule_destination_port_list">
+	<documentation>
+ Adds destination port lists to the specified firewall rules.
+
+ See the Security::FirewallPortList interface for more
+ information on port lists.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.add_fw_rule_destination_port_listRequest"/>
+		<output message="tns:Networking.RouteDomainV2.add_fw_rule_destination_port_listResponse"/>
+	</operation>
+	<operation name="remove_fw_rule_destination_port_list">
+	<documentation>
+ Removes destination port lists from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_fw_rule_destination_port_listRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_fw_rule_destination_port_listResponse"/>
+	</operation>
+	<operation name="remove_all_fw_rule_destination_port_lists">
+	<documentation>
+ Removes all destination port lists from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_all_fw_rule_destination_port_listsRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_all_fw_rule_destination_port_listsResponse"/>
+	</operation>
+	<operation name="get_fw_rule_destination_port">
+	<documentation>
+ Gets (inlined) destination ports for the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_destination_portRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_destination_portResponse"/>
+	</operation>
+	<operation name="add_fw_rule_destination_port">
+	<documentation>
+ Adds (inlined) destination ports to the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.add_fw_rule_destination_portRequest"/>
+		<output message="tns:Networking.RouteDomainV2.add_fw_rule_destination_portResponse"/>
+	</operation>
+	<operation name="remove_fw_rule_destination_port">
+	<documentation>
+ Removes (inlined) destination ports from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_fw_rule_destination_portRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_fw_rule_destination_portResponse"/>
+	</operation>
+	<operation name="remove_all_fw_rule_destination_ports">
+	<documentation>
+ Removes all (inlined) destination ports from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_all_fw_rule_destination_portsRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_all_fw_rule_destination_portsResponse"/>
+	</operation>
+	<operation name="set_fw_rule_destination_port_description">
+	<documentation>
+ Sets the description for the specified firewall rules' (inlined) destination ports.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.set_fw_rule_destination_port_descriptionRequest"/>
+		<output message="tns:Networking.RouteDomainV2.set_fw_rule_destination_port_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_destination_port_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules' (inlined) destination ports.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_destination_port_descriptionRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_destination_port_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_icmp_typecode">
+	<documentation>
+ Gets (inlined) ICMP type/code values for the specified firewall rules.
+ A value of 255 for either ICMP type or code is a wildcard value.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_icmp_typecodeRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_icmp_typecodeResponse"/>
+	</operation>
+	<operation name="add_fw_rule_icmp_typecode">
+	<documentation>
+ Adds (inlined) ICMP type/code values to the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.add_fw_rule_icmp_typecodeRequest"/>
+		<output message="tns:Networking.RouteDomainV2.add_fw_rule_icmp_typecodeResponse"/>
+	</operation>
+	<operation name="remove_fw_rule_icmp_typecode">
+	<documentation>
+ Removes (inlined) ICMP type/code values from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_fw_rule_icmp_typecodeRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_fw_rule_icmp_typecodeResponse"/>
+	</operation>
+	<operation name="remove_all_fw_rule_icmp_typecodes">
+	<documentation>
+ Removes all (inlined) ICMP type/code values from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_all_fw_rule_icmp_typecodesRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_all_fw_rule_icmp_typecodesResponse"/>
+	</operation>
+	<operation name="set_fw_rule_icmp_typecode_description">
+	<documentation>
+ Sets the description for the specified firewall rules' (inlined) ICMP type/code values.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.set_fw_rule_icmp_typecode_descriptionRequest"/>
+		<output message="tns:Networking.RouteDomainV2.set_fw_rule_icmp_typecode_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_icmp_typecode_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules' (inlined) ICMP type/code values.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_icmp_typecode_descriptionRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_icmp_typecode_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_source_vlan">
+	<documentation>
+ Gets source VLANs for the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_source_vlanRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_source_vlanResponse"/>
+	</operation>
+	<operation name="add_fw_rule_source_vlan">
+	<documentation>
+ Adds source VLANs to the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.add_fw_rule_source_vlanRequest"/>
+		<output message="tns:Networking.RouteDomainV2.add_fw_rule_source_vlanResponse"/>
+	</operation>
+	<operation name="remove_fw_rule_source_vlan">
+	<documentation>
+ Removes source VLANs from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_fw_rule_source_vlanRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_fw_rule_source_vlanResponse"/>
+	</operation>
+	<operation name="remove_all_fw_rule_source_vlans">
+	<documentation>
+ Removes all source VLANs from the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.remove_all_fw_rule_source_vlansRequest"/>
+		<output message="tns:Networking.RouteDomainV2.remove_all_fw_rule_source_vlansResponse"/>
+	</operation>
+	<operation name="set_fw_rule_weekly_schedule">
+	<documentation>
+ Sets a weekly schedule for the specified firewall rules.
+ See Security::FirewallWeeklySchedule for how to create and
+ manipulate weekly schedules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.set_fw_rule_weekly_scheduleRequest"/>
+		<output message="tns:Networking.RouteDomainV2.set_fw_rule_weekly_scheduleResponse"/>
+	</operation>
+	<operation name="get_fw_rule_weekly_schedule">
+	<documentation>
+ Gets a weekly schedule for the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_weekly_scheduleRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_weekly_scheduleResponse"/>
+	</operation>
+	<operation name="set_fw_rule_protocol">
+	<documentation>
+ Sets the (IP) protocol for the specified firewall rules.
+
+ Note: if the protocol is not one of the supported standard
+ protocols, use set_fw_rule_protocol_numeric.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.set_fw_rule_protocolRequest"/>
+		<output message="tns:Networking.RouteDomainV2.set_fw_rule_protocolResponse"/>
+	</operation>
+	<operation name="get_fw_rule_protocol">
+	<documentation>
+ Gets the (IP) protocol for the specified firewall rules.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_protocolRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_protocolResponse"/>
+	</operation>
+	<operation name="set_fw_rule_protocol_numeric">
+	<documentation>
+ Sets the IP protocol (numerically) for the specified firewall rules.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.set_fw_rule_protocol_numericRequest"/>
+		<output message="tns:Networking.RouteDomainV2.set_fw_rule_protocol_numericResponse"/>
+	</operation>
+	<operation name="get_fw_rule_protocol_numeric">
+	<documentation>
+ Gets the IP protocol (numerically) for the specified firewall rules.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_protocol_numericRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_protocol_numericResponse"/>
+	</operation>
+	<operation name="set_fw_rule_action">
+	<documentation>
+ Sets the action for the specified firewall rules.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.set_fw_rule_actionRequest"/>
+		<output message="tns:Networking.RouteDomainV2.set_fw_rule_actionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_action">
+	<documentation>
+ Gets the action for the specified firewall rules.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_actionRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_actionResponse"/>
+	</operation>
+	<operation name="set_fw_rule_rule_list">
+	<documentation>
+ Sets the rule list for the specified firewall rules.
+
+ If a list is specified then the system will validate that
+ no other properties were specified in the current
+ transaction, and will clear all other match criteria fields
+ (src, dst, ip protocol, et cetera).
+ 
+ The empty string means no rule list.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.set_fw_rule_rule_listRequest"/>
+		<output message="tns:Networking.RouteDomainV2.set_fw_rule_rule_listResponse"/>
+	</operation>
+	<operation name="get_fw_rule_rule_list">
+	<documentation>
+ Gets the rule list for the specified firewall rules.
+ 
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_rule_listRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_rule_listResponse"/>
+	</operation>
+	<operation name="set_fw_rule_description">
+	<documentation>
+ Sets the description for the specified firewall rules.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.set_fw_rule_descriptionRequest"/>
+		<output message="tns:Networking.RouteDomainV2.set_fw_rule_descriptionResponse"/>
+	</operation>
+	<operation name="get_fw_rule_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_fw_rule_descriptionRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_fw_rule_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.RouteDomainV2.get_versionRequest"/>
+		<output message="tns:Networking.RouteDomainV2.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.RouteDomainV2Binding" type="tns:Networking.RouteDomainV2PortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all route domains on this device.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a route domain.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_route_domain">
+	<documentation>
+ Deletes the specified route domains.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_route_domains">
+	<documentation>
+ Deletes all route domains.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_identifier">
+	<documentation>
+ Gets the identifiers for the specified route domains.
+
+ Note: A set_identifier method is not supported.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_parent">
+	<documentation>
+ Sets the parent ids for the specified route domains.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_parent">
+	<documentation>
+ Gets the parent ids for the specified route domains.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the descriptions for the the specified route domains.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for the the specified route domains.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_bw_controller_policy">
+	<documentation>
+ Sets the bandwidth controller policy for the the specified route domains.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_bw_controller_policy">
+	<documentation>
+ Gets the bandwidth controller policy for the the specified route domains.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_strict_state">
+	<documentation>
+/**
+ Sets the state to enforce cross-domain routing restrictions for a
+ set of route domains.
+
+ NOTES
+ = If set, packets cannot cross route domain boundaries, i.e., they
+   are strictly isolated to the current route domain.
+ = For example, if not set, you can add a route to the routing table
+   where the destination is 10.0.0.0%20 (route domain 20) and the
+   gateway is 172.27.84.29%32 (route domain 32).
+ = If set, the system may find invalid iRules that passed
+   validation.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_strict_state">
+	<documentation>
+ Gets the state to enforce cross-domain routing restrictions for a
+ set of route domains.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_vlan">
+	<documentation>
+ Gets the lists of VLANs for the specified route domains.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_vlan">
+	<documentation>
+ Adds the specified VLANs to the specified route domains.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_vlan">
+	<documentation>
+ Removes the specified VLANs from the specified route domains.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_vlans">
+	<documentation>
+ Removes all VLANs from the specified route domains.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_routing_protocol">
+	<documentation>
+ Gets the lists of routing protocols enabled for a given route domain.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_routing_protocol">
+	<documentation>
+ Adds to the list of enabled routing protocols for specified route domains.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_routing_protocol">
+	<documentation>
+ Removes the list of enabled routing protocols from the specified route domains.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_routing_protocols">
+	<documentation>
+ Removes all routing protocols from the list of enabled protocols for the specified route domains.
+ By default a route-domain has no routing protocols enabled.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule">
+	<documentation>
+ Gets the firewall rules for the specified route domains.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule">
+	<documentation>
+ Adds firewall rules to the specified route domains.
+
+ Note that the abilities to add more than one rule or,
+ especially, to add partial rules and to build them up
+ introduce a need for best practices: (1) introduce the rule
+ or rules initially disabled (using the states parameter)
+ and enable them (or set them as scheduled) as a whole when
+ you have them complete or (2) use transactions (see
+ System::Session::start_transaction) to avoid accidentally
+ putting partial rules or incomplete rule sets into place.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule_with_rule_list">
+	<documentation>
+ Adds firewall rules to the specified route domains, having
+ each of those rules point at a rule list. This method is
+ intended as a convenience to prevent you from having to add
+ firewall rules as a transaction.
+
+ See the Security::FirewallRuleList interface for more
+ information on rule lists.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_fw_rule">
+	<documentation>
+ Removes firewall rules from the specified route domains.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_fw_rules">
+	<documentation>
+ Removes all firewall rules from the specified route domains.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_state">
+	<documentation>
+ Sets the state for the specified firewall rules.
+
+ You can add a rule as enabled or disabled initially, build
+ it up, then enable it.  You can temporarily disable a rule
+ with no other effect on it, so that it can be enabled
+ easily later without having to rebuild it.  You can use the
+ state of FW_RULE_STATE_SCHEDULED to enable scheduling for the
+ rule. See add_fw_rule for more information.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_state">
+	<documentation>
+ Gets the state for the specified firewall rules.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_order">
+	<documentation>
+ Sets the order (numerically) for the specified firewall rules.
+
+ Two rules can't have the same order, so one must manage
+ order carefully if using numeric order to arrange firewall
+ rules. See add_fw_rule for more information.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_order">
+	<documentation>
+ Gets the order (numerically) for the specified firewall rules.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_source_address_list">
+	<documentation>
+ Gets source address lists for the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule_source_address_list">
+	<documentation>
+ Adds source address lists to the specified firewall rules.
+
+ See the Security::FirewallAddressList interface for more
+ information on address lists.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_fw_rule_source_address_list">
+	<documentation>
+ Removes source address lists from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_fw_rule_source_address_lists">
+	<documentation>
+ Removes all source address lists from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_source_address">
+	<documentation>
+ Gets (inlined) source addresses for the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule_source_address">
+	<documentation>
+ Adds (inlined) source addresses to the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_fw_rule_source_address">
+	<documentation>
+ Removes (inlined) source addresses from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_fw_rule_source_addresses">
+	<documentation>
+ Removes all (inlined) source addresses from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_source_address_description">
+	<documentation>
+ Sets the description for the specified firewall rules' source addresses.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_source_address_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules' source addresses.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_destination_address_list">
+	<documentation>
+ Gets destination address lists for the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule_destination_address_list">
+	<documentation>
+ Adds destination address lists to the specified firewall rules.
+
+ See the Security::FirewallAddressList interface for more
+ information on address lists.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_fw_rule_destination_address_list">
+	<documentation>
+ Removes destination address lists from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_fw_rule_destination_address_lists">
+	<documentation>
+ Removes all destination address lists from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_destination_address">
+	<documentation>
+ Gets (inlined) destination addresses for the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule_destination_address">
+	<documentation>
+ Adds (inlined) destination addresses to the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_fw_rule_destination_address">
+	<documentation>
+ Removes (inlined) destination addresses from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_fw_rule_destination_addresses">
+	<documentation>
+ Removes all (inlined) destination addresses from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_destination_address_description">
+	<documentation>
+ Sets the description for the specified firewall rules' destination addresses.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_destination_address_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules' destination addresses.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_source_port_list">
+	<documentation>
+ Gets source port lists for the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule_source_port_list">
+	<documentation>
+ Adds source port lists to the specified firewall rules.
+
+ See the Security::FirewallPortList interface for more
+ information on port lists.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_fw_rule_source_port_list">
+	<documentation>
+ Removes source port lists from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_fw_rule_source_port_lists">
+	<documentation>
+ Removes all source port lists from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_source_port">
+	<documentation>
+ Gets (inlined) source ports for the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule_source_port">
+	<documentation>
+ Adds (inlined) source ports to the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_fw_rule_source_port">
+	<documentation>
+ Removes (inlined) source ports from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_fw_rule_source_ports">
+	<documentation>
+ Removes all (inlined) source ports from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_source_port_description">
+	<documentation>
+ Sets the description for the specified firewall rules' (inlined) source ports.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_source_port_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules' (inlined) source ports.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_destination_port_list">
+	<documentation>
+ Gets destination port lists for the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule_destination_port_list">
+	<documentation>
+ Adds destination port lists to the specified firewall rules.
+
+ See the Security::FirewallPortList interface for more
+ information on port lists.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_fw_rule_destination_port_list">
+	<documentation>
+ Removes destination port lists from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_fw_rule_destination_port_lists">
+	<documentation>
+ Removes all destination port lists from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_destination_port">
+	<documentation>
+ Gets (inlined) destination ports for the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule_destination_port">
+	<documentation>
+ Adds (inlined) destination ports to the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_fw_rule_destination_port">
+	<documentation>
+ Removes (inlined) destination ports from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_fw_rule_destination_ports">
+	<documentation>
+ Removes all (inlined) destination ports from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_destination_port_description">
+	<documentation>
+ Sets the description for the specified firewall rules' (inlined) destination ports.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_destination_port_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules' (inlined) destination ports.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_icmp_typecode">
+	<documentation>
+ Gets (inlined) ICMP type/code values for the specified firewall rules.
+ A value of 255 for either ICMP type or code is a wildcard value.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule_icmp_typecode">
+	<documentation>
+ Adds (inlined) ICMP type/code values to the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_fw_rule_icmp_typecode">
+	<documentation>
+ Removes (inlined) ICMP type/code values from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_fw_rule_icmp_typecodes">
+	<documentation>
+ Removes all (inlined) ICMP type/code values from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_icmp_typecode_description">
+	<documentation>
+ Sets the description for the specified firewall rules' (inlined) ICMP type/code values.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_icmp_typecode_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules' (inlined) ICMP type/code values.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_source_vlan">
+	<documentation>
+ Gets source VLANs for the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_fw_rule_source_vlan">
+	<documentation>
+ Adds source VLANs to the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_fw_rule_source_vlan">
+	<documentation>
+ Removes source VLANs from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_fw_rule_source_vlans">
+	<documentation>
+ Removes all source VLANs from the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_weekly_schedule">
+	<documentation>
+ Sets a weekly schedule for the specified firewall rules.
+ See Security::FirewallWeeklySchedule for how to create and
+ manipulate weekly schedules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_weekly_schedule">
+	<documentation>
+ Gets a weekly schedule for the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_protocol">
+	<documentation>
+ Sets the (IP) protocol for the specified firewall rules.
+
+ Note: if the protocol is not one of the supported standard
+ protocols, use set_fw_rule_protocol_numeric.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_protocol">
+	<documentation>
+ Gets the (IP) protocol for the specified firewall rules.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_protocol_numeric">
+	<documentation>
+ Sets the IP protocol (numerically) for the specified firewall rules.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_protocol_numeric">
+	<documentation>
+ Gets the IP protocol (numerically) for the specified firewall rules.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_action">
+	<documentation>
+ Sets the action for the specified firewall rules.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_action">
+	<documentation>
+ Gets the action for the specified firewall rules.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_rule_list">
+	<documentation>
+ Sets the rule list for the specified firewall rules.
+
+ If a list is specified then the system will validate that
+ no other properties were specified in the current
+ transaction, and will clear all other match criteria fields
+ (src, dst, ip protocol, et cetera).
+ 
+ The empty string means no rule list.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_rule_list">
+	<documentation>
+ Gets the rule list for the specified firewall rules.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fw_rule_description">
+	<documentation>
+ Sets the description for the specified firewall rules.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fw_rule_description">
+	<documentation>
+ Gets the descriptions for the specified firewall rules.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/RouteDomainV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/RouteDomainV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.RouteDomainV2">
+	<documentation>
+ The RouteDomain interface enables you to work with the
+ definitions and attributes contained in a device's route
+ domains.  Route domains allow you to specify overlapping IP
+ addresses for different objects in the system.  This allows a
+ service provider, for example, to have two different pool
+ members at 10.10.10.1 that represent completely different real
+ servers.  The addresses for the two pool members might be
+ 10.10.10.1%1 and 10.10.10.1%2 where the numbers after the
+ percent signs are numeric ids of route domains.
+
+ Note that the source and destination addresses in the firewall
+ methods (get_fw_rule and so on) are type Common::NetAddress, a
+ type which allows one to specify a prefix length after the
+ address, e.g., "10.1.1.0/24" or "10.1.1.0%1/24".
+
+        	</documentation>
+	<port name="Networking.RouteDomainV2Port" binding="tns:Networking.RouteDomainV2Binding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

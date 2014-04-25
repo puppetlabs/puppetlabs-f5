@@ -1,0 +1,381 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.View"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ViewInfo">
+			<xsd:sequence>
+				<xsd:element name="view_name" type="xsd:string"/>
+				<xsd:element name="view_order" type="xsd:long"/>
+				<xsd:element name="option_seq" type="tns:Common.StringSequence"/>
+				<xsd:element name="zone_names" type="tns:Common.StringSequence"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.ViewInfoSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.ViewInfo[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.View.get_listRequest">
+</message>
+<message name="Management.View.get_listResponse">
+	<part name="return" type="tns:Management.ViewInfoSequence"/>
+</message>
+
+<message name="Management.View.get_viewRequest">
+	<part name="view_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.View.get_viewResponse">
+	<part name="return" type="tns:Management.ViewInfoSequence"/>
+</message>
+
+<message name="Management.View.add_viewRequest">
+	<part name="views" type="tns:Management.ViewInfoSequence"/>
+</message>
+<message name="Management.View.add_viewResponse">
+</message>
+
+<message name="Management.View.move_viewRequest">
+	<part name="views" type="tns:Management.ViewInfoSequence"/>
+</message>
+<message name="Management.View.move_viewResponse">
+</message>
+
+<message name="Management.View.delete_viewRequest">
+	<part name="views" type="tns:Management.ViewInfoSequence"/>
+</message>
+<message name="Management.View.delete_viewResponse">
+</message>
+
+<message name="Management.View.set_view_optionRequest">
+	<part name="view_infos" type="tns:Management.ViewInfoSequence"/>
+</message>
+<message name="Management.View.set_view_optionResponse">
+</message>
+
+<message name="Management.View.add_view_optionRequest">
+	<part name="view_infos" type="tns:Management.ViewInfoSequence"/>
+</message>
+<message name="Management.View.add_view_optionResponse">
+</message>
+
+<message name="Management.View.delete_view_optionRequest">
+	<part name="view_infos" type="tns:Management.ViewInfoSequence"/>
+</message>
+<message name="Management.View.delete_view_optionResponse">
+</message>
+
+<message name="Management.View.get_versionRequest">
+</message>
+<message name="Management.View.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.ViewPortType">
+	<operation name="get_list">
+ 	<documentation>
+ Get a sequence of ViewInfo structs from the server
+
+        	</documentation>
+		<input message="tns:Management.View.get_listRequest"/>
+		<output message="tns:Management.View.get_listResponse"/>
+	</operation>
+	<operation name="get_view">
+	<documentation>
+ Get the ViewInfo structs from the server for the specified views.
+
+        	</documentation>
+		<input message="tns:Management.View.get_viewRequest"/>
+		<output message="tns:Management.View.get_viewResponse"/>
+	</operation>
+	<operation name="add_view">
+	<documentation>
+ Adds the specified Views to the server.
+
+        	</documentation>
+		<input message="tns:Management.View.add_viewRequest"/>
+		<output message="tns:Management.View.add_viewResponse"/>
+	</operation>
+	<operation name="move_view">
+	<documentation>
+ Moves the specified Views to the spot indicated in the named.conf
+
+        	</documentation>
+		<input message="tns:Management.View.move_viewRequest"/>
+		<output message="tns:Management.View.move_viewResponse"/>
+	</operation>
+	<operation name="delete_view">
+	<documentation>
+ Delete the specified views (and all their zones) from a server.
+
+        	</documentation>
+		<input message="tns:Management.View.delete_viewRequest"/>
+		<output message="tns:Management.View.delete_viewResponse"/>
+	</operation>
+	<operation name="set_view_option">
+	<documentation>
+ Sets (changes) the values of existing options of the views specified.
+
+        	</documentation>
+		<input message="tns:Management.View.set_view_optionRequest"/>
+		<output message="tns:Management.View.set_view_optionResponse"/>
+	</operation>
+	<operation name="add_view_option">
+	<documentation>
+ Adds new options to the views.
+
+        	</documentation>
+		<input message="tns:Management.View.add_view_optionRequest"/>
+		<output message="tns:Management.View.add_view_optionResponse"/>
+	</operation>
+	<operation name="delete_view_option">
+	<documentation>
+ Deletes the options from the views.
+
+        	</documentation>
+		<input message="tns:Management.View.delete_view_optionRequest"/>
+		<output message="tns:Management.View.delete_view_optionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Management.View.get_versionRequest"/>
+		<output message="tns:Management.View.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.ViewBinding" type="tns:Management.ViewPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Get a sequence of ViewInfo structs from the server
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/View"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/View"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/View"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_view">
+	<documentation>
+ Get the ViewInfo structs from the server for the specified views.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/View"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/View"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/View"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_view">
+	<documentation>
+ Adds the specified Views to the server.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/View"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/View"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/View"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="move_view">
+	<documentation>
+ Moves the specified Views to the spot indicated in the named.conf
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/View"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/View"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/View"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_view">
+	<documentation>
+ Delete the specified views (and all their zones) from a server.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/View"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/View"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/View"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_view_option">
+	<documentation>
+ Sets (changes) the values of existing options of the views specified.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/View"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/View"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/View"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_view_option">
+	<documentation>
+ Adds new options to the views.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/View"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/View"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/View"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_view_option">
+	<documentation>
+ Deletes the options from the views.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/View"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/View"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/View"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/View"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/View"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/View"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.View">
+	<documentation>
+ The View interface contains all calls necessary to manipulate views
+
+ This interface does not support transactions.
+
+        	</documentation>
+	<port name="Management.ViewPort" binding="tns:Management.ViewBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

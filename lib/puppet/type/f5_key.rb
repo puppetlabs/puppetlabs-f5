@@ -2,23 +2,14 @@ Puppet::Type.newtype(:f5_key) do
   @doc = "Manage F5 key."
 
   apply_to_device
-
-  ensurable do
-    desc "F5 key resource state. Valid values are present, absent."
-
-    defaultto(:present)
-
-    newvalue(:present) do
-      provider.create
-    end
-
-    newvalue(:absent) do
-      provider.destroy
-    end
-  end
+  ensurable
 
   newparam(:name, :namevar=>true) do
     desc "The key name."
+
+    validate do |value|
+      raise(ArgumentError, "v11.0+ requires a folder or partition in the name, such as /Common/rule") unless value =~ /^\/.*\//
+    end
   end
 
   newproperty(:content) do

@@ -18,6 +18,6 @@ Puppet::Type.newtype(:f5_inet) do
 
   newproperty(:ntp_server_address) do
     desc "The NTP server address."
-    newvalues(/^[[:alpha:][:digit:]\.\-]+$/)
+    newvalues(/^[[:alpha:][:digit:]\.\-]+$|^$/)
   end
 end

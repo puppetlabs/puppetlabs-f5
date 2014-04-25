@@ -1,0 +1,68 @@
+<E:Envelope
+        xmlns:E="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:A="http://schemas.xmlsoap.org/soap/encoding/"
+        xmlns:s="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:y="http://www.w3.org/2001/XMLSchema"
+        xmlns:iControl="urn:iControl"
+        E:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+<E:Body>
+<m:key_export_to_pemResponse
+        xmlns:m="urn:iControl:Management/KeyCertificate">
+<return
+        s:type="A:Array"
+        A:arrayType="y:string[1]">
+<item>-----BEGIN RSA PRIVATE KEY-----
+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
+-----END RSA PRIVATE KEY-----</item>
+</return>
+</m:key_export_to_pemResponse>
+</E:Body>
+</E:Envelope>

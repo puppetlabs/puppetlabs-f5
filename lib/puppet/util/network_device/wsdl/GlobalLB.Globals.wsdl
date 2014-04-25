@@ -1,0 +1,5435 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="GlobalLB.Globals"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="GlobalLB.LDNSProbeProtocolSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:GlobalLB.LDNSProbeProtocol[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="GlobalLB.DomainNameCheckMode">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="DOMAIN_NAME_CHECK_MODE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>DOMAIN_NAME_CHECK_MODE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DOMAIN_NAME_CHECK_MODE_NONE">
+					<xsd:annotation>
+						<xsd:documentation>DOMAIN_NAME_CHECK_MODE_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DOMAIN_NAME_CHECK_MODE_STRICT">
+					<xsd:annotation>
+						<xsd:documentation>DOMAIN_NAME_CHECK_MODE_STRICT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DOMAIN_NAME_CHECK_MODE_ALLOW_UNDERSCORES">
+					<xsd:annotation>
+						<xsd:documentation>DOMAIN_NAME_CHECK_MODE_ALLOW_UNDERSCORES</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DOMAIN_NAME_CHECK_MODE_IDN_COMPATIBLE">
+					<xsd:annotation>
+						<xsd:documentation>DOMAIN_NAME_CHECK_MODE_IDN_COMPATIBLE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Common.ULong">
+			<xsd:restriction base="xsd:long"/>
+		</xsd:simpleType>
+		<xsd:simpleType name="GlobalLB.LDNSProbeProtocol">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LDNS_PROBE_PROTOCOL_ICMP">
+					<xsd:annotation>
+						<xsd:documentation>LDNS_PROBE_PROTOCOL_ICMP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LDNS_PROBE_PROTOCOL_TCP">
+					<xsd:annotation>
+						<xsd:documentation>LDNS_PROBE_PROTOCOL_TCP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LDNS_PROBE_PROTOCOL_UDP">
+					<xsd:annotation>
+						<xsd:documentation>LDNS_PROBE_PROTOCOL_UDP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LDNS_PROBE_PROTOCOL_DNS_DOT">
+					<xsd:annotation>
+						<xsd:documentation>LDNS_PROBE_PROTOCOL_DNS_DOT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LDNS_PROBE_PROTOCOL_DNS_REV">
+					<xsd:annotation>
+						<xsd:documentation>LDNS_PROBE_PROTOCOL_DNS_REV</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="GlobalLB.LBMethod">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LB_METHOD_RETURN_TO_DNS">
+					<xsd:annotation>
+						<xsd:documentation>LB_METHOD_RETURN_TO_DNS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LB_METHOD_NULL">
+					<xsd:annotation>
+						<xsd:documentation>LB_METHOD_NULL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LB_METHOD_ROUND_ROBIN">
+					<xsd:annotation>
+						<xsd:documentation>LB_METHOD_ROUND_ROBIN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LB_METHOD_RATIO">
+					<xsd:annotation>
+						<xsd:documentation>LB_METHOD_RATIO</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LB_METHOD_TOPOLOGY">
+					<xsd:annotation>
+						<xsd:documentation>LB_METHOD_TOPOLOGY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LB_METHOD_STATIC_PERSIST">
+					<xsd:annotation>
+						<xsd:documentation>LB_METHOD_STATIC_PERSIST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LB_METHOD_GLOBAL_AVAILABILITY">
+					<xsd:annotation>
+						<xsd:documentation>LB_METHOD_GLOBAL_AVAILABILITY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LB_METHOD_VS_CAPACITY">
+					<xsd:annotation>
+						<xsd:documentation>LB_METHOD_VS_CAPACITY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LB_METHOD_LEAST_CONN">
+					<xsd:annotation>
+						<xsd:documentation>LB_METHOD_LEAST_CONN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LB_METHOD_LOWEST_RTT">
+					<xsd:annotation>
+						<xsd:documentation>LB_METHOD_LOWEST_RTT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LB_METHOD_LOWEST_HOPS">
+					<xsd:annotation>
+						<xsd:documentation>LB_METHOD_LOWEST_HOPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LB_METHOD_PACKET_RATE">
+					<xsd:annotation>
+						<xsd:documentation>LB_METHOD_PACKET_RATE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LB_METHOD_CPU">
+					<xsd:annotation>
+						<xsd:documentation>LB_METHOD_CPU</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LB_METHOD_HIT_RATIO">
+					<xsd:annotation>
+						<xsd:documentation>LB_METHOD_HIT_RATIO</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LB_METHOD_QOS">
+					<xsd:annotation>
+						<xsd:documentation>LB_METHOD_QOS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LB_METHOD_BPS">
+					<xsd:annotation>
+						<xsd:documentation>LB_METHOD_BPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LB_METHOD_DROP_PACKET">
+					<xsd:annotation>
+						<xsd:documentation>LB_METHOD_DROP_PACKET</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LB_METHOD_EXPLICIT_IP">
+					<xsd:annotation>
+						<xsd:documentation>LB_METHOD_EXPLICIT_IP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LB_METHOD_CONNECTION_RATE">
+					<xsd:annotation>
+						<xsd:documentation>LB_METHOD_CONNECTION_RATE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LB_METHOD_VS_SCORE">
+					<xsd:annotation>
+						<xsd:documentation>LB_METHOD_VS_SCORE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="GlobalLB.Globals.set_dump_topology_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="GlobalLB.Globals.set_dump_topology_stateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_dump_topology_stateRequest">
+</message>
+<message name="GlobalLB.Globals.get_dump_topology_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="GlobalLB.Globals.set_topology_allow_zero_scores_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="GlobalLB.Globals.set_topology_allow_zero_scores_stateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_topology_allow_zero_scores_stateRequest">
+</message>
+<message name="GlobalLB.Globals.get_topology_allow_zero_scores_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="GlobalLB.Globals.set_cache_ldns_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="GlobalLB.Globals.set_cache_ldns_stateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_cache_ldns_stateRequest">
+</message>
+<message name="GlobalLB.Globals.get_cache_ldns_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="GlobalLB.Globals.set_aol_aware_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="GlobalLB.Globals.set_aol_aware_stateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_aol_aware_stateRequest">
+</message>
+<message name="GlobalLB.Globals.get_aol_aware_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="GlobalLB.Globals.set_check_static_dependency_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="GlobalLB.Globals.set_check_static_dependency_stateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_check_static_dependency_stateRequest">
+</message>
+<message name="GlobalLB.Globals.get_check_static_dependency_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="GlobalLB.Globals.set_check_dynamic_dependency_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="GlobalLB.Globals.set_check_dynamic_dependency_stateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_check_dynamic_dependency_stateRequest">
+</message>
+<message name="GlobalLB.Globals.get_check_dynamic_dependency_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="GlobalLB.Globals.set_drain_request_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="GlobalLB.Globals.set_drain_request_stateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_drain_request_stateRequest">
+</message>
+<message name="GlobalLB.Globals.get_drain_request_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="GlobalLB.Globals.set_reset_ripeness_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="GlobalLB.Globals.set_reset_ripeness_stateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_reset_ripeness_stateRequest">
+</message>
+<message name="GlobalLB.Globals.get_reset_ripeness_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="GlobalLB.Globals.set_fb_respect_dependency_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="GlobalLB.Globals.set_fb_respect_dependency_stateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_fb_respect_dependency_stateRequest">
+</message>
+<message name="GlobalLB.Globals.get_fb_respect_dependency_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="GlobalLB.Globals.set_fb_respect_acl_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="GlobalLB.Globals.set_fb_respect_acl_stateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_fb_respect_acl_stateRequest">
+</message>
+<message name="GlobalLB.Globals.get_fb_respect_acl_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="GlobalLB.Globals.set_default_alternate_lb_methodRequest">
+	<part name="lb_method" type="tns:GlobalLB.LBMethod"/>
+</message>
+<message name="GlobalLB.Globals.set_default_alternate_lb_methodResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_default_alternate_lb_methodRequest">
+</message>
+<message name="GlobalLB.Globals.get_default_alternate_lb_methodResponse">
+	<part name="return" type="tns:GlobalLB.LBMethod"/>
+</message>
+
+<message name="GlobalLB.Globals.set_default_fallback_lb_methodRequest">
+	<part name="lb_method" type="tns:GlobalLB.LBMethod"/>
+</message>
+<message name="GlobalLB.Globals.set_default_fallback_lb_methodResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_default_fallback_lb_methodRequest">
+</message>
+<message name="GlobalLB.Globals.get_default_fallback_lb_methodResponse">
+	<part name="return" type="tns:GlobalLB.LBMethod"/>
+</message>
+
+<message name="GlobalLB.Globals.set_domain_name_check_modeRequest">
+	<part name="mode" type="tns:GlobalLB.DomainNameCheckMode"/>
+</message>
+<message name="GlobalLB.Globals.set_domain_name_check_modeResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_domain_name_check_modeRequest">
+</message>
+<message name="GlobalLB.Globals.get_domain_name_check_modeResponse">
+	<part name="return" type="tns:GlobalLB.DomainNameCheckMode"/>
+</message>
+
+<message name="GlobalLB.Globals.set_persistence_maskRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_persistence_maskResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_persistence_maskRequest">
+</message>
+<message name="GlobalLB.Globals.get_persistence_maskResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_static_persistence_cidr_maskRequest">
+	<part name="value" type="xsd:long"/>
+	<part name="v6" type="xsd:boolean"/>
+</message>
+<message name="GlobalLB.Globals.set_static_persistence_cidr_maskResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_static_persistence_cidr_maskRequest">
+	<part name="v6" type="xsd:boolean"/>
+</message>
+<message name="GlobalLB.Globals.get_static_persistence_cidr_maskResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_use_recursion_bit_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="GlobalLB.Globals.set_use_recursion_bit_stateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_use_recursion_bit_stateRequest">
+</message>
+<message name="GlobalLB.Globals.get_use_recursion_bit_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="GlobalLB.Globals.set_qos_factor_lcsRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_qos_factor_lcsResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_qos_factor_lcsRequest">
+</message>
+<message name="GlobalLB.Globals.get_qos_factor_lcsResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_qos_factor_rttRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_qos_factor_rttResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_qos_factor_rttRequest">
+</message>
+<message name="GlobalLB.Globals.get_qos_factor_rttResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_qos_factor_hopsRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_qos_factor_hopsResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_qos_factor_hopsRequest">
+</message>
+<message name="GlobalLB.Globals.get_qos_factor_hopsResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_qos_factor_hit_ratioRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_qos_factor_hit_ratioResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_qos_factor_hit_ratioRequest">
+</message>
+<message name="GlobalLB.Globals.get_qos_factor_hit_ratioResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_qos_factor_packet_rateRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_qos_factor_packet_rateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_qos_factor_packet_rateRequest">
+</message>
+<message name="GlobalLB.Globals.get_qos_factor_packet_rateResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_qos_factor_bpsRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_qos_factor_bpsResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_qos_factor_bpsRequest">
+</message>
+<message name="GlobalLB.Globals.get_qos_factor_bpsResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_qos_factor_vs_capacityRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_qos_factor_vs_capacityResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_qos_factor_vs_capacityRequest">
+</message>
+<message name="GlobalLB.Globals.get_qos_factor_vs_capacityResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_qos_factor_topologyRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_qos_factor_topologyResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_qos_factor_topologyRequest">
+</message>
+<message name="GlobalLB.Globals.get_qos_factor_topologyResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_qos_factor_connection_rateRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_qos_factor_connection_rateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_qos_factor_connection_rateRequest">
+</message>
+<message name="GlobalLB.Globals.get_qos_factor_connection_rateResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_qos_factor_vs_scoreRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_qos_factor_vs_scoreResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_qos_factor_vs_scoreRequest">
+</message>
+<message name="GlobalLB.Globals.get_qos_factor_vs_scoreResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_timer_retry_path_dataRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_timer_retry_path_dataResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_timer_retry_path_dataRequest">
+</message>
+<message name="GlobalLB.Globals.get_timer_retry_path_dataResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_timer_heartbeatRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_timer_heartbeatResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_timer_heartbeatRequest">
+</message>
+<message name="GlobalLB.Globals.get_timer_heartbeatResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_timer_get_auto_configuration_dataRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_timer_get_auto_configuration_dataResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_timer_get_auto_configuration_dataRequest">
+</message>
+<message name="GlobalLB.Globals.get_timer_get_auto_configuration_dataResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_timer_persistence_cacheRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_timer_persistence_cacheResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_timer_persistence_cacheRequest">
+</message>
+<message name="GlobalLB.Globals.get_timer_persistence_cacheResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_default_probe_limitRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_default_probe_limitResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_default_probe_limitRequest">
+</message>
+<message name="GlobalLB.Globals.get_default_probe_limitResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_down_thresholdRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_down_thresholdResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_down_thresholdRequest">
+</message>
+<message name="GlobalLB.Globals.get_down_thresholdResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_down_multipleRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_down_multipleResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_down_multipleRequest">
+</message>
+<message name="GlobalLB.Globals.get_down_multipleResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_path_ttlRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_path_ttlResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_path_ttlRequest">
+</message>
+<message name="GlobalLB.Globals.get_path_ttlResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_traceroute_ttlRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_traceroute_ttlResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_traceroute_ttlRequest">
+</message>
+<message name="GlobalLB.Globals.get_traceroute_ttlResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_lnds_durationRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_lnds_durationResponse">
+</message>
+
+<message name="GlobalLB.Globals.set_ldns_durationRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_ldns_durationResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_ldns_durationRequest">
+</message>
+<message name="GlobalLB.Globals.get_ldns_durationResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_ldns_update_intervalRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_ldns_update_intervalResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_ldns_update_intervalRequest">
+</message>
+<message name="GlobalLB.Globals.get_ldns_update_intervalResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_path_durationRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_path_durationResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_path_durationRequest">
+</message>
+<message name="GlobalLB.Globals.get_path_durationResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_rtt_sample_countRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_rtt_sample_countResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_rtt_sample_countRequest">
+</message>
+<message name="GlobalLB.Globals.get_rtt_sample_countResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_rtt_packet_lengthRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_rtt_packet_lengthResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_rtt_packet_lengthRequest">
+</message>
+<message name="GlobalLB.Globals.get_rtt_packet_lengthResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_rtt_timeoutRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_rtt_timeoutResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_rtt_timeoutRequest">
+</message>
+<message name="GlobalLB.Globals.get_rtt_timeoutResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_maximum_synchronous_monitor_requestRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_maximum_synchronous_monitor_requestResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_maximum_synchronous_monitor_requestRequest">
+</message>
+<message name="GlobalLB.Globals.get_maximum_synchronous_monitor_requestResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_traceroute_portRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_traceroute_portResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_traceroute_portRequest">
+</message>
+<message name="GlobalLB.Globals.get_traceroute_portResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_paths_never_die_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="GlobalLB.Globals.set_paths_never_die_stateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_paths_never_die_stateRequest">
+</message>
+<message name="GlobalLB.Globals.get_paths_never_die_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="GlobalLB.Globals.set_ldns_probe_protocolsRequest">
+	<part name="protocols" type="tns:GlobalLB.LDNSProbeProtocolSequence"/>
+</message>
+<message name="GlobalLB.Globals.set_ldns_probe_protocolsResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_ldns_probe_protocolsRequest">
+</message>
+<message name="GlobalLB.Globals.get_ldns_probe_protocolsResponse">
+	<part name="return" type="tns:GlobalLB.LDNSProbeProtocolSequence"/>
+</message>
+
+<message name="GlobalLB.Globals.set_probe_disabled_object_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="GlobalLB.Globals.set_probe_disabled_object_stateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_probe_disabled_object_stateRequest">
+</message>
+<message name="GlobalLB.Globals.get_probe_disabled_object_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="GlobalLB.Globals.set_link_limit_factorRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_link_limit_factorResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_link_limit_factorRequest">
+</message>
+<message name="GlobalLB.Globals.get_link_limit_factorResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_over_limit_link_limit_factorRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_over_limit_link_limit_factorResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_over_limit_link_limit_factorRequest">
+</message>
+<message name="GlobalLB.Globals.get_over_limit_link_limit_factorResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_link_prepaid_factorRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_link_prepaid_factorResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_link_prepaid_factorRequest">
+</message>
+<message name="GlobalLB.Globals.get_link_prepaid_factorResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_link_compensate_inbound_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="GlobalLB.Globals.set_link_compensate_inbound_stateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_link_compensate_inbound_stateRequest">
+</message>
+<message name="GlobalLB.Globals.get_link_compensate_inbound_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="GlobalLB.Globals.set_link_compensate_outbound_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="GlobalLB.Globals.set_link_compensate_outbound_stateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_link_compensate_outbound_stateRequest">
+</message>
+<message name="GlobalLB.Globals.get_link_compensate_outbound_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="GlobalLB.Globals.set_link_compensation_historyRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_link_compensation_historyResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_link_compensation_historyRequest">
+</message>
+<message name="GlobalLB.Globals.get_link_compensation_historyResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_maximum_link_over_limit_countRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_maximum_link_over_limit_countResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_maximum_link_over_limit_countRequest">
+</message>
+<message name="GlobalLB.Globals.get_maximum_link_over_limit_countResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_lower_bound_percentage_rowRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_lower_bound_percentage_rowResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_lower_bound_percentage_rowRequest">
+</message>
+<message name="GlobalLB.Globals.get_lower_bound_percentage_rowResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_lower_bound_percentage_columnRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_lower_bound_percentage_columnResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_lower_bound_percentage_columnRequest">
+</message>
+<message name="GlobalLB.Globals.get_lower_bound_percentage_columnResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_auto_configuration_save_timeoutRequest">
+	<part name="timeout" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_auto_configuration_save_timeoutResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_auto_configuration_save_timeoutRequest">
+</message>
+<message name="GlobalLB.Globals.get_auto_configuration_save_timeoutResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_auto_configure_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="GlobalLB.Globals.set_auto_configure_stateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_auto_configure_stateRequest">
+</message>
+<message name="GlobalLB.Globals.get_auto_configure_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="GlobalLB.Globals.set_auto_sync_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="GlobalLB.Globals.set_auto_sync_stateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_auto_sync_stateRequest">
+</message>
+<message name="GlobalLB.Globals.get_auto_sync_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="GlobalLB.Globals.set_sync_named_configuration_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="GlobalLB.Globals.set_sync_named_configuration_stateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_sync_named_configuration_stateRequest">
+</message>
+<message name="GlobalLB.Globals.get_sync_named_configuration_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="GlobalLB.Globals.set_sync_group_nameRequest">
+	<part name="sync_group_name" type="xsd:string"/>
+</message>
+<message name="GlobalLB.Globals.set_sync_group_nameResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_sync_group_nameRequest">
+</message>
+<message name="GlobalLB.Globals.get_sync_group_nameResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="GlobalLB.Globals.set_sync_timeoutRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_sync_timeoutResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_sync_timeoutRequest">
+</message>
+<message name="GlobalLB.Globals.get_sync_timeoutResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_sync_zone_timeoutRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_sync_zone_timeoutResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_sync_zone_timeoutRequest">
+</message>
+<message name="GlobalLB.Globals.get_sync_zone_timeoutResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_time_toleranceRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_time_toleranceResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_time_toleranceRequest">
+</message>
+<message name="GlobalLB.Globals.get_time_toleranceResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_topology_longest_match_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="GlobalLB.Globals.set_topology_longest_match_stateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_topology_longest_match_stateRequest">
+</message>
+<message name="GlobalLB.Globals.get_topology_longest_match_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="GlobalLB.Globals.set_virtuals_depend_on_server_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="GlobalLB.Globals.set_virtuals_depend_on_server_stateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_virtuals_depend_on_server_stateRequest">
+</message>
+<message name="GlobalLB.Globals.get_virtuals_depend_on_server_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="GlobalLB.Globals.set_topology_acl_thresholdRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="GlobalLB.Globals.set_topology_acl_thresholdResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_topology_acl_thresholdRequest">
+</message>
+<message name="GlobalLB.Globals.get_topology_acl_thresholdResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="GlobalLB.Globals.set_propagate_wild_card_a_records_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="GlobalLB.Globals.set_propagate_wild_card_a_records_stateResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_propagate_wild_card_a_records_stateRequest">
+</message>
+<message name="GlobalLB.Globals.get_propagate_wild_card_a_records_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="GlobalLB.Globals.set_peer_leaderRequest">
+	<part name="leader" type="xsd:string"/>
+</message>
+<message name="GlobalLB.Globals.set_peer_leaderResponse">
+</message>
+
+<message name="GlobalLB.Globals.get_peer_leaderRequest">
+</message>
+<message name="GlobalLB.Globals.get_peer_leaderResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="GlobalLB.Globals.get_versionRequest">
+</message>
+<message name="GlobalLB.Globals.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="GlobalLB.GlobalsPortType">
+	<operation name="set_dump_topology_state">
+	<documentation>
+ Sets the state to indicate whether to dump the topology.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_dump_topology_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_dump_topology_stateResponse"/>
+	</operation>
+	<operation name="get_dump_topology_state">
+	<documentation>
+ Gets the state to indicate whether to dump the topology.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_dump_topology_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_dump_topology_stateResponse"/>
+	</operation>
+	<operation name="set_topology_allow_zero_scores_state">
+	<documentation>
+ Sets the state to indicate whether to allow topology load-balancing to server objects with zero scores.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_topology_allow_zero_scores_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_topology_allow_zero_scores_stateResponse"/>
+	</operation>
+	<operation name="get_topology_allow_zero_scores_state">
+	<documentation>
+ Gets the state to indicate whether to allow topology load-balancing to server objects with zero scores.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_topology_allow_zero_scores_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_topology_allow_zero_scores_stateResponse"/>
+	</operation>
+	<operation name="set_cache_ldns_state">
+	<documentation>
+ Sets the state to indicate whether to cache LDNSes.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_cache_ldns_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_cache_ldns_stateResponse"/>
+	</operation>
+	<operation name="get_cache_ldns_state">
+	<documentation>
+ Gets the state to indicate whether to cache LDNSes.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_cache_ldns_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_cache_ldns_stateResponse"/>
+	</operation>
+	<operation name="set_aol_aware_state">
+	<documentation>
+ Sets the state to indicate whether local DNS servers that belong to AOL (America Online) are recognized.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_aol_aware_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_aol_aware_stateResponse"/>
+	</operation>
+	<operation name="get_aol_aware_state">
+	<documentation>
+ Gets the state to indicate whether local DNS servers that belong to AOL (America Online) are recognized.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_aol_aware_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_aol_aware_stateResponse"/>
+	</operation>
+	<operation name="set_check_static_dependency_state">
+	<documentation>
+ Sets the state to indicate whether to check the availability of virtual servers.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_check_static_dependency_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_check_static_dependency_stateResponse"/>
+	</operation>
+	<operation name="get_check_static_dependency_state">
+	<documentation>
+ Gets the state to indicate whether to check the availability of virtual servers.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_check_static_dependency_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_check_static_dependency_stateResponse"/>
+	</operation>
+	<operation name="set_check_dynamic_dependency_state">
+	<documentation>
+ Sets the state to indicate whether to check availability of a path before it uses the path for load balancing.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_check_dynamic_dependency_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_check_dynamic_dependency_stateResponse"/>
+	</operation>
+	<operation name="get_check_dynamic_dependency_state">
+	<documentation>
+ Gets the state to indicate whether to check availability of a path before it uses the path for load balancing.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_check_dynamic_dependency_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_check_dynamic_dependency_stateResponse"/>
+	</operation>
+	<operation name="set_drain_request_state">
+	<documentation>
+ Sets the state to indicate whether persistent connections are allowed to remain connected, until TTL expires, when disabling a pool.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_drain_request_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_drain_request_stateResponse"/>
+	</operation>
+	<operation name="get_drain_request_state">
+	<documentation>
+ Gets the state to indicate whether persistent connections are allowed to remain connected, until TTL expires, when disabling a pool.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_drain_request_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_drain_request_stateResponse"/>
+	</operation>
+	<operation name="set_reset_ripeness_state">
+	<documentation>
+ Sets the state to indicate whether ripeness value is allowed to be reset.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_reset_ripeness_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_reset_ripeness_stateResponse"/>
+	</operation>
+	<operation name="get_reset_ripeness_state">
+	<documentation>
+ Gets the state to indicate whether ripeness value is allowed to be reset.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_reset_ripeness_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_reset_ripeness_stateResponse"/>
+	</operation>
+	<operation name="set_fb_respect_dependency_state">
+	<documentation>
+ Sets the state to indicate whether to respect virtual server status when load balancing 
+ switches to the fallback mode.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_fb_respect_dependency_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_fb_respect_dependency_stateResponse"/>
+	</operation>
+	<operation name="get_fb_respect_dependency_state">
+	<documentation>
+ Gets the state to indicate whether to respect virtual server status when load balancing 
+ switches to the fallback mode.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_fb_respect_dependency_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_fb_respect_dependency_stateResponse"/>
+	</operation>
+	<operation name="set_fb_respect_acl_state">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used.  It has never been functional.
+
+ Sets the state to indicate whether to respect ACL.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_fb_respect_acl_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_fb_respect_acl_stateResponse"/>
+	</operation>
+	<operation name="get_fb_respect_acl_state">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used.  It has never been functional.
+
+ Gets the state to indicate whether to respect ACL.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_fb_respect_acl_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_fb_respect_acl_stateResponse"/>
+	</operation>
+	<operation name="set_default_alternate_lb_method">
+	<documentation>
+ Sets the default alternate LB method.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_default_alternate_lb_methodRequest"/>
+		<output message="tns:GlobalLB.Globals.set_default_alternate_lb_methodResponse"/>
+	</operation>
+	<operation name="get_default_alternate_lb_method">
+	<documentation>
+ Gets the default alternate LB method.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_default_alternate_lb_methodRequest"/>
+		<output message="tns:GlobalLB.Globals.get_default_alternate_lb_methodResponse"/>
+	</operation>
+	<operation name="set_default_fallback_lb_method">
+	<documentation>
+ Sets the default fallback LB method.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_default_fallback_lb_methodRequest"/>
+		<output message="tns:GlobalLB.Globals.set_default_fallback_lb_methodResponse"/>
+	</operation>
+	<operation name="get_default_fallback_lb_method">
+	<documentation>
+ Gets the default fallback LB method.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_default_fallback_lb_methodRequest"/>
+		<output message="tns:GlobalLB.Globals.get_default_fallback_lb_methodResponse"/>
+	</operation>
+	<operation name="set_domain_name_check_mode">
+	<documentation>
+ Sets the mode for GTM to use when performing domain
+ name checking. The default value is DOMAIN_NAME_CHECK_MODE_STRICT.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_domain_name_check_modeRequest"/>
+		<output message="tns:GlobalLB.Globals.set_domain_name_check_modeResponse"/>
+	</operation>
+	<operation name="get_domain_name_check_mode">
+	<documentation>
+ Gets the mode for GTM to use when performing domain
+ name checking.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_domain_name_check_modeRequest"/>
+		<output message="tns:GlobalLB.Globals.get_domain_name_check_modeResponse"/>
+	</operation>
+	<operation name="set_persistence_mask">
+	<documentation>
+ Sets the persistence mask.
+ This function is deprecated and new applications should use
+ set_static_persistence_cidr_mask.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_persistence_maskRequest"/>
+		<output message="tns:GlobalLB.Globals.set_persistence_maskResponse"/>
+	</operation>
+	<operation name="get_persistence_mask">
+	<documentation>
+ Gets the persistence mask.
+ This function is deprecated and new applications should use
+ get_static_persistence_cidr_mask.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_persistence_maskRequest"/>
+		<output message="tns:GlobalLB.Globals.get_persistence_maskResponse"/>
+	</operation>
+	<operation name="set_static_persistence_cidr_mask">
+	<documentation>
+ Sets the CIDR mask (length) for the static persistence load balancing mode.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_static_persistence_cidr_maskRequest"/>
+		<output message="tns:GlobalLB.Globals.set_static_persistence_cidr_maskResponse"/>
+	</operation>
+	<operation name="get_static_persistence_cidr_mask">
+	<documentation>
+ Gets the CIDR mask (length) for the static persistence load balancing mode.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_static_persistence_cidr_maskRequest"/>
+		<output message="tns:GlobalLB.Globals.get_static_persistence_cidr_maskResponse"/>
+	</operation>
+	<operation name="set_use_recursion_bit_state">
+	<documentation>
+ Sets the state that if enabled, it will set the recursion bit in all DNS responses from GTM.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_use_recursion_bit_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_use_recursion_bit_stateResponse"/>
+	</operation>
+	<operation name="get_use_recursion_bit_state">
+	<documentation>
+ Gets the state that if enabled, it will set the recursion bit in all DNS responses from GTM.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_use_recursion_bit_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_use_recursion_bit_stateResponse"/>
+	</operation>
+	<operation name="set_qos_factor_lcs">
+	<documentation>
+ Sets the factor used to normalize link capacity values when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_qos_factor_lcsRequest"/>
+		<output message="tns:GlobalLB.Globals.set_qos_factor_lcsResponse"/>
+	</operation>
+	<operation name="get_qos_factor_lcs">
+	<documentation>
+ Gets the factor used to normalize link capacity values when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_qos_factor_lcsRequest"/>
+		<output message="tns:GlobalLB.Globals.get_qos_factor_lcsResponse"/>
+	</operation>
+	<operation name="set_qos_factor_rtt">
+	<documentation>
+ Sets the factor used to normalize round-trip time values when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_qos_factor_rttRequest"/>
+		<output message="tns:GlobalLB.Globals.set_qos_factor_rttResponse"/>
+	</operation>
+	<operation name="get_qos_factor_rtt">
+	<documentation>
+ Gets the factor used to normalize round-trip time values when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_qos_factor_rttRequest"/>
+		<output message="tns:GlobalLB.Globals.get_qos_factor_rttResponse"/>
+	</operation>
+	<operation name="set_qos_factor_hops">
+	<documentation>
+ Sets the factor used to normalize hops when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_qos_factor_hopsRequest"/>
+		<output message="tns:GlobalLB.Globals.set_qos_factor_hopsResponse"/>
+	</operation>
+	<operation name="get_qos_factor_hops">
+	<documentation>
+ Gets the factor used to normalize hops when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_qos_factor_hopsRequest"/>
+		<output message="tns:GlobalLB.Globals.get_qos_factor_hopsResponse"/>
+	</operation>
+	<operation name="set_qos_factor_hit_ratio">
+	<documentation>
+ Sets the factor used to normalize ping packet completion rates when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_qos_factor_hit_ratioRequest"/>
+		<output message="tns:GlobalLB.Globals.set_qos_factor_hit_ratioResponse"/>
+	</operation>
+	<operation name="get_qos_factor_hit_ratio">
+	<documentation>
+ Gets the factor used to normalize ping packet completion rates when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_qos_factor_hit_ratioRequest"/>
+		<output message="tns:GlobalLB.Globals.get_qos_factor_hit_ratioResponse"/>
+	</operation>
+	<operation name="set_qos_factor_packet_rate">
+	<documentation>
+ Sets the factor used to normalize packet rates when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_qos_factor_packet_rateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_qos_factor_packet_rateResponse"/>
+	</operation>
+	<operation name="get_qos_factor_packet_rate">
+	<documentation>
+ Gets the factor used to normalize packet rates when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_qos_factor_packet_rateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_qos_factor_packet_rateResponse"/>
+	</operation>
+	<operation name="set_qos_factor_bps">
+	<documentation>
+ Sets the factor used to normalize bits per second when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_qos_factor_bpsRequest"/>
+		<output message="tns:GlobalLB.Globals.set_qos_factor_bpsResponse"/>
+	</operation>
+	<operation name="get_qos_factor_bps">
+	<documentation>
+ Gets the factor used to normalize bits per second when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_qos_factor_bpsRequest"/>
+		<output message="tns:GlobalLB.Globals.get_qos_factor_bpsResponse"/>
+	</operation>
+	<operation name="set_qos_factor_vs_capacity">
+	<documentation>
+ Sets the factor used to normalize virtual server capacity values when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_qos_factor_vs_capacityRequest"/>
+		<output message="tns:GlobalLB.Globals.set_qos_factor_vs_capacityResponse"/>
+	</operation>
+	<operation name="get_qos_factor_vs_capacity">
+	<documentation>
+ Gets the factor used to normalize virtual server capacity values when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_qos_factor_vs_capacityRequest"/>
+		<output message="tns:GlobalLB.Globals.get_qos_factor_vs_capacityResponse"/>
+	</operation>
+	<operation name="set_qos_factor_topology">
+	<documentation>
+ Sets the factor used to normalize topology values when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_qos_factor_topologyRequest"/>
+		<output message="tns:GlobalLB.Globals.set_qos_factor_topologyResponse"/>
+	</operation>
+	<operation name="get_qos_factor_topology">
+	<documentation>
+ Gets the factor used to normalize topology values when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_qos_factor_topologyRequest"/>
+		<output message="tns:GlobalLB.Globals.get_qos_factor_topologyResponse"/>
+	</operation>
+	<operation name="set_qos_factor_connection_rate">
+	<documentation>
+ Sets the factor used to normalize connection rates when the load balancing mode is set to LB_METHOD_QOS.
+ This function is deprecated and new applications should use vs_score.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_qos_factor_connection_rateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_qos_factor_connection_rateResponse"/>
+	</operation>
+	<operation name="get_qos_factor_connection_rate">
+	<documentation>
+ Gets the factor used to normalize connection rates when the load balancing mode is set to LB_METHOD_QOS.
+ This function is deprecated and new applications should use vs_score.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_qos_factor_connection_rateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_qos_factor_connection_rateResponse"/>
+	</operation>
+	<operation name="set_qos_factor_vs_score">
+	<documentation>
+ Sets the factor used to normalize virtual server (VS) score when the load balancing mode is set to LB_METHOD_QOS.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_qos_factor_vs_scoreRequest"/>
+		<output message="tns:GlobalLB.Globals.set_qos_factor_vs_scoreResponse"/>
+	</operation>
+	<operation name="get_qos_factor_vs_score">
+	<documentation>
+ Gets the factor used to normalize virtual server (VS) score when the load balancing mode is set to LB_METHOD_QOS.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_qos_factor_vs_scoreRequest"/>
+		<output message="tns:GlobalLB.Globals.get_qos_factor_vs_scoreResponse"/>
+	</operation>
+	<operation name="set_timer_retry_path_data">
+	<documentation>
+ Sets the frequency at which to retry path data.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_timer_retry_path_dataRequest"/>
+		<output message="tns:GlobalLB.Globals.set_timer_retry_path_dataResponse"/>
+	</operation>
+	<operation name="get_timer_retry_path_data">
+	<documentation>
+ Gets the frequency at which to retry path data.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_timer_retry_path_dataRequest"/>
+		<output message="tns:GlobalLB.Globals.get_timer_retry_path_dataResponse"/>
+	</operation>
+	<operation name="set_timer_heartbeat">
+	<documentation>
+ Sets the frequency at which GTM queries other BIG-IP
+ systems for updated data. When configuring monitors for
+ BIG-IP systems, F5 Networks recommends that the
+ probe interval option for the monitor be equal to or
+ greater than the timer heartbeat option. The default
+ value is 10.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_timer_heartbeatRequest"/>
+		<output message="tns:GlobalLB.Globals.set_timer_heartbeatResponse"/>
+	</operation>
+	<operation name="get_timer_heartbeat">
+	<documentation>
+ Gets the frequency at which GTM queries other BIG-IP
+ systems for updated data.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_timer_heartbeatRequest"/>
+		<output message="tns:GlobalLB.Globals.get_timer_heartbeatResponse"/>
+	</operation>
+	<operation name="set_timer_get_auto_configuration_data">
+	<documentation>
+ Sets the frequency at which to retrieve auto-configuration data.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_timer_get_auto_configuration_dataRequest"/>
+		<output message="tns:GlobalLB.Globals.set_timer_get_auto_configuration_dataResponse"/>
+	</operation>
+	<operation name="get_timer_get_auto_configuration_data">
+	<documentation>
+ Gets the frequency at which to retrieve auto-configuration data.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_timer_get_auto_configuration_dataRequest"/>
+		<output message="tns:GlobalLB.Globals.get_timer_get_auto_configuration_dataResponse"/>
+	</operation>
+	<operation name="set_timer_persistence_cache">
+	<documentation>
+ Sets the frequency at which to retrieve path and metrics data from the system cache.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_timer_persistence_cacheRequest"/>
+		<output message="tns:GlobalLB.Globals.set_timer_persistence_cacheResponse"/>
+	</operation>
+	<operation name="get_timer_persistence_cache">
+	<documentation>
+ Gets the frequency at which to retrieve path and metrics data from the system cache.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_timer_persistence_cacheRequest"/>
+		<output message="tns:GlobalLB.Globals.get_timer_persistence_cacheResponse"/>
+	</operation>
+	<operation name="set_default_probe_limit">
+	<documentation>
+ Sets the default probe limit, the number of times to probe a path.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_default_probe_limitRequest"/>
+		<output message="tns:GlobalLB.Globals.set_default_probe_limitResponse"/>
+	</operation>
+	<operation name="get_default_probe_limit">
+	<documentation>
+ Gets the default probe limit, the number of times to probe a path.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_default_probe_limitRequest"/>
+		<output message="tns:GlobalLB.Globals.get_default_probe_limitResponse"/>
+	</operation>
+	<operation name="set_down_threshold">
+	<documentation>
+ Sets the "down_threshold" value. If a host server or a host virtual server has been marked 
+ down for the last down_threshold probing cycles (timer_get_host_data or timer_get_vs_data respectively),
+ then perform service checks every down_multiple * timer period instead.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_down_thresholdRequest"/>
+		<output message="tns:GlobalLB.Globals.set_down_thresholdResponse"/>
+	</operation>
+	<operation name="get_down_threshold">
+	<documentation>
+ Gets the "down_threshold" value. If a host server or a host virtual server has been marked 
+ down for the last down_threshold probing cycles (timer_get_host_data or timer_get_vs_data respectively),
+ then perform service checks every down_multiple * timer period instead.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_down_thresholdRequest"/>
+		<output message="tns:GlobalLB.Globals.get_down_thresholdResponse"/>
+	</operation>
+	<operation name="set_down_multiple">
+	<documentation>
+ Sets the "down_multiple" value. If a host server or a host virtual server has been marked 
+ down for the last down_threshold probing cycles (timer_get_host_data or timer_get_vs_data respectively),
+ then perform service checks every down_multiple * timer period instead.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_down_multipleRequest"/>
+		<output message="tns:GlobalLB.Globals.set_down_multipleResponse"/>
+	</operation>
+	<operation name="get_down_multiple">
+	<documentation>
+ Gets the "down_multiple" value. If a host server or a host virtual server has been marked 
+ down for the last down_threshold probing cycles (timer_get_host_data or timer_get_vs_data respectively),
+ then perform service checks every down_multiple * timer period instead.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_down_multipleRequest"/>
+		<output message="tns:GlobalLB.Globals.get_down_multipleResponse"/>
+	</operation>
+	<operation name="set_path_ttl">
+	<documentation>
+ Sets the TTL for the path information.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_path_ttlRequest"/>
+		<output message="tns:GlobalLB.Globals.set_path_ttlResponse"/>
+	</operation>
+	<operation name="get_path_ttl">
+	<documentation>
+ Gets the TTL for the path information.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_path_ttlRequest"/>
+		<output message="tns:GlobalLB.Globals.get_path_ttlResponse"/>
+	</operation>
+	<operation name="set_traceroute_ttl">
+	<documentation>
+ Sets the TTL for the traceroute information.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_traceroute_ttlRequest"/>
+		<output message="tns:GlobalLB.Globals.set_traceroute_ttlResponse"/>
+	</operation>
+	<operation name="get_traceroute_ttl">
+	<documentation>
+ Gets the TTL for the traceroute information.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_traceroute_ttlRequest"/>
+		<output message="tns:GlobalLB.Globals.get_traceroute_ttlResponse"/>
+	</operation>
+	<operation name="set_lnds_duration">
+	<documentation>
+ Sets the number of seconds that an inactive LDNS remains cached.
+
+ This function is deprecated (due to being misnamed); new applications should
+ use set_ldns_duration.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_lnds_durationRequest"/>
+		<output message="tns:GlobalLB.Globals.set_lnds_durationResponse"/>
+	</operation>
+	<operation name="set_ldns_duration">
+	<documentation>
+ Sets the number of seconds that an inactive LDNS remains cached.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_ldns_durationRequest"/>
+		<output message="tns:GlobalLB.Globals.set_ldns_durationResponse"/>
+	</operation>
+	<operation name="get_ldns_duration">
+	<documentation>
+ Gets the number of seconds that an inactive LDNS remains cached.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_ldns_durationRequest"/>
+		<output message="tns:GlobalLB.Globals.get_ldns_durationResponse"/>
+	</operation>
+	<operation name="set_ldns_update_interval">
+	<documentation>
+ Sets the number of seconds that a tmm load-balancer will wait before sending an update
+ for a LDNS which has been accessed by a client.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_ldns_update_intervalRequest"/>
+		<output message="tns:GlobalLB.Globals.set_ldns_update_intervalResponse"/>
+	</operation>
+	<operation name="get_ldns_update_interval">
+	<documentation>
+ Gets the minimum number of seconds that a tmm load-balancer will wait before sending an update
+ for a LDNS which has been accessed by a client.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_ldns_update_intervalRequest"/>
+		<output message="tns:GlobalLB.Globals.get_ldns_update_intervalResponse"/>
+	</operation>
+	<operation name="set_path_duration">
+	<documentation>
+ Sets the number of seconds that a path remains cached after its last access.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_path_durationRequest"/>
+		<output message="tns:GlobalLB.Globals.set_path_durationResponse"/>
+	</operation>
+	<operation name="get_path_duration">
+	<documentation>
+ Gets the number of seconds that a path remains cached after its last access.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_path_durationRequest"/>
+		<output message="tns:GlobalLB.Globals.get_path_durationResponse"/>
+	</operation>
+	<operation name="set_rtt_sample_count">
+	<documentation>
+ Sets the number of packets to send out in a probe request to determine path information.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_rtt_sample_countRequest"/>
+		<output message="tns:GlobalLB.Globals.set_rtt_sample_countResponse"/>
+	</operation>
+	<operation name="get_rtt_sample_count">
+	<documentation>
+ Gets the number of packets to send out in a probe request to determine path information.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_rtt_sample_countRequest"/>
+		<output message="tns:GlobalLB.Globals.get_rtt_sample_countResponse"/>
+	</operation>
+	<operation name="set_rtt_packet_length">
+	<documentation>
+ Sets the length of the packet sent out in a probe request to determine path information.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_rtt_packet_lengthRequest"/>
+		<output message="tns:GlobalLB.Globals.set_rtt_packet_lengthResponse"/>
+	</operation>
+	<operation name="get_rtt_packet_length">
+	<documentation>
+ Gets the length of the packet sent out in a probe request to determine path information.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_rtt_packet_lengthRequest"/>
+		<output message="tns:GlobalLB.Globals.get_rtt_packet_lengthResponse"/>
+	</operation>
+	<operation name="set_rtt_timeout">
+	<documentation>
+ Sets the timeout for RTT, in seconds.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_rtt_timeoutRequest"/>
+		<output message="tns:GlobalLB.Globals.set_rtt_timeoutResponse"/>
+	</operation>
+	<operation name="get_rtt_timeout">
+	<documentation>
+ Gets the timeout for RTT, in seconds.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_rtt_timeoutRequest"/>
+		<output message="tns:GlobalLB.Globals.get_rtt_timeoutResponse"/>
+	</operation>
+	<operation name="set_maximum_synchronous_monitor_request">
+	<documentation>
+ Sets the maximum synchronous monitor request, which is used to control the maximum number of 
+ monitor requests being sent out at one time for a given probing interval. This will allow the 
+ user to smooth out monitor probe requests as much as they desire.
+
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_maximum_synchronous_monitor_requestRequest"/>
+		<output message="tns:GlobalLB.Globals.set_maximum_synchronous_monitor_requestResponse"/>
+	</operation>
+	<operation name="get_maximum_synchronous_monitor_request">
+	<documentation>
+ Gets the maximum synchronous monitor request, which is used to control the maximum number of 
+ monitor requests being sent out at one time for a given probing interval. This will allow the 
+ user to smooth out monitor probe requests as much as they desire.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_maximum_synchronous_monitor_requestRequest"/>
+		<output message="tns:GlobalLB.Globals.get_maximum_synchronous_monitor_requestResponse"/>
+	</operation>
+	<operation name="set_traceroute_port">
+	<documentation>
+ Sets the port to use to collect traceroute (hops) data.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_traceroute_portRequest"/>
+		<output message="tns:GlobalLB.Globals.set_traceroute_portResponse"/>
+	</operation>
+	<operation name="get_traceroute_port">
+	<documentation>
+ Gets the port to use to collect traceroute (hops) data.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_traceroute_portRequest"/>
+		<output message="tns:GlobalLB.Globals.get_traceroute_portResponse"/>
+	</operation>
+	<operation name="set_paths_never_die_state">
+	<documentation>
+ Sets the state indicating whether the dynamic load balancing modes can use path data even after the TTL for the path data has expired.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_paths_never_die_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_paths_never_die_stateResponse"/>
+	</operation>
+	<operation name="get_paths_never_die_state">
+	<documentation>
+ Gets the state indicating whether the dynamic load balancing modes can use path data even after the TTL for the path data has expired..
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_paths_never_die_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_paths_never_die_stateResponse"/>
+	</operation>
+	<operation name="set_ldns_probe_protocols">
+	<documentation>
+ Sets the LDNS probe protocols. The order of the protocols in the sequence 
+ will be used to indicate the preferred protocols, i.e. the first protocol
+ in the sequence is the most preferred protocol.
+
+ If you'd like to remove an item, get the LDNS probe protocols, remove the
+ item, then do set.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_ldns_probe_protocolsRequest"/>
+		<output message="tns:GlobalLB.Globals.set_ldns_probe_protocolsResponse"/>
+	</operation>
+	<operation name="get_ldns_probe_protocols">
+	<documentation>
+ Gets the LDNS probe protocols. The order of the protocols in the sequence 
+ will be used to indicate the preferred protocols, i.e. the first protocol
+ in the sequence is the most preferred protocol.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_ldns_probe_protocolsRequest"/>
+		<output message="tns:GlobalLB.Globals.get_ldns_probe_protocolsResponse"/>
+	</operation>
+	<operation name="set_probe_disabled_object_state">
+	<documentation>
+ Sets the state that if enabled, GTM will still probe disabled object.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_probe_disabled_object_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_probe_disabled_object_stateResponse"/>
+	</operation>
+	<operation name="get_probe_disabled_object_state">
+	<documentation>
+ Gets the state that if enabled, GTM will still probe disabled object.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_probe_disabled_object_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_probe_disabled_object_stateResponse"/>
+	</operation>
+	<operation name="set_link_limit_factor">
+	<documentation>
+ Sets the link limit factor, which is used to set a target percentage for traffic. For example,
+ if it is set to 90, the ratio cost based load-balancing will set a ratio with a maximum value 
+ equal to 90% of the limit value for the link. Default is 95%.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_link_limit_factorRequest"/>
+		<output message="tns:GlobalLB.Globals.set_link_limit_factorResponse"/>
+	</operation>
+	<operation name="get_link_limit_factor">
+	<documentation>
+ Gets the link limit factor, which is used to set a target percentage for traffic. For example,
+ if it is set to 90, the ratio cost based load-balancing will set a ratio with a maximum value 
+ equal to 90% of the limit value for the link. Default is 95%.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_link_limit_factorRequest"/>
+		<output message="tns:GlobalLB.Globals.get_link_limit_factorResponse"/>
+	</operation>
+	<operation name="set_over_limit_link_limit_factor">
+	<documentation>
+ Sets the over-limit link limit factor. If traffic on a link exceeds the limit, this factor will 
+ be used instead of the link_limit_factor until the traffic is over limit for more than 
+ max_link_over_limit_count times. Once the limit has been exceeded too many times, all traffic
+ is shut off for the link. The default for over_limit_link_limit_factor is 90%.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_over_limit_link_limit_factorRequest"/>
+		<output message="tns:GlobalLB.Globals.set_over_limit_link_limit_factorResponse"/>
+	</operation>
+	<operation name="get_over_limit_link_limit_factor">
+	<documentation>
+ Gets the over-limit link limit factor. If traffic on a link exceeds the limit, this factor will 
+ be used instead of the link_limit_factor until the traffic is over limit for more than 
+ max_link_over_limit_count times. Once the limit has been exceeded too many times, all traffic
+ is shut off for the link. The default for over_limit_link_limit_factor is 90%.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_over_limit_link_limit_factorRequest"/>
+		<output message="tns:GlobalLB.Globals.get_over_limit_link_limit_factorResponse"/>
+	</operation>
+	<operation name="set_link_prepaid_factor">
+	<documentation>
+ Sets the link prepaid factor. Maximum percentage of traffic allocated to link which has a 
+ traffic allotment which has been prepaid. Default is 95%.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_link_prepaid_factorRequest"/>
+		<output message="tns:GlobalLB.Globals.set_link_prepaid_factorResponse"/>
+	</operation>
+	<operation name="get_link_prepaid_factor">
+	<documentation>
+ Gets the link prepaid factor. Maximum percentage of traffic allocated to link which has a 
+ traffic allotment which has been prepaid. Default is 95%.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_link_prepaid_factorRequest"/>
+		<output message="tns:GlobalLB.Globals.get_link_prepaid_factorResponse"/>
+	</operation>
+	<operation name="set_link_compensate_inbound_state">
+	<documentation>
+ Sets the link compensate inbound state. If set, the link allotment calculation will take into account 
+ traffic which does not flow through the BIGIP, i.e. if more traffic is flowing through a link 
+ as measured by SNMP on the router than is flowing through the BIGIP. This applies to inbound 
+ traffic which the major volume will initiate from internal clients.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_link_compensate_inbound_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_link_compensate_inbound_stateResponse"/>
+	</operation>
+	<operation name="get_link_compensate_inbound_state">
+	<documentation>
+ Gets the link compensate inbound state. If set, the link allotment calculation will take into account 
+ traffic which does not flow through the BIGIP, i.e. if more traffic is flowing through a link 
+ as measured by SNMP on the router than is flowing through the BIGIP. This applies to inbound 
+ traffic which the major volume will initiate from internal clients.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_link_compensate_inbound_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_link_compensate_inbound_stateResponse"/>
+	</operation>
+	<operation name="set_link_compensate_outbound_state">
+	<documentation>
+ Sets the link compensate outbound state. If set, the link allotment calculation will take into account 
+ traffic which does not flow through the BIGIP, i.e. if more traffic is flowing through a link 
+ as measured by SNMP on the router than is flowing through the BIGIP. This applies to outbound 
+ traffic which the major volume will initiate from internal clients.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_link_compensate_outbound_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_link_compensate_outbound_stateResponse"/>
+	</operation>
+	<operation name="get_link_compensate_outbound_state">
+	<documentation>
+ Gets the link compensate outbound state. If set, the link allotment calculation will take into account 
+ traffic which does not flow through the BIGIP, i.e. if more traffic is flowing through a link 
+ as measured by SNMP on the router than is flowing through the BIGIP. This applies to outbound 
+ traffic which the major volume will initiate from internal clients.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_link_compensate_outbound_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_link_compensate_outbound_stateResponse"/>
+	</operation>
+	<operation name="set_link_compensation_history">
+	<documentation>
+ Sets the link compensation history.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_link_compensation_historyRequest"/>
+		<output message="tns:GlobalLB.Globals.set_link_compensation_historyResponse"/>
+	</operation>
+	<operation name="get_link_compensation_history">
+	<documentation>
+ Gets the link compensation history.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_link_compensation_historyRequest"/>
+		<output message="tns:GlobalLB.Globals.get_link_compensation_historyResponse"/>
+	</operation>
+	<operation name="set_maximum_link_over_limit_count">
+	<documentation>
+ Sets the maximum link over limit count. The count of how many times in a row traffic may be over
+ the defined limit for the link before it is shut off entirely. Default is 1.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_maximum_link_over_limit_countRequest"/>
+		<output message="tns:GlobalLB.Globals.set_maximum_link_over_limit_countResponse"/>
+	</operation>
+	<operation name="get_maximum_link_over_limit_count">
+	<documentation>
+ Gets the maximum link over limit count. The count of how many times in a row traffic may be over
+ the defined limit for the link before it is shut off entirely. Default is 1.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_maximum_link_over_limit_countRequest"/>
+		<output message="tns:GlobalLB.Globals.get_maximum_link_over_limit_countResponse"/>
+	</operation>
+	<operation name="set_lower_bound_percentage_row">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used.  It has never been functional.
+
+ Sets the lower bound percentage row options in Internet Weather Map.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_lower_bound_percentage_rowRequest"/>
+		<output message="tns:GlobalLB.Globals.set_lower_bound_percentage_rowResponse"/>
+	</operation>
+	<operation name="get_lower_bound_percentage_row">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used.  It has never been functional.
+
+ Gets the lower bound percentage row options in Internet Weather Map.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_lower_bound_percentage_rowRequest"/>
+		<output message="tns:GlobalLB.Globals.get_lower_bound_percentage_rowResponse"/>
+	</operation>
+	<operation name="set_lower_bound_percentage_column">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used.  It has never been functional.
+
+ Sets the lower bound percentage column options in Internet Weather Map.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_lower_bound_percentage_columnRequest"/>
+		<output message="tns:GlobalLB.Globals.set_lower_bound_percentage_columnResponse"/>
+	</operation>
+	<operation name="get_lower_bound_percentage_column">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used.  It has never been functional.
+
+ Gets the lower bound percentage column options in Internet Weather Map.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_lower_bound_percentage_columnRequest"/>
+		<output message="tns:GlobalLB.Globals.get_lower_bound_percentage_columnResponse"/>
+	</operation>
+	<operation name="set_auto_configuration_save_timeout">
+	<documentation>
+ Sets the timeout, in seconds, indicating how long to wait before
+ automatically saving the GTM configuration to the bigip_gtm.conf
+ file after a change is made to the GTM configuration. Setting this
+ timeout to -1 will cause the GTM configuration to NEVER be saved.
+ Setting this timeout to 0 will cause the GTM configuration to be
+ saved immediately. Setting this timeout to a value N, greater than
+ 0, will cause the GTM configuration to be saved to bigip_gtm.conf
+ no fewer than N seconds after a configuration change is made.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_auto_configuration_save_timeoutRequest"/>
+		<output message="tns:GlobalLB.Globals.set_auto_configuration_save_timeoutResponse"/>
+	</operation>
+	<operation name="get_auto_configuration_save_timeout">
+	<documentation>
+ Gets the timeout, in seconds, indicating how long to wait before
+ automatically saving the GTM configuration to the bigip_gtm.conf
+ file after a change is made to the GTM configuration.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_auto_configuration_save_timeoutRequest"/>
+		<output message="tns:GlobalLB.Globals.get_auto_configuration_save_timeoutResponse"/>
+	</operation>
+	<operation name="set_auto_configure_state">
+	<documentation>
+ Sets the state indicating whether to auto configure BIGIP/3DNS servers (automatic addition
+ and deletion of self IPs and virtual servers.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_auto_configure_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_auto_configure_stateResponse"/>
+	</operation>
+	<operation name="get_auto_configure_state">
+	<documentation>
+ Gets the state indicating whether to auto configure BIGIP/3DNS servers (automatic addition
+ and deletion of self IPs and virtual servers.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_auto_configure_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_auto_configure_stateResponse"/>
+	</operation>
+	<operation name="set_auto_sync_state">
+	<documentation>
+ Sets the state to indicate whether to autosync.  Allows automatic updates of wideip.conf to/from other 3-DNSes.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_auto_sync_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_auto_sync_stateResponse"/>
+	</operation>
+	<operation name="get_auto_sync_state">
+	<documentation>
+ Gets the state to indicate whether to autosync.  Allows automatic updates of wideip.conf to/from other 3-DNSes.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_auto_sync_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_auto_sync_stateResponse"/>
+	</operation>
+	<operation name="set_sync_named_configuration_state">
+	<documentation>
+ Sets the state to indicate whether to auto-synchronize named configuration. 
+ Allows automatic updates of named.conf to/from other 3-DNSes.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_sync_named_configuration_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_sync_named_configuration_stateResponse"/>
+	</operation>
+	<operation name="get_sync_named_configuration_state">
+	<documentation>
+ Gets the state to indicate whether to auto_synchronize named configuration.
+ Allows automatic updates of named.conf to/from other 3-DNSes.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_sync_named_configuration_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_sync_named_configuration_stateResponse"/>
+	</operation>
+	<operation name="set_sync_group_name">
+	<documentation>
+ Sets the sync group name.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_sync_group_nameRequest"/>
+		<output message="tns:GlobalLB.Globals.set_sync_group_nameResponse"/>
+	</operation>
+	<operation name="get_sync_group_name">
+	<documentation>
+ Gets the sync group name.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_sync_group_nameRequest"/>
+		<output message="tns:GlobalLB.Globals.get_sync_group_nameResponse"/>
+	</operation>
+	<operation name="set_sync_timeout">
+	<documentation>
+ Sets the sync timeout.  If synch'ing from a remote 3-DNS takes longer than 
+ this timeout, then abort the connection.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_sync_timeoutRequest"/>
+		<output message="tns:GlobalLB.Globals.set_sync_timeoutResponse"/>
+	</operation>
+	<operation name="get_sync_timeout">
+	<documentation>
+ Gets the sync timeout. If synch'ing from a remote 3-DNS takes longer than 
+ this timeout, then abort the connection.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_sync_timeoutRequest"/>
+		<output message="tns:GlobalLB.Globals.get_sync_timeoutResponse"/>
+	</operation>
+	<operation name="set_sync_zone_timeout">
+	<documentation>
+ Sets the sync zones timeout. If synch'ing named and zone configuration takes 
+ this timeout, then abort the connection.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_sync_zone_timeoutRequest"/>
+		<output message="tns:GlobalLB.Globals.set_sync_zone_timeoutResponse"/>
+	</operation>
+	<operation name="get_sync_zone_timeout">
+	<documentation>
+ Gets the sync zones timeout. If synch'ing named and zone configuration takes 
+ this timeout, then abort the connection.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_sync_zone_timeoutRequest"/>
+		<output message="tns:GlobalLB.Globals.get_sync_zone_timeoutResponse"/>
+	</operation>
+	<operation name="set_time_tolerance">
+	<documentation>
+ Sets the allowable time difference for data to be out of sync between members of a sync group.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_time_toleranceRequest"/>
+		<output message="tns:GlobalLB.Globals.set_time_toleranceResponse"/>
+	</operation>
+	<operation name="get_time_tolerance">
+	<documentation>
+ Gets the allowable time difference for data to be out of sync between members of a sync group.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_time_toleranceRequest"/>
+		<output message="tns:GlobalLB.Globals.get_time_toleranceResponse"/>
+	</operation>
+	<operation name="set_topology_longest_match_state">
+	<documentation>
+ Sets the state to indicate whether the 3-DNS Controller selects the topology record that is most 
+ specific and, thus, has the longest match, in cases where there are several IP/netmask items that 
+ match a particular IP address.  If you select No, the 3-DNS Controller uses the first topology 
+ record that matches (according to the order of entry) in the topology statement. 
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_topology_longest_match_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_topology_longest_match_stateResponse"/>
+	</operation>
+	<operation name="get_topology_longest_match_state">
+	<documentation>
+ Gets the state to indicate whether the 3-DNS Controller selects the topology record that is most 
+ specific and, thus, has the longest match, in cases where there are several IP/netmask items that 
+ match a particular IP address.  If you select No, the 3-DNS Controller uses the first topology 
+ record that matches (according to the order of entry) in the topology statement.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_topology_longest_match_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_topology_longest_match_stateResponse"/>
+	</operation>
+	<operation name="set_virtuals_depend_on_server_state">
+	<documentation>
+ Sets the state to indicate whether the system marks a
+ virtual server down when the server on which the virtual
+ server is configured can no longer be reached via
+ iQuery. The default value is enabled.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_virtuals_depend_on_server_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_virtuals_depend_on_server_stateResponse"/>
+	</operation>
+	<operation name="get_virtuals_depend_on_server_state">
+	<documentation>
+ Gets the state to indicate whether the system marks a
+ virtual server down when the server on which the virtual
+ server is configured can no longer be reached via
+ iQuery.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_virtuals_depend_on_server_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_virtuals_depend_on_server_stateResponse"/>
+	</operation>
+	<operation name="set_topology_acl_threshold">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used.  Please enable/disable pool members directly if desired.
+
+ Sets the threshold for the topology ACL.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_topology_acl_thresholdRequest"/>
+		<output message="tns:GlobalLB.Globals.set_topology_acl_thresholdResponse"/>
+	</operation>
+	<operation name="get_topology_acl_threshold">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used.  Please enable/disable pool members directly if desired.
+
+ Gets the threshold for the topology ACL.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_topology_acl_thresholdRequest"/>
+		<output message="tns:GlobalLB.Globals.get_topology_acl_thresholdResponse"/>
+	</operation>
+	<operation name="set_propagate_wild_card_a_records_state">
+	<documentation>
+ Sets the state to propagate wild card A records for wild card wide
+ IP records.
+
+ DNS allows wildcard entries in the form of "*.zone.com".  Best
+ practices indicate that using wild cards for A records may have
+ unintended consequences.  This results in a NXDOMAIN responses,
+ which is valid and correct.
+
+ The only valid DNS wild card is in the form of "*.zone.com".  The
+ entire leftmost term must be "*" and ONLY "*".  There must be no
+ other "*" in the name.  So not every GTM supported wild card will
+ be propagated to DNS.  DNS wild cards of the following forms will
+ be propagated: "*.zone.com".  The following will not:
+ "*part.zone.com", "part*.zone.com", "part.*.zone.com",
+ "p?rt.zone.com".
+
+ There is a workaround without setting this swtich - entering wild
+ card records manually through ZRD.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_propagate_wild_card_a_records_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.set_propagate_wild_card_a_records_stateResponse"/>
+	</operation>
+	<operation name="get_propagate_wild_card_a_records_state">
+	<documentation>
+ Gets the state to propagate wild card A records for wild card wide
+ IP records.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_propagate_wild_card_a_records_stateRequest"/>
+		<output message="tns:GlobalLB.Globals.get_propagate_wild_card_a_records_stateResponse"/>
+	</operation>
+	<operation name="set_peer_leader">
+	<documentation>
+ Sets the peer leader, the name of the GTM responsible for
+   creating new DNSSEC keys.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.set_peer_leaderRequest"/>
+		<output message="tns:GlobalLB.Globals.set_peer_leaderResponse"/>
+	</operation>
+	<operation name="get_peer_leader">
+	<documentation>
+ Gets the peer leader, the name of the GTM responsible for
+   creating new DNSSEC keys.
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_peer_leaderRequest"/>
+		<output message="tns:GlobalLB.Globals.get_peer_leaderResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+
+        	</documentation>
+		<input message="tns:GlobalLB.Globals.get_versionRequest"/>
+		<output message="tns:GlobalLB.Globals.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="GlobalLB.GlobalsBinding" type="tns:GlobalLB.GlobalsPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="set_dump_topology_state">
+	<documentation>
+ Sets the state to indicate whether to dump the topology.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_dump_topology_state">
+	<documentation>
+ Gets the state to indicate whether to dump the topology.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_topology_allow_zero_scores_state">
+	<documentation>
+ Sets the state to indicate whether to allow topology load-balancing to server objects with zero scores.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_topology_allow_zero_scores_state">
+	<documentation>
+ Gets the state to indicate whether to allow topology load-balancing to server objects with zero scores.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_cache_ldns_state">
+	<documentation>
+ Sets the state to indicate whether to cache LDNSes.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cache_ldns_state">
+	<documentation>
+ Gets the state to indicate whether to cache LDNSes.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_aol_aware_state">
+	<documentation>
+ Sets the state to indicate whether local DNS servers that belong to AOL (America Online) are recognized.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_aol_aware_state">
+	<documentation>
+ Gets the state to indicate whether local DNS servers that belong to AOL (America Online) are recognized.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_check_static_dependency_state">
+	<documentation>
+ Sets the state to indicate whether to check the availability of virtual servers.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_check_static_dependency_state">
+	<documentation>
+ Gets the state to indicate whether to check the availability of virtual servers.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_check_dynamic_dependency_state">
+	<documentation>
+ Sets the state to indicate whether to check availability of a path before it uses the path for load balancing.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_check_dynamic_dependency_state">
+	<documentation>
+ Gets the state to indicate whether to check availability of a path before it uses the path for load balancing.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_drain_request_state">
+	<documentation>
+ Sets the state to indicate whether persistent connections are allowed to remain connected, until TTL expires, when disabling a pool.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_drain_request_state">
+	<documentation>
+ Gets the state to indicate whether persistent connections are allowed to remain connected, until TTL expires, when disabling a pool.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_reset_ripeness_state">
+	<documentation>
+ Sets the state to indicate whether ripeness value is allowed to be reset.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_reset_ripeness_state">
+	<documentation>
+ Gets the state to indicate whether ripeness value is allowed to be reset.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fb_respect_dependency_state">
+	<documentation>
+ Sets the state to indicate whether to respect virtual server status when load balancing 
+ switches to the fallback mode.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fb_respect_dependency_state">
+	<documentation>
+ Gets the state to indicate whether to respect virtual server status when load balancing 
+ switches to the fallback mode.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_fb_respect_acl_state">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used.  It has never been functional.
+
+ Sets the state to indicate whether to respect ACL.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fb_respect_acl_state">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used.  It has never been functional.
+
+ Gets the state to indicate whether to respect ACL.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_default_alternate_lb_method">
+	<documentation>
+ Sets the default alternate LB method.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_default_alternate_lb_method">
+	<documentation>
+ Gets the default alternate LB method.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_default_fallback_lb_method">
+	<documentation>
+ Sets the default fallback LB method.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_default_fallback_lb_method">
+	<documentation>
+ Gets the default fallback LB method.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_domain_name_check_mode">
+	<documentation>
+ Sets the mode for GTM to use when performing domain
+ name checking. The default value is DOMAIN_NAME_CHECK_MODE_STRICT.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_domain_name_check_mode">
+	<documentation>
+ Gets the mode for GTM to use when performing domain
+ name checking.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_persistence_mask">
+	<documentation>
+ Sets the persistence mask.
+ This function is deprecated and new applications should use
+ set_static_persistence_cidr_mask.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_persistence_mask">
+	<documentation>
+ Gets the persistence mask.
+ This function is deprecated and new applications should use
+ get_static_persistence_cidr_mask.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_static_persistence_cidr_mask">
+	<documentation>
+ Sets the CIDR mask (length) for the static persistence load balancing mode.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_static_persistence_cidr_mask">
+	<documentation>
+ Gets the CIDR mask (length) for the static persistence load balancing mode.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_use_recursion_bit_state">
+	<documentation>
+ Sets the state that if enabled, it will set the recursion bit in all DNS responses from GTM.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_use_recursion_bit_state">
+	<documentation>
+ Gets the state that if enabled, it will set the recursion bit in all DNS responses from GTM.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_qos_factor_lcs">
+	<documentation>
+ Sets the factor used to normalize link capacity values when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_qos_factor_lcs">
+	<documentation>
+ Gets the factor used to normalize link capacity values when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_qos_factor_rtt">
+	<documentation>
+ Sets the factor used to normalize round-trip time values when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_qos_factor_rtt">
+	<documentation>
+ Gets the factor used to normalize round-trip time values when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_qos_factor_hops">
+	<documentation>
+ Sets the factor used to normalize hops when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_qos_factor_hops">
+	<documentation>
+ Gets the factor used to normalize hops when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_qos_factor_hit_ratio">
+	<documentation>
+ Sets the factor used to normalize ping packet completion rates when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_qos_factor_hit_ratio">
+	<documentation>
+ Gets the factor used to normalize ping packet completion rates when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_qos_factor_packet_rate">
+	<documentation>
+ Sets the factor used to normalize packet rates when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_qos_factor_packet_rate">
+	<documentation>
+ Gets the factor used to normalize packet rates when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_qos_factor_bps">
+	<documentation>
+ Sets the factor used to normalize bits per second when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_qos_factor_bps">
+	<documentation>
+ Gets the factor used to normalize bits per second when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_qos_factor_vs_capacity">
+	<documentation>
+ Sets the factor used to normalize virtual server capacity values when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_qos_factor_vs_capacity">
+	<documentation>
+ Gets the factor used to normalize virtual server capacity values when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_qos_factor_topology">
+	<documentation>
+ Sets the factor used to normalize topology values when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_qos_factor_topology">
+	<documentation>
+ Gets the factor used to normalize topology values when the load balancing mode is set to LB_METHOD_QOS.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_qos_factor_connection_rate">
+	<documentation>
+ Sets the factor used to normalize connection rates when the load balancing mode is set to LB_METHOD_QOS.
+ This function is deprecated and new applications should use vs_score.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_qos_factor_connection_rate">
+	<documentation>
+ Gets the factor used to normalize connection rates when the load balancing mode is set to LB_METHOD_QOS.
+ This function is deprecated and new applications should use vs_score.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_qos_factor_vs_score">
+	<documentation>
+ Sets the factor used to normalize virtual server (VS) score when the load balancing mode is set to LB_METHOD_QOS.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_qos_factor_vs_score">
+	<documentation>
+ Gets the factor used to normalize virtual server (VS) score when the load balancing mode is set to LB_METHOD_QOS.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_timer_retry_path_data">
+	<documentation>
+ Sets the frequency at which to retry path data.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_timer_retry_path_data">
+	<documentation>
+ Gets the frequency at which to retry path data.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_timer_heartbeat">
+	<documentation>
+ Sets the frequency at which GTM queries other BIG-IP
+ systems for updated data. When configuring monitors for
+ BIG-IP systems, F5 Networks recommends that the
+ probe interval option for the monitor be equal to or
+ greater than the timer heartbeat option. The default
+ value is 10.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_timer_heartbeat">
+	<documentation>
+ Gets the frequency at which GTM queries other BIG-IP
+ systems for updated data.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_timer_get_auto_configuration_data">
+	<documentation>
+ Sets the frequency at which to retrieve auto-configuration data.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_timer_get_auto_configuration_data">
+	<documentation>
+ Gets the frequency at which to retrieve auto-configuration data.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_timer_persistence_cache">
+	<documentation>
+ Sets the frequency at which to retrieve path and metrics data from the system cache.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_timer_persistence_cache">
+	<documentation>
+ Gets the frequency at which to retrieve path and metrics data from the system cache.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_default_probe_limit">
+	<documentation>
+ Sets the default probe limit, the number of times to probe a path.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_default_probe_limit">
+	<documentation>
+ Gets the default probe limit, the number of times to probe a path.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_down_threshold">
+	<documentation>
+ Sets the "down_threshold" value. If a host server or a host virtual server has been marked 
+ down for the last down_threshold probing cycles (timer_get_host_data or timer_get_vs_data respectively),
+ then perform service checks every down_multiple * timer period instead.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_down_threshold">
+	<documentation>
+ Gets the "down_threshold" value. If a host server or a host virtual server has been marked 
+ down for the last down_threshold probing cycles (timer_get_host_data or timer_get_vs_data respectively),
+ then perform service checks every down_multiple * timer period instead.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_down_multiple">
+	<documentation>
+ Sets the "down_multiple" value. If a host server or a host virtual server has been marked 
+ down for the last down_threshold probing cycles (timer_get_host_data or timer_get_vs_data respectively),
+ then perform service checks every down_multiple * timer period instead.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_down_multiple">
+	<documentation>
+ Gets the "down_multiple" value. If a host server or a host virtual server has been marked 
+ down for the last down_threshold probing cycles (timer_get_host_data or timer_get_vs_data respectively),
+ then perform service checks every down_multiple * timer period instead.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_path_ttl">
+	<documentation>
+ Sets the TTL for the path information.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_path_ttl">
+	<documentation>
+ Gets the TTL for the path information.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_traceroute_ttl">
+	<documentation>
+ Sets the TTL for the traceroute information.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_traceroute_ttl">
+	<documentation>
+ Gets the TTL for the traceroute information.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_lnds_duration">
+	<documentation>
+ Sets the number of seconds that an inactive LDNS remains cached.
+
+ This function is deprecated (due to being misnamed); new applications should
+ use set_ldns_duration.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ldns_duration">
+	<documentation>
+ Sets the number of seconds that an inactive LDNS remains cached.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ldns_duration">
+	<documentation>
+ Gets the number of seconds that an inactive LDNS remains cached.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ldns_update_interval">
+	<documentation>
+ Sets the number of seconds that a tmm load-balancer will wait before sending an update
+ for a LDNS which has been accessed by a client.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ldns_update_interval">
+	<documentation>
+ Gets the minimum number of seconds that a tmm load-balancer will wait before sending an update
+ for a LDNS which has been accessed by a client.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_path_duration">
+	<documentation>
+ Sets the number of seconds that a path remains cached after its last access.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_path_duration">
+	<documentation>
+ Gets the number of seconds that a path remains cached after its last access.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_rtt_sample_count">
+	<documentation>
+ Sets the number of packets to send out in a probe request to determine path information.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_rtt_sample_count">
+	<documentation>
+ Gets the number of packets to send out in a probe request to determine path information.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_rtt_packet_length">
+	<documentation>
+ Sets the length of the packet sent out in a probe request to determine path information.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_rtt_packet_length">
+	<documentation>
+ Gets the length of the packet sent out in a probe request to determine path information.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_rtt_timeout">
+	<documentation>
+ Sets the timeout for RTT, in seconds.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_rtt_timeout">
+	<documentation>
+ Gets the timeout for RTT, in seconds.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_maximum_synchronous_monitor_request">
+	<documentation>
+ Sets the maximum synchronous monitor request, which is used to control the maximum number of 
+ monitor requests being sent out at one time for a given probing interval. This will allow the 
+ user to smooth out monitor probe requests as much as they desire.
+
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_maximum_synchronous_monitor_request">
+	<documentation>
+ Gets the maximum synchronous monitor request, which is used to control the maximum number of 
+ monitor requests being sent out at one time for a given probing interval. This will allow the 
+ user to smooth out monitor probe requests as much as they desire.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_traceroute_port">
+	<documentation>
+ Sets the port to use to collect traceroute (hops) data.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_traceroute_port">
+	<documentation>
+ Gets the port to use to collect traceroute (hops) data.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_paths_never_die_state">
+	<documentation>
+ Sets the state indicating whether the dynamic load balancing modes can use path data even after the TTL for the path data has expired.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_paths_never_die_state">
+	<documentation>
+ Gets the state indicating whether the dynamic load balancing modes can use path data even after the TTL for the path data has expired..
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ldns_probe_protocols">
+	<documentation>
+ Sets the LDNS probe protocols. The order of the protocols in the sequence 
+ will be used to indicate the preferred protocols, i.e. the first protocol
+ in the sequence is the most preferred protocol.
+
+ If you'd like to remove an item, get the LDNS probe protocols, remove the
+ item, then do set.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ldns_probe_protocols">
+	<documentation>
+ Gets the LDNS probe protocols. The order of the protocols in the sequence 
+ will be used to indicate the preferred protocols, i.e. the first protocol
+ in the sequence is the most preferred protocol.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_probe_disabled_object_state">
+	<documentation>
+ Sets the state that if enabled, GTM will still probe disabled object.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_probe_disabled_object_state">
+	<documentation>
+ Gets the state that if enabled, GTM will still probe disabled object.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_link_limit_factor">
+	<documentation>
+ Sets the link limit factor, which is used to set a target percentage for traffic. For example,
+ if it is set to 90, the ratio cost based load-balancing will set a ratio with a maximum value 
+ equal to 90% of the limit value for the link. Default is 95%.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_link_limit_factor">
+	<documentation>
+ Gets the link limit factor, which is used to set a target percentage for traffic. For example,
+ if it is set to 90, the ratio cost based load-balancing will set a ratio with a maximum value 
+ equal to 90% of the limit value for the link. Default is 95%.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_over_limit_link_limit_factor">
+	<documentation>
+ Sets the over-limit link limit factor. If traffic on a link exceeds the limit, this factor will 
+ be used instead of the link_limit_factor until the traffic is over limit for more than 
+ max_link_over_limit_count times. Once the limit has been exceeded too many times, all traffic
+ is shut off for the link. The default for over_limit_link_limit_factor is 90%.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_over_limit_link_limit_factor">
+	<documentation>
+ Gets the over-limit link limit factor. If traffic on a link exceeds the limit, this factor will 
+ be used instead of the link_limit_factor until the traffic is over limit for more than 
+ max_link_over_limit_count times. Once the limit has been exceeded too many times, all traffic
+ is shut off for the link. The default for over_limit_link_limit_factor is 90%.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_link_prepaid_factor">
+	<documentation>
+ Sets the link prepaid factor. Maximum percentage of traffic allocated to link which has a 
+ traffic allotment which has been prepaid. Default is 95%.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_link_prepaid_factor">
+	<documentation>
+ Gets the link prepaid factor. Maximum percentage of traffic allocated to link which has a 
+ traffic allotment which has been prepaid. Default is 95%.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_link_compensate_inbound_state">
+	<documentation>
+ Sets the link compensate inbound state. If set, the link allotment calculation will take into account 
+ traffic which does not flow through the BIGIP, i.e. if more traffic is flowing through a link 
+ as measured by SNMP on the router than is flowing through the BIGIP. This applies to inbound 
+ traffic which the major volume will initiate from internal clients.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_link_compensate_inbound_state">
+	<documentation>
+ Gets the link compensate inbound state. If set, the link allotment calculation will take into account 
+ traffic which does not flow through the BIGIP, i.e. if more traffic is flowing through a link 
+ as measured by SNMP on the router than is flowing through the BIGIP. This applies to inbound 
+ traffic which the major volume will initiate from internal clients.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_link_compensate_outbound_state">
+	<documentation>
+ Sets the link compensate outbound state. If set, the link allotment calculation will take into account 
+ traffic which does not flow through the BIGIP, i.e. if more traffic is flowing through a link 
+ as measured by SNMP on the router than is flowing through the BIGIP. This applies to outbound 
+ traffic which the major volume will initiate from internal clients.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_link_compensate_outbound_state">
+	<documentation>
+ Gets the link compensate outbound state. If set, the link allotment calculation will take into account 
+ traffic which does not flow through the BIGIP, i.e. if more traffic is flowing through a link 
+ as measured by SNMP on the router than is flowing through the BIGIP. This applies to outbound 
+ traffic which the major volume will initiate from internal clients.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_link_compensation_history">
+	<documentation>
+ Sets the link compensation history.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_link_compensation_history">
+	<documentation>
+ Gets the link compensation history.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_maximum_link_over_limit_count">
+	<documentation>
+ Sets the maximum link over limit count. The count of how many times in a row traffic may be over
+ the defined limit for the link before it is shut off entirely. Default is 1.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_maximum_link_over_limit_count">
+	<documentation>
+ Gets the maximum link over limit count. The count of how many times in a row traffic may be over
+ the defined limit for the link before it is shut off entirely. Default is 1.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_lower_bound_percentage_row">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used.  It has never been functional.
+
+ Sets the lower bound percentage row options in Internet Weather Map.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_lower_bound_percentage_row">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used.  It has never been functional.
+
+ Gets the lower bound percentage row options in Internet Weather Map.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_lower_bound_percentage_column">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used.  It has never been functional.
+
+ Sets the lower bound percentage column options in Internet Weather Map.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_lower_bound_percentage_column">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used.  It has never been functional.
+
+ Gets the lower bound percentage column options in Internet Weather Map.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_auto_configuration_save_timeout">
+	<documentation>
+ Sets the timeout, in seconds, indicating how long to wait before
+ automatically saving the GTM configuration to the bigip_gtm.conf
+ file after a change is made to the GTM configuration. Setting this
+ timeout to -1 will cause the GTM configuration to NEVER be saved.
+ Setting this timeout to 0 will cause the GTM configuration to be
+ saved immediately. Setting this timeout to a value N, greater than
+ 0, will cause the GTM configuration to be saved to bigip_gtm.conf
+ no fewer than N seconds after a configuration change is made.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_auto_configuration_save_timeout">
+	<documentation>
+ Gets the timeout, in seconds, indicating how long to wait before
+ automatically saving the GTM configuration to the bigip_gtm.conf
+ file after a change is made to the GTM configuration.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_auto_configure_state">
+	<documentation>
+ Sets the state indicating whether to auto configure BIGIP/3DNS servers (automatic addition
+ and deletion of self IPs and virtual servers.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_auto_configure_state">
+	<documentation>
+ Gets the state indicating whether to auto configure BIGIP/3DNS servers (automatic addition
+ and deletion of self IPs and virtual servers.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_auto_sync_state">
+	<documentation>
+ Sets the state to indicate whether to autosync.  Allows automatic updates of wideip.conf to/from other 3-DNSes.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_auto_sync_state">
+	<documentation>
+ Gets the state to indicate whether to autosync.  Allows automatic updates of wideip.conf to/from other 3-DNSes.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_sync_named_configuration_state">
+	<documentation>
+ Sets the state to indicate whether to auto-synchronize named configuration. 
+ Allows automatic updates of named.conf to/from other 3-DNSes.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_sync_named_configuration_state">
+	<documentation>
+ Gets the state to indicate whether to auto_synchronize named configuration.
+ Allows automatic updates of named.conf to/from other 3-DNSes.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_sync_group_name">
+	<documentation>
+ Sets the sync group name.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_sync_group_name">
+	<documentation>
+ Gets the sync group name.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_sync_timeout">
+	<documentation>
+ Sets the sync timeout.  If synch'ing from a remote 3-DNS takes longer than 
+ this timeout, then abort the connection.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_sync_timeout">
+	<documentation>
+ Gets the sync timeout. If synch'ing from a remote 3-DNS takes longer than 
+ this timeout, then abort the connection.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_sync_zone_timeout">
+	<documentation>
+ Sets the sync zones timeout. If synch'ing named and zone configuration takes 
+ this timeout, then abort the connection.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_sync_zone_timeout">
+	<documentation>
+ Gets the sync zones timeout. If synch'ing named and zone configuration takes 
+ this timeout, then abort the connection.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_time_tolerance">
+	<documentation>
+ Sets the allowable time difference for data to be out of sync between members of a sync group.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_time_tolerance">
+	<documentation>
+ Gets the allowable time difference for data to be out of sync between members of a sync group.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_topology_longest_match_state">
+	<documentation>
+ Sets the state to indicate whether the 3-DNS Controller selects the topology record that is most 
+ specific and, thus, has the longest match, in cases where there are several IP/netmask items that 
+ match a particular IP address.  If you select No, the 3-DNS Controller uses the first topology 
+ record that matches (according to the order of entry) in the topology statement. 
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_topology_longest_match_state">
+	<documentation>
+ Gets the state to indicate whether the 3-DNS Controller selects the topology record that is most 
+ specific and, thus, has the longest match, in cases where there are several IP/netmask items that 
+ match a particular IP address.  If you select No, the 3-DNS Controller uses the first topology 
+ record that matches (according to the order of entry) in the topology statement.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_virtuals_depend_on_server_state">
+	<documentation>
+ Sets the state to indicate whether the system marks a
+ virtual server down when the server on which the virtual
+ server is configured can no longer be reached via
+ iQuery. The default value is enabled.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_virtuals_depend_on_server_state">
+	<documentation>
+ Gets the state to indicate whether the system marks a
+ virtual server down when the server on which the virtual
+ server is configured can no longer be reached via
+ iQuery.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_topology_acl_threshold">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used.  Please enable/disable pool members directly if desired.
+
+ Sets the threshold for the topology ACL.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_topology_acl_threshold">
+	<documentation>
+ This method is deprecated (immediately) and should not be
+ used.  Please enable/disable pool members directly if desired.
+
+ Gets the threshold for the topology ACL.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_propagate_wild_card_a_records_state">
+	<documentation>
+ Sets the state to propagate wild card A records for wild card wide
+ IP records.
+
+ DNS allows wildcard entries in the form of "*.zone.com".  Best
+ practices indicate that using wild cards for A records may have
+ unintended consequences.  This results in a NXDOMAIN responses,
+ which is valid and correct.
+
+ The only valid DNS wild card is in the form of "*.zone.com".  The
+ entire leftmost term must be "*" and ONLY "*".  There must be no
+ other "*" in the name.  So not every GTM supported wild card will
+ be propagated to DNS.  DNS wild cards of the following forms will
+ be propagated: "*.zone.com".  The following will not:
+ "*part.zone.com", "part*.zone.com", "part.*.zone.com",
+ "p?rt.zone.com".
+
+ There is a workaround without setting this swtich - entering wild
+ card records manually through ZRD.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_propagate_wild_card_a_records_state">
+	<documentation>
+ Gets the state to propagate wild card A records for wild card wide
+ IP records.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_peer_leader">
+	<documentation>
+ Sets the peer leader, the name of the GTM responsible for
+   creating new DNSSEC keys.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_peer_leader">
+	<documentation>
+ Gets the peer leader, the name of the GTM responsible for
+   creating new DNSSEC keys.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/Globals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/Globals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="GlobalLB.Globals">
+	<documentation>
+ The Globals interface enables you to set and get global variables. 
+
+
+        	</documentation>
+	<port name="GlobalLB.GlobalsPort" binding="tns:GlobalLB.GlobalsBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

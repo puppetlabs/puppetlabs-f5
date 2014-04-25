@@ -1,0 +1,457 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="LocalLB.DNSGlobals"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Common.ULong">
+			<xsd:restriction base="xsd:long"/>
+		</xsd:simpleType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="LocalLB.DNSGlobals.set_cache_edns_buffer_sizeRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="LocalLB.DNSGlobals.set_cache_edns_buffer_sizeResponse">
+</message>
+
+<message name="LocalLB.DNSGlobals.get_cache_edns_buffer_sizeRequest">
+</message>
+<message name="LocalLB.DNSGlobals.get_cache_edns_buffer_sizeResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="LocalLB.DNSGlobals.set_cache_minimum_ttlRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="LocalLB.DNSGlobals.set_cache_minimum_ttlResponse">
+</message>
+
+<message name="LocalLB.DNSGlobals.get_cache_minimum_ttlRequest">
+</message>
+<message name="LocalLB.DNSGlobals.get_cache_minimum_ttlResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="LocalLB.DNSGlobals.set_cache_maximum_ttlRequest">
+	<part name="value" type="xsd:long"/>
+</message>
+<message name="LocalLB.DNSGlobals.set_cache_maximum_ttlResponse">
+</message>
+
+<message name="LocalLB.DNSGlobals.get_cache_maximum_ttlRequest">
+</message>
+<message name="LocalLB.DNSGlobals.get_cache_maximum_ttlResponse">
+	<part name="return" type="xsd:long"/>
+</message>
+
+<message name="LocalLB.DNSGlobals.set_collect_query_names_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="LocalLB.DNSGlobals.set_collect_query_names_stateResponse">
+</message>
+
+<message name="LocalLB.DNSGlobals.get_collect_query_names_stateRequest">
+</message>
+<message name="LocalLB.DNSGlobals.get_collect_query_names_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="LocalLB.DNSGlobals.set_collect_client_ips_stateRequest">
+	<part name="state" type="tns:Common.EnabledState"/>
+</message>
+<message name="LocalLB.DNSGlobals.set_collect_client_ips_stateResponse">
+</message>
+
+<message name="LocalLB.DNSGlobals.get_collect_client_ips_stateRequest">
+</message>
+<message name="LocalLB.DNSGlobals.get_collect_client_ips_stateResponse">
+	<part name="return" type="tns:Common.EnabledState"/>
+</message>
+
+<message name="LocalLB.DNSGlobals.get_versionRequest">
+</message>
+<message name="LocalLB.DNSGlobals.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="LocalLB.DNSGlobalsPortType">
+	<operation name="set_cache_edns_buffer_size">
+      	<documentation>
+ Sets the advertised EDNS buffer size for a set of DNS caches.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.DNSGlobals.set_cache_edns_buffer_sizeRequest"/>
+		<output message="tns:LocalLB.DNSGlobals.set_cache_edns_buffer_sizeResponse"/>
+	</operation>
+	<operation name="get_cache_edns_buffer_size">
+	<documentation>
+ Gets the advertised EDNS buffer size for a set of DNS caches.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.DNSGlobals.get_cache_edns_buffer_sizeRequest"/>
+		<output message="tns:LocalLB.DNSGlobals.get_cache_edns_buffer_sizeResponse"/>
+	</operation>
+	<operation name="set_cache_minimum_ttl">
+	<documentation>
+ Sets the minimum TTL for cache entries. Any TTL under this value
+ will be considered a stale entry.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.DNSGlobals.set_cache_minimum_ttlRequest"/>
+		<output message="tns:LocalLB.DNSGlobals.set_cache_minimum_ttlResponse"/>
+	</operation>
+	<operation name="get_cache_minimum_ttl">
+	<documentation>
+ Gets the minimum TTL for cache entries. Any TTL under this value
+ will be considered a stale entry.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.DNSGlobals.get_cache_minimum_ttlRequest"/>
+		<output message="tns:LocalLB.DNSGlobals.get_cache_minimum_ttlResponse"/>
+	</operation>
+	<operation name="set_cache_maximum_ttl">
+	<documentation>
+ Sets the maximum TTL for cache entries. A cache entry will never
+ be stored with a TTL over this value.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.DNSGlobals.set_cache_maximum_ttlRequest"/>
+		<output message="tns:LocalLB.DNSGlobals.set_cache_maximum_ttlResponse"/>
+	</operation>
+	<operation name="get_cache_maximum_ttl">
+	<documentation>
+ Gets the maximum TTL for cache entries.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.DNSGlobals.get_cache_maximum_ttlRequest"/>
+		<output message="tns:LocalLB.DNSGlobals.get_cache_maximum_ttlResponse"/>
+	</operation>
+	<operation name="set_collect_query_names_state">
+	<documentation>
+ Sets the collect DNS query names flag.
+ If enabled, DNS query names are collected and 
+ can be viewed later in the Analytics reports.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.DNSGlobals.set_collect_query_names_stateRequest"/>
+		<output message="tns:LocalLB.DNSGlobals.set_collect_query_names_stateResponse"/>
+	</operation>
+	<operation name="get_collect_query_names_state">
+	<documentation>
+ Gets the collect query names flag.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.DNSGlobals.get_collect_query_names_stateRequest"/>
+		<output message="tns:LocalLB.DNSGlobals.get_collect_query_names_stateResponse"/>
+	</operation>
+	<operation name="set_collect_client_ips_state">
+	<documentation>
+ Sets the collect client IPs flag.
+ If enabled, DNS query client IPs are collected and 
+ can be viewed later in the Analytics reports.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.DNSGlobals.set_collect_client_ips_stateRequest"/>
+		<output message="tns:LocalLB.DNSGlobals.set_collect_client_ips_stateResponse"/>
+	</operation>
+	<operation name="get_collect_client_ips_state">
+	<documentation>
+ Gets the collect client IPs flag.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.DNSGlobals.get_collect_client_ips_stateRequest"/>
+		<output message="tns:LocalLB.DNSGlobals.get_collect_client_ips_stateResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Get the version information for this interface.
+
+        	</documentation>
+		<input message="tns:LocalLB.DNSGlobals.get_versionRequest"/>
+		<output message="tns:LocalLB.DNSGlobals.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="LocalLB.DNSGlobalsBinding" type="tns:LocalLB.DNSGlobalsPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="set_cache_edns_buffer_size">
+	<documentation>
+ Sets the advertised EDNS buffer size for a set of DNS caches.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DNSGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DNSGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DNSGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cache_edns_buffer_size">
+	<documentation>
+ Gets the advertised EDNS buffer size for a set of DNS caches.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DNSGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DNSGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DNSGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_cache_minimum_ttl">
+	<documentation>
+ Sets the minimum TTL for cache entries. Any TTL under this value
+ will be considered a stale entry.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DNSGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DNSGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DNSGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cache_minimum_ttl">
+	<documentation>
+ Gets the minimum TTL for cache entries. Any TTL under this value
+ will be considered a stale entry.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DNSGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DNSGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DNSGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_cache_maximum_ttl">
+	<documentation>
+ Sets the maximum TTL for cache entries. A cache entry will never
+ be stored with a TTL over this value.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DNSGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DNSGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DNSGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cache_maximum_ttl">
+	<documentation>
+ Gets the maximum TTL for cache entries.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DNSGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DNSGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DNSGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_collect_query_names_state">
+	<documentation>
+ Sets the collect DNS query names flag.
+ If enabled, DNS query names are collected and 
+ can be viewed later in the Analytics reports.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DNSGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DNSGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DNSGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_collect_query_names_state">
+	<documentation>
+ Gets the collect query names flag.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DNSGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DNSGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DNSGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_collect_client_ips_state">
+	<documentation>
+ Sets the collect client IPs flag.
+ If enabled, DNS query client IPs are collected and 
+ can be viewed later in the Analytics reports.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DNSGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DNSGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DNSGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_collect_client_ips_state">
+	<documentation>
+ Gets the collect client IPs flag.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DNSGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DNSGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DNSGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Get the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/DNSGlobals"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DNSGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/DNSGlobals"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="LocalLB.DNSGlobals">
+	<documentation>
+ The DNSGlobals interface allows you to manage global DNS settings. This 
+ currently only contains DNS cache settings, but will include any and all
+ DNS-related global settings in the future.
+
+        	</documentation>
+	<port name="LocalLB.DNSGlobalsPort" binding="tns:LocalLB.DNSGlobalsBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

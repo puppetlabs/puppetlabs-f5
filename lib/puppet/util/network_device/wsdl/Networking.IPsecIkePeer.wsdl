@@ -1,0 +1,2701 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.IPsecIkePeer"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="Networking.IPsecIkePeerGeneratePolicy">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="IPSEC_IKE_PEER_GENERATE_POLICY_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_PEER_GENERATE_POLICY_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_PEER_GENERATE_POLICY_OFF">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_PEER_GENERATE_POLICY_OFF</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_PEER_GENERATE_POLICY_ON">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_PEER_GENERATE_POLICY_ON</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_PEER_GENERATE_POLICY_UNIQUE">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_PEER_GENERATE_POLICY_UNIQUE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Networking.IPsecIkeHashAlgorithmSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.IPsecIkeHashAlgorithm[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.IPsecIkePeerNatTraversal">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="IPSEC_IKE_PEER_NAT_TRAVERSAL_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_PEER_NAT_TRAVERSAL_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_PEER_NAT_TRAVERSAL_OFF">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_PEER_NAT_TRAVERSAL_OFF</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_PEER_NAT_TRAVERSAL_ON">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_PEER_NAT_TRAVERSAL_ON</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_PEER_NAT_TRAVERSAL_FORCE">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_PEER_NAT_TRAVERSAL_FORCE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Networking.IPsecIkePeerModeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.IPsecIkePeerMode[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.IPsecIkePeerCertTypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.IPsecIkePeerCertType[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.IPsecIkePeerGeneratePolicySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.IPsecIkePeerGeneratePolicy[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.IPsecDiffieHellmanGroupSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.IPsecDiffieHellmanGroup[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.IPsecIkePeerNatTraversalSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.IPsecIkePeerNatTraversal[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Networking.IPsecIkeEncrAlgorithmSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.IPsecIkeEncrAlgorithm[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.IPsecIkePeerCertType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="IPSEC_IKE_PEER_CERT_TYPE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_PEER_CERT_TYPE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_PEER_CERT_TYPE_NONE">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_PEER_CERT_TYPE_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_PEER_CERT_TYPE_CERTFILE">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_PEER_CERT_TYPE_CERTFILE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Networking.IPsecIkePeerMode">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="IPSEC_IKE_EXCHANGE_MODE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_EXCHANGE_MODE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_EXCHANGE_MODE_AGGRESSIVE">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_EXCHANGE_MODE_AGGRESSIVE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_EXCHANGE_MODE_MAIN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_EXCHANGE_MODE_MAIN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Networking.IPsecDiffieHellmanGroup">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="IPSEC_DIFFIE_HELLMAN_GROUP_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DIFFIE_HELLMAN_GROUP_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DIFFIE_HELLMAN_GROUP_MODP768">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DIFFIE_HELLMAN_GROUP_MODP768</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DIFFIE_HELLMAN_GROUP_MODP1024">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DIFFIE_HELLMAN_GROUP_MODP1024</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DIFFIE_HELLMAN_GROUP_MODP1536">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DIFFIE_HELLMAN_GROUP_MODP1536</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DIFFIE_HELLMAN_GROUP_MODP2048">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DIFFIE_HELLMAN_GROUP_MODP2048</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DIFFIE_HELLMAN_GROUP_MODP3072">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DIFFIE_HELLMAN_GROUP_MODP3072</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DIFFIE_HELLMAN_GROUP_MODP4096">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DIFFIE_HELLMAN_GROUP_MODP4096</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DIFFIE_HELLMAN_GROUP_MODP6144">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DIFFIE_HELLMAN_GROUP_MODP6144</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_DIFFIE_HELLMAN_GROUP_MODP8192">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_DIFFIE_HELLMAN_GROUP_MODP8192</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Networking.IPsecIkePeerIDTypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.IPsecIkePeerIDType[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.IPsecIkeEncrAlgorithm">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="IPSEC_IKE_ENCR_ALG_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_ENCR_ALG_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_ENCR_ALG_DES">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_ENCR_ALG_DES</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_ENCR_ALG_3DES">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_ENCR_ALG_3DES</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_ENCR_ALG_BLOWFISH">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_ENCR_ALG_BLOWFISH</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_ENCR_ALG_CAST128">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_ENCR_ALG_CAST128</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_ENCR_ALG_AES128">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_ENCR_ALG_AES128</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_ENCR_ALG_AES192">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_ENCR_ALG_AES192</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_ENCR_ALG_AES256">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_ENCR_ALG_AES256</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_ENCR_ALG_CAMELLIA">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_ENCR_ALG_CAMELLIA</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.IPAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.IPsecIkePeerIDType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="IPSEC_IKE_PEER_TYPE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_PEER_TYPE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_PEER_TYPE_ADDRESS">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_PEER_TYPE_ADDRESS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_PEER_TYPE_FQDN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_PEER_TYPE_FQDN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_PEER_TYPE_USER_FQDN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_PEER_TYPE_USER_FQDN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_PEER_TYPE_KEYID_TAG">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_PEER_TYPE_KEYID_TAG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_PEER_TYPE_ASN1DN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_PEER_TYPE_ASN1DN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Networking.IPsecSaMethod">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="IPSEC_AUTH_METHOD_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_AUTH_METHOD_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_AUTH_METHOD_PRE_SHARED_KEY">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_AUTH_METHOD_PRE_SHARED_KEY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_AUTH_METHOD_RSA_SIGNATURE">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_AUTH_METHOD_RSA_SIGNATURE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Networking.IPsecSaMethodSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.IPsecSaMethod[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Networking.IPsecIkeHashAlgorithm">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="IPSEC_IKE_HASH_ALG_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_HASH_ALG_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_HASH_ALG_MD5">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_HASH_ALG_MD5</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_HASH_ALG_SHA1">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_HASH_ALG_SHA1</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_HASH_ALG_SHA256">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_HASH_ALG_SHA256</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_HASH_ALG_SHA384">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_HASH_ALG_SHA384</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="IPSEC_IKE_HASH_ALG_SHA512">
+					<xsd:annotation>
+						<xsd:documentation>IPSEC_IKE_HASH_ALG_SHA512</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.IPsecIkePeer.get_listRequest">
+</message>
+<message name="Networking.IPsecIkePeer.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.createRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="files" type="tns:Common.StringSequence"/>
+	<part name="keys" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.createResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.delete_ike_peerRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.delete_ike_peerResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.delete_all_ike_peersRequest">
+</message>
+<message name="Networking.IPsecIkePeer.delete_all_ike_peersResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.set_descriptionRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_descriptionResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_descriptionRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_modeRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="modes" type="tns:Networking.IPsecIkePeerModeSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_modeResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_modeRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_modeResponse">
+	<part name="return" type="tns:Networking.IPsecIkePeerModeSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_remote_addressRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_remote_addressResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_remote_addressRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_remote_addressResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_lifetimeRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="lifetimes" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_lifetimeResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_lifetimeRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_lifetimeResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_my_id_typeRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="types" type="tns:Networking.IPsecIkePeerIDTypeSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_my_id_typeResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_my_id_typeRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_my_id_typeResponse">
+	<part name="return" type="tns:Networking.IPsecIkePeerIDTypeSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_my_id_valueRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="values" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_my_id_valueResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_my_id_valueRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_my_id_valueResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_peer_id_typeRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="types" type="tns:Networking.IPsecIkePeerIDTypeSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_peer_id_typeResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_peer_id_typeRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_peer_id_typeResponse">
+	<part name="return" type="tns:Networking.IPsecIkePeerIDTypeSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_peer_id_valueRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="values" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_peer_id_valueResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_peer_id_valueRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_peer_id_valueResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_passive_stateRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_passive_stateResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_passive_stateRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_passive_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_verify_certificate_stateRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_verify_certificate_stateResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_verify_certificate_stateRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_verify_certificate_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_certificate_typeRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="types" type="tns:Networking.IPsecIkePeerCertTypeSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_certificate_typeResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_certificate_typeRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_certificate_typeResponse">
+	<part name="return" type="tns:Networking.IPsecIkePeerCertTypeSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_generate_policyRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="policies" type="tns:Networking.IPsecIkePeerGeneratePolicySequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_generate_policyResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_generate_policyRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_generate_policyResponse">
+	<part name="return" type="tns:Networking.IPsecIkePeerGeneratePolicySequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_nat_traversalRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="nat_traversals" type="tns:Networking.IPsecIkePeerNatTraversalSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_nat_traversalResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_nat_traversalRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_nat_traversalResponse">
+	<part name="return" type="tns:Networking.IPsecIkePeerNatTraversalSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_enabled_stateRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_enabled_stateResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_enabled_stateRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_proxy_support_stateRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_proxy_support_stateResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_proxy_support_stateRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_proxy_support_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_my_certificate_fileRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="files" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_my_certificate_fileResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_my_certificate_fileRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_my_certificate_fileResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_my_certificate_key_fileRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="files" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_my_certificate_key_fileResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_my_certificate_key_fileRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_my_certificate_key_fileResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_ca_certificate_fileRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="files" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_ca_certificate_fileResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_ca_certificate_fileRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_ca_certificate_fileResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_peer_certificate_fileRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="files" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_peer_certificate_fileResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_peer_certificate_fileRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_peer_certificate_fileResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_ike_proposal_nameRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_ike_proposal_nameResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_ike_proposal_nameRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_ike_proposal_nameResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_phase1_auth_methodRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="methods" type="tns:Networking.IPsecSaMethodSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_phase1_auth_methodResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_phase1_auth_methodRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_phase1_auth_methodResponse">
+	<part name="return" type="tns:Networking.IPsecSaMethodSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_phase1_hash_algorithmRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="algorithms" type="tns:Networking.IPsecIkeHashAlgorithmSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_phase1_hash_algorithmResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_phase1_hash_algorithmRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_phase1_hash_algorithmResponse">
+	<part name="return" type="tns:Networking.IPsecIkeHashAlgorithmSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_phase1_encryption_algorithmRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="algorithms" type="tns:Networking.IPsecIkeEncrAlgorithmSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_phase1_encryption_algorithmResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_phase1_encryption_algorithmRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_phase1_encryption_algorithmResponse">
+	<part name="return" type="tns:Networking.IPsecIkeEncrAlgorithmSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_phase1_perfect_forward_secrecyRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="secrecies" type="tns:Networking.IPsecDiffieHellmanGroupSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_phase1_perfect_forward_secrecyResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_phase1_perfect_forward_secrecyRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_phase1_perfect_forward_secrecyResponse">
+	<part name="return" type="tns:Networking.IPsecDiffieHellmanGroupSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_preshared_keyRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_preshared_keyResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.set_preshared_key_encryptedRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_preshared_key_encryptedResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_preshared_key_encryptedRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_preshared_key_encryptedResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_dpd_delayRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="delays" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_dpd_delayResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_dpd_delayRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_dpd_delayResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_crl_fileRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="files" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_crl_fileResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_crl_fileRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_crl_fileResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.get_versionRequest">
+</message>
+<message name="Networking.IPsecIkePeer.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="Networking.IPsecIkePeer.set_replay_window_sizeRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+	<part name="sizes" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.set_replay_window_sizeResponse">
+</message>
+
+<message name="Networking.IPsecIkePeer.get_replay_window_sizeRequest">
+	<part name="peers" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.IPsecIkePeer.get_replay_window_sizeResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.IPsecIkePeerPortType">
+	<operation name="get_list">
+ 	<documentation>
+ Gets the names for all IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_listRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a set of IPsec IKE peers
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.createRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.createResponse"/>
+	</operation>
+	<operation name="delete_ike_peer">
+	<documentation>
+ Deletes a set of IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.delete_ike_peerRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.delete_ike_peerResponse"/>
+	</operation>
+	<operation name="delete_all_ike_peers">
+	<documentation>
+ Deletes all IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.delete_all_ike_peersRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.delete_all_ike_peersResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for the IPsec IKE peers.
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_descriptionRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets descriprion for each specified IPsec IKE peer.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_descriptionRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_descriptionResponse"/>
+	</operation>
+	<operation name="set_mode">
+	<documentation>
+ Sets IPsec IKE peer modes for list of IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_modeRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_modeResponse"/>
+	</operation>
+	<operation name="get_mode">
+	<documentation>
+ Gets IPsec IKE peer modes for a list of IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_modeRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_modeResponse"/>
+	</operation>
+	<operation name="set_remote_address">
+	<documentation>
+ Sets the IPsec IKE peer remote BIG-IP system IP addresses
+      for a list of IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_remote_addressRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_remote_addressResponse"/>
+	</operation>
+	<operation name="get_remote_address">
+	<documentation>
+ Gets the IPsec IKE peer remote IP address for a list of IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_remote_addressRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_remote_addressResponse"/>
+	</operation>
+	<operation name="set_lifetime">
+	<documentation>
+ Sets the IPsec IKE peer lifetimes of an IKE security association
+      that will be proposed in the phase 1 negotiation for
+      a list of IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_lifetimeRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_lifetimeResponse"/>
+	</operation>
+	<operation name="get_lifetime">
+	<documentation>
+ Gets the IPsec IKE peer lifetimes of an IKE security association that
+      will be proposed in the phase 1 negotiation for a list of IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_lifetimeRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_lifetimeResponse"/>
+	</operation>
+	<operation name="set_my_id_type">
+	<documentation>
+ Sets the IPsec IKE peer identifier types sent to the remote host
+      to use in the phase 1 negotiation for a list of IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_my_id_typeRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_my_id_typeResponse"/>
+	</operation>
+	<operation name="get_my_id_type">
+	<documentation>
+ Gets the IPsec IKE peer identifier types  sent to the remote host
+      to use in the phase 1 negotiation for a list of IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_my_id_typeRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_my_id_typeResponse"/>
+	</operation>
+	<operation name="set_my_id_value">
+	<documentation>
+ Sets the IPsec IKE peer identifier values sent to the remote host
+      to use in the phase 1 negotiation for a list of IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_my_id_valueRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_my_id_valueResponse"/>
+	</operation>
+	<operation name="get_my_id_value">
+	<documentation>
+ Gets the IPsec IKE peer identifier values sent to the remote
+      host to use in the phase 1 negotiation for a list of
+      IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_my_id_valueRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_my_id_valueResponse"/>
+	</operation>
+	<operation name="set_peer_id_type">
+	<documentation>
+ Sets the peer identifier types that can be used in the phase 1
+          negotiation for a list of IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_peer_id_typeRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_peer_id_typeResponse"/>
+	</operation>
+	<operation name="get_peer_id_type">
+	<documentation>
+ Gets the peer identifier types that can be used in the phase 1
+      negotiation for a list of IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_peer_id_typeRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_peer_id_typeResponse"/>
+	</operation>
+	<operation name="set_peer_id_value">
+	<documentation>
+ Sets the IPsec IKE peer identifier value to be received
+      for a list of IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_peer_id_valueRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_peer_id_valueResponse"/>
+	</operation>
+	<operation name="get_peer_id_value">
+	<documentation>
+ Gets the peer identifier values for a list of IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_peer_id_valueRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_peer_id_valueResponse"/>
+	</operation>
+	<operation name="set_passive_state">
+	<documentation>
+ Sets the state to passive for a set of IPsec IKE peers.
+ Set this to enable, if you do not want to be the initiator of
+      the IKE negotiation with this IKE peer.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_passive_stateRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_passive_stateResponse"/>
+	</operation>
+	<operation name="get_passive_state">
+	<documentation>
+ Gets the passive state for a set of IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_passive_stateRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_passive_stateResponse"/>
+	</operation>
+	<operation name="set_verify_certificate_state">
+	<documentation>
+ Sets the IPsec IKE peer state to verify the peer's certificate
+      for a set of IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_verify_certificate_stateRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_verify_certificate_stateResponse"/>
+	</operation>
+	<operation name="get_verify_certificate_state">
+	<documentation>
+ Gets the IPsec IKE peer state of verify_certificate for
+      a set of IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_verify_certificate_stateRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_verify_certificate_stateResponse"/>
+	</operation>
+	<operation name="set_certificate_type">
+	<documentation>
+ Sets the IPsec IKE peer certificate types for a list of IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_certificate_typeRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_certificate_typeResponse"/>
+	</operation>
+	<operation name="get_certificate_type">
+	<documentation>
+ Gets the IPsec IKE peer certification types for a list of IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_certificate_typeRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_certificate_typeResponse"/>
+	</operation>
+	<operation name="set_generate_policy">
+	<documentation>
+ Sets the IPsec IKE peer generate policy option.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_generate_policyRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_generate_policyResponse"/>
+	</operation>
+	<operation name="get_generate_policy">
+	<documentation>
+ Gets the IPsec IKE peer generate policy option.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_generate_policyRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_generate_policyResponse"/>
+	</operation>
+	<operation name="set_nat_traversal">
+	<documentation>
+ Sets the IPsec IKE peer NAT traversal option.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_nat_traversalRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_nat_traversalResponse"/>
+	</operation>
+	<operation name="get_nat_traversal">
+	<documentation>
+ Gets the IPsec IKE peer NAT traversal option.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_nat_traversalRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_nat_traversalResponse"/>
+	</operation>
+	<operation name="set_enabled_state">
+	<documentation>
+ Sets the IPsec IKE peer state to enable or disable. If you set the state
+ to disable, the IKE peer is completely disabled.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_enabled_stateRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_enabled_state">
+	<documentation>
+ Gets the IPsec IKE peer state.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_enabled_stateRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_enabled_stateResponse"/>
+	</operation>
+	<operation name="set_proxy_support_state">
+	<documentation>
+ Sets the IPsec IKE peer proxy support to enable or disable.
+ Setting proxy support to enable gives the IKE peer the
+ ability to work over a proxy.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_proxy_support_stateRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_proxy_support_stateResponse"/>
+	</operation>
+	<operation name="get_proxy_support_state">
+	<documentation>
+ Gets IPsec IKE peer proxy support states.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_proxy_support_stateRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_proxy_support_stateResponse"/>
+	</operation>
+	<operation name="set_my_certificate_file">
+	<documentation>
+ Sets the name of ssl-crt file object for the certificate file
+ for each of the specified IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_my_certificate_fileRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_my_certificate_fileResponse"/>
+	</operation>
+	<operation name="get_my_certificate_file">
+	<documentation>
+ Gets the name of the ssl-crt file object for the BIG-IP certificate file
+ for each IPsec IKE peer.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_my_certificate_fileRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_my_certificate_fileResponse"/>
+	</operation>
+	<operation name="set_my_certificate_key_file">
+	<documentation>
+ Sets the name of the ssl-key file object for the certificate file
+      for each IPsec IKE peer.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_my_certificate_key_fileRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_my_certificate_key_fileResponse"/>
+	</operation>
+	<operation name="get_my_certificate_key_file">
+	<documentation>
+ Gets the name of the ssl-key file object for the BIG-IP certificate file
+  for each IPsec IKE peer.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_my_certificate_key_fileRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_my_certificate_key_fileResponse"/>
+	</operation>
+	<operation name="set_ca_certificate_file">
+	<documentation>
+ Sets the file object name of the root certificate authority (CA)
+      for each IPsec IKE peer.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_ca_certificate_fileRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_ca_certificate_fileResponse"/>
+	</operation>
+	<operation name="get_ca_certificate_file">
+	<documentation>
+ Gets the file object name of the root certificate authority (CA)
+      for each IPsec IKE peer.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_ca_certificate_fileRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_ca_certificate_fileResponse"/>
+	</operation>
+	<operation name="set_peer_certificate_file">
+	<documentation>
+ Sets the peer certificate file object name. If the peer certificate file
+ is defined, the isakmp daemon ignores the CERT payload from the peer,
+ and uses this certificate as the peer's certificate.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_peer_certificate_fileRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_peer_certificate_fileResponse"/>
+	</operation>
+	<operation name="get_peer_certificate_file">
+	<documentation>
+ Gets the peer certificate file name.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_peer_certificate_fileRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_peer_certificate_fileResponse"/>
+	</operation>
+	<operation name="set_ike_proposal_name">
+	<documentation>
+ Sets the IKE proposal name.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_ike_proposal_nameRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_ike_proposal_nameResponse"/>
+	</operation>
+	<operation name="get_ike_proposal_name">
+	<documentation>
+ Gets the IKE proposal name.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_ike_proposal_nameRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_ike_proposal_nameResponse"/>
+	</operation>
+	<operation name="set_phase1_auth_method">
+	<documentation>
+ Sets the IKE phase 1 authentication method.
+ Defines the authentication method used for
+ the phase 1 negotiation. Possible values are:
+ pre-shared-key and rsa-signature. Use
+ rsa-signature if using X.509 certificates.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_phase1_auth_methodRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_phase1_auth_methodResponse"/>
+	</operation>
+	<operation name="get_phase1_auth_method">
+	<documentation>
+ Gets the IKE phase 1 authentication method.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_phase1_auth_methodRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_phase1_auth_methodResponse"/>
+	</operation>
+	<operation name="set_phase1_hash_algorithm">
+	<documentation>
+ Sets the IKE phase 1 hash algorithm.
+ Defines the hash algorithm used for the isakmp phase 1 negotiation.
+ This directive must be defined. The algorithm should be
+ one of following: md5, sha1, sha256, sha384, sha512.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_phase1_hash_algorithmRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_phase1_hash_algorithmResponse"/>
+	</operation>
+	<operation name="get_phase1_hash_algorithm">
+	<documentation>
+ Gets the IKE phase1 hash algorithm.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_phase1_hash_algorithmRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_phase1_hash_algorithmResponse"/>
+	</operation>
+	<operation name="set_phase1_encryption_algorithm">
+	<documentation>
+ Sets the IKE phase 1 encryption algorithm.
+ Specifies the encryption algorithm used for the isakmp phase 1
+ negotiation.  This directive must be defined.  Possible value is
+ one of following: des, 3des, blowfish, cast128, aes, camellia.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_phase1_encryption_algorithmRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_phase1_encryption_algorithmResponse"/>
+	</operation>
+	<operation name="get_phase1_encryption_algorithm">
+	<documentation>
+ Gets the IKE phase 1 encryption algorithm.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_phase1_encryption_algorithmRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_phase1_encryption_algorithmResponse"/>
+	</operation>
+	<operation name="set_phase1_perfect_forward_secrecy">
+	<documentation>
+ Sets the IKE phase 1 perfect forward secrecy.
+ Defines the group used for the Diffie-Hellman exponentiations
+ to provide perfect forward secrecy.  This directive must be
+ defined. The group is one of following: modp768, modp1024,
+ modp1536, modp2048, modp3072, modp4096, modp6144, modp8192.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_phase1_perfect_forward_secrecyRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_phase1_perfect_forward_secrecyResponse"/>
+	</operation>
+	<operation name="get_phase1_perfect_forward_secrecy">
+	<documentation>
+ Gets the IKE phase 1 perfect forward secrecy.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_phase1_perfect_forward_secrecyRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_phase1_perfect_forward_secrecyResponse"/>
+	</operation>
+	<operation name="set_preshared_key">
+	<documentation>
+ Sets the preshared key for each specified
+      IPsec IKE peer.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_preshared_keyRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_preshared_keyResponse"/>
+	</operation>
+	<operation name="set_preshared_key_encrypted">
+	<documentation>
+ Sets the preshared key (encrypted) for each specified
+ IPsec IKE peer.
+ Requires an already encrypted key.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_preshared_key_encryptedRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_preshared_key_encryptedResponse"/>
+	</operation>
+	<operation name="get_preshared_key_encrypted">
+	<documentation>
+ Gets the preshared key encrypted (if any) for each specified
+      IPsec IKE peer.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_preshared_key_encryptedRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_preshared_key_encryptedResponse"/>
+	</operation>
+	<operation name="set_dpd_delay">
+	<documentation>
+ Sets the IPsec IKE peer DPD delay for a list of IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_dpd_delayRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_dpd_delayResponse"/>
+	</operation>
+	<operation name="get_dpd_delay">
+	<documentation>
+ Gets the IPsec IKE peer DPD delay for a list of IPsec IKE peers.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_dpd_delayRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_dpd_delayResponse"/>
+	</operation>
+	<operation name="set_crl_file">
+	<documentation>
+ Sets the name of the crl file object for each specified IPsec IKE peer.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_crl_fileRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_crl_fileResponse"/>
+	</operation>
+	<operation name="get_crl_file">
+	<documentation>
+ Gets the name of the crl file object for each specified IPsec IKE peer.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_crl_fileRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_crl_fileResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_versionRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_versionResponse"/>
+	</operation>
+	<operation name="set_replay_window_size">
+	<documentation>
+ Sets the replay window size for each specified IPsec IKE peer. 
+ This window will limit the number of out of order IPsec packets
+ that can be received relative to the packet with the highest
+ sequence number that has been authenticated so far. Packets with
+ older sequence numbers that are outside of this range will be rejected.
+ This configuration affects only dynamic negotiated IPsec SAs to the 
+ specified IPsec IKE peer. The default value is 64. The valid range
+ is from 4 to 255.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.set_replay_window_sizeRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.set_replay_window_sizeResponse"/>
+	</operation>
+	<operation name="get_replay_window_size">
+	<documentation>
+ Gets the replay window size for each specified IPsec IKE peer.
+
+        	</documentation>
+		<input message="tns:Networking.IPsecIkePeer.get_replay_window_sizeRequest"/>
+		<output message="tns:Networking.IPsecIkePeer.get_replay_window_sizeResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.IPsecIkePeerBinding" type="tns:Networking.IPsecIkePeerPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the names for all IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a set of IPsec IKE peers
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_ike_peer">
+	<documentation>
+ Deletes a set of IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_ike_peers">
+	<documentation>
+ Deletes all IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for the IPsec IKE peers.
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets descriprion for each specified IPsec IKE peer.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_mode">
+	<documentation>
+ Sets IPsec IKE peer modes for list of IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_mode">
+	<documentation>
+ Gets IPsec IKE peer modes for a list of IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_remote_address">
+	<documentation>
+ Sets the IPsec IKE peer remote BIG-IP system IP addresses
+      for a list of IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_remote_address">
+	<documentation>
+ Gets the IPsec IKE peer remote IP address for a list of IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_lifetime">
+	<documentation>
+ Sets the IPsec IKE peer lifetimes of an IKE security association
+      that will be proposed in the phase 1 negotiation for
+      a list of IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_lifetime">
+	<documentation>
+ Gets the IPsec IKE peer lifetimes of an IKE security association that
+      will be proposed in the phase 1 negotiation for a list of IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_my_id_type">
+	<documentation>
+ Sets the IPsec IKE peer identifier types sent to the remote host
+      to use in the phase 1 negotiation for a list of IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_my_id_type">
+	<documentation>
+ Gets the IPsec IKE peer identifier types  sent to the remote host
+      to use in the phase 1 negotiation for a list of IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_my_id_value">
+	<documentation>
+ Sets the IPsec IKE peer identifier values sent to the remote host
+      to use in the phase 1 negotiation for a list of IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_my_id_value">
+	<documentation>
+ Gets the IPsec IKE peer identifier values sent to the remote
+      host to use in the phase 1 negotiation for a list of
+      IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_peer_id_type">
+	<documentation>
+ Sets the peer identifier types that can be used in the phase 1
+          negotiation for a list of IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_peer_id_type">
+	<documentation>
+ Gets the peer identifier types that can be used in the phase 1
+      negotiation for a list of IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_peer_id_value">
+	<documentation>
+ Sets the IPsec IKE peer identifier value to be received
+      for a list of IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_peer_id_value">
+	<documentation>
+ Gets the peer identifier values for a list of IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_passive_state">
+	<documentation>
+ Sets the state to passive for a set of IPsec IKE peers.
+ Set this to enable, if you do not want to be the initiator of
+      the IKE negotiation with this IKE peer.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_passive_state">
+	<documentation>
+ Gets the passive state for a set of IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_verify_certificate_state">
+	<documentation>
+ Sets the IPsec IKE peer state to verify the peer's certificate
+      for a set of IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_verify_certificate_state">
+	<documentation>
+ Gets the IPsec IKE peer state of verify_certificate for
+      a set of IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_certificate_type">
+	<documentation>
+ Sets the IPsec IKE peer certificate types for a list of IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_certificate_type">
+	<documentation>
+ Gets the IPsec IKE peer certification types for a list of IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_generate_policy">
+	<documentation>
+ Sets the IPsec IKE peer generate policy option.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_generate_policy">
+	<documentation>
+ Gets the IPsec IKE peer generate policy option.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_nat_traversal">
+	<documentation>
+ Sets the IPsec IKE peer NAT traversal option.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_nat_traversal">
+	<documentation>
+ Gets the IPsec IKE peer NAT traversal option.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_enabled_state">
+	<documentation>
+ Sets the IPsec IKE peer state to enable or disable. If you set the state
+ to disable, the IKE peer is completely disabled.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_enabled_state">
+	<documentation>
+ Gets the IPsec IKE peer state.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_proxy_support_state">
+	<documentation>
+ Sets the IPsec IKE peer proxy support to enable or disable.
+ Setting proxy support to enable gives the IKE peer the
+ ability to work over a proxy.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_proxy_support_state">
+	<documentation>
+ Gets IPsec IKE peer proxy support states.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_my_certificate_file">
+	<documentation>
+ Sets the name of ssl-crt file object for the certificate file
+ for each of the specified IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_my_certificate_file">
+	<documentation>
+ Gets the name of the ssl-crt file object for the BIG-IP certificate file
+ for each IPsec IKE peer.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_my_certificate_key_file">
+	<documentation>
+ Sets the name of the ssl-key file object for the certificate file
+      for each IPsec IKE peer.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_my_certificate_key_file">
+	<documentation>
+ Gets the name of the ssl-key file object for the BIG-IP certificate file
+  for each IPsec IKE peer.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ca_certificate_file">
+	<documentation>
+ Sets the file object name of the root certificate authority (CA)
+      for each IPsec IKE peer.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ca_certificate_file">
+	<documentation>
+ Gets the file object name of the root certificate authority (CA)
+      for each IPsec IKE peer.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_peer_certificate_file">
+	<documentation>
+ Sets the peer certificate file object name. If the peer certificate file
+ is defined, the isakmp daemon ignores the CERT payload from the peer,
+ and uses this certificate as the peer's certificate.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_peer_certificate_file">
+	<documentation>
+ Gets the peer certificate file name.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_ike_proposal_name">
+	<documentation>
+ Sets the IKE proposal name.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_ike_proposal_name">
+	<documentation>
+ Gets the IKE proposal name.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_phase1_auth_method">
+	<documentation>
+ Sets the IKE phase 1 authentication method.
+ Defines the authentication method used for
+ the phase 1 negotiation. Possible values are:
+ pre-shared-key and rsa-signature. Use
+ rsa-signature if using X.509 certificates.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_phase1_auth_method">
+	<documentation>
+ Gets the IKE phase 1 authentication method.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_phase1_hash_algorithm">
+	<documentation>
+ Sets the IKE phase 1 hash algorithm.
+ Defines the hash algorithm used for the isakmp phase 1 negotiation.
+ This directive must be defined. The algorithm should be
+ one of following: md5, sha1, sha256, sha384, sha512.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_phase1_hash_algorithm">
+	<documentation>
+ Gets the IKE phase1 hash algorithm.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_phase1_encryption_algorithm">
+	<documentation>
+ Sets the IKE phase 1 encryption algorithm.
+ Specifies the encryption algorithm used for the isakmp phase 1
+ negotiation.  This directive must be defined.  Possible value is
+ one of following: des, 3des, blowfish, cast128, aes, camellia.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_phase1_encryption_algorithm">
+	<documentation>
+ Gets the IKE phase 1 encryption algorithm.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_phase1_perfect_forward_secrecy">
+	<documentation>
+ Sets the IKE phase 1 perfect forward secrecy.
+ Defines the group used for the Diffie-Hellman exponentiations
+ to provide perfect forward secrecy.  This directive must be
+ defined. The group is one of following: modp768, modp1024,
+ modp1536, modp2048, modp3072, modp4096, modp6144, modp8192.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_phase1_perfect_forward_secrecy">
+	<documentation>
+ Gets the IKE phase 1 perfect forward secrecy.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_preshared_key">
+	<documentation>
+ Sets the preshared key for each specified
+      IPsec IKE peer.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_preshared_key_encrypted">
+	<documentation>
+ Sets the preshared key (encrypted) for each specified
+ IPsec IKE peer.
+ Requires an already encrypted key.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_preshared_key_encrypted">
+	<documentation>
+ Gets the preshared key encrypted (if any) for each specified
+      IPsec IKE peer.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_dpd_delay">
+	<documentation>
+ Sets the IPsec IKE peer DPD delay for a list of IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_dpd_delay">
+	<documentation>
+ Gets the IPsec IKE peer DPD delay for a list of IPsec IKE peers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_crl_file">
+	<documentation>
+ Sets the name of the crl file object for each specified IPsec IKE peer.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_crl_file">
+	<documentation>
+ Gets the name of the crl file object for each specified IPsec IKE peer.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_replay_window_size">
+	<documentation>
+ Sets the replay window size for each specified IPsec IKE peer. 
+ This window will limit the number of out of order IPsec packets
+ that can be received relative to the packet with the highest
+ sequence number that has been authenticated so far. Packets with
+ older sequence numbers that are outside of this range will be rejected.
+ This configuration affects only dynamic negotiated IPsec SAs to the 
+ specified IPsec IKE peer. The default value is 64. The valid range
+ is from 4 to 255.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_replay_window_size">
+	<documentation>
+ Gets the replay window size for each specified IPsec IKE peer.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/IPsecIkePeer"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/IPsecIkePeer"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.IPsecIkePeer">
+	<documentation>
+ This interface configures the IPsec Protocol suite for securing
+ Internet Protocol (IP) communications by authenticating and
+ encrypting each IP packet of a communication session.
+
+        	</documentation>
+	<port name="Networking.IPsecIkePeerPort" binding="tns:Networking.IPsecIkePeerBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

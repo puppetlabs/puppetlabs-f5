@@ -1,0 +1,607 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="System.PerformanceSFlow"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.PortSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPAddressSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="System.PerformanceSFlow.get_listRequest">
+</message>
+<message name="System.PerformanceSFlow.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="System.PerformanceSFlow.createRequest">
+	<part name="receivers" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="System.PerformanceSFlow.createResponse">
+</message>
+
+<message name="System.PerformanceSFlow.delete_sflow_receiverRequest">
+	<part name="receivers" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.PerformanceSFlow.delete_sflow_receiverResponse">
+</message>
+
+<message name="System.PerformanceSFlow.delete_all_sflow_receiversRequest">
+</message>
+<message name="System.PerformanceSFlow.delete_all_sflow_receiversResponse">
+</message>
+
+<message name="System.PerformanceSFlow.set_addressRequest">
+	<part name="receivers" type="tns:Common.StringSequence"/>
+	<part name="addresses" type="tns:Common.IPAddressSequence"/>
+</message>
+<message name="System.PerformanceSFlow.set_addressResponse">
+</message>
+
+<message name="System.PerformanceSFlow.get_addressRequest">
+	<part name="receivers" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.PerformanceSFlow.get_addressResponse">
+	<part name="return" type="tns:Common.IPAddressSequence"/>
+</message>
+
+<message name="System.PerformanceSFlow.set_portRequest">
+	<part name="receivers" type="tns:Common.StringSequence"/>
+	<part name="ports" type="tns:Common.PortSequence"/>
+</message>
+<message name="System.PerformanceSFlow.set_portResponse">
+</message>
+
+<message name="System.PerformanceSFlow.get_portRequest">
+	<part name="receivers" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.PerformanceSFlow.get_portResponse">
+	<part name="return" type="tns:Common.PortSequence"/>
+</message>
+
+<message name="System.PerformanceSFlow.set_maximum_datagram_sizeRequest">
+	<part name="receivers" type="tns:Common.StringSequence"/>
+	<part name="sizes" type="tns:Common.ULongSequence"/>
+</message>
+<message name="System.PerformanceSFlow.set_maximum_datagram_sizeResponse">
+</message>
+
+<message name="System.PerformanceSFlow.get_maximum_datagram_sizeRequest">
+	<part name="receivers" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.PerformanceSFlow.get_maximum_datagram_sizeResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="System.PerformanceSFlow.get_datagram_versionRequest">
+	<part name="receivers" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.PerformanceSFlow.get_datagram_versionResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="System.PerformanceSFlow.set_poll_intervalRequest">
+	<part name="receivers" type="tns:Common.StringSequence"/>
+	<part name="intervals" type="tns:Common.ULongSequence"/>
+</message>
+<message name="System.PerformanceSFlow.set_poll_intervalResponse">
+</message>
+
+<message name="System.PerformanceSFlow.get_poll_intervalRequest">
+	<part name="receivers" type="tns:Common.StringSequence"/>
+</message>
+<message name="System.PerformanceSFlow.get_poll_intervalResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="System.PerformanceSFlow.get_versionRequest">
+</message>
+<message name="System.PerformanceSFlow.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="System.PerformanceSFlowPortType">
+	<operation name="get_list">
+ 	<documentation>
+ Gets a list of sFlow receivers on this device.
+
+        	</documentation>
+		<input message="tns:System.PerformanceSFlow.get_listRequest"/>
+		<output message="tns:System.PerformanceSFlow.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a set of sFlow receivers.
+
+        	</documentation>
+		<input message="tns:System.PerformanceSFlow.createRequest"/>
+		<output message="tns:System.PerformanceSFlow.createResponse"/>
+	</operation>
+	<operation name="delete_sflow_receiver">
+	<documentation>
+ Deletes a set of sFlow receivers.
+
+        	</documentation>
+		<input message="tns:System.PerformanceSFlow.delete_sflow_receiverRequest"/>
+		<output message="tns:System.PerformanceSFlow.delete_sflow_receiverResponse"/>
+	</operation>
+	<operation name="delete_all_sflow_receivers">
+	<documentation>
+ Deletes all sFlow receivers on this device.
+
+        	</documentation>
+		<input message="tns:System.PerformanceSFlow.delete_all_sflow_receiversRequest"/>
+		<output message="tns:System.PerformanceSFlow.delete_all_sflow_receiversResponse"/>
+	</operation>
+	<operation name="set_address">
+	<documentation>
+ Sets the IP addresses of the specified sFlow receivers. IP
+ addresses can be either IPv4 or IPv6.
+
+        	</documentation>
+		<input message="tns:System.PerformanceSFlow.set_addressRequest"/>
+		<output message="tns:System.PerformanceSFlow.set_addressResponse"/>
+	</operation>
+	<operation name="get_address">
+	<documentation>
+ Gets the IP addresses of the specified sFlow receivers.
+
+        	</documentation>
+		<input message="tns:System.PerformanceSFlow.get_addressRequest"/>
+		<output message="tns:System.PerformanceSFlow.get_addressResponse"/>
+	</operation>
+	<operation name="set_port">
+	<documentation>
+ Sets the listening port numbers for the specified sFlow
+ receivers. Defaults to the sFlow standard, which is port
+ 6343.
+
+        	</documentation>
+		<input message="tns:System.PerformanceSFlow.set_portRequest"/>
+		<output message="tns:System.PerformanceSFlow.set_portResponse"/>
+	</operation>
+	<operation name="get_port">
+	<documentation>
+ Gets the listening port numbers of the specified sFlow
+ receivers.
+
+        	</documentation>
+		<input message="tns:System.PerformanceSFlow.get_portRequest"/>
+		<output message="tns:System.PerformanceSFlow.get_portResponse"/>
+	</operation>
+	<operation name="set_maximum_datagram_size">
+	<documentation>
+ Sets the maximum datagram size allowed by the specified
+ sFlow receivers, from 512 to 1500. Default is 1400.
+
+        	</documentation>
+		<input message="tns:System.PerformanceSFlow.set_maximum_datagram_sizeRequest"/>
+		<output message="tns:System.PerformanceSFlow.set_maximum_datagram_sizeResponse"/>
+	</operation>
+	<operation name="get_maximum_datagram_size">
+	<documentation>
+ Gets the maximum datagram size allowed by the specified
+ sFlow receivers.
+
+        	</documentation>
+		<input message="tns:System.PerformanceSFlow.get_maximum_datagram_sizeRequest"/>
+		<output message="tns:System.PerformanceSFlow.get_maximum_datagram_sizeResponse"/>
+	</operation>
+	<operation name="get_datagram_version">
+	<documentation>
+ Gets the sFlow Datagram versions used by the specified
+ sFlow receivers.
+
+        	</documentation>
+		<input message="tns:System.PerformanceSFlow.get_datagram_versionRequest"/>
+		<output message="tns:System.PerformanceSFlow.get_datagram_versionResponse"/>
+	</operation>
+	<operation name="set_poll_interval">
+	<documentation>
+ Sets the polling intervals of the specified sFlow
+ receivers. This is the time period between successive
+ Counter Samples, in seconds. Each counter polling instance
+ can have its own independent polling interval. Default is
+ 10, but it can be set to a max of 1500.
+
+        	</documentation>
+		<input message="tns:System.PerformanceSFlow.set_poll_intervalRequest"/>
+		<output message="tns:System.PerformanceSFlow.set_poll_intervalResponse"/>
+	</operation>
+	<operation name="get_poll_interval">
+	<documentation>
+ Gets the polling intervals of the specified sFlow
+ receivers.
+
+        	</documentation>
+		<input message="tns:System.PerformanceSFlow.get_poll_intervalRequest"/>
+		<output message="tns:System.PerformanceSFlow.get_poll_intervalResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+ 
+        	</documentation>
+		<input message="tns:System.PerformanceSFlow.get_versionRequest"/>
+		<output message="tns:System.PerformanceSFlow.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="System.PerformanceSFlowBinding" type="tns:System.PerformanceSFlowPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of sFlow receivers on this device.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/PerformanceSFlow"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a set of sFlow receivers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/PerformanceSFlow"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_sflow_receiver">
+	<documentation>
+ Deletes a set of sFlow receivers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/PerformanceSFlow"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_sflow_receivers">
+	<documentation>
+ Deletes all sFlow receivers on this device.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/PerformanceSFlow"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_address">
+	<documentation>
+ Sets the IP addresses of the specified sFlow receivers. IP
+ addresses can be either IPv4 or IPv6.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/PerformanceSFlow"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_address">
+	<documentation>
+ Gets the IP addresses of the specified sFlow receivers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/PerformanceSFlow"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_port">
+	<documentation>
+ Sets the listening port numbers for the specified sFlow
+ receivers. Defaults to the sFlow standard, which is port
+ 6343.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/PerformanceSFlow"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_port">
+	<documentation>
+ Gets the listening port numbers of the specified sFlow
+ receivers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/PerformanceSFlow"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_maximum_datagram_size">
+	<documentation>
+ Sets the maximum datagram size allowed by the specified
+ sFlow receivers, from 512 to 1500. Default is 1400.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/PerformanceSFlow"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_maximum_datagram_size">
+	<documentation>
+ Gets the maximum datagram size allowed by the specified
+ sFlow receivers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/PerformanceSFlow"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_datagram_version">
+	<documentation>
+ Gets the sFlow Datagram versions used by the specified
+ sFlow receivers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/PerformanceSFlow"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_poll_interval">
+	<documentation>
+ Sets the polling intervals of the specified sFlow
+ receivers. This is the time period between successive
+ Counter Samples, in seconds. Each counter polling instance
+ can have its own independent polling interval. Default is
+ 10, but it can be set to a max of 1500.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/PerformanceSFlow"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_poll_interval">
+	<documentation>
+ Gets the polling intervals of the specified sFlow
+ receivers.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/PerformanceSFlow"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:System/PerformanceSFlow"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:System/PerformanceSFlow"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="System.PerformanceSFlow">
+	<documentation>
+ The Performance sFlow interface implements the sFlow monitoring
+ standard. The monitoring has two major components: Packet Flow
+ Sampling, a random selection of a fraction of the Packet Flows
+ observed at a data source, and Counter Sampling, a periodic
+ sampling or polling of counters associated with a data
+ source. Samples are sent out, as soon as they are taken, with
+ at most a second of intentional delay, to offline sFlow
+ receivers, through UDP datagrams. It is the responsibility of
+ receivers to maintain the collected data, in any proprietary
+ format. sFlow analyzers, which understand the receivers or
+ their storage format, could be used to analyze the collected
+ data, to represent network usage, over a period of time.
+
+ This interface allows you to configure one or more sFlow
+ receivers, by providing the IPv4 or IPv6 address and port on
+ which they are listening, along with maximum datagram size and
+ datagram revision they support. One or more data sources can be
+ selected to monitor for counter/packet-flow sampling along with
+ sampling rate. Samples would start to flow to the offline
+ receivers at a rate less than or equal to the set sampling
+ rate.
+
+        	</documentation>
+	<port name="System.PerformanceSFlowPort" binding="tns:System.PerformanceSFlowBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

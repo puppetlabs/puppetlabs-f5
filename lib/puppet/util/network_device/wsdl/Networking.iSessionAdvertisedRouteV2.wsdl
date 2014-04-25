@@ -1,0 +1,619 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Networking.iSessionAdvertisedRouteV2"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Networking.iSessionAdvertisedRouteV2.RouteDestination">
+			<xsd:sequence>
+				<xsd:element name="ip" type="xsd:string"/>
+				<xsd:element name="mask" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Networking.iSessionAdvertisedRouteV2.RouteDestinationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Networking.iSessionAdvertisedRouteV2.RouteDestination[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Networking.iSessionAdvertisedRouteV2.get_listRequest">
+</message>
+<message name="Networking.iSessionAdvertisedRouteV2.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.iSessionAdvertisedRouteV2.createRequest">
+	<part name="subnets" type="tns:Common.StringSequence"/>
+	<part name="destinations" type="tns:Networking.iSessionAdvertisedRouteV2.RouteDestinationSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+	<part name="metrics" type="tns:Common.ULongSequence"/>
+	<part name="labels" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionAdvertisedRouteV2.createResponse">
+</message>
+
+<message name="Networking.iSessionAdvertisedRouteV2.delete_subnetRequest">
+	<part name="subnets" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionAdvertisedRouteV2.delete_subnetResponse">
+</message>
+
+<message name="Networking.iSessionAdvertisedRouteV2.delete_all_subnetsRequest">
+</message>
+<message name="Networking.iSessionAdvertisedRouteV2.delete_all_subnetsResponse">
+</message>
+
+<message name="Networking.iSessionAdvertisedRouteV2.get_destinationRequest">
+	<part name="subnets" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionAdvertisedRouteV2.get_destinationResponse">
+	<part name="return" type="tns:Networking.iSessionAdvertisedRouteV2.RouteDestinationSequence"/>
+</message>
+
+<message name="Networking.iSessionAdvertisedRouteV2.set_enabled_stateRequest">
+	<part name="subnets" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="Networking.iSessionAdvertisedRouteV2.set_enabled_stateResponse">
+</message>
+
+<message name="Networking.iSessionAdvertisedRouteV2.get_enabled_stateRequest">
+	<part name="subnets" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionAdvertisedRouteV2.get_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="Networking.iSessionAdvertisedRouteV2.set_labelRequest">
+	<part name="subnets" type="tns:Common.StringSequence"/>
+	<part name="labels" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionAdvertisedRouteV2.set_labelResponse">
+</message>
+
+<message name="Networking.iSessionAdvertisedRouteV2.get_labelRequest">
+	<part name="subnets" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionAdvertisedRouteV2.get_labelResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.iSessionAdvertisedRouteV2.set_metricRequest">
+	<part name="subnets" type="tns:Common.StringSequence"/>
+	<part name="metrics" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Networking.iSessionAdvertisedRouteV2.set_metricResponse">
+</message>
+
+<message name="Networking.iSessionAdvertisedRouteV2.get_metricRequest">
+	<part name="subnets" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionAdvertisedRouteV2.get_metricResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="Networking.iSessionAdvertisedRouteV2.set_descriptionRequest">
+	<part name="subnets" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionAdvertisedRouteV2.set_descriptionResponse">
+</message>
+
+<message name="Networking.iSessionAdvertisedRouteV2.get_descriptionRequest">
+	<part name="subnets" type="tns:Common.StringSequence"/>
+</message>
+<message name="Networking.iSessionAdvertisedRouteV2.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Networking.iSessionAdvertisedRouteV2.get_versionRequest">
+</message>
+<message name="Networking.iSessionAdvertisedRouteV2.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Networking.iSessionAdvertisedRouteV2PortType">
+	<operation name="get_list">
+    	<documentation>
+ Get a list of all advertised routes
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRouteV2.get_listRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRouteV2.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a set of advertised routes
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRouteV2.createRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRouteV2.createResponse"/>
+	</operation>
+	<operation name="delete_subnet">
+	<documentation>
+ Deletes the specified set of advertised routes
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRouteV2.delete_subnetRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRouteV2.delete_subnetResponse"/>
+	</operation>
+	<operation name="delete_all_subnets">
+	<documentation>
+ Deletes all advertised routes.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRouteV2.delete_all_subnetsRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRouteV2.delete_all_subnetsResponse"/>
+	</operation>
+	<operation name="get_destination">
+	<documentation>
+ Gets the networked IP address of a subnet that a remote system can
+ reach through the local endpoint for a set of advertised routes.
+
+ Note: A set_destination method is not supported.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRouteV2.get_destinationRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRouteV2.get_destinationResponse"/>
+	</operation>
+	<operation name="set_enabled_state">
+	<documentation>
+ Sets the state for optimizing traffic between the local and remote
+ endpoints for a set of advertised routes.
+
+ If not enabled, the local and remote endpoints exchange subnet
+ configuration information, but traffic on this subnet is not
+ optimized.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRouteV2.set_enabled_stateRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRouteV2.set_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_enabled_state">
+	<documentation>
+ Gets the state for optimizing traffic between the local and remote
+ endpoints for a set of advertised routes.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRouteV2.get_enabled_stateRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRouteV2.get_enabled_stateResponse"/>
+	</operation>
+	<operation name="set_label">
+	<documentation>
+ Sets the label for a set of advertised routes
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRouteV2.set_labelRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRouteV2.set_labelResponse"/>
+	</operation>
+	<operation name="get_label">
+	<documentation>
+ Gets the label for a set of advertised routes.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRouteV2.get_labelRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRouteV2.get_labelResponse"/>
+	</operation>
+	<operation name="set_metric">
+	<documentation>
+ Sets the routing metric to select between WAN Optimization Module
+ pairs for a set of advertised routes.  The higher the number, the
+ more expensive the route in terms of resources.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRouteV2.set_metricRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRouteV2.set_metricResponse"/>
+	</operation>
+	<operation name="get_metric">
+	<documentation>
+ Gets the routing metric to select between WAN Optimization Module
+ pairs for a set of advertised routes.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRouteV2.get_metricRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRouteV2.get_metricResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of advertised routes.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRouteV2.set_descriptionRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRouteV2.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of advertised routes.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRouteV2.get_descriptionRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRouteV2.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Networking.iSessionAdvertisedRouteV2.get_versionRequest"/>
+		<output message="tns:Networking.iSessionAdvertisedRouteV2.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Networking.iSessionAdvertisedRouteV2Binding" type="tns:Networking.iSessionAdvertisedRouteV2PortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Get a list of all advertised routes
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRouteV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a set of advertised routes
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRouteV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_subnet">
+	<documentation>
+ Deletes the specified set of advertised routes
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRouteV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_subnets">
+	<documentation>
+ Deletes all advertised routes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRouteV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_destination">
+	<documentation>
+ Gets the networked IP address of a subnet that a remote system can
+ reach through the local endpoint for a set of advertised routes.
+
+ Note: A set_destination method is not supported.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRouteV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_enabled_state">
+	<documentation>
+ Sets the state for optimizing traffic between the local and remote
+ endpoints for a set of advertised routes.
+
+ If not enabled, the local and remote endpoints exchange subnet
+ configuration information, but traffic on this subnet is not
+ optimized.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRouteV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_enabled_state">
+	<documentation>
+ Gets the state for optimizing traffic between the local and remote
+ endpoints for a set of advertised routes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRouteV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_label">
+	<documentation>
+ Sets the label for a set of advertised routes
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRouteV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_label">
+	<documentation>
+ Gets the label for a set of advertised routes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRouteV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_metric">
+	<documentation>
+ Sets the routing metric to select between WAN Optimization Module
+ pairs for a set of advertised routes.  The higher the number, the
+ more expensive the route in terms of resources.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRouteV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_metric">
+	<documentation>
+ Gets the routing metric to select between WAN Optimization Module
+ pairs for a set of advertised routes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRouteV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of advertised routes.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRouteV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of advertised routes.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRouteV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Networking/iSessionAdvertisedRouteV2"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Networking/iSessionAdvertisedRouteV2"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Networking.iSessionAdvertisedRouteV2">
+	<documentation>
+ This interface manages routes advertised for optimization reachable
+ through the local endpoint of the WAN Optimization Module.
+
+ Routes are advertised to all connected WAN Optimization Modules.  The
+ remote endpoints use the subnet configuration information to determine
+ peer routing and optimization actions.
+
+        	</documentation>
+	<port name="Networking.iSessionAdvertisedRouteV2Port" binding="tns:Networking.iSessionAdvertisedRouteV2Binding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

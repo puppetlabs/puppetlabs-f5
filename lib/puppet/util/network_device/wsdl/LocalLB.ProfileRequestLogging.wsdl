@@ -1,0 +1,2042 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="LocalLB.ProfileRequestLogging"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="LocalLB.ProfileEnabledState">
+			<xsd:sequence>
+				<xsd:element name="value" type="tns:Common.EnabledState"/>
+				<xsd:element name="default_flag" type="xsd:boolean"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfileRequestLogging.ProfileProtocol">
+			<xsd:sequence>
+				<xsd:element name="value" type="tns:LocalLB.ProfileRequestLogging.Protocol"/>
+				<xsd:element name="default_flag" type="xsd:boolean"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfileStringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.ProfileString[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.BooleanSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:boolean[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfileString">
+			<xsd:sequence>
+				<xsd:element name="value" type="xsd:string"/>
+				<xsd:element name="default_flag" type="xsd:boolean"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.ProfileRequestLogging.ProfileProtocolSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.ProfileRequestLogging.ProfileProtocol[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="LocalLB.ProfileRequestLogging.Protocol">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="PROTOCOL_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_TCP">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_TCP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="PROTOCOL_UDP">
+					<xsd:annotation>
+						<xsd:documentation>PROTOCOL_UDP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="LocalLB.ProfileEnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.ProfileEnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="LocalLB.ProfileRequestLogging.get_listRequest">
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.createRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.createResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.delete_profileRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.delete_profileResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.delete_all_profilesRequest">
+</message>
+<message name="LocalLB.ProfileRequestLogging.delete_all_profilesResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.set_descriptionRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.set_descriptionResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_descriptionRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.set_default_profileRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="defaults" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.set_default_profileResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_default_profileRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_default_profileResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.is_base_profileRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.is_base_profileResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.is_system_profileRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.is_system_profileResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.set_response_log_by_default_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.set_response_log_by_default_stateResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_response_log_by_default_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_response_log_by_default_stateResponse">
+	<part name="return" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.set_response_poolRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="pools" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.set_response_poolResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_response_poolRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_response_poolResponse">
+	<part name="return" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.set_response_protocolRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="protocols" type="tns:LocalLB.ProfileRequestLogging.ProfileProtocolSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.set_response_protocolResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_response_protocolRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_response_protocolResponse">
+	<part name="return" type="tns:LocalLB.ProfileRequestLogging.ProfileProtocolSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.set_response_secondary_poolRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="pools" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.set_response_secondary_poolResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_response_secondary_poolRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_response_secondary_poolResponse">
+	<part name="return" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.set_response_secondary_protocolRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="protocols" type="tns:LocalLB.ProfileRequestLogging.ProfileProtocolSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.set_response_secondary_protocolResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_response_secondary_protocolRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_response_secondary_protocolResponse">
+	<part name="return" type="tns:LocalLB.ProfileRequestLogging.ProfileProtocolSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.set_response_secondary_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.set_response_secondary_stateResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_response_secondary_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_response_secondary_stateResponse">
+	<part name="return" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.set_response_secondary_templateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="templates" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.set_response_secondary_templateResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_response_secondary_templateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_response_secondary_templateResponse">
+	<part name="return" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.set_response_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.set_response_stateResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_response_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_response_stateResponse">
+	<part name="return" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.set_response_templateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="templates" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.set_response_templateResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_response_templateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_response_templateResponse">
+	<part name="return" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.set_proxy_close_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.set_proxy_close_stateResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_proxy_close_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_proxy_close_stateResponse">
+	<part name="return" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.set_proxy_responseRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="responses" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.set_proxy_responseResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_proxy_responseRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_proxy_responseResponse">
+	<part name="return" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.set_proxy_response_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.set_proxy_response_stateResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_proxy_response_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_proxy_response_stateResponse">
+	<part name="return" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.set_request_poolRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="pools" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.set_request_poolResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_request_poolRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_request_poolResponse">
+	<part name="return" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.set_request_protocolRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="protocols" type="tns:LocalLB.ProfileRequestLogging.ProfileProtocolSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.set_request_protocolResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_request_protocolRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_request_protocolResponse">
+	<part name="return" type="tns:LocalLB.ProfileRequestLogging.ProfileProtocolSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.set_request_secondary_poolRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="pools" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.set_request_secondary_poolResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_request_secondary_poolRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_request_secondary_poolResponse">
+	<part name="return" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.set_request_secondary_protocolRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="protocols" type="tns:LocalLB.ProfileRequestLogging.ProfileProtocolSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.set_request_secondary_protocolResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_request_secondary_protocolRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_request_secondary_protocolResponse">
+	<part name="return" type="tns:LocalLB.ProfileRequestLogging.ProfileProtocolSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.set_request_secondary_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.set_request_secondary_stateResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_request_secondary_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_request_secondary_stateResponse">
+	<part name="return" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.set_request_secondary_templateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="templates" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.set_request_secondary_templateResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_request_secondary_templateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_request_secondary_templateResponse">
+	<part name="return" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.set_request_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.set_request_stateResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_request_stateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_request_stateResponse">
+	<part name="return" type="tns:LocalLB.ProfileEnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.set_request_templateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+	<part name="templates" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.set_request_templateResponse">
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_request_templateRequest">
+	<part name="profile_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_request_templateResponse">
+	<part name="return" type="tns:LocalLB.ProfileStringSequence"/>
+</message>
+
+<message name="LocalLB.ProfileRequestLogging.get_versionRequest">
+</message>
+<message name="LocalLB.ProfileRequestLogging.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="LocalLB.ProfileRequestLoggingPortType">
+	<operation name="get_list">
+   	<documentation>
+ Gets the names of all request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_listRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.createRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.createResponse"/>
+	</operation>
+	<operation name="delete_profile">
+	<documentation>
+ Deletes a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.delete_profileRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.delete_profileResponse"/>
+	</operation>
+	<operation name="delete_all_profiles">
+	<documentation>
+ Deletes all request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.delete_all_profilesRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.delete_all_profilesResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of request logging profiles. This is
+ an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.set_descriptionRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the description for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_descriptionRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_descriptionResponse"/>
+	</operation>
+	<operation name="set_default_profile">
+	<documentation>
+ Sets the name of the profile from which this profile inherits its
+ values for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.set_default_profileRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.set_default_profileResponse"/>
+	</operation>
+	<operation name="get_default_profile">
+	<documentation>
+ Gets the name of the profile from which this profile inherits its
+ values for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_default_profileRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_default_profileResponse"/>
+	</operation>
+	<operation name="is_base_profile">
+	<documentation>
+ Determines whether the specified request logging profiles are base
+ profiles.  A base profile sits at the base of the profile's
+ inheritance tree, supplying the defaults for every profile derived
+ from it.  (See also is_system_profile).
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.is_base_profileRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.is_base_profileResponse"/>
+	</operation>
+	<operation name="is_system_profile">
+	<documentation>
+ Determines whether the specified request logging profiles are
+ system profiles.  A system profile is a profile pre-configured on
+ the system, ready for use.  Non-system profiles are profiles
+ created or modified by a user.  Note that if a system profile is
+ modified, it is no longer considered a system profile.  (See also
+ is_base_profile).
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.is_system_profileRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.is_system_profileResponse"/>
+	</operation>
+	<operation name="set_response_log_by_default_state">
+	<documentation>
+ Sets the state to log a post-request entry by default for a set of
+ request logging profiles. If set, each request is logged after
+ processing unless it is suppressed by a filter or iRule. If not
+ set, a request is logged after processing only if requested by a
+ filter or iRule.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.set_response_log_by_default_stateRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.set_response_log_by_default_stateResponse"/>
+	</operation>
+	<operation name="get_response_log_by_default_state">
+	<documentation>
+ Gets the state to log a post-request entry by default for a set of
+ request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_response_log_by_default_stateRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_response_log_by_default_stateResponse"/>
+	</operation>
+	<operation name="set_response_pool">
+	<documentation>
+ Sets the pool holding the post-request primary log servers for a
+ set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.set_response_poolRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.set_response_poolResponse"/>
+	</operation>
+	<operation name="get_response_pool">
+	<documentation>
+ Gets the pool holding the post-request primary log servers for a
+ set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_response_poolRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_response_poolResponse"/>
+	</operation>
+	<operation name="set_response_protocol">
+	<documentation>
+ Sets the protocol for sending post-request entries to the primary
+ log servers for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.set_response_protocolRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.set_response_protocolResponse"/>
+	</operation>
+	<operation name="get_response_protocol">
+	<documentation>
+ Gets the protocol for sending post-request entries to the primary
+ log servers for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_response_protocolRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_response_protocolResponse"/>
+	</operation>
+	<operation name="set_response_secondary_pool">
+	<documentation>
+ Sets the pool holding the post-request secondary log servers for a
+ set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.set_response_secondary_poolRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.set_response_secondary_poolResponse"/>
+	</operation>
+	<operation name="get_response_secondary_pool">
+	<documentation>
+ Gets the pool holding the post-request secondary log servers for a
+ set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_response_secondary_poolRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_response_secondary_poolResponse"/>
+	</operation>
+	<operation name="set_response_secondary_protocol">
+	<documentation>
+ Sets the protocol for sending post-request entries to the secondary
+ log servers for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.set_response_secondary_protocolRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.set_response_secondary_protocolResponse"/>
+	</operation>
+	<operation name="get_response_secondary_protocol">
+	<documentation>
+ Gets the protocol for sending post-request entries to the secondary
+ log servers for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_response_secondary_protocolRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_response_secondary_protocolResponse"/>
+	</operation>
+	<operation name="set_response_secondary_state">
+	<documentation>
+ Sets the state to log post-request logging errors to the secondary
+ log server pool for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.set_response_secondary_stateRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.set_response_secondary_stateResponse"/>
+	</operation>
+	<operation name="get_response_secondary_state">
+	<documentation>
+ Gets the state to log post-request logging errors to the secondary
+ log server pool for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_response_secondary_stateRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_response_secondary_stateResponse"/>
+	</operation>
+	<operation name="set_response_secondary_template">
+	<documentation>
+ Sets the template used to format post-request secondary log entries
+ for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.set_response_secondary_templateRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.set_response_secondary_templateResponse"/>
+	</operation>
+	<operation name="get_response_secondary_template">
+	<documentation>
+ Gets the template used to format post-request secondary log entries
+ for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_response_secondary_templateRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_response_secondary_templateResponse"/>
+	</operation>
+	<operation name="set_response_state">
+	<documentation>
+ Sets the state to log an entry to the primary logging servers after
+ each request is processed for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.set_response_stateRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.set_response_stateResponse"/>
+	</operation>
+	<operation name="get_response_state">
+	<documentation>
+ Gets the state to log an entry to the primary logging servers after
+ each request is processed for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_response_stateRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_response_stateResponse"/>
+	</operation>
+	<operation name="set_response_template">
+	<documentation>
+ Sets the template used to format post-request log entries for a set
+ of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.set_response_templateRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.set_response_templateResponse"/>
+	</operation>
+	<operation name="get_response_template">
+	<documentation>
+ Gets the template used to format post-request log entries for a set
+ of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_response_templateRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_response_templateResponse"/>
+	</operation>
+	<operation name="set_proxy_close_state">
+	<documentation>
+ Sets the state to close the client connection after sending the
+ specified response to the client after a pre-request logging error
+ for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.set_proxy_close_stateRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.set_proxy_close_stateResponse"/>
+	</operation>
+	<operation name="get_proxy_close_state">
+	<documentation>
+ Gets the state to close the client connection after sending the
+ specified response to the client after a pre-request logging error
+ for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_proxy_close_stateRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_proxy_close_stateResponse"/>
+	</operation>
+	<operation name="set_proxy_response">
+	<documentation>
+ Sets the response to send to the client on behalf of the server
+ after a pre-request logging error for a set of request logging
+ profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.set_proxy_responseRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.set_proxy_responseResponse"/>
+	</operation>
+	<operation name="get_proxy_response">
+	<documentation>
+ Gets the response to send to the client on behalf of the server
+ after a pre-request logging error for a set of request logging
+ profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_proxy_responseRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_proxy_responseResponse"/>
+	</operation>
+	<operation name="set_proxy_response_state">
+	<documentation>
+ Sets the state to respond on behalf of the server if an error
+ occurs while logging a pre-request entry for a set of request
+ logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.set_proxy_response_stateRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.set_proxy_response_stateResponse"/>
+	</operation>
+	<operation name="get_proxy_response_state">
+	<documentation>
+ Gets the state to respond on behalf of the server if an error
+ occurs while logging a pre-request entry for a set of request
+ logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_proxy_response_stateRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_proxy_response_stateResponse"/>
+	</operation>
+	<operation name="set_request_pool">
+	<documentation>
+ Sets the pre-request pool for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.set_request_poolRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.set_request_poolResponse"/>
+	</operation>
+	<operation name="get_request_pool">
+	<documentation>
+ Gets the pre-request pool for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_request_poolRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_request_poolResponse"/>
+	</operation>
+	<operation name="set_request_protocol">
+	<documentation>
+ Sets the protocol for sending pre-request log entries to the
+ primary log servers for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.set_request_protocolRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.set_request_protocolResponse"/>
+	</operation>
+	<operation name="get_request_protocol">
+	<documentation>
+ Gets the protocol for sending pre-request log entries to the
+ primary log servers for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_request_protocolRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_request_protocolResponse"/>
+	</operation>
+	<operation name="set_request_secondary_pool">
+	<documentation>
+ Sets the pre-request secondary pool for a set of request logging
+ profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.set_request_secondary_poolRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.set_request_secondary_poolResponse"/>
+	</operation>
+	<operation name="get_request_secondary_pool">
+	<documentation>
+ Gets the pre-request secondary pool for a set of request logging
+ profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_request_secondary_poolRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_request_secondary_poolResponse"/>
+	</operation>
+	<operation name="set_request_secondary_protocol">
+	<documentation>
+ Sets the protocol for sending pre-request entries to the secondary
+ log servers for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.set_request_secondary_protocolRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.set_request_secondary_protocolResponse"/>
+	</operation>
+	<operation name="get_request_secondary_protocol">
+	<documentation>
+ Gets the protocol for sending pre-request entries to the secondary
+ log servers for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_request_secondary_protocolRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_request_secondary_protocolResponse"/>
+	</operation>
+	<operation name="set_request_secondary_state">
+	<documentation>
+ Sets the state to log pre-request logging errors to a secondary log
+ server pool for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.set_request_secondary_stateRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.set_request_secondary_stateResponse"/>
+	</operation>
+	<operation name="get_request_secondary_state">
+	<documentation>
+ Gets the state to log pre-request logging errors to a secondary log
+ server pool for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_request_secondary_stateRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_request_secondary_stateResponse"/>
+	</operation>
+	<operation name="set_request_secondary_template">
+	<documentation>
+ Sets the template used to format pre-request secondary log entries
+ for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.set_request_secondary_templateRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.set_request_secondary_templateResponse"/>
+	</operation>
+	<operation name="get_request_secondary_template">
+	<documentation>
+ Gets the template used to format pre-request secondary log entries
+ for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_request_secondary_templateRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_request_secondary_templateResponse"/>
+	</operation>
+	<operation name="set_request_state">
+	<documentation>
+ Sets the state to log an entry before each request is processed for
+ a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.set_request_stateRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.set_request_stateResponse"/>
+	</operation>
+	<operation name="get_request_state">
+	<documentation>
+ Gets the state to log an entry before each request is processed for
+ a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_request_stateRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_request_stateResponse"/>
+	</operation>
+	<operation name="set_request_template">
+	<documentation>
+ Sets the template used for format entries for pre-request log
+ entries for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.set_request_templateRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.set_request_templateResponse"/>
+	</operation>
+	<operation name="get_request_template">
+	<documentation>
+ Gets the template used for format entries for pre-request log
+ entries for a set of request logging profiles.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_request_templateRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_request_templateResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:LocalLB.ProfileRequestLogging.get_versionRequest"/>
+		<output message="tns:LocalLB.ProfileRequestLogging.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="LocalLB.ProfileRequestLoggingBinding" type="tns:LocalLB.ProfileRequestLoggingPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the names of all request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_profile">
+	<documentation>
+ Deletes a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_profiles">
+	<documentation>
+ Deletes all request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of request logging profiles. This is
+ an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the description for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_default_profile">
+	<documentation>
+ Sets the name of the profile from which this profile inherits its
+ values for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_default_profile">
+	<documentation>
+ Gets the name of the profile from which this profile inherits its
+ values for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="is_base_profile">
+	<documentation>
+ Determines whether the specified request logging profiles are base
+ profiles.  A base profile sits at the base of the profile's
+ inheritance tree, supplying the defaults for every profile derived
+ from it.  (See also is_system_profile).
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="is_system_profile">
+	<documentation>
+ Determines whether the specified request logging profiles are
+ system profiles.  A system profile is a profile pre-configured on
+ the system, ready for use.  Non-system profiles are profiles
+ created or modified by a user.  Note that if a system profile is
+ modified, it is no longer considered a system profile.  (See also
+ is_base_profile).
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_response_log_by_default_state">
+	<documentation>
+ Sets the state to log a post-request entry by default for a set of
+ request logging profiles. If set, each request is logged after
+ processing unless it is suppressed by a filter or iRule. If not
+ set, a request is logged after processing only if requested by a
+ filter or iRule.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_response_log_by_default_state">
+	<documentation>
+ Gets the state to log a post-request entry by default for a set of
+ request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_response_pool">
+	<documentation>
+ Sets the pool holding the post-request primary log servers for a
+ set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_response_pool">
+	<documentation>
+ Gets the pool holding the post-request primary log servers for a
+ set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_response_protocol">
+	<documentation>
+ Sets the protocol for sending post-request entries to the primary
+ log servers for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_response_protocol">
+	<documentation>
+ Gets the protocol for sending post-request entries to the primary
+ log servers for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_response_secondary_pool">
+	<documentation>
+ Sets the pool holding the post-request secondary log servers for a
+ set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_response_secondary_pool">
+	<documentation>
+ Gets the pool holding the post-request secondary log servers for a
+ set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_response_secondary_protocol">
+	<documentation>
+ Sets the protocol for sending post-request entries to the secondary
+ log servers for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_response_secondary_protocol">
+	<documentation>
+ Gets the protocol for sending post-request entries to the secondary
+ log servers for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_response_secondary_state">
+	<documentation>
+ Sets the state to log post-request logging errors to the secondary
+ log server pool for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_response_secondary_state">
+	<documentation>
+ Gets the state to log post-request logging errors to the secondary
+ log server pool for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_response_secondary_template">
+	<documentation>
+ Sets the template used to format post-request secondary log entries
+ for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_response_secondary_template">
+	<documentation>
+ Gets the template used to format post-request secondary log entries
+ for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_response_state">
+	<documentation>
+ Sets the state to log an entry to the primary logging servers after
+ each request is processed for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_response_state">
+	<documentation>
+ Gets the state to log an entry to the primary logging servers after
+ each request is processed for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_response_template">
+	<documentation>
+ Sets the template used to format post-request log entries for a set
+ of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_response_template">
+	<documentation>
+ Gets the template used to format post-request log entries for a set
+ of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_proxy_close_state">
+	<documentation>
+ Sets the state to close the client connection after sending the
+ specified response to the client after a pre-request logging error
+ for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_proxy_close_state">
+	<documentation>
+ Gets the state to close the client connection after sending the
+ specified response to the client after a pre-request logging error
+ for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_proxy_response">
+	<documentation>
+ Sets the response to send to the client on behalf of the server
+ after a pre-request logging error for a set of request logging
+ profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_proxy_response">
+	<documentation>
+ Gets the response to send to the client on behalf of the server
+ after a pre-request logging error for a set of request logging
+ profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_proxy_response_state">
+	<documentation>
+ Sets the state to respond on behalf of the server if an error
+ occurs while logging a pre-request entry for a set of request
+ logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_proxy_response_state">
+	<documentation>
+ Gets the state to respond on behalf of the server if an error
+ occurs while logging a pre-request entry for a set of request
+ logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_request_pool">
+	<documentation>
+ Sets the pre-request pool for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_request_pool">
+	<documentation>
+ Gets the pre-request pool for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_request_protocol">
+	<documentation>
+ Sets the protocol for sending pre-request log entries to the
+ primary log servers for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_request_protocol">
+	<documentation>
+ Gets the protocol for sending pre-request log entries to the
+ primary log servers for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_request_secondary_pool">
+	<documentation>
+ Sets the pre-request secondary pool for a set of request logging
+ profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_request_secondary_pool">
+	<documentation>
+ Gets the pre-request secondary pool for a set of request logging
+ profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_request_secondary_protocol">
+	<documentation>
+ Sets the protocol for sending pre-request entries to the secondary
+ log servers for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_request_secondary_protocol">
+	<documentation>
+ Gets the protocol for sending pre-request entries to the secondary
+ log servers for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_request_secondary_state">
+	<documentation>
+ Sets the state to log pre-request logging errors to a secondary log
+ server pool for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_request_secondary_state">
+	<documentation>
+ Gets the state to log pre-request logging errors to a secondary log
+ server pool for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_request_secondary_template">
+	<documentation>
+ Sets the template used to format pre-request secondary log entries
+ for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_request_secondary_template">
+	<documentation>
+ Gets the template used to format pre-request secondary log entries
+ for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_request_state">
+	<documentation>
+ Sets the state to log an entry before each request is processed for
+ a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_request_state">
+	<documentation>
+ Gets the state to log an entry before each request is processed for
+ a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_request_template">
+	<documentation>
+ Sets the template used for format entries for pre-request log
+ entries for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_request_template">
+	<documentation>
+ Gets the template used for format entries for pre-request log
+ entries for a set of request logging profiles.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/ProfileRequestLogging"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/ProfileRequestLogging"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="LocalLB.ProfileRequestLogging">
+	<documentation>
+ The request logging profile configures the high-speed logging of L7
+ requests. The logging can be performed both before and after the
+ request is processed (or connection is made). The logging can also be
+ re-directed if an error has occurred when logging. Thus configuration
+ exists to control five independent different cases. request logs a
+ request before its processing to the primary log servers.
+ request_secondary logs error messages to secondary log servers if
+ pre-request logging fails. proxy sends an alternate response to the
+ client if pre-request logging fails. response logs the response after
+ its processing to the primary log servers. response_secondary logs
+ error messages to secondary log servers if response logging fails. Each
+ case can be configured separately.
+
+        	</documentation>
+	<port name="LocalLB.ProfileRequestLoggingPort" binding="tns:LocalLB.ProfileRequestLoggingBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

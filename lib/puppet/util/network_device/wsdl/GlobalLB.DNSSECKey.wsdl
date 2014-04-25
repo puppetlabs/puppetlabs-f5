@@ -1,0 +1,1413 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="GlobalLB.DNSSECKey"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.ULong64SequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.ULong64Sequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="GlobalLB.DNSSECKey.KeyTypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:GlobalLB.DNSSECKey.KeyType[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="GlobalLB.DNSSECKey.KeyType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="KEY_TYPE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>KEY_TYPE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="KEY_TYPE_ZONE_SIGNING">
+					<xsd:annotation>
+						<xsd:documentation>KEY_TYPE_ZONE_SIGNING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="KEY_TYPE_KEY_SIGNING">
+					<xsd:annotation>
+						<xsd:documentation>KEY_TYPE_KEY_SIGNING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.TimeStampSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.TimeStamp[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULong64">
+			<xsd:sequence>
+				<xsd:element name="high" type="xsd:long"/>
+				<xsd:element name="low" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.TimeStamp">
+			<xsd:sequence>
+				<xsd:element name="year" type="xsd:long"/>
+				<xsd:element name="month" type="xsd:long"/>
+				<xsd:element name="day" type="xsd:long"/>
+				<xsd:element name="hour" type="xsd:long"/>
+				<xsd:element name="minute" type="xsd:long"/>
+				<xsd:element name="second" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.TimeStampSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.TimeStampSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULong64Sequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.ULong64[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="GlobalLB.DNSSECKey.KeyAlgorithmSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:GlobalLB.DNSSECKey.KeyAlgorithm[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.UShortSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.UShortSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.UShortSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:int[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="GlobalLB.DNSSECKey.KeyAlgorithm">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="KEY_ALGORITHM_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>KEY_ALGORITHM_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="KEY_ALGORITHM_RSASHA1">
+					<xsd:annotation>
+						<xsd:documentation>KEY_ALGORITHM_RSASHA1</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="KEY_ALGORITHM_RSASHA256">
+					<xsd:annotation>
+						<xsd:documentation>KEY_ALGORITHM_RSASHA256</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="KEY_ALGORITHM_RSASHA512">
+					<xsd:annotation>
+						<xsd:documentation>KEY_ALGORITHM_RSASHA512</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="GlobalLB.DNSSECKey.get_listRequest">
+</message>
+<message name="GlobalLB.DNSSECKey.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECKey.createRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+	<part name="sizes" type="tns:Common.ULongSequence"/>
+	<part name="types" type="tns:GlobalLB.DNSSECKey.KeyTypeSequence"/>
+	<part name="algorithms" type="tns:GlobalLB.DNSSECKey.KeyAlgorithmSequence"/>
+	<part name="fips" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.createResponse">
+</message>
+
+<message name="GlobalLB.DNSSECKey.delete_keyRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.delete_keyResponse">
+</message>
+
+<message name="GlobalLB.DNSSECKey.delete_all_keysRequest">
+</message>
+<message name="GlobalLB.DNSSECKey.delete_all_keysResponse">
+</message>
+
+<message name="GlobalLB.DNSSECKey.get_sizeRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.get_sizeResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECKey.get_typeRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.get_typeResponse">
+	<part name="return" type="tns:GlobalLB.DNSSECKey.KeyTypeSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECKey.get_algorithmRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.get_algorithmResponse">
+	<part name="return" type="tns:GlobalLB.DNSSECKey.KeyAlgorithmSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECKey.get_fips_stateRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.get_fips_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECKey.set_enabled_stateRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.set_enabled_stateResponse">
+</message>
+
+<message name="GlobalLB.DNSSECKey.get_enabled_stateRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.get_enabled_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECKey.set_time_to_liveRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+	<part name="times" type="tns:Common.ULongSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.set_time_to_liveResponse">
+</message>
+
+<message name="GlobalLB.DNSSECKey.get_time_to_liveRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.get_time_to_liveResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECKey.set_rollover_periodRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+	<part name="times" type="tns:Common.ULongSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.set_rollover_periodResponse">
+</message>
+
+<message name="GlobalLB.DNSSECKey.get_rollover_periodRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.get_rollover_periodResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECKey.set_expiration_periodRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+	<part name="times" type="tns:Common.ULongSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.set_expiration_periodResponse">
+</message>
+
+<message name="GlobalLB.DNSSECKey.get_expiration_periodRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.get_expiration_periodResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECKey.set_signature_validity_periodRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+	<part name="times" type="tns:Common.ULongSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.set_signature_validity_periodResponse">
+</message>
+
+<message name="GlobalLB.DNSSECKey.get_signature_validity_periodRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.get_signature_validity_periodResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECKey.set_signature_publication_periodRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+	<part name="times" type="tns:Common.ULongSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.set_signature_publication_periodResponse">
+</message>
+
+<message name="GlobalLB.DNSSECKey.get_signature_publication_periodRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.get_signature_publication_periodResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECKey.set_descriptionRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.set_descriptionResponse">
+</message>
+
+<message name="GlobalLB.DNSSECKey.get_descriptionRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECKey.get_generationRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.get_generationResponse">
+	<part name="return" type="tns:Common.ULong64SequenceSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECKey.set_generation_rollover_timeRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+	<part name="generations" type="tns:Common.ULong64SequenceSequence"/>
+	<part name="times" type="tns:Common.TimeStampSequenceSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.set_generation_rollover_timeResponse">
+</message>
+
+<message name="GlobalLB.DNSSECKey.get_generation_rollover_timeRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+	<part name="generations" type="tns:Common.ULong64SequenceSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.get_generation_rollover_timeResponse">
+	<part name="return" type="tns:Common.TimeStampSequenceSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECKey.set_generation_expiration_timeRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+	<part name="generations" type="tns:Common.ULong64SequenceSequence"/>
+	<part name="times" type="tns:Common.TimeStampSequenceSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.set_generation_expiration_timeResponse">
+</message>
+
+<message name="GlobalLB.DNSSECKey.get_generation_expiration_timeRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+	<part name="generations" type="tns:Common.ULong64SequenceSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.get_generation_expiration_timeResponse">
+	<part name="return" type="tns:Common.TimeStampSequenceSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECKey.get_generation_public_textRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+	<part name="generations" type="tns:Common.ULong64SequenceSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.get_generation_public_textResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECKey.get_generation_creatorRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+	<part name="generations" type="tns:Common.ULong64SequenceSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.get_generation_creatorResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECKey.get_generation_key_tagRequest">
+	<part name="keys" type="tns:Common.StringSequence"/>
+	<part name="generations" type="tns:Common.ULong64SequenceSequence"/>
+</message>
+<message name="GlobalLB.DNSSECKey.get_generation_key_tagResponse">
+	<part name="return" type="tns:Common.UShortSequenceSequence"/>
+</message>
+
+<message name="GlobalLB.DNSSECKey.get_versionRequest">
+</message>
+<message name="GlobalLB.DNSSECKey.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="GlobalLB.DNSSECKeyPortType">
+	<operation name="get_list">
+      	<documentation>
+ Gets the names of all DNSSEC keys.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.get_listRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates a set of DNSSEC keys.
+
+ Note that the attributes specified in this method cannot be changed
+ afterwards.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.createRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.createResponse"/>
+	</operation>
+	<operation name="delete_key">
+	<documentation>
+ Deletes a set of DNSSEC keys.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.delete_keyRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.delete_keyResponse"/>
+	</operation>
+	<operation name="delete_all_keys">
+	<documentation>
+ Deletes all DNSSEC keys.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.delete_all_keysRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.delete_all_keysResponse"/>
+	</operation>
+	<operation name="get_size">
+	<documentation>
+ Gets the digital signature sizes for a set of DNSSEC keys.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.get_sizeRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.get_sizeResponse"/>
+	</operation>
+	<operation name="get_type">
+	<documentation>
+ Gets the types for a set of DNSSEC keys.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.get_typeRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.get_typeResponse"/>
+	</operation>
+	<operation name="get_algorithm">
+	<documentation>
+ Gets the algorithms used to digitally sign DNS record groups and
+ keys for a set of DNSSEC keys.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.get_algorithmRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.get_algorithmResponse"/>
+	</operation>
+	<operation name="get_fips_state">
+	<documentation>
+ Gets the enabled state for using the FIPS device to store and
+ retrieve keys for a set of DNSSEC keys.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.get_fips_stateRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.get_fips_stateResponse"/>
+	</operation>
+	<operation name="set_enabled_state">
+	<documentation>
+ Sets the enabled state for a set of DNSSEC keys.
+
+ If a DNSSEC key is disabled, the key is still published, but it is
+ not used to sign DNS record groups or keys.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.set_enabled_stateRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.set_enabled_stateResponse"/>
+	</operation>
+	<operation name="get_enabled_state">
+	<documentation>
+ Gets the enabled state for a set of DNSSEC keys.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.get_enabled_stateRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.get_enabled_stateResponse"/>
+	</operation>
+	<operation name="set_time_to_live">
+	<documentation>
+ Sets the Time To Live (TTL) for the DNSKEY record types.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.set_time_to_liveRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.set_time_to_liveResponse"/>
+	</operation>
+	<operation name="get_time_to_live">
+	<documentation>
+ Gets the Time To Live (TTL) for the DNSKEY record types.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.get_time_to_liveRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.get_time_to_liveResponse"/>
+	</operation>
+	<operation name="set_rollover_period">
+	<documentation>
+ Sets the rollover period for a set of DNSSEC keys.
+
+ The rollover period is the time between the activation of one
+ DNSSEC key generation and the activation of the next DNSSEC key
+ generation.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.set_rollover_periodRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.set_rollover_periodResponse"/>
+	</operation>
+	<operation name="get_rollover_period">
+	<documentation>
+ Gets the rollover period for a set of DNSSEC keys.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.get_rollover_periodRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.get_rollover_periodResponse"/>
+	</operation>
+	<operation name="set_expiration_period">
+	<documentation>
+ Sets the expiration period for a set of DNSSEC keys.
+
+ The expiration period is the time between the activation of a
+ DNSSEC key generation and its expiration.  It must be longer than
+ the rollover period.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.set_expiration_periodRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.set_expiration_periodResponse"/>
+	</operation>
+	<operation name="get_expiration_period">
+	<documentation>
+ Gets the expiration period for a set of DNSSEC keys.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.get_expiration_periodRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.get_expiration_periodResponse"/>
+	</operation>
+	<operation name="set_signature_validity_period">
+	<documentation>
+ Sets the RRSIG record signature validity period for a set of DNSSEC
+ keys.
+
+ This value is the period for which the digital signature is valid
+ and is stored in the RRSIG record and should be significantly
+ smaller than the Time To Live period.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.set_signature_validity_periodRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.set_signature_validity_periodResponse"/>
+	</operation>
+	<operation name="get_signature_validity_period">
+	<documentation>
+ Gets the RRSIG record signature validity period for a set of DNSSEC
+ keys.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.get_signature_validity_periodRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.get_signature_validity_periodResponse"/>
+	</operation>
+	<operation name="set_signature_publication_period">
+	<documentation>
+ Sets the RRSIG record signature publication period for a set of
+ DNSSEC keys.
+
+ The signature publication period is the period in which the digital
+ signature is published, is stored in the RRSIG record, and should
+ be significantly shorter than the Time To Live period and must be
+ shorter than the signature validity period.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.set_signature_publication_periodRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.set_signature_publication_periodResponse"/>
+	</operation>
+	<operation name="get_signature_publication_period">
+	<documentation>
+ Gets the RRSIG record signature publication period for a set of
+ DNSSEC keys.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.get_signature_publication_periodRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.get_signature_publication_periodResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of DNSSEC keys.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.set_descriptionRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of DNSSEC keys.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.get_descriptionRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_generation">
+	<documentation>
+ Gets the existing DNSSEC key generation identifiers for a set of
+ DNSSEC keys.
+
+ The key generation identifier is a simple generation count, unique
+ within a single DNSSEC key.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.get_generationRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.get_generationResponse"/>
+	</operation>
+	<operation name="set_generation_rollover_time">
+	<documentation>
+ Sets the rollover date and time for a set of DNSSEC key
+ generations.
+
+ This method can be used for any reason, but most likely used to
+ invalidate a possibly compromised key by forcing the creation of a
+ new key generation.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.set_generation_rollover_timeRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.set_generation_rollover_timeResponse"/>
+	</operation>
+	<operation name="get_generation_rollover_time">
+	<documentation>
+ Gets the rollover date and time for a set of DNSSEC key
+ generations.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.get_generation_rollover_timeRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.get_generation_rollover_timeResponse"/>
+	</operation>
+	<operation name="set_generation_expiration_time">
+	<documentation>
+ Sets the expiration date and time for a set of DNSSEC key
+ generations.
+
+ This method can be used for any reason, but most likely used to
+ invalidate a possibly compromised key.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.set_generation_expiration_timeRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.set_generation_expiration_timeResponse"/>
+	</operation>
+	<operation name="get_generation_expiration_time">
+	<documentation>
+ Gets the expiration date and time for a set of DNSSEC key
+ generations.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.get_generation_expiration_timeRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.get_generation_expiration_timeResponse"/>
+	</operation>
+	<operation name="get_generation_public_text">
+	<documentation>
+ Gets the public text for a set of DNSSEC key generations.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.get_generation_public_textRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.get_generation_public_textResponse"/>
+	</operation>
+	<operation name="get_generation_creator">
+	<documentation>
+ Gets the creator for a set of DNSSEC key generations, which
+ is the hostname of the BIG-IP that created the generation.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.get_generation_creatorRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.get_generation_creatorResponse"/>
+	</operation>
+	<operation name="get_generation_key_tag">
+	<documentation>
+ Gets the DNSSEC RR hash for a set of DNSSEC key generations.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.get_generation_key_tagRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.get_generation_key_tagResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Get the version information for this interface.
+
+        	</documentation>
+		<input message="tns:GlobalLB.DNSSECKey.get_versionRequest"/>
+		<output message="tns:GlobalLB.DNSSECKey.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="GlobalLB.DNSSECKeyBinding" type="tns:GlobalLB.DNSSECKeyPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets the names of all DNSSEC keys.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates a set of DNSSEC keys.
+
+ Note that the attributes specified in this method cannot be changed
+ afterwards.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_key">
+	<documentation>
+ Deletes a set of DNSSEC keys.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_keys">
+	<documentation>
+ Deletes all DNSSEC keys.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_size">
+	<documentation>
+ Gets the digital signature sizes for a set of DNSSEC keys.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_type">
+	<documentation>
+ Gets the types for a set of DNSSEC keys.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_algorithm">
+	<documentation>
+ Gets the algorithms used to digitally sign DNS record groups and
+ keys for a set of DNSSEC keys.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_fips_state">
+	<documentation>
+ Gets the enabled state for using the FIPS device to store and
+ retrieve keys for a set of DNSSEC keys.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_enabled_state">
+	<documentation>
+ Sets the enabled state for a set of DNSSEC keys.
+
+ If a DNSSEC key is disabled, the key is still published, but it is
+ not used to sign DNS record groups or keys.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_enabled_state">
+	<documentation>
+ Gets the enabled state for a set of DNSSEC keys.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_time_to_live">
+	<documentation>
+ Sets the Time To Live (TTL) for the DNSKEY record types.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_time_to_live">
+	<documentation>
+ Gets the Time To Live (TTL) for the DNSKEY record types.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_rollover_period">
+	<documentation>
+ Sets the rollover period for a set of DNSSEC keys.
+
+ The rollover period is the time between the activation of one
+ DNSSEC key generation and the activation of the next DNSSEC key
+ generation.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_rollover_period">
+	<documentation>
+ Gets the rollover period for a set of DNSSEC keys.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_expiration_period">
+	<documentation>
+ Sets the expiration period for a set of DNSSEC keys.
+
+ The expiration period is the time between the activation of a
+ DNSSEC key generation and its expiration.  It must be longer than
+ the rollover period.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_expiration_period">
+	<documentation>
+ Gets the expiration period for a set of DNSSEC keys.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_signature_validity_period">
+	<documentation>
+ Sets the RRSIG record signature validity period for a set of DNSSEC
+ keys.
+
+ This value is the period for which the digital signature is valid
+ and is stored in the RRSIG record and should be significantly
+ smaller than the Time To Live period.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_signature_validity_period">
+	<documentation>
+ Gets the RRSIG record signature validity period for a set of DNSSEC
+ keys.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_signature_publication_period">
+	<documentation>
+ Sets the RRSIG record signature publication period for a set of
+ DNSSEC keys.
+
+ The signature publication period is the period in which the digital
+ signature is published, is stored in the RRSIG record, and should
+ be significantly shorter than the Time To Live period and must be
+ shorter than the signature validity period.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_signature_publication_period">
+	<documentation>
+ Gets the RRSIG record signature publication period for a set of
+ DNSSEC keys.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of DNSSEC keys.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of DNSSEC keys.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_generation">
+	<documentation>
+ Gets the existing DNSSEC key generation identifiers for a set of
+ DNSSEC keys.
+
+ The key generation identifier is a simple generation count, unique
+ within a single DNSSEC key.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_generation_rollover_time">
+	<documentation>
+ Sets the rollover date and time for a set of DNSSEC key
+ generations.
+
+ This method can be used for any reason, but most likely used to
+ invalidate a possibly compromised key by forcing the creation of a
+ new key generation.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_generation_rollover_time">
+	<documentation>
+ Gets the rollover date and time for a set of DNSSEC key
+ generations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_generation_expiration_time">
+	<documentation>
+ Sets the expiration date and time for a set of DNSSEC key
+ generations.
+
+ This method can be used for any reason, but most likely used to
+ invalidate a possibly compromised key.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_generation_expiration_time">
+	<documentation>
+ Gets the expiration date and time for a set of DNSSEC key
+ generations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_generation_public_text">
+	<documentation>
+ Gets the public text for a set of DNSSEC key generations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_generation_creator">
+	<documentation>
+ Gets the creator for a set of DNSSEC key generations, which
+ is the hostname of the BIG-IP that created the generation.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_generation_key_tag">
+	<documentation>
+ Gets the DNSSEC RR hash for a set of DNSSEC key generations.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Get the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:GlobalLB/DNSSECKey"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:GlobalLB/DNSSECKey"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="GlobalLB.DNSSECKey">
+	<documentation>
+ The DNSSECKey interface manages the cryptographic keys used for
+ securing DNS information, i.e., DNSSEC.  The keys managed by this
+ interface can be used to sign DNS record groups and the keys
+ themselves.
+
+ Technically, there is not a single key for each key object.  This key
+ is re-created on a regular schedule, which can be controlled via this
+ interface.  Each re-generated key is considered a new "generation" - a
+ term used more in its genealogical sense than a creation sense.  A
+ single key generation can have its lifetime changed.  Thus when using
+ this interface, be careful to distinguish the attributes which apply
+ to this whole process vs those that apply to a single key generation.
+
+ Once a key generation is created, it is fully active for the "rollover
+ period".  At the end of that period, the next generation's key is
+ created and both keys are in use.  Once the first key reaches the end
+ of its "expiration period", it is no longer handed out, the generation
+ is deleted, and only the second key is in use.  This process continues
+ ad infinitum.
+
+ It is important to note that these keys do not affect the processing by
+ their mere existence.  To take effect, they must be assigned to a
+ DNSSEC zone (See the DNSSECZone interface).
+
+        	</documentation>
+	<port name="GlobalLB.DNSSECKeyPort" binding="tns:GlobalLB.DNSSECKeyBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

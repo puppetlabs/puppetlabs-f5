@@ -1,0 +1,1520 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="LocalLB.LSNPool"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:simpleType name="LocalLB.LSNPool.PersistMode">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LSN_PERSIST_MODE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>LSN_PERSIST_MODE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LSN_PERSIST_MODE_NONE">
+					<xsd:annotation>
+						<xsd:documentation>LSN_PERSIST_MODE_NONE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LSN_PERSIST_MODE_ADDRESS">
+					<xsd:annotation>
+						<xsd:documentation>LSN_PERSIST_MODE_ADDRESS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LSN_PERSIST_MODE_ADDRESS_PORT">
+					<xsd:annotation>
+						<xsd:documentation>LSN_PERSIST_MODE_ADDRESS_PORT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Common.EnabledState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STATE_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STATE_ENABLED">
+					<xsd:annotation>
+						<xsd:documentation>STATE_ENABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.VLANFilterList">
+			<xsd:sequence>
+				<xsd:element name="state" type="tns:Common.EnabledState"/>
+				<xsd:element name="vlans" type="tns:Common.StringSequence"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.PortRangeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.PortRange[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.LSNPool.PersistModeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.LSNPool.PersistMode[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.PortRange">
+			<xsd:sequence>
+				<xsd:element name="begin" type="xsd:long"/>
+				<xsd:element name="end" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="LocalLB.LSNPool.NATMode">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LSN_MODE_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>LSN_MODE_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LSN_MODE_NAPT">
+					<xsd:annotation>
+						<xsd:documentation>LSN_MODE_NAPT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="LSN_MODE_DETERMINISTIC">
+					<xsd:annotation>
+						<xsd:documentation>LSN_MODE_DETERMINISTIC</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.VLANFilterListSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.VLANFilterList[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="LocalLB.LSNPool.NATModeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:LocalLB.LSNPool.NATMode[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.EnabledStateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.EnabledState[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="LocalLB.LSNPool.get_listRequest">
+</message>
+<message name="LocalLB.LSNPool.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.LSNPool.createRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+	<part name="members" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="LocalLB.LSNPool.createResponse">
+</message>
+
+<message name="LocalLB.LSNPool.delete_lsn_poolRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.LSNPool.delete_lsn_poolResponse">
+</message>
+
+<message name="LocalLB.LSNPool.delete_all_lsn_poolsRequest">
+</message>
+<message name="LocalLB.LSNPool.delete_all_lsn_poolsResponse">
+</message>
+
+<message name="LocalLB.LSNPool.set_descriptionRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.LSNPool.set_descriptionResponse">
+</message>
+
+<message name="LocalLB.LSNPool.get_descriptionRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.LSNPool.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.LSNPool.get_memberRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.LSNPool.get_memberResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="LocalLB.LSNPool.add_memberRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+	<part name="members" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="LocalLB.LSNPool.add_memberResponse">
+</message>
+
+<message name="LocalLB.LSNPool.remove_memberRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+	<part name="members" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="LocalLB.LSNPool.remove_memberResponse">
+</message>
+
+<message name="LocalLB.LSNPool.remove_all_membersRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.LSNPool.remove_all_membersResponse">
+</message>
+
+<message name="LocalLB.LSNPool.get_backup_memberRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.LSNPool.get_backup_memberResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="LocalLB.LSNPool.add_backup_memberRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+	<part name="members" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="LocalLB.LSNPool.add_backup_memberResponse">
+</message>
+
+<message name="LocalLB.LSNPool.remove_backup_memberRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+	<part name="members" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="LocalLB.LSNPool.remove_backup_memberResponse">
+</message>
+
+<message name="LocalLB.LSNPool.remove_all_backup_membersRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.LSNPool.remove_all_backup_membersResponse">
+</message>
+
+<message name="LocalLB.LSNPool.set_nat_modeRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+	<part name="modes" type="tns:LocalLB.LSNPool.NATModeSequence"/>
+</message>
+<message name="LocalLB.LSNPool.set_nat_modeResponse">
+</message>
+
+<message name="LocalLB.LSNPool.get_nat_modeRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.LSNPool.get_nat_modeResponse">
+	<part name="return" type="tns:LocalLB.LSNPool.NATModeSequence"/>
+</message>
+
+<message name="LocalLB.LSNPool.set_persistence_modeRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+	<part name="modes" type="tns:LocalLB.LSNPool.PersistModeSequence"/>
+</message>
+<message name="LocalLB.LSNPool.set_persistence_modeResponse">
+</message>
+
+<message name="LocalLB.LSNPool.get_persistence_modeRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.LSNPool.get_persistence_modeResponse">
+	<part name="return" type="tns:LocalLB.LSNPool.PersistModeSequence"/>
+</message>
+
+<message name="LocalLB.LSNPool.set_route_advertisement_stateRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="LocalLB.LSNPool.set_route_advertisement_stateResponse">
+</message>
+
+<message name="LocalLB.LSNPool.get_route_advertisement_stateRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.LSNPool.get_route_advertisement_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.LSNPool.set_inbound_connection_stateRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="LocalLB.LSNPool.set_inbound_connection_stateResponse">
+</message>
+
+<message name="LocalLB.LSNPool.get_inbound_connection_stateRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.LSNPool.get_inbound_connection_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.LSNPool.set_icmp_echo_stateRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="LocalLB.LSNPool.set_icmp_echo_stateResponse">
+</message>
+
+<message name="LocalLB.LSNPool.get_icmp_echo_stateRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.LSNPool.get_icmp_echo_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.LSNPool.set_egress_interface_stateRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+	<part name="states" type="tns:Common.EnabledStateSequence"/>
+</message>
+<message name="LocalLB.LSNPool.set_egress_interface_stateResponse">
+</message>
+
+<message name="LocalLB.LSNPool.get_egress_interface_stateRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.LSNPool.get_egress_interface_stateResponse">
+	<part name="return" type="tns:Common.EnabledStateSequence"/>
+</message>
+
+<message name="LocalLB.LSNPool.set_connection_limitRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+	<part name="limits" type="tns:Common.ULongSequence"/>
+</message>
+<message name="LocalLB.LSNPool.set_connection_limitResponse">
+</message>
+
+<message name="LocalLB.LSNPool.get_connection_limitRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.LSNPool.get_connection_limitResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="LocalLB.LSNPool.set_translation_port_rangeRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+	<part name="ranges" type="tns:Common.PortRangeSequence"/>
+</message>
+<message name="LocalLB.LSNPool.set_translation_port_rangeResponse">
+</message>
+
+<message name="LocalLB.LSNPool.get_translation_port_rangeRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.LSNPool.get_translation_port_rangeResponse">
+	<part name="return" type="tns:Common.PortRangeSequence"/>
+</message>
+
+<message name="LocalLB.LSNPool.set_persistence_timeoutRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+	<part name="timeouts" type="tns:Common.ULongSequence"/>
+</message>
+<message name="LocalLB.LSNPool.set_persistence_timeoutResponse">
+</message>
+
+<message name="LocalLB.LSNPool.get_persistence_timeoutRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.LSNPool.get_persistence_timeoutResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="LocalLB.LSNPool.set_egress_interfaceRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+	<part name="interfaces" type="tns:Common.VLANFilterListSequence"/>
+</message>
+<message name="LocalLB.LSNPool.set_egress_interfaceResponse">
+</message>
+
+<message name="LocalLB.LSNPool.get_egress_interfaceRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.LSNPool.get_egress_interfaceResponse">
+	<part name="return" type="tns:Common.VLANFilterListSequence"/>
+</message>
+
+<message name="LocalLB.LSNPool.set_log_publisherRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+	<part name="publishers" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.LSNPool.set_log_publisherResponse">
+</message>
+
+<message name="LocalLB.LSNPool.get_log_publisherRequest">
+	<part name="pools" type="tns:Common.StringSequence"/>
+</message>
+<message name="LocalLB.LSNPool.get_log_publisherResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="LocalLB.LSNPool.get_versionRequest">
+</message>
+<message name="LocalLB.LSNPool.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="LocalLB.LSNPoolPortType">
+	<operation name="get_list">
+ 	<documentation>
+ Gets a list of all LSN pools. 
+ 
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.get_listRequest"/>
+		<output message="tns:LocalLB.LSNPool.get_listResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Creates the specified LSN pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.createRequest"/>
+		<output message="tns:LocalLB.LSNPool.createResponse"/>
+	</operation>
+	<operation name="delete_lsn_pool">
+	<documentation>
+ Deletes a specified list of LSN pools.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.delete_lsn_poolRequest"/>
+		<output message="tns:LocalLB.LSNPool.delete_lsn_poolResponse"/>
+	</operation>
+	<operation name="delete_all_lsn_pools">
+	<documentation>
+ Deletes all LSN pools.
+ 
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.delete_all_lsn_poolsRequest"/>
+		<output message="tns:LocalLB.LSNPool.delete_all_lsn_poolsResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of LSN pools.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.set_descriptionRequest"/>
+		<output message="tns:LocalLB.LSNPool.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of LSN pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.get_descriptionRequest"/>
+		<output message="tns:LocalLB.LSNPool.get_descriptionResponse"/>
+	</operation>
+	<operation name="get_member">
+	<documentation>
+ Gets the list of members belonging to the specified LSN pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.get_memberRequest"/>
+		<output message="tns:LocalLB.LSNPool.get_memberResponse"/>
+	</operation>
+	<operation name="add_member">
+	<documentation>
+ Adds members to the specified LSN pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.add_memberRequest"/>
+		<output message="tns:LocalLB.LSNPool.add_memberResponse"/>
+	</operation>
+	<operation name="remove_member">
+	<documentation>
+ Removes members from the specified LSN pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.remove_memberRequest"/>
+		<output message="tns:LocalLB.LSNPool.remove_memberResponse"/>
+	</operation>
+	<operation name="remove_all_members">
+	<documentation>
+ Removes all members from the specified LSN pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.remove_all_membersRequest"/>
+		<output message="tns:LocalLB.LSNPool.remove_all_membersResponse"/>
+	</operation>
+	<operation name="get_backup_member">
+	<documentation>
+ Gets the list of backup members belonging to the specified LSN pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.get_backup_memberRequest"/>
+		<output message="tns:LocalLB.LSNPool.get_backup_memberResponse"/>
+	</operation>
+	<operation name="add_backup_member">
+	<documentation>
+ Adds backup members to the specified LSN pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.add_backup_memberRequest"/>
+		<output message="tns:LocalLB.LSNPool.add_backup_memberResponse"/>
+	</operation>
+	<operation name="remove_backup_member">
+	<documentation>
+ Removes backup members from the specified LSN pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.remove_backup_memberRequest"/>
+		<output message="tns:LocalLB.LSNPool.remove_backup_memberResponse"/>
+	</operation>
+	<operation name="remove_all_backup_members">
+	<documentation>
+ Removes all backup members from the specified LSN pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.remove_all_backup_membersRequest"/>
+		<output message="tns:LocalLB.LSNPool.remove_all_backup_membersResponse"/>
+	</operation>
+	<operation name="set_nat_mode">
+	<documentation>
+ Sets the NAT mode for the specified LSN pools. This determines how translation 
+ address mapping is performed and can be configured in either 
+ in Deterministic mode (Deterministic Network Address Translation or DNAT) or 
+ in Network Address Port Translation mode (or NAPT mode).
+ 
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.set_nat_modeRequest"/>
+		<output message="tns:LocalLB.LSNPool.set_nat_modeResponse"/>
+	</operation>
+	<operation name="get_nat_mode">
+	<documentation>
+ Gets the NAT modes for the specified LSN pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.get_nat_modeRequest"/>
+		<output message="tns:LocalLB.LSNPool.get_nat_modeResponse"/>
+	</operation>
+	<operation name="set_persistence_mode">
+	<documentation>
+ Sets the persistence mode for the specified LSN pools. This configures 
+ whether or not previously translated addresses are persisted upon and if so, 
+ which of two modes the persistence is based on: address or address-port 
+ 
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.set_persistence_modeRequest"/>
+		<output message="tns:LocalLB.LSNPool.set_persistence_modeResponse"/>
+	</operation>
+	<operation name="get_persistence_mode">
+	<documentation>
+ Gets the persistence modes for the specified LSN pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.get_persistence_modeRequest"/>
+		<output message="tns:LocalLB.LSNPool.get_persistence_modeResponse"/>
+	</operation>
+	<operation name="set_route_advertisement_state">
+	<documentation>
+ Sets the route advertisement states for the specified LSN pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.set_route_advertisement_stateRequest"/>
+		<output message="tns:LocalLB.LSNPool.set_route_advertisement_stateResponse"/>
+	</operation>
+	<operation name="get_route_advertisement_state">
+	<documentation>
+ Gets the route advertisement states for the specified LSN pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.get_route_advertisement_stateRequest"/>
+		<output message="tns:LocalLB.LSNPool.get_route_advertisement_stateResponse"/>
+	</operation>
+	<operation name="set_inbound_connection_state">
+	<documentation>
+ Sets the inbound connection states for a list of LSN pools. This state 
+ specifies whether incoming connections are allowed or disallowed on LSN 
+ translated IP addresses.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.set_inbound_connection_stateRequest"/>
+		<output message="tns:LocalLB.LSNPool.set_inbound_connection_stateResponse"/>
+	</operation>
+	<operation name="get_inbound_connection_state">
+	<documentation>
+ Gets the inbound connection states of the specified LSN pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.get_inbound_connection_stateRequest"/>
+		<output message="tns:LocalLB.LSNPool.get_inbound_connection_stateResponse"/>
+	</operation>
+	<operation name="set_icmp_echo_state">
+	<documentation>
+ Sets the icmp echo state for a list of LSN pools. This state specifies whether 
+ ICMP echo is enabled or disabled on LSN translated IP addresses.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.set_icmp_echo_stateRequest"/>
+		<output message="tns:LocalLB.LSNPool.set_icmp_echo_stateResponse"/>
+	</operation>
+	<operation name="get_icmp_echo_state">
+	<documentation>
+ Gets the icmp echo states of the specified LSN pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.get_icmp_echo_stateRequest"/>
+		<output message="tns:LocalLB.LSNPool.get_icmp_echo_stateResponse"/>
+	</operation>
+	<operation name="set_egress_interface_state">
+	<documentation>
+ Sets the egress interface state for a list of LSN pools. This state specifies 
+ whether or not LSN translated traffic may exit on the interfaces specified in 
+ egress-interfaces list.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.set_egress_interface_stateRequest"/>
+		<output message="tns:LocalLB.LSNPool.set_egress_interface_stateResponse"/>
+	</operation>
+	<operation name="get_egress_interface_state">
+	<documentation>
+ Gets the egress interface states of the specified LSN pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.get_egress_interface_stateRequest"/>
+		<output message="tns:LocalLB.LSNPool.get_egress_interface_stateResponse"/>
+	</operation>
+	<operation name="set_connection_limit">
+	<documentation>
+ Sets the connection limits of the specified LSN pools. This configures the 
+ number of connections allowed per client. A default value of 0 disables this 
+ option.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.set_connection_limitRequest"/>
+		<output message="tns:LocalLB.LSNPool.set_connection_limitResponse"/>
+	</operation>
+	<operation name="get_connection_limit">
+	<documentation>
+ Gets the connection limits of the specified LSN pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.get_connection_limitRequest"/>
+		<output message="tns:LocalLB.LSNPool.get_connection_limitResponse"/>
+	</operation>
+	<operation name="set_translation_port_range">
+	<documentation>
+ Sets the translation port ranges of the specified LSN pools (the port range 
+ used for translated addresses).
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.set_translation_port_rangeRequest"/>
+		<output message="tns:LocalLB.LSNPool.set_translation_port_rangeResponse"/>
+	</operation>
+	<operation name="get_translation_port_range">
+	<documentation>
+ Gets the translation port ranges of the specified LSN pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.get_translation_port_rangeRequest"/>
+		<output message="tns:LocalLB.LSNPool.get_translation_port_rangeResponse"/>
+	</operation>
+	<operation name="set_persistence_timeout">
+	<documentation>
+ Sets the persistence timeouts of the specified LSN pools. This configures 
+ the duration in seconds for which successfully transmitted LSN addresses 
+ are persisted.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.set_persistence_timeoutRequest"/>
+		<output message="tns:LocalLB.LSNPool.set_persistence_timeoutResponse"/>
+	</operation>
+	<operation name="get_persistence_timeout">
+	<documentation>
+ Gets the persistence timeouts of the specified LSN pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.get_persistence_timeoutRequest"/>
+		<output message="tns:LocalLB.LSNPool.get_persistence_timeoutResponse"/>
+	</operation>
+	<operation name="set_egress_interface">
+	<documentation>
+ Sets the list of egress interfaces on which LSN is disabled/enabled. This 
+ specifies a list of VLANS and for each one, whether or not LSN translated 
+ traffic may egress on them.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.set_egress_interfaceRequest"/>
+		<output message="tns:LocalLB.LSNPool.set_egress_interfaceResponse"/>
+	</operation>
+	<operation name="get_egress_interface">
+	<documentation>
+ Gets the list of egress interfaces on which LSN is disabled/enabled.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.get_egress_interfaceRequest"/>
+		<output message="tns:LocalLB.LSNPool.get_egress_interfaceResponse"/>
+	</operation>
+	<operation name="set_log_publisher">
+	<documentation>
+ Sets the log publishers for a set of LSN pools. 
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.set_log_publisherRequest"/>
+		<output message="tns:LocalLB.LSNPool.set_log_publisherResponse"/>
+	</operation>
+	<operation name="get_log_publisher">
+	<documentation>
+ Gets the log publishers for a set of LSN pools.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.get_log_publisherRequest"/>
+		<output message="tns:LocalLB.LSNPool.get_log_publisherResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Get the version information for this interface.
+
+        	</documentation>
+		<input message="tns:LocalLB.LSNPool.get_versionRequest"/>
+		<output message="tns:LocalLB.LSNPool.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="LocalLB.LSNPoolBinding" type="tns:LocalLB.LSNPoolPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Gets a list of all LSN pools. 
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Creates the specified LSN pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_lsn_pool">
+	<documentation>
+ Deletes a specified list of LSN pools.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_all_lsn_pools">
+	<documentation>
+ Deletes all LSN pools.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Sets the description for a set of LSN pools.
+
+ This is an arbitrary field which can be used for any purpose.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Gets the descriptions for a set of LSN pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_member">
+	<documentation>
+ Gets the list of members belonging to the specified LSN pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_member">
+	<documentation>
+ Adds members to the specified LSN pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_member">
+	<documentation>
+ Removes members from the specified LSN pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_members">
+	<documentation>
+ Removes all members from the specified LSN pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_backup_member">
+	<documentation>
+ Gets the list of backup members belonging to the specified LSN pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_backup_member">
+	<documentation>
+ Adds backup members to the specified LSN pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_backup_member">
+	<documentation>
+ Removes backup members from the specified LSN pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_all_backup_members">
+	<documentation>
+ Removes all backup members from the specified LSN pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_nat_mode">
+	<documentation>
+ Sets the NAT mode for the specified LSN pools. This determines how translation 
+ address mapping is performed and can be configured in either 
+ in Deterministic mode (Deterministic Network Address Translation or DNAT) or 
+ in Network Address Port Translation mode (or NAPT mode).
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_nat_mode">
+	<documentation>
+ Gets the NAT modes for the specified LSN pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_persistence_mode">
+	<documentation>
+ Sets the persistence mode for the specified LSN pools. This configures 
+ whether or not previously translated addresses are persisted upon and if so, 
+ which of two modes the persistence is based on: address or address-port 
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_persistence_mode">
+	<documentation>
+ Gets the persistence modes for the specified LSN pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_route_advertisement_state">
+	<documentation>
+ Sets the route advertisement states for the specified LSN pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_route_advertisement_state">
+	<documentation>
+ Gets the route advertisement states for the specified LSN pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_inbound_connection_state">
+	<documentation>
+ Sets the inbound connection states for a list of LSN pools. This state 
+ specifies whether incoming connections are allowed or disallowed on LSN 
+ translated IP addresses.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_inbound_connection_state">
+	<documentation>
+ Gets the inbound connection states of the specified LSN pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_icmp_echo_state">
+	<documentation>
+ Sets the icmp echo state for a list of LSN pools. This state specifies whether 
+ ICMP echo is enabled or disabled on LSN translated IP addresses.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_icmp_echo_state">
+	<documentation>
+ Gets the icmp echo states of the specified LSN pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_egress_interface_state">
+	<documentation>
+ Sets the egress interface state for a list of LSN pools. This state specifies 
+ whether or not LSN translated traffic may exit on the interfaces specified in 
+ egress-interfaces list.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_egress_interface_state">
+	<documentation>
+ Gets the egress interface states of the specified LSN pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_connection_limit">
+	<documentation>
+ Sets the connection limits of the specified LSN pools. This configures the 
+ number of connections allowed per client. A default value of 0 disables this 
+ option.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_connection_limit">
+	<documentation>
+ Gets the connection limits of the specified LSN pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_translation_port_range">
+	<documentation>
+ Sets the translation port ranges of the specified LSN pools (the port range 
+ used for translated addresses).
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_translation_port_range">
+	<documentation>
+ Gets the translation port ranges of the specified LSN pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_persistence_timeout">
+	<documentation>
+ Sets the persistence timeouts of the specified LSN pools. This configures 
+ the duration in seconds for which successfully transmitted LSN addresses 
+ are persisted.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_persistence_timeout">
+	<documentation>
+ Gets the persistence timeouts of the specified LSN pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_egress_interface">
+	<documentation>
+ Sets the list of egress interfaces on which LSN is disabled/enabled. This 
+ specifies a list of VLANS and for each one, whether or not LSN translated 
+ traffic may egress on them.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_egress_interface">
+	<documentation>
+ Gets the list of egress interfaces on which LSN is disabled/enabled.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_log_publisher">
+	<documentation>
+ Sets the log publishers for a set of LSN pools. 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_log_publisher">
+	<documentation>
+ Gets the log publishers for a set of LSN pools.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Get the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:LocalLB/LSNPool"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:LocalLB/LSNPool"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="LocalLB.LSNPool">
+	<documentation>
+
+ The LSN pool interface enables you to work with the definitions contained 
+ in a local load balancer's LSN pool.  
+
+ LSN stands for Large Scale Network Address Translation (and is also known
+ as Carrier Grade Network Address Translation, CGNAT).
+
+ An LSN pool is a set of networks and port numbers that can be translated 
+ to one or more subscriber or client IP addresses. NOTE: Translation 
+ addresses in an LSN pool are not self-IP addresses.  
+
+ When a subscriber or client device seeks to connect to a server via the 
+ service provider, the client's IP address is translated based on the 
+ specifications of the LSN pool that the client classifies into. 
+
+ Translation can be performed in: 
+   - Deterministic mode (Deterministic Network Address Translation or DNAT)
+   - Network Address Port Translation mode (or NAPT mode).
+
+ Either a virtual server or an iRule can reference an LSN pool. 
+
+        	</documentation>
+	<port name="LocalLB.LSNPoolPort" binding="tns:LocalLB.LSNPoolBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

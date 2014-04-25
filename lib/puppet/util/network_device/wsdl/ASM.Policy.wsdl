@@ -1,0 +1,3165 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="ASM.Policy"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Common.BooleanSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.BooleanSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.PolicyTemplateSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.PolicyTemplateSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.DynamicSessionsInUrlSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.DynamicSessionsInUrl[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.FileTransferContext">
+			<xsd:sequence>
+				<xsd:element name="file_data" type="tns:Common.OctetSequence"/>
+				<xsd:element name="chain_type" type="tns:Common.FileChainType"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.OctetSequence">
+			<xsd:restriction base="xsd:base64Binary"/>
+		</xsd:simpleType>
+		<xsd:complexType name="ASM.WebApplicationLanguageSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.WebApplicationLanguage[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.IPNetmask">
+			<xsd:sequence>
+				<xsd:element name="address" type="xsd:string"/>
+				<xsd:element name="netmask" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="ASM.FlagState">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="FLAG_ON">
+					<xsd:annotation>
+						<xsd:documentation>FLAG_ON</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FLAG_OFF">
+					<xsd:annotation>
+						<xsd:documentation>FLAG_OFF</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FLAG_UNCHANGED">
+					<xsd:annotation>
+						<xsd:documentation>FLAG_UNCHANGED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="ASM.DosSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.Dos[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.ViolationSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.ViolationSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.DynamicSessionsInUrl">
+			<xsd:sequence>
+				<xsd:element name="type" type="tns:ASM.DynamicSessionsInUrlType"/>
+				<xsd:element name="value" type="xsd:string"/>
+				<xsd:element name="description" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.PolicyTemplateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.PolicyTemplate[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="ASM.ViolationName">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="VIOLATION_EVASION_DETECTED">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_EVASION_DETECTED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_VIRUS_DETECTED">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_VIRUS_DETECTED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_REQUEST_TOO_LONG">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_REQUEST_TOO_LONG</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_ILLEGAL_INGRESS_OBJECT">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_ILLEGAL_INGRESS_OBJECT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_PARSER_EXPIRED_INGRESS_OBJECT">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_PARSER_EXPIRED_INGRESS_OBJECT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_RESPONSE_SCRUBBING">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_RESPONSE_SCRUBBING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_ILLEGAL_SOAP_ATTACHMENT">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_ILLEGAL_SOAP_ATTACHMENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_MISSING_MANDATORY_HEADER">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_MISSING_MANDATORY_HEADER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_ILLEGAL_GEOLOCATION">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_ILLEGAL_GEOLOCATION</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_HTTP_SANITY_CHECK_FAILED">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_HTTP_SANITY_CHECK_FAILED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_CHAR_CONV">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_CHAR_CONV</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_CSRF">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_CSRF</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_MALFORMED_XML">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_MALFORMED_XML</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_XML_WSDL">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_XML_WSDL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_XML_FORMAT_SETTING">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_XML_FORMAT_SETTING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_PARSER_FAILED_SOAP_SECURITY">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_PARSER_FAILED_SOAP_SECURITY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_SOAP_METHOD_NOT_ALLOWED">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_SOAP_METHOD_NOT_ALLOWED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_BRUTE_FORCE_ATTACK_DETECTED">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_BRUTE_FORCE_ATTACK_DETECTED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_WEB_SCRAPING_DETECTED">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_WEB_SCRAPING_DETECTED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_CSRF_EXPIRED">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_CSRF_EXPIRED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_OBJ_LEN">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_OBJ_LEN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_COOKIE_LEN">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_COOKIE_LEN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_REQ_LEN">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_REQ_LEN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_QS_LEN">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_QS_LEN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_POST_DATA_LEN">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_POST_DATA_LEN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_MULTI_PART_PARAM_VAL">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_MULTI_PART_PARAM_VAL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_HEADER_LEN">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_HEADER_LEN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_JSON_FORMAT_SETTING">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_JSON_FORMAT_SETTING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_REPEATED_PARAMETER_NAME">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_REPEATED_PARAMETER_NAME</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_METACHAR_IN_OBJ">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_METACHAR_IN_OBJ</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_METACHAR_IN_PARAM_NAME">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_METACHAR_IN_PARAM_NAME</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_METACHAR_IN_DEF_PARAM">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_METACHAR_IN_DEF_PARAM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_OBJ_TYPE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_OBJ_TYPE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_OBJ_DOESNT_EXIST">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_OBJ_DOESNT_EXIST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_FLOW_TO_OBJ">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_FLOW_TO_OBJ</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_ILLEGAL_METHOD">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_ILLEGAL_METHOD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_SESSSION_ID_IN_URL">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_SESSSION_ID_IN_URL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_QS_OR_POST_DATA">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_QS_OR_POST_DATA</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_PARAM">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_PARAM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_EMPTY_PARAM_VALUE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_EMPTY_PARAM_VALUE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_STATIC_PARAM_VALUE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_STATIC_PARAM_VALUE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_DYN_PARAM_VALUE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_DYN_PARAM_VALUE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_PARAM_VALUE_LEN">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_PARAM_VALUE_LEN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_PARAM_DATA_TYPE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_PARAM_DATA_TYPE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_PARAM_NUMERIC_VALUE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_PARAM_NUMERIC_VALUE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_NUM_OF_MANDATORY_PARAMS">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_NUM_OF_MANDATORY_PARAMS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_PARAM_VALUE_NOT_MATCHING_REGEX">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_PARAM_VALUE_NOT_MATCHING_REGEX</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_MOD_ASM_COOKIE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_MOD_ASM_COOKIE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_MOD_DOMAIN_COOKIE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_MOD_DOMAIN_COOKIE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_NOT_RFC_COOKIE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_NOT_RFC_COOKIE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_MALFORMED_JSON">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_MALFORMED_JSON</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_ENTRY_POINT">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_ENTRY_POINT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_SESSION_AWARENESS">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_SESSION_AWARENESS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_MSG_KEY">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_MSG_KEY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_EXPIRED_TIMESTAMP">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_EXPIRED_TIMESTAMP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_DISALLOWED_FILE_UPLOAD_CONTENT">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_DISALLOWED_FILE_UPLOAD_CONTENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_METACHAR_IN_HEADER">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_METACHAR_IN_HEADER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_ILLEGAL_REQUEST_CONTENT_TYPE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_ILLEGAL_REQUEST_CONTENT_TYPE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_HTTP_STATUS_IN_RESPONSE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_HTTP_STATUS_IN_RESPONSE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_PARSER_ACCESS_FROM_MALICIOUS_IP_ADDRESS">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_PARSER_ACCESS_FROM_MALICIOUS_IP_ADDRESS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_GWT_FORMAT_SETTING">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_GWT_FORMAT_SETTING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_MALFORMED_GWT">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_MALFORMED_GWT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VIOLATION_BASE64_PARAM_VALUE">
+					<xsd:annotation>
+						<xsd:documentation>VIOLATION_BASE64_PARAM_VALUE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.BooleanSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:boolean[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="ASM.DosOperationMode">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="DOS_OPERATION_OFF">
+					<xsd:annotation>
+						<xsd:documentation>DOS_OPERATION_OFF</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DOS_OPERATION_TRANSPARENT">
+					<xsd:annotation>
+						<xsd:documentation>DOS_OPERATION_TRANSPARENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DOS_OPERATION_BLOCKING">
+					<xsd:annotation>
+						<xsd:documentation>DOS_OPERATION_BLOCKING</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="ASM.DosDetectionMode">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="DOS_DETECTION_TPS_BASED">
+					<xsd:annotation>
+						<xsd:documentation>DOS_DETECTION_TPS_BASED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DOS_DETECTION_LATENCY_BASED">
+					<xsd:annotation>
+						<xsd:documentation>DOS_DETECTION_LATENCY_BASED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Common.FileChainType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="FILE_UNDEFINED">
+					<xsd:annotation>
+						<xsd:documentation>FILE_UNDEFINED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILE_FIRST">
+					<xsd:annotation>
+						<xsd:documentation>FILE_FIRST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILE_MIDDLE">
+					<xsd:annotation>
+						<xsd:documentation>FILE_MIDDLE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILE_UNUSED">
+					<xsd:annotation>
+						<xsd:documentation>FILE_UNUSED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILE_LAST">
+					<xsd:annotation>
+						<xsd:documentation>FILE_LAST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="FILE_FIRST_AND_LAST">
+					<xsd:annotation>
+						<xsd:documentation>FILE_FIRST_AND_LAST</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="ASM.Violation">
+			<xsd:sequence>
+				<xsd:element name="violation_name" type="tns:ASM.ViolationName"/>
+				<xsd:element name="learn_flag" type="tns:ASM.FlagState"/>
+				<xsd:element name="alarm_flag" type="tns:ASM.FlagState"/>
+				<xsd:element name="block_flag" type="tns:ASM.FlagState"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.DosDetectionModeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.DosDetectionMode[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.ULong">
+			<xsd:restriction base="xsd:long"/>
+		</xsd:simpleType>
+		<xsd:complexType name="ASM.ViolationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.Violation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="ASM.DynamicSessionsInUrlType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="DYNAMIC_SESSIONS_DISABLED">
+					<xsd:annotation>
+						<xsd:documentation>DYNAMIC_SESSIONS_DISABLED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DYNAMIC_SESSIONS_DEFAULT_PATTERN">
+					<xsd:annotation>
+						<xsd:documentation>DYNAMIC_SESSIONS_DEFAULT_PATTERN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="DYNAMIC_SESSIONS_CUSTOM_PATTERN">
+					<xsd:annotation>
+						<xsd:documentation>DYNAMIC_SESSIONS_CUSTOM_PATTERN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.IPNetmaskSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.IPNetmaskSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.Dos">
+			<xsd:sequence>
+				<xsd:element name="operation_mode" type="tns:ASM.DosOperationMode"/>
+				<xsd:element name="detection_mode" type="tns:ASM.DosDetectionMode"/>
+				<xsd:element name="latency_increase_rate" type="xsd:long"/>
+				<xsd:element name="maximum_latency" type="xsd:long"/>
+				<xsd:element name="minimum_latency" type="xsd:long"/>
+				<xsd:element name="source_ip_based_client_side_integrity_defense_flag" type="xsd:boolean"/>
+				<xsd:element name="source_ip_based_rate_limiting_flag" type="xsd:boolean"/>
+				<xsd:element name="url_based_client_side_integrity_defense_flag" type="xsd:boolean"/>
+				<xsd:element name="url_based_rate_limiting_flag" type="xsd:boolean"/>
+				<xsd:element name="ip_tps_increase_rate" type="xsd:long"/>
+				<xsd:element name="ip_maximum_tps" type="xsd:long"/>
+				<xsd:element name="ip_minimum_tps" type="xsd:long"/>
+				<xsd:element name="url_tps_increase_rate" type="xsd:long"/>
+				<xsd:element name="url_maximum_tps" type="xsd:long"/>
+				<xsd:element name="url_minimum_tps" type="xsd:long"/>
+				<xsd:element name="maximum_prevention_duration" type="xsd:long"/>
+				<xsd:element name="ip_white_list" type="tns:Common.IPNetmaskSequence"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="ASM.DosOperationModeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:ASM.DosOperationMode[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="ASM.WebApplicationLanguage">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="LANGUAGE_UNDEFINED">
+					<xsd:annotation>
+						<xsd:documentation>LANGUAGE_UNDEFINED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="UNICODE_UTF_8">
+					<xsd:annotation>
+						<xsd:documentation>UNICODE_UTF_8</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="WESTERN_EUROPEAN_ISO_8859_1">
+					<xsd:annotation>
+						<xsd:documentation>WESTERN_EUROPEAN_ISO_8859_1</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="WESTERN_EUROPEAN_WINDOWS_1252">
+					<xsd:annotation>
+						<xsd:documentation>WESTERN_EUROPEAN_WINDOWS_1252</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="WESTERN_EUROPEAN_ISO_8859_15">
+					<xsd:annotation>
+						<xsd:documentation>WESTERN_EUROPEAN_ISO_8859_15</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CENTRAL_EUROPEAN_ISO_8859_2">
+					<xsd:annotation>
+						<xsd:documentation>CENTRAL_EUROPEAN_ISO_8859_2</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CENTRAL_EUROPEAN_WINDOWS_1250">
+					<xsd:annotation>
+						<xsd:documentation>CENTRAL_EUROPEAN_WINDOWS_1250</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="SOUTH_EUROPEAN_ISO_8859_3">
+					<xsd:annotation>
+						<xsd:documentation>SOUTH_EUROPEAN_ISO_8859_3</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="GREEK_ISO_8859_7">
+					<xsd:annotation>
+						<xsd:documentation>GREEK_ISO_8859_7</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="GREEK_WINDOWS_1253">
+					<xsd:annotation>
+						<xsd:documentation>GREEK_WINDOWS_1253</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="NORDIC_ISO_8859_10">
+					<xsd:annotation>
+						<xsd:documentation>NORDIC_ISO_8859_10</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CYRILLIC_WINDOWS_1251">
+					<xsd:annotation>
+						<xsd:documentation>CYRILLIC_WINDOWS_1251</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CYRILLIC_KOI8_R">
+					<xsd:annotation>
+						<xsd:documentation>CYRILLIC_KOI8_R</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CYRILLIC_ISO_8859_5">
+					<xsd:annotation>
+						<xsd:documentation>CYRILLIC_ISO_8859_5</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ROMANIAN_ISO_8859_16">
+					<xsd:annotation>
+						<xsd:documentation>ROMANIAN_ISO_8859_16</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="BALTIC_ISO_8859_4">
+					<xsd:annotation>
+						<xsd:documentation>BALTIC_ISO_8859_4</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="BALTIC_ISO_8859_13">
+					<xsd:annotation>
+						<xsd:documentation>BALTIC_ISO_8859_13</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="BALTIC_WINDOWS_1257">
+					<xsd:annotation>
+						<xsd:documentation>BALTIC_WINDOWS_1257</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HEBREW_WINDOWS_1255">
+					<xsd:annotation>
+						<xsd:documentation>HEBREW_WINDOWS_1255</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="HEBREW_ISO_8859_8">
+					<xsd:annotation>
+						<xsd:documentation>HEBREW_ISO_8859_8</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="JAPANESE_SHIFT_JIS">
+					<xsd:annotation>
+						<xsd:documentation>JAPANESE_SHIFT_JIS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="JAPANESE_EUC_JP">
+					<xsd:annotation>
+						<xsd:documentation>JAPANESE_EUC_JP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="KOREAN_EUC_KR">
+					<xsd:annotation>
+						<xsd:documentation>KOREAN_EUC_KR</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CHINESE_BIG5">
+					<xsd:annotation>
+						<xsd:documentation>CHINESE_BIG5</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CHINESE_GB2312">
+					<xsd:annotation>
+						<xsd:documentation>CHINESE_GB2312</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="THAI_CP874">
+					<xsd:annotation>
+						<xsd:documentation>THAI_CP874</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="ARABIC_ISO_8859_6">
+					<xsd:annotation>
+						<xsd:documentation>ARABIC_ISO_8859_6</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CHINESE_GBK">
+					<xsd:annotation>
+						<xsd:documentation>CHINESE_GBK</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CHINESE_GB18030">
+					<xsd:annotation>
+						<xsd:documentation>CHINESE_GB18030</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Common.IPNetmaskSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.IPNetmask[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="ASM.PolicyTemplate">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="POLICY_TEMPLATE_EMPTY">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_EMPTY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_SHAREPOINT_2007_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_SHAREPOINT_2007_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_SHAREPOINT_2007_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_SHAREPOINT_2007_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_OWA_EXCHANGE_2003_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_OWA_EXCHANGE_2003_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_OWA_EXCHANGE_2003_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_OWA_EXCHANGE_2003_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_ORACLE_APPLICATIONS_11I_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_ORACLE_APPLICATIONS_11I_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_ORACLE_APPLICATIONS_11I_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_ORACLE_APPLICATIONS_11I_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_LOTUSDOMINO_6_5_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_LOTUSDOMINO_6_5_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_LOTUSDOMINO_6_5_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_LOTUSDOMINO_6_5_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_OWA_EXCHANGE_2007_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_OWA_EXCHANGE_2007_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_OWA_EXCHANGE_2007_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_OWA_EXCHANGE_2007_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_SAP_NETWEAVER_7_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_SAP_NETWEAVER_7_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_SAP_NETWEAVER_7_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_SAP_NETWEAVER_7_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_RAPID_DEPLOYMENT_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_RAPID_DEPLOYMENT_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_RAPID_DEPLOYMENT_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_RAPID_DEPLOYMENT_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_PEOPLESOFT_PORTAL_9_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_PEOPLESOFT_PORTAL_9_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_PEOPLESOFT_PORTAL_9_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_PEOPLESOFT_PORTAL_9_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_ORACLE_10G_PORTAL_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_ORACLE_10G_PORTAL_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_ORACLE_10G_PORTAL_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_ORACLE_10G_PORTAL_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_SHAREPOINT_2003_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_SHAREPOINT_2003_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_SHAREPOINT_2003_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_SHAREPOINT_2003_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_ACTIVESYNC_V1_0_V2_0_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_ACTIVESYNC_V1_0_V2_0_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_ACTIVESYNC_V1_0_V2_0_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_ACTIVESYNC_V1_0_V2_0_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_OWA_EXCHANGE_2007_WITH_ACTIVESYNC_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_OWA_EXCHANGE_2007_WITH_ACTIVESYNC_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_OWA_EXCHANGE_2007_WITH_ACTIVESYNC_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_OWA_EXCHANGE_2007_WITH_ACTIVESYNC_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_OWA_EXCHANGE_2003_WITH_ACTIVESYNC_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_OWA_EXCHANGE_2003_WITH_ACTIVESYNC_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_OWA_EXCHANGE_2003_WITH_ACTIVESYNC_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_OWA_EXCHANGE_2003_WITH_ACTIVESYNC_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_WHITEHAT_SENTINEL_BASELINE">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_WHITEHAT_SENTINEL_BASELINE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_OWA_EXCHANGE_2010_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_OWA_EXCHANGE_2010_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_OWA_EXCHANGE_2010_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_OWA_EXCHANGE_2010_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_SHAREPOINT_2010_HTTP">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_SHAREPOINT_2010_HTTP</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_SHAREPOINT_2010_HTTPS">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_SHAREPOINT_2010_HTTPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_RAPID_DEPLOYMENT">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_RAPID_DEPLOYMENT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="POLICY_TEMPLATE_RAPID_DEPLOYMENT_PB">
+					<xsd:annotation>
+						<xsd:documentation>POLICY_TEMPLATE_RAPID_DEPLOYMENT_PB</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="ASM.Policy.get_listRequest">
+</message>
+<message name="ASM.Policy.get_listResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="ASM.Policy.detach_wa_webappRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="wa_webapp_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.Policy.detach_wa_webappResponse">
+</message>
+
+<message name="ASM.Policy.associate_wa_webappRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="wa_webapp_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.Policy.associate_wa_webappResponse">
+</message>
+
+<message name="ASM.Policy.createRequest">
+	<part name="webapp_names" type="tns:Common.StringSequence"/>
+	<part name="policy_names" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="ASM.Policy.createResponse">
+</message>
+
+<message name="ASM.Policy.create_case_insensitiveRequest">
+	<part name="webapp_names" type="tns:Common.StringSequence"/>
+	<part name="policy_names" type="tns:Common.StringSequenceSequence"/>
+	<part name="case_insensitive_flags" type="tns:Common.BooleanSequenceSequence"/>
+</message>
+<message name="ASM.Policy.create_case_insensitiveResponse">
+</message>
+
+<message name="ASM.Policy.create_from_templateRequest">
+	<part name="webapp_names" type="tns:Common.StringSequence"/>
+	<part name="policy_names" type="tns:Common.StringSequenceSequence"/>
+	<part name="policy_templates" type="tns:ASM.PolicyTemplateSequenceSequence"/>
+</message>
+<message name="ASM.Policy.create_from_templateResponse">
+</message>
+
+<message name="ASM.Policy.create_from_template_namesRequest">
+	<part name="webapp_names" type="tns:Common.StringSequence"/>
+	<part name="policy_names" type="tns:Common.StringSequenceSequence"/>
+	<part name="policy_template_names" type="tns:Common.StringSequenceSequence"/>
+</message>
+<message name="ASM.Policy.create_from_template_namesResponse">
+</message>
+
+<message name="ASM.Policy.renameRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="new_policy_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.Policy.renameResponse">
+</message>
+
+<message name="ASM.Policy.delete_policyRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.Policy.delete_policyResponse">
+</message>
+
+<message name="ASM.Policy.set_descriptionRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="descriptions" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.Policy.set_descriptionResponse">
+</message>
+
+<message name="ASM.Policy.get_descriptionRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.Policy.get_descriptionResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="ASM.Policy.set_languageRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="languages" type="tns:ASM.WebApplicationLanguageSequence"/>
+</message>
+<message name="ASM.Policy.set_languageResponse">
+</message>
+
+<message name="ASM.Policy.get_languageRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.Policy.get_languageResponse">
+	<part name="return" type="tns:ASM.WebApplicationLanguageSequence"/>
+</message>
+
+<message name="ASM.Policy.set_logging_profileRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="logprof_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.Policy.set_logging_profileResponse">
+</message>
+
+<message name="ASM.Policy.get_logging_profileRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.Policy.get_logging_profileResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="ASM.Policy.set_cookie_lengthRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="cookie_lengths" type="tns:Common.ULongSequence"/>
+</message>
+<message name="ASM.Policy.set_cookie_lengthResponse">
+</message>
+
+<message name="ASM.Policy.get_cookie_lengthRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.Policy.get_cookie_lengthResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="ASM.Policy.set_http_header_lengthRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="http_header_lengths" type="tns:Common.ULongSequence"/>
+</message>
+<message name="ASM.Policy.set_http_header_lengthResponse">
+</message>
+
+<message name="ASM.Policy.get_http_header_lengthRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.Policy.get_http_header_lengthResponse">
+	<part name="return" type="tns:Common.ULongSequence"/>
+</message>
+
+<message name="ASM.Policy.set_dos_operation_modeRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="operation_modes" type="tns:ASM.DosOperationModeSequence"/>
+</message>
+<message name="ASM.Policy.set_dos_operation_modeResponse">
+</message>
+
+<message name="ASM.Policy.set_dos_detection_modeRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="detection_modes" type="tns:ASM.DosDetectionModeSequence"/>
+</message>
+<message name="ASM.Policy.set_dos_detection_modeResponse">
+</message>
+
+<message name="ASM.Policy.set_dos_latency_increase_rateRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="latency_increase_rates" type="tns:Common.ULongSequence"/>
+</message>
+<message name="ASM.Policy.set_dos_latency_increase_rateResponse">
+</message>
+
+<message name="ASM.Policy.set_dos_maximum_latencyRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="maximum_latencies" type="tns:Common.ULongSequence"/>
+</message>
+<message name="ASM.Policy.set_dos_maximum_latencyResponse">
+</message>
+
+<message name="ASM.Policy.set_dos_minimum_latencyRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="minimum_latencies" type="tns:Common.ULongSequence"/>
+</message>
+<message name="ASM.Policy.set_dos_minimum_latencyResponse">
+</message>
+
+<message name="ASM.Policy.set_dos_source_ip_based_client_side_integrity_defense_flagRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="source_ip_based_client_side_integrity_defense_flags" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="ASM.Policy.set_dos_source_ip_based_client_side_integrity_defense_flagResponse">
+</message>
+
+<message name="ASM.Policy.set_dos_source_ip_based_rate_limiting_flagRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="source_ip_based_rate_limiting_flags" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="ASM.Policy.set_dos_source_ip_based_rate_limiting_flagResponse">
+</message>
+
+<message name="ASM.Policy.set_dos_url_based_client_side_integrity_defense_flagRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="url_based_client_side_integrity_defense_flags" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="ASM.Policy.set_dos_url_based_client_side_integrity_defense_flagResponse">
+</message>
+
+<message name="ASM.Policy.set_dos_url_based_rate_limiting_flagRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="url_based_rate_limiting_flags" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="ASM.Policy.set_dos_url_based_rate_limiting_flagResponse">
+</message>
+
+<message name="ASM.Policy.set_dos_ip_tps_increase_rateRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="ip_tps_increase_rates" type="tns:Common.ULongSequence"/>
+</message>
+<message name="ASM.Policy.set_dos_ip_tps_increase_rateResponse">
+</message>
+
+<message name="ASM.Policy.set_dos_ip_maximum_tpsRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="ip_maximum_tpses" type="tns:Common.ULongSequence"/>
+</message>
+<message name="ASM.Policy.set_dos_ip_maximum_tpsResponse">
+</message>
+
+<message name="ASM.Policy.set_dos_ip_minimum_tpsRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="ip_minimum_tpses" type="tns:Common.ULongSequence"/>
+</message>
+<message name="ASM.Policy.set_dos_ip_minimum_tpsResponse">
+</message>
+
+<message name="ASM.Policy.set_dos_url_tps_increase_rateRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="url_tps_increase_rates" type="tns:Common.ULongSequence"/>
+</message>
+<message name="ASM.Policy.set_dos_url_tps_increase_rateResponse">
+</message>
+
+<message name="ASM.Policy.set_dos_url_maximum_tpsRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="url_maximum_tpses" type="tns:Common.ULongSequence"/>
+</message>
+<message name="ASM.Policy.set_dos_url_maximum_tpsResponse">
+</message>
+
+<message name="ASM.Policy.set_dos_url_minimum_tpsRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="url_minimum_tpses" type="tns:Common.ULongSequence"/>
+</message>
+<message name="ASM.Policy.set_dos_url_minimum_tpsResponse">
+</message>
+
+<message name="ASM.Policy.set_dos_maximum_prevention_durationRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="maximum_prevention_durations" type="tns:Common.ULongSequence"/>
+</message>
+<message name="ASM.Policy.set_dos_maximum_prevention_durationResponse">
+</message>
+
+<message name="ASM.Policy.add_dos_white_ipRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="ip_netmasks" type="tns:Common.IPNetmaskSequenceSequence"/>
+</message>
+<message name="ASM.Policy.add_dos_white_ipResponse">
+</message>
+
+<message name="ASM.Policy.remove_dos_white_ipRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="ip_netmasks" type="tns:Common.IPNetmaskSequenceSequence"/>
+</message>
+<message name="ASM.Policy.remove_dos_white_ipResponse">
+</message>
+
+<message name="ASM.Policy.get_dosRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.Policy.get_dosResponse">
+	<part name="return" type="tns:ASM.DosSequence"/>
+</message>
+
+<message name="ASM.Policy.restore_dos_defaultsRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.Policy.restore_dos_defaultsResponse">
+</message>
+
+<message name="ASM.Policy.set_disable_blocking_flagRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="blocking_flags" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="ASM.Policy.set_disable_blocking_flagResponse">
+</message>
+
+<message name="ASM.Policy.set_prerequisite_expiration_periodRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="expiration_periods" type="tns:Common.ULongSequence"/>
+</message>
+<message name="ASM.Policy.set_prerequisite_expiration_periodResponse">
+</message>
+
+<message name="ASM.Policy.get_disable_blocking_flagRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.Policy.get_disable_blocking_flagResponse">
+	<part name="return" type="tns:Common.BooleanSequence"/>
+</message>
+
+<message name="ASM.Policy.set_violation_flagsRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="violations" type="tns:ASM.ViolationSequenceSequence"/>
+</message>
+<message name="ASM.Policy.set_violation_flagsResponse">
+</message>
+
+<message name="ASM.Policy.get_violation_flagsRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.Policy.get_violation_flagsResponse">
+	<part name="return" type="tns:ASM.ViolationSequenceSequence"/>
+</message>
+
+<message name="ASM.Policy.import_policyRequest">
+	<part name="webapp_name" type="xsd:string"/>
+	<part name="filename" type="xsd:string"/>
+</message>
+<message name="ASM.Policy.import_policyResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="ASM.Policy.export_policyRequest">
+	<part name="policy_name" type="xsd:string"/>
+	<part name="filename" type="xsd:string"/>
+</message>
+<message name="ASM.Policy.export_policyResponse">
+</message>
+
+<message name="ASM.Policy.export_policy_xmlRequest">
+	<part name="policy_name" type="xsd:string"/>
+	<part name="filename" type="xsd:string"/>
+</message>
+<message name="ASM.Policy.export_policy_xmlResponse">
+</message>
+
+<message name="ASM.Policy.download_policyRequest">
+	<part name="policy_name" type="xsd:string"/>
+	<part name="chunk_size" type="xsd:long"/>
+	<part name="file_offset" type="xsd:long"/>
+</message>
+<message name="ASM.Policy.download_policyResponse">
+	<part name="return" type="tns:ASM.FileTransferContext"/>
+	<part name="file_offset" type="xsd:long"/>
+</message>
+
+<message name="ASM.Policy.upload_policyRequest">
+	<part name="policy_name" type="xsd:string"/>
+	<part name="file_context" type="tns:ASM.FileTransferContext"/>
+</message>
+<message name="ASM.Policy.upload_policyResponse">
+</message>
+
+<message name="ASM.Policy.get_versionRequest">
+</message>
+<message name="ASM.Policy.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<message name="ASM.Policy.set_dynamic_sessions_in_urlRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+	<part name="settings" type="tns:ASM.DynamicSessionsInUrlSequence"/>
+</message>
+<message name="ASM.Policy.set_dynamic_sessions_in_urlResponse">
+</message>
+
+<message name="ASM.Policy.get_dynamic_sessions_in_urlRequest">
+	<part name="policy_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.Policy.get_dynamic_sessions_in_urlResponse">
+	<part name="return" type="tns:ASM.DynamicSessionsInUrlSequence"/>
+</message>
+
+<message name="ASM.Policy.upload_xml_profile_wsdlRequest">
+	<part name="policy_name" type="xsd:string"/>
+	<part name="profile_name" type="xsd:string"/>
+	<part name="wsdl_filename" type="xsd:string"/>
+	<part name="wsdl_text" type="xsd:string"/>
+</message>
+<message name="ASM.Policy.upload_xml_profile_wsdlResponse">
+</message>
+
+<message name="ASM.Policy.add_predictable_resource_locationRequest">
+	<part name="policy_name" type="xsd:string"/>
+	<part name="uris" type="tns:Common.StringSequence"/>
+</message>
+<message name="ASM.Policy.add_predictable_resource_locationResponse">
+	<part name="return" type="xsd:boolean"/>
+</message>
+
+<message name="ASM.Policy.set_path_traversalRequest">
+	<part name="policy_name" type="xsd:string"/>
+</message>
+<message name="ASM.Policy.set_path_traversalResponse">
+	<part name="return" type="xsd:boolean"/>
+</message>
+
+<message name="ASM.Policy.set_http_response_splittingRequest">
+	<part name="policy_name" type="xsd:string"/>
+</message>
+<message name="ASM.Policy.set_http_response_splittingResponse">
+	<part name="return" type="xsd:boolean"/>
+</message>
+
+<!-- portType -->
+
+<portType name="ASM.PolicyPortType">
+	<operation name="get_list">
+      	<documentation>
+ Get the list of policies.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.get_listRequest"/>
+		<output message="tns:ASM.Policy.get_listResponse"/>
+	</operation>
+	<operation name="detach_wa_webapp">
+	<documentation>
+ This method has been deprecated. As of v11.0.0, there is separate Web Acceleration profile,
+ which is assigned to VS, so WA is not associated with ASM directly, like it was in v10.x.x.
+
+ Detaches the WA HTTP classes from the ASM policy.
+ 
+        	</documentation>
+		<input message="tns:ASM.Policy.detach_wa_webappRequest"/>
+		<output message="tns:ASM.Policy.detach_wa_webappResponse"/>
+	</operation>
+	<operation name="associate_wa_webapp">
+	<documentation>
+ This method has been deprecated. As of v11.0.0, there is separate Web Acceleration profile,
+ which is assigned to VS, so WA is not associated with ASM directly, like it was in v10.x.x.
+
+ Associates the WA HTTP classes to the ASM policy.
+ 
+        	</documentation>
+		<input message="tns:ASM.Policy.associate_wa_webappRequest"/>
+		<output message="tns:ASM.Policy.associate_wa_webappResponse"/>
+	</operation>
+	<operation name="create">
+	<documentation>
+ Create policies for the specified HTTP classes.
+
+ As of v11.1.0, policies are imported as offline. HTTP class names are ignored.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.createRequest"/>
+		<output message="tns:ASM.Policy.createResponse"/>
+	</operation>
+	<operation name="create_case_insensitive">
+	<documentation>
+ Create case insensitive or sensitive policies for the specified HTTP classes.
+
+ As of v11.1.0, policies are imported as offline. HTTP class names are ignored.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.create_case_insensitiveRequest"/>
+		<output message="tns:ASM.Policy.create_case_insensitiveResponse"/>
+	</operation>
+	<operation name="create_from_template">
+	<documentation>
+ Create policies from template for the specified HTTP classes.
+
+ As of v11.1.0, policies are imported as offline. HTTP class names are ignored.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.create_from_templateRequest"/>
+		<output message="tns:ASM.Policy.create_from_templateResponse"/>
+	</operation>
+	<operation name="create_from_template_names">
+	<documentation>
+ Create policies from template for the specified HTTP classes.
+
+ As of v11.1.0, policies are imported as offline. HTTP class names are ignored.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.create_from_template_namesRequest"/>
+		<output message="tns:ASM.Policy.create_from_template_namesResponse"/>
+	</operation>
+	<operation name="rename">
+	<documentation>
+ Rename policies.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.renameRequest"/>
+		<output message="tns:ASM.Policy.renameResponse"/>
+	</operation>
+	<operation name="delete_policy">
+	<documentation>
+ Deletes a policy.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.delete_policyRequest"/>
+		<output message="tns:ASM.Policy.delete_policyResponse"/>
+	</operation>
+	<operation name="set_description">
+	<documentation>
+ Updates policy description.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_descriptionRequest"/>
+		<output message="tns:ASM.Policy.set_descriptionResponse"/>
+	</operation>
+	<operation name="get_description">
+	<documentation>
+ Get policy description.
+ 
+
+        	</documentation>
+		<input message="tns:ASM.Policy.get_descriptionRequest"/>
+		<output message="tns:ASM.Policy.get_descriptionResponse"/>
+	</operation>
+	<operation name="set_language">
+	<documentation>
+ Updates language encoding.
+ 
+        	</documentation>
+		<input message="tns:ASM.Policy.set_languageRequest"/>
+		<output message="tns:ASM.Policy.set_languageResponse"/>
+	</operation>
+	<operation name="get_language">
+	<documentation>
+ Get language encoding.
+ 
+
+        	</documentation>
+		<input message="tns:ASM.Policy.get_languageRequest"/>
+		<output message="tns:ASM.Policy.get_languageResponse"/>
+	</operation>
+	<operation name="set_logging_profile">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate Security log profile,
+ which is assigned to VS, so logging profile is not associated with ASM directly.
+
+ Updates logging profile.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_logging_profileRequest"/>
+		<output message="tns:ASM.Policy.set_logging_profileResponse"/>
+	</operation>
+	<operation name="get_logging_profile">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate Security log profile,
+ which is assigned to VS, so logging profile is not associated with ASM directly.
+
+ Get logging profile.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.get_logging_profileRequest"/>
+		<output message="tns:ASM.Policy.get_logging_profileResponse"/>
+	</operation>
+	<operation name="set_cookie_length">
+	<documentation>
+ Updates max cookie length.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_cookie_lengthRequest"/>
+		<output message="tns:ASM.Policy.set_cookie_lengthResponse"/>
+	</operation>
+	<operation name="get_cookie_length">
+	<documentation>
+ Get the max cookie length.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.get_cookie_lengthRequest"/>
+		<output message="tns:ASM.Policy.get_cookie_lengthResponse"/>
+	</operation>
+	<operation name="set_http_header_length">
+	<documentation>
+ Updates max http header length.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_http_header_lengthRequest"/>
+		<output message="tns:ASM.Policy.set_http_header_lengthResponse"/>
+	</operation>
+	<operation name="get_http_header_length">
+	<documentation>
+ Get max http header length.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.get_http_header_lengthRequest"/>
+		<output message="tns:ASM.Policy.get_http_header_lengthResponse"/>
+	</operation>
+	<operation name="set_dos_operation_mode">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS operation mode.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_dos_operation_modeRequest"/>
+		<output message="tns:ASM.Policy.set_dos_operation_modeResponse"/>
+	</operation>
+	<operation name="set_dos_detection_mode">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS detection mode.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_dos_detection_modeRequest"/>
+		<output message="tns:ASM.Policy.set_dos_detection_modeResponse"/>
+	</operation>
+	<operation name="set_dos_latency_increase_rate">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS latency increase rate.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_dos_latency_increase_rateRequest"/>
+		<output message="tns:ASM.Policy.set_dos_latency_increase_rateResponse"/>
+	</operation>
+	<operation name="set_dos_maximum_latency">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS maximum latency.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_dos_maximum_latencyRequest"/>
+		<output message="tns:ASM.Policy.set_dos_maximum_latencyResponse"/>
+	</operation>
+	<operation name="set_dos_minimum_latency">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS minimum latency.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_dos_minimum_latencyRequest"/>
+		<output message="tns:ASM.Policy.set_dos_minimum_latencyResponse"/>
+	</operation>
+	<operation name="set_dos_source_ip_based_client_side_integrity_defense_flag">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS Source IP-Based Client Side Integrity Defense flag.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_dos_source_ip_based_client_side_integrity_defense_flagRequest"/>
+		<output message="tns:ASM.Policy.set_dos_source_ip_based_client_side_integrity_defense_flagResponse"/>
+	</operation>
+	<operation name="set_dos_source_ip_based_rate_limiting_flag">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS Source IP-Based Rate Limiting flag.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_dos_source_ip_based_rate_limiting_flagRequest"/>
+		<output message="tns:ASM.Policy.set_dos_source_ip_based_rate_limiting_flagResponse"/>
+	</operation>
+	<operation name="set_dos_url_based_client_side_integrity_defense_flag">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS URL-Based Client Side Integrity Defense flag.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_dos_url_based_client_side_integrity_defense_flagRequest"/>
+		<output message="tns:ASM.Policy.set_dos_url_based_client_side_integrity_defense_flagResponse"/>
+	</operation>
+	<operation name="set_dos_url_based_rate_limiting_flag">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS URL-Based Rate Limiting flag.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_dos_url_based_rate_limiting_flagRequest"/>
+		<output message="tns:ASM.Policy.set_dos_url_based_rate_limiting_flagResponse"/>
+	</operation>
+	<operation name="set_dos_ip_tps_increase_rate">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS Source IP-Based TPS increase rate.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_dos_ip_tps_increase_rateRequest"/>
+		<output message="tns:ASM.Policy.set_dos_ip_tps_increase_rateResponse"/>
+	</operation>
+	<operation name="set_dos_ip_maximum_tps">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS Source IP-Based maximum TPS.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_dos_ip_maximum_tpsRequest"/>
+		<output message="tns:ASM.Policy.set_dos_ip_maximum_tpsResponse"/>
+	</operation>
+	<operation name="set_dos_ip_minimum_tps">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS Source IP-Based minimum TPS.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_dos_ip_minimum_tpsRequest"/>
+		<output message="tns:ASM.Policy.set_dos_ip_minimum_tpsResponse"/>
+	</operation>
+	<operation name="set_dos_url_tps_increase_rate">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS URL-Based TPS increase rate.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_dos_url_tps_increase_rateRequest"/>
+		<output message="tns:ASM.Policy.set_dos_url_tps_increase_rateResponse"/>
+	</operation>
+	<operation name="set_dos_url_maximum_tps">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS URL-Based maximum TPS.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_dos_url_maximum_tpsRequest"/>
+		<output message="tns:ASM.Policy.set_dos_url_maximum_tpsResponse"/>
+	</operation>
+	<operation name="set_dos_url_minimum_tps">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS URL-Based minimum TPS.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_dos_url_minimum_tpsRequest"/>
+		<output message="tns:ASM.Policy.set_dos_url_minimum_tpsResponse"/>
+	</operation>
+	<operation name="set_dos_maximum_prevention_duration">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS maximum prevention duration.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_dos_maximum_prevention_durationRequest"/>
+		<output message="tns:ASM.Policy.set_dos_maximum_prevention_durationResponse"/>
+	</operation>
+	<operation name="add_dos_white_ip">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Adds DoS white IPs to the specified policy.
+ 
+        	</documentation>
+		<input message="tns:ASM.Policy.add_dos_white_ipRequest"/>
+		<output message="tns:ASM.Policy.add_dos_white_ipResponse"/>
+	</operation>
+	<operation name="remove_dos_white_ip">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Removes DoS white IPs from the specified policy.
+ 
+        	</documentation>
+		<input message="tns:ASM.Policy.remove_dos_white_ipRequest"/>
+		<output message="tns:ASM.Policy.remove_dos_white_ipResponse"/>
+	</operation>
+	<operation name="get_dos">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Get DoS settings.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.get_dosRequest"/>
+		<output message="tns:ASM.Policy.get_dosResponse"/>
+	</operation>
+	<operation name="restore_dos_defaults">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Resets DoS settings to defaults.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.restore_dos_defaultsRequest"/>
+		<output message="tns:ASM.Policy.restore_dos_defaultsResponse"/>
+	</operation>
+	<operation name="set_disable_blocking_flag">
+	<documentation>
+ Updates blocking flag.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_disable_blocking_flagRequest"/>
+		<output message="tns:ASM.Policy.set_disable_blocking_flagResponse"/>
+	</operation>
+	<operation name="set_prerequisite_expiration_period">
+	<documentation>
+ Updates prerequisite expiration period flag.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_prerequisite_expiration_periodRequest"/>
+		<output message="tns:ASM.Policy.set_prerequisite_expiration_periodResponse"/>
+	</operation>
+	<operation name="get_disable_blocking_flag">
+	<documentation>
+ Get blocking flag.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.get_disable_blocking_flagRequest"/>
+		<output message="tns:ASM.Policy.get_disable_blocking_flagResponse"/>
+	</operation>
+	<operation name="set_violation_flags">
+	<documentation>
+ Updates violation blocking flag.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_violation_flagsRequest"/>
+		<output message="tns:ASM.Policy.set_violation_flagsResponse"/>
+	</operation>
+	<operation name="get_violation_flags">
+	<documentation>
+ Gets violation blocking flag.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.get_violation_flagsRequest"/>
+		<output message="tns:ASM.Policy.get_violation_flagsResponse"/>
+	</operation>
+	<operation name="import_policy">
+	<documentation>
+ Import Policy
+ 
+ Before calling import_policy, upload_policy should be done.
+ Once the policy is completely uploaded, you can import it.
+
+ As of v11.1.0, the policy is imported as offline. HTTP class name is ignored.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.import_policyRequest"/>
+		<output message="tns:ASM.Policy.import_policyResponse"/>
+	</operation>
+	<operation name="export_policy">
+	<documentation>
+ Export Policy
+ The export_policy method exports the policy specified in parameter policy_name
+ and writes the file to the device's local disk. The policy is saved in a binary format.
+ This method is typically followed by a call to download_policy which gets this full path
+ filename as a parameter.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.export_policyRequest"/>
+		<output message="tns:ASM.Policy.export_policyResponse"/>
+	</operation>
+	<operation name="export_policy_xml">
+	<documentation>
+ Export Human Readable Policy
+ The export_policy_xml method exports the policy specified in parameter policy_name
+ and writes the file to the device's local disk. The policy is saved in an XML format.
+ This method is typically followed by a call to download_policy which gets this full path
+ filename as a parameter.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.export_policy_xmlRequest"/>
+		<output message="tns:ASM.Policy.export_policy_xmlResponse"/>
+	</operation>
+	<operation name="download_policy">
+	<documentation>
+ Downloads the policy from the device.
+ The download_policy is typically called after having called to export_policy. 
+ The parameter policy_name must be the same as used during export_policy.
+ The file is downloaded in chunks. Each chunk should be concatenated to the previous one
+ on the client side.
+ The return value has two fields:
+ - file_data: The relevant part of the content of the file
+ - chunk_type: Indicates the current chunk whether it is the first, middle, last chunk
+               or the current call includes the entire file.
+
+
+        	</documentation>
+		<input message="tns:ASM.Policy.download_policyRequest"/>
+		<output message="tns:ASM.Policy.download_policyResponse"/>
+	</operation>
+	<operation name="upload_policy">
+	<documentation>
+ Uploads the policy to the device.
+ In order to import a policy two things have to be done in this order
+ - call upload_policy
+ - call import_policy
+ upload_policy uploads the policy to the device to /var/tmp/ directory.
+ The filename is the name of the policy given in policy_name.
+ If the policy is big, it should be uploaded in chunks using a loop on the client side.
+ 
+        	</documentation>
+		<input message="tns:ASM.Policy.upload_policyRequest"/>
+		<output message="tns:ASM.Policy.upload_policyResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+
+        	</documentation>
+		<input message="tns:ASM.Policy.get_versionRequest"/>
+		<output message="tns:ASM.Policy.get_versionResponse"/>
+	</operation>
+	<operation name="set_dynamic_sessions_in_url">
+	<documentation>
+ Set the "dynamic sessions in URL" for the specified policies.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_dynamic_sessions_in_urlRequest"/>
+		<output message="tns:ASM.Policy.set_dynamic_sessions_in_urlResponse"/>
+	</operation>
+	<operation name="get_dynamic_sessions_in_url">
+	<documentation>
+ Get the "dynamic sessions in URL" for the specified policies.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.get_dynamic_sessions_in_urlRequest"/>
+		<output message="tns:ASM.Policy.get_dynamic_sessions_in_urlResponse"/>
+	</operation>
+	<operation name="upload_xml_profile_wsdl">
+	<documentation>
+ Uploads the the wsdl and attaches it to a specific xml profile of a policy.
+
+        	</documentation>
+		<input message="tns:ASM.Policy.upload_xml_profile_wsdlRequest"/>
+		<output message="tns:ASM.Policy.upload_xml_profile_wsdlResponse"/>
+	</operation>
+	<operation name="add_predictable_resource_location">
+	<documentation>
+ This method is deprecated, please use WhiteHat Sentinel Vulnerabilities page in ASM GUI to configure predictable resource location.
+ 
+ Add predictable resource location
+
+        	</documentation>
+		<input message="tns:ASM.Policy.add_predictable_resource_locationRequest"/>
+		<output message="tns:ASM.Policy.add_predictable_resource_locationResponse"/>
+	</operation>
+	<operation name="set_path_traversal">
+	<documentation>
+ This method is deprecated, please use WhiteHat Sentinel Vulnerabilities page in ASM GUI to configure path traversal.
+
+ Set path traversal
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_path_traversalRequest"/>
+		<output message="tns:ASM.Policy.set_path_traversalResponse"/>
+	</operation>
+	<operation name="set_http_response_splitting">
+	<documentation>
+ This method is deprecated, please use WhiteHat Sentinel Vulnerabilities page in ASM GUI to configure response splitting.
+ 
+ Set HTTP response splitting
+
+        	</documentation>
+		<input message="tns:ASM.Policy.set_http_response_splittingRequest"/>
+		<output message="tns:ASM.Policy.set_http_response_splittingResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="ASM.PolicyBinding" type="tns:ASM.PolicyPortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="get_list">
+	<documentation>
+ Get the list of policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="detach_wa_webapp">
+	<documentation>
+ This method has been deprecated. As of v11.0.0, there is separate Web Acceleration profile,
+ which is assigned to VS, so WA is not associated with ASM directly, like it was in v10.x.x.
+
+ Detaches the WA HTTP classes from the ASM policy.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="associate_wa_webapp">
+	<documentation>
+ This method has been deprecated. As of v11.0.0, there is separate Web Acceleration profile,
+ which is assigned to VS, so WA is not associated with ASM directly, like it was in v10.x.x.
+
+ Associates the WA HTTP classes to the ASM policy.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create">
+	<documentation>
+ Create policies for the specified HTTP classes.
+
+ As of v11.1.0, policies are imported as offline. HTTP class names are ignored.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_case_insensitive">
+	<documentation>
+ Create case insensitive or sensitive policies for the specified HTTP classes.
+
+ As of v11.1.0, policies are imported as offline. HTTP class names are ignored.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_from_template">
+	<documentation>
+ Create policies from template for the specified HTTP classes.
+
+ As of v11.1.0, policies are imported as offline. HTTP class names are ignored.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="create_from_template_names">
+	<documentation>
+ Create policies from template for the specified HTTP classes.
+
+ As of v11.1.0, policies are imported as offline. HTTP class names are ignored.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="rename">
+	<documentation>
+ Rename policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="delete_policy">
+	<documentation>
+ Deletes a policy.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_description">
+	<documentation>
+ Updates policy description.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_description">
+	<documentation>
+ Get policy description.
+ 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_language">
+	<documentation>
+ Updates language encoding.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_language">
+	<documentation>
+ Get language encoding.
+ 
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_logging_profile">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate Security log profile,
+ which is assigned to VS, so logging profile is not associated with ASM directly.
+
+ Updates logging profile.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_logging_profile">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate Security log profile,
+ which is assigned to VS, so logging profile is not associated with ASM directly.
+
+ Get logging profile.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_cookie_length">
+	<documentation>
+ Updates max cookie length.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_cookie_length">
+	<documentation>
+ Get the max cookie length.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_http_header_length">
+	<documentation>
+ Updates max http header length.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_http_header_length">
+	<documentation>
+ Get max http header length.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_dos_operation_mode">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS operation mode.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_dos_detection_mode">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS detection mode.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_dos_latency_increase_rate">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS latency increase rate.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_dos_maximum_latency">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS maximum latency.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_dos_minimum_latency">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS minimum latency.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_dos_source_ip_based_client_side_integrity_defense_flag">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS Source IP-Based Client Side Integrity Defense flag.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_dos_source_ip_based_rate_limiting_flag">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS Source IP-Based Rate Limiting flag.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_dos_url_based_client_side_integrity_defense_flag">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS URL-Based Client Side Integrity Defense flag.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_dos_url_based_rate_limiting_flag">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS URL-Based Rate Limiting flag.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_dos_ip_tps_increase_rate">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS Source IP-Based TPS increase rate.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_dos_ip_maximum_tps">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS Source IP-Based maximum TPS.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_dos_ip_minimum_tps">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS Source IP-Based minimum TPS.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_dos_url_tps_increase_rate">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS URL-Based TPS increase rate.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_dos_url_maximum_tps">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS URL-Based maximum TPS.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_dos_url_minimum_tps">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS URL-Based minimum TPS.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_dos_maximum_prevention_duration">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Updates DoS maximum prevention duration.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_dos_white_ip">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Adds DoS white IPs to the specified policy.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="remove_dos_white_ip">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Removes DoS white IPs from the specified policy.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_dos">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Get DoS settings.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="restore_dos_defaults">
+	<documentation>
+ This method has been deprecated. As of v11.3.0, there is separate DoS profile,
+ which is assigned to VS, so DoS settings are not associated with ASM directly.
+
+ Resets DoS settings to defaults.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_disable_blocking_flag">
+	<documentation>
+ Updates blocking flag.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_prerequisite_expiration_period">
+	<documentation>
+ Updates prerequisite expiration period flag.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_disable_blocking_flag">
+	<documentation>
+ Get blocking flag.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_violation_flags">
+	<documentation>
+ Updates violation blocking flag.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_violation_flags">
+	<documentation>
+ Gets violation blocking flag.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="import_policy">
+	<documentation>
+ Import Policy
+ 
+ Before calling import_policy, upload_policy should be done.
+ Once the policy is completely uploaded, you can import it.
+
+ As of v11.1.0, the policy is imported as offline. HTTP class name is ignored.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="export_policy">
+	<documentation>
+ Export Policy
+ The export_policy method exports the policy specified in parameter policy_name
+ and writes the file to the device's local disk. The policy is saved in a binary format.
+ This method is typically followed by a call to download_policy which gets this full path
+ filename as a parameter.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="export_policy_xml">
+	<documentation>
+ Export Human Readable Policy
+ The export_policy_xml method exports the policy specified in parameter policy_name
+ and writes the file to the device's local disk. The policy is saved in an XML format.
+ This method is typically followed by a call to download_policy which gets this full path
+ filename as a parameter.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="download_policy">
+	<documentation>
+ Downloads the policy from the device.
+ The download_policy is typically called after having called to export_policy. 
+ The parameter policy_name must be the same as used during export_policy.
+ The file is downloaded in chunks. Each chunk should be concatenated to the previous one
+ on the client side.
+ The return value has two fields:
+ - file_data: The relevant part of the content of the file
+ - chunk_type: Indicates the current chunk whether it is the first, middle, last chunk
+               or the current call includes the entire file.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="upload_policy">
+	<documentation>
+ Uploads the policy to the device.
+ In order to import a policy two things have to be done in this order
+ - call upload_policy
+ - call import_policy
+ upload_policy uploads the policy to the device to /var/tmp/ directory.
+ The filename is the name of the policy given in policy_name.
+ If the policy is big, it should be uploaded in chunks using a loop on the client side.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_dynamic_sessions_in_url">
+	<documentation>
+ Set the "dynamic sessions in URL" for the specified policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_dynamic_sessions_in_url">
+	<documentation>
+ Get the "dynamic sessions in URL" for the specified policies.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="upload_xml_profile_wsdl">
+	<documentation>
+ Uploads the the wsdl and attaches it to a specific xml profile of a policy.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="add_predictable_resource_location">
+	<documentation>
+ This method is deprecated, please use WhiteHat Sentinel Vulnerabilities page in ASM GUI to configure predictable resource location.
+ 
+ Add predictable resource location
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_path_traversal">
+	<documentation>
+ This method is deprecated, please use WhiteHat Sentinel Vulnerabilities page in ASM GUI to configure path traversal.
+
+ Set path traversal
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="set_http_response_splitting">
+	<documentation>
+ This method is deprecated, please use WhiteHat Sentinel Vulnerabilities page in ASM GUI to configure response splitting.
+ 
+ Set HTTP response splitting
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:ASM/Policy"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:ASM/Policy"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="ASM.Policy">
+	<documentation>
+ The Policy interface enables you to manipulate a policy.
+
+ This interface does not support transactions.
+
+        	</documentation>
+	<port name="ASM.PolicyPort" binding="tns:ASM.PolicyBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>

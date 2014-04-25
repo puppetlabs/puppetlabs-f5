@@ -1,0 +1,1939 @@
+<?xml version="1.0" ?>
+<!--
+Copyright (c) 1996-2012, F5 Networks, Inc., Seattle, Washington. All rights reserved.  
+
+F5, F5 Networks, the F5 logo, BIG-IP, 3-DNS, iControl, GLOBAL-SITE, SEE-IT, EDGE-FX, FireGuard, Internet Control Architecture, IP Application Switch, iRules, PACKET VELOCITY, SYN Check, CONTROL YOUR WORLD, OneConnect, ZoneRunner, uRoam, FirePass, and TrafficShield are registered trademarks or trademarks of F5 Networks, Inc., in the U.S. and certain other countries. 
+
+All other trademarks mentioned in this document are the property of their respective owners. F5 Networks' trademarks may not be used in connection with any product or service except as permitted in writing by F5.
+
+-->
+<definitions name="Management.KeyCertificate"
+	targetNamespace="urn:iControl"
+	xmlns:tns="urn:iControl"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<!-- types -->
+
+<types>
+	<xsd:schema targetNamespace='urn:iControl'
+		xmlns='http://www.w3.org/2001/XMLSchema'
+		xmlns:SOAP-ENC='http://schemas.xmlsoap.org/soap/encoding/'
+		xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'>
+		<xsd:complexType name="Management.KeyCertificate.CertificateSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.KeyCertificate.Certificate[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Common.OctetSequence">
+			<xsd:restriction base="xsd:base64Binary"/>
+		</xsd:simpleType>
+		<xsd:simpleType name="Management.KeyCertificate.ValidityType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="VTYPE_CERTIFICATE_VALID">
+					<xsd:annotation>
+						<xsd:documentation>VTYPE_CERTIFICATE_VALID</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VTYPE_CERTIFICATE_EXPIRED">
+					<xsd:annotation>
+						<xsd:documentation>VTYPE_CERTIFICATE_EXPIRED</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VTYPE_CERTIFICATE_WILL_EXPIRE">
+					<xsd:annotation>
+						<xsd:documentation>VTYPE_CERTIFICATE_WILL_EXPIRE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="VTYPE_CERTIFICATE_INVALID">
+					<xsd:annotation>
+						<xsd:documentation>VTYPE_CERTIFICATE_INVALID</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.KeyCertificate.CertificateRequestInformation">
+			<xsd:sequence>
+				<xsd:element name="csr_info" type="tns:Management.KeyCertificate.CertificateRequest"/>
+				<xsd:element name="title" type="xsd:string"/>
+				<xsd:element name="serial_number" type="xsd:string"/>
+				<xsd:element name="file_name" type="xsd:string"/>
+				<xsd:element name="key_type" type="tns:Management.KeyCertificate.KeyType"/>
+				<xsd:element name="bit_length" type="xsd:long"/>
+				<xsd:element name="subject" type="tns:Management.KeyCertificate.X509Data"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.ULongSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.KeyCertificate.CertificateDetailSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.KeyCertificate.CertificateDetailSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.KeyCertificate.CertificateDetailSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.KeyCertificate.CertificateDetail[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.KeyCertificate.KeyTypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.KeyCertificate.KeyType[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.KeyCertificate.KeyInformationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.KeyCertificate.KeyInformation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:string[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.KeyCertificate.CertificateRequest">
+			<xsd:sequence>
+				<xsd:element name="id" type="xsd:string"/>
+				<xsd:element name="email" type="xsd:string"/>
+				<xsd:element name="challenge_password" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Common.BooleanSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:boolean[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.KeyCertificate.KeySequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.KeyCertificate.Key[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.ULongSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='xsd:long[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.KeyCertificate.ManagementModeType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="MANAGEMENT_MODE_DEFAULT">
+					<xsd:annotation>
+						<xsd:documentation>MANAGEMENT_MODE_DEFAULT</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="MANAGEMENT_MODE_WEBSERVER">
+					<xsd:annotation>
+						<xsd:documentation>MANAGEMENT_MODE_WEBSERVER</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="MANAGEMENT_MODE_EM">
+					<xsd:annotation>
+						<xsd:documentation>MANAGEMENT_MODE_EM</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="MANAGEMENT_MODE_IQUERY">
+					<xsd:annotation>
+						<xsd:documentation>MANAGEMENT_MODE_IQUERY</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="MANAGEMENT_MODE_IQUERY_BIG3D">
+					<xsd:annotation>
+						<xsd:documentation>MANAGEMENT_MODE_IQUERY_BIG3D</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="MANAGEMENT_MODE_APACHE">
+					<xsd:annotation>
+						<xsd:documentation>MANAGEMENT_MODE_APACHE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.KeyCertificate.CertificateInformationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.KeyCertificate.CertificateInformation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.KeyCertificate.X509DataSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.KeyCertificate.X509Data[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.KeyCertificate.SecurityType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="STYPE_NORMAL">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_NORMAL</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_FIPS">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_FIPS</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="STYPE_PASSWORD">
+					<xsd:annotation>
+						<xsd:documentation>STYPE_PASSWORD</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.KeyCertificate.CertificateDetail">
+			<xsd:sequence>
+				<xsd:element name="cert_info" type="tns:Management.KeyCertificate.Certificate"/>
+				<xsd:element name="cert_type" type="tns:Management.KeyCertificate.CertificateType"/>
+				<xsd:element name="key_type" type="tns:Management.KeyCertificate.KeyType"/>
+				<xsd:element name="bit_length" type="xsd:long"/>
+				<xsd:element name="version" type="xsd:long"/>
+				<xsd:element name="serial_number" type="xsd:string"/>
+				<xsd:element name="expiration_string" type="xsd:string"/>
+				<xsd:element name="expiration_date" type="xsd:long"/>
+				<xsd:element name="subject" type="tns:Management.KeyCertificate.X509Data"/>
+				<xsd:element name="issuer" type="tns:Management.KeyCertificate.X509Data"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.KeyCertificate.CertificateInformation">
+			<xsd:sequence>
+				<xsd:element name="is_bundled" type="xsd:boolean"/>
+				<xsd:element name="file_name" type="xsd:string"/>
+				<xsd:element name="certificate" type="tns:Management.KeyCertificate.CertificateDetail"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.KeyCertificate.CertificateRequestSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.KeyCertificate.CertificateRequest[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Common.StringSequenceSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Common.StringSequence[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.KeyCertificate.X509Data">
+			<xsd:sequence>
+				<xsd:element name="common_name" type="xsd:string"/>
+				<xsd:element name="country_name" type="xsd:string"/>
+				<xsd:element name="state_name" type="xsd:string"/>
+				<xsd:element name="locality_name" type="xsd:string"/>
+				<xsd:element name="organization_name" type="xsd:string"/>
+				<xsd:element name="division_name" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:simpleType name="Management.KeyCertificate.CertificateType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="CTYPE_CA_SIGNED_YES">
+					<xsd:annotation>
+						<xsd:documentation>CTYPE_CA_SIGNED_YES</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CTYPE_CA_SIGNED_NO">
+					<xsd:annotation>
+						<xsd:documentation>CTYPE_CA_SIGNED_NO</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="CTYPE_CA_SIGNED_UNKNOWN">
+					<xsd:annotation>
+						<xsd:documentation>CTYPE_CA_SIGNED_UNKNOWN</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:simpleType name="Management.KeyCertificate.KeyType">
+			<xsd:restriction base="xsd:string">
+				<xsd:enumeration value="KTYPE_RSA_PRIVATE">
+					<xsd:annotation>
+						<xsd:documentation>KTYPE_RSA_PRIVATE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="KTYPE_RSA_PUBLIC">
+					<xsd:annotation>
+						<xsd:documentation>KTYPE_RSA_PUBLIC</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="KTYPE_DSA_PRIVATE">
+					<xsd:annotation>
+						<xsd:documentation>KTYPE_DSA_PRIVATE</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+				<xsd:enumeration value="KTYPE_DSA_PUBLIC">
+					<xsd:annotation>
+						<xsd:documentation>KTYPE_DSA_PUBLIC</xsd:documentation>
+					</xsd:annotation>
+				</xsd:enumeration>
+			</xsd:restriction>
+		</xsd:simpleType>
+		<xsd:complexType name="Management.KeyCertificate.CertificateRequestInformationSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.KeyCertificate.CertificateRequestInformation[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.KeyCertificate.Certificate">
+			<xsd:sequence>
+				<xsd:element name="id" type="xsd:string"/>
+				<xsd:element name="email" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.KeyCertificate.KeyInformation">
+			<xsd:sequence>
+				<xsd:element name="key_info" type="tns:Management.KeyCertificate.Key"/>
+				<xsd:element name="file_name" type="xsd:string"/>
+				<xsd:element name="flags" type="xsd:long"/>
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="Management.KeyCertificate.ValidityTypeSequence">
+			<xsd:complexContent>
+				<xsd:restriction base='SOAP-ENC:Array'>
+					<xsd:attribute ref='SOAP-ENC:arrayType' wsdl:arrayType='tns:Management.KeyCertificate.ValidityType[]'/>
+				</xsd:restriction>
+			</xsd:complexContent>
+		</xsd:complexType>
+		<xsd:complexType name="Management.KeyCertificate.Key">
+			<xsd:sequence>
+				<xsd:element name="id" type="xsd:string"/>
+				<xsd:element name="key_type" type="tns:Management.KeyCertificate.KeyType"/>
+				<xsd:element name="bit_length" type="xsd:long"/>
+				<xsd:element name="security" type="tns:Management.KeyCertificate.SecurityType"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:schema>
+</types>
+
+<!-- message -->
+
+<message name="Management.KeyCertificate.is_fips_availableRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+</message>
+<message name="Management.KeyCertificate.is_fips_availableResponse">
+	<part name="return" type="xsd:boolean"/>
+</message>
+
+<message name="Management.KeyCertificate.get_key_listRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+</message>
+<message name="Management.KeyCertificate.get_key_listResponse">
+	<part name="return" type="tns:Management.KeyCertificate.KeyInformationSequence"/>
+</message>
+
+<message name="Management.KeyCertificate.key_generateRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="keys" type="tns:Management.KeyCertificate.KeySequence"/>
+	<part name="x509_data" type="tns:Management.KeyCertificate.X509DataSequence"/>
+	<part name="create_optional_cert_csr" type="xsd:boolean"/>
+	<part name="overwrite" type="xsd:boolean"/>
+</message>
+<message name="Management.KeyCertificate.key_generateResponse">
+</message>
+
+<message name="Management.KeyCertificate.key_import_from_pemRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="key_ids" type="tns:Common.StringSequence"/>
+	<part name="pem_data" type="tns:Common.StringSequence"/>
+	<part name="overwrite" type="xsd:boolean"/>
+</message>
+<message name="Management.KeyCertificate.key_import_from_pemResponse">
+</message>
+
+<message name="Management.KeyCertificate.key_import_from_fileRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="key_ids" type="tns:Common.StringSequence"/>
+	<part name="file_names" type="tns:Common.StringSequence"/>
+	<part name="overwrite" type="xsd:boolean"/>
+</message>
+<message name="Management.KeyCertificate.key_import_from_fileResponse">
+</message>
+
+<message name="Management.KeyCertificate.key_export_to_pemRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="key_ids" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.KeyCertificate.key_export_to_pemResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.KeyCertificate.key_export_to_fileRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="key_ids" type="tns:Common.StringSequence"/>
+	<part name="file_names" type="tns:Common.StringSequence"/>
+	<part name="overwrite" type="xsd:boolean"/>
+</message>
+<message name="Management.KeyCertificate.key_export_to_fileResponse">
+</message>
+
+<message name="Management.KeyCertificate.key_deleteRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="key_ids" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.KeyCertificate.key_deleteResponse">
+</message>
+
+<message name="Management.KeyCertificate.key_to_fipsRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="key_ids" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.KeyCertificate.key_to_fipsResponse">
+</message>
+
+<message name="Management.KeyCertificate.get_certificate_listRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+</message>
+<message name="Management.KeyCertificate.get_certificate_listResponse">
+	<part name="return" type="tns:Management.KeyCertificate.CertificateInformationSequence"/>
+</message>
+
+<message name="Management.KeyCertificate.get_certificate_bundleRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="file_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.KeyCertificate.get_certificate_bundleResponse">
+	<part name="return" type="tns:Management.KeyCertificate.CertificateDetailSequenceSequence"/>
+</message>
+
+<message name="Management.KeyCertificate.get_certificate_subject_alternative_name_bundleRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="file_names" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.KeyCertificate.get_certificate_subject_alternative_name_bundleResponse">
+	<part name="return" type="tns:Common.StringSequenceSequence"/>
+</message>
+
+<message name="Management.KeyCertificate.certificate_add_pem_to_bundleRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="cert_ids" type="tns:Common.StringSequence"/>
+	<part name="pem_data" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.KeyCertificate.certificate_add_pem_to_bundleResponse">
+</message>
+
+<message name="Management.KeyCertificate.certificate_add_file_to_bundleRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="cert_ids" type="tns:Common.StringSequence"/>
+	<part name="certificate_files" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.KeyCertificate.certificate_add_file_to_bundleResponse">
+</message>
+
+<message name="Management.KeyCertificate.certificate_delete_from_bundleRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="cert_ids" type="tns:Common.StringSequence"/>
+	<part name="x509_data" type="tns:Management.KeyCertificate.X509DataSequence"/>
+</message>
+<message name="Management.KeyCertificate.certificate_delete_from_bundleResponse">
+</message>
+
+<message name="Management.KeyCertificate.certificate_generateRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="certs" type="tns:Management.KeyCertificate.CertificateSequence"/>
+	<part name="x509_data" type="tns:Management.KeyCertificate.X509DataSequence"/>
+	<part name="lifetime_days" type="tns:Common.ULongSequence"/>
+	<part name="overwrite" type="xsd:boolean"/>
+</message>
+<message name="Management.KeyCertificate.certificate_generateResponse">
+</message>
+
+<message name="Management.KeyCertificate.certificate_import_from_pemRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="cert_ids" type="tns:Common.StringSequence"/>
+	<part name="pem_data" type="tns:Common.StringSequence"/>
+	<part name="overwrite" type="xsd:boolean"/>
+</message>
+<message name="Management.KeyCertificate.certificate_import_from_pemResponse">
+</message>
+
+<message name="Management.KeyCertificate.certificate_import_from_fileRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="cert_ids" type="tns:Common.StringSequence"/>
+	<part name="file_names" type="tns:Common.StringSequence"/>
+	<part name="overwrite" type="xsd:boolean"/>
+</message>
+<message name="Management.KeyCertificate.certificate_import_from_fileResponse">
+</message>
+
+<message name="Management.KeyCertificate.certificate_export_to_pemRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="cert_ids" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.KeyCertificate.certificate_export_to_pemResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.KeyCertificate.certificate_export_to_fileRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="cert_ids" type="tns:Common.StringSequence"/>
+	<part name="file_names" type="tns:Common.StringSequence"/>
+	<part name="overwrite" type="xsd:boolean"/>
+</message>
+<message name="Management.KeyCertificate.certificate_export_to_fileResponse">
+</message>
+
+<message name="Management.KeyCertificate.certificate_deleteRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="cert_ids" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.KeyCertificate.certificate_deleteResponse">
+</message>
+
+<message name="Management.KeyCertificate.certificate_check_validityRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="cert_ids" type="tns:Common.StringSequence"/>
+	<part name="watermark_days" type="tns:Common.ULongSequence"/>
+</message>
+<message name="Management.KeyCertificate.certificate_check_validityResponse">
+	<part name="return" type="tns:Management.KeyCertificate.ValidityTypeSequence"/>
+</message>
+
+<message name="Management.KeyCertificate.certificate_bindRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="cert_ids" type="tns:Common.StringSequence"/>
+	<part name="key_ids" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.KeyCertificate.certificate_bindResponse">
+</message>
+
+<message name="Management.KeyCertificate.get_certificate_request_listRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+</message>
+<message name="Management.KeyCertificate.get_certificate_request_listResponse">
+	<part name="return" type="tns:Management.KeyCertificate.CertificateRequestInformationSequence"/>
+</message>
+
+<message name="Management.KeyCertificate.certificate_request_generateRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="csrs" type="tns:Management.KeyCertificate.CertificateRequestSequence"/>
+	<part name="x509_data" type="tns:Management.KeyCertificate.X509DataSequence"/>
+	<part name="overwrite" type="xsd:boolean"/>
+</message>
+<message name="Management.KeyCertificate.certificate_request_generateResponse">
+</message>
+
+<message name="Management.KeyCertificate.certificate_request_import_from_pemRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="csr_ids" type="tns:Common.StringSequence"/>
+	<part name="pem_data" type="tns:Common.StringSequence"/>
+	<part name="overwrite" type="xsd:boolean"/>
+</message>
+<message name="Management.KeyCertificate.certificate_request_import_from_pemResponse">
+</message>
+
+<message name="Management.KeyCertificate.certificate_request_import_from_fileRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="csr_ids" type="tns:Common.StringSequence"/>
+	<part name="file_names" type="tns:Common.StringSequence"/>
+	<part name="overwrite" type="xsd:boolean"/>
+</message>
+<message name="Management.KeyCertificate.certificate_request_import_from_fileResponse">
+</message>
+
+<message name="Management.KeyCertificate.certificate_request_export_to_pemRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="csr_ids" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.KeyCertificate.certificate_request_export_to_pemResponse">
+	<part name="return" type="tns:Common.StringSequence"/>
+</message>
+
+<message name="Management.KeyCertificate.certificate_request_export_to_fileRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="csr_ids" type="tns:Common.StringSequence"/>
+	<part name="file_names" type="tns:Common.StringSequence"/>
+	<part name="overwrite" type="xsd:boolean"/>
+</message>
+<message name="Management.KeyCertificate.certificate_request_export_to_fileResponse">
+</message>
+
+<message name="Management.KeyCertificate.certificate_request_deleteRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="csr_ids" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.KeyCertificate.certificate_request_deleteResponse">
+</message>
+
+<message name="Management.KeyCertificate.pkcs12_import_from_fileRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="ids" type="tns:Common.StringSequence"/>
+	<part name="file_names" type="tns:Common.StringSequence"/>
+	<part name="passwords" type="tns:Common.StringSequence"/>
+	<part name="overwrite" type="xsd:boolean"/>
+</message>
+<message name="Management.KeyCertificate.pkcs12_import_from_fileResponse">
+</message>
+
+<message name="Management.KeyCertificate.export_all_to_archive_fileRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="archive_location" type="xsd:string"/>
+	<part name="archive_name" type="xsd:string"/>
+</message>
+<message name="Management.KeyCertificate.export_all_to_archive_fileResponse">
+</message>
+
+<message name="Management.KeyCertificate.import_all_from_archive_fileRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="archive_location" type="xsd:string"/>
+	<part name="archive_name" type="xsd:string"/>
+</message>
+<message name="Management.KeyCertificate.import_all_from_archive_fileResponse">
+</message>
+
+<message name="Management.KeyCertificate.export_all_to_archive_streamRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+</message>
+<message name="Management.KeyCertificate.export_all_to_archive_streamResponse">
+	<part name="return" type="tns:Common.OctetSequence"/>
+</message>
+
+<message name="Management.KeyCertificate.import_all_from_archive_streamRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="archive_stream" type="tns:Common.OctetSequence"/>
+</message>
+<message name="Management.KeyCertificate.import_all_from_archive_streamResponse">
+</message>
+
+<message name="Management.KeyCertificate.export_to_archive_fileRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="archive_location" type="xsd:string"/>
+	<part name="archive_name" type="xsd:string"/>
+	<part name="keys" type="tns:Common.StringSequence"/>
+	<part name="certs" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.KeyCertificate.export_to_archive_fileResponse">
+</message>
+
+<message name="Management.KeyCertificate.import_from_archive_fileRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="archive_location" type="xsd:string"/>
+	<part name="archive_name" type="xsd:string"/>
+	<part name="keys" type="tns:Common.StringSequence"/>
+	<part name="certs" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.KeyCertificate.import_from_archive_fileResponse">
+</message>
+
+<message name="Management.KeyCertificate.export_to_archive_streamRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="keys" type="tns:Common.StringSequence"/>
+	<part name="certs" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.KeyCertificate.export_to_archive_streamResponse">
+	<part name="return" type="tns:Common.OctetSequence"/>
+</message>
+
+<message name="Management.KeyCertificate.import_from_archive_streamRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="archive_stream" type="tns:Common.OctetSequence"/>
+	<part name="keys" type="tns:Common.StringSequence"/>
+	<part name="certs" type="tns:Common.StringSequence"/>
+</message>
+<message name="Management.KeyCertificate.import_from_archive_streamResponse">
+</message>
+
+<message name="Management.KeyCertificate.get_valid_key_sizesRequest">
+	<part name="mode" type="tns:Management.KeyCertificate.ManagementModeType"/>
+	<part name="key_types" type="tns:Management.KeyCertificate.KeyTypeSequence"/>
+	<part name="fips" type="tns:Common.BooleanSequence"/>
+</message>
+<message name="Management.KeyCertificate.get_valid_key_sizesResponse">
+	<part name="return" type="tns:Common.ULongSequenceSequence"/>
+</message>
+
+<message name="Management.KeyCertificate.get_versionRequest">
+</message>
+<message name="Management.KeyCertificate.get_versionResponse">
+	<part name="return" type="xsd:string"/>
+</message>
+
+<!-- portType -->
+
+<portType name="Management.KeyCertificatePortType">
+	<operation name="is_fips_available">
+       	<documentation>
+ Checks to see if the device supports FIPS security.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.is_fips_availableRequest"/>
+		<output message="tns:Management.KeyCertificate.is_fips_availableResponse"/>
+	</operation>
+	<operation name="get_key_list">
+	<documentation>
+ Gets the list of all installed keys and their information.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.get_key_listRequest"/>
+		<output message="tns:Management.KeyCertificate.get_key_listResponse"/>
+	</operation>
+	<operation name="key_generate">
+	<documentation>
+ Generates the specified keys.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.key_generateRequest"/>
+		<output message="tns:Management.KeyCertificate.key_generateResponse"/>
+	</operation>
+	<operation name="key_import_from_pem">
+	<documentation>
+ Imports/installs the specified keys from the given PEM-formatted data.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.key_import_from_pemRequest"/>
+		<output message="tns:Management.KeyCertificate.key_import_from_pemResponse"/>
+	</operation>
+	<operation name="key_import_from_file">
+	<documentation>
+ Imports/installs the specified keys from the given files.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.key_import_from_fileRequest"/>
+		<output message="tns:Management.KeyCertificate.key_import_from_fileResponse"/>
+	</operation>
+	<operation name="key_export_to_pem">
+	<documentation>
+ Exports the specified keys to PEM-formatted data.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.key_export_to_pemRequest"/>
+		<output message="tns:Management.KeyCertificate.key_export_to_pemResponse"/>
+	</operation>
+	<operation name="key_export_to_file">
+	<documentation>
+ Exports the specified keys to the given files.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.key_export_to_fileRequest"/>
+		<output message="tns:Management.KeyCertificate.key_export_to_fileResponse"/>
+	</operation>
+	<operation name="key_delete">
+	<documentation>
+ Deletes/uninstalls the specified keys.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.key_deleteRequest"/>
+		<output message="tns:Management.KeyCertificate.key_deleteResponse"/>
+	</operation>
+	<operation name="key_to_fips">
+	<documentation>
+ Converts the specified keys to FIPS-enabled keys.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.key_to_fipsRequest"/>
+		<output message="tns:Management.KeyCertificate.key_to_fipsResponse"/>
+	</operation>
+	<operation name="get_certificate_list">
+	<documentation>
+ Gets the list of all installed certificates and their information.  If there's 
+ a certificate bundle, only the first certificate in the bundle is returned, and
+ and is_bundle flag will be set to true for the correponding bundle file name.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.get_certificate_listRequest"/>
+		<output message="tns:Management.KeyCertificate.get_certificate_listResponse"/>
+	</operation>
+	<operation name="get_certificate_bundle">
+	<documentation>
+ Gets the list of all certificates bundled in the certificate files as 
+ specified by the file_names.  Each file_name will contain multiple certficates.
+ Note: only call this method when the results of get_certificate_list indicate
+ that there are multiple certificates bundled in a particular file.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.get_certificate_bundleRequest"/>
+		<output message="tns:Management.KeyCertificate.get_certificate_bundleResponse"/>
+	</operation>
+	<operation name="get_certificate_subject_alternative_name_bundle">
+	<documentation>
+ Gets the list of all certificate subject alternative names bundled in the certificate files as
+ specified by the file_names.  Each file_name will contain multiple certficate subject alternative
+ names.
+ Note: only call this method when the results of get_certificate_list indicate
+ that there are multiple certificats bundled in a particular file.
+
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.get_certificate_subject_alternative_name_bundleRequest"/>
+		<output message="tns:Management.KeyCertificate.get_certificate_subject_alternative_name_bundleResponse"/>
+	</operation>
+	<operation name="certificate_add_pem_to_bundle">
+	<documentation>
+ Adds certificates identified by "pem_data" to the certificate bundles, which are presumed
+ to exist already. Each of the original certificate bundle can theoretically be a normal
+ certificate, i.e. a certificate bundle of one. After the add operation, the bundles will
+ contain more than one certificate.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.certificate_add_pem_to_bundleRequest"/>
+		<output message="tns:Management.KeyCertificate.certificate_add_pem_to_bundleResponse"/>
+	</operation>
+	<operation name="certificate_add_file_to_bundle">
+	<documentation>
+ Adds certificates identified by "certificate_files" to the certificate bundles, which are 
+ presumed to exist already. Each of the original certificate bundle can theoretically be a 
+ normal certificate, i.e. a certificate bundle of one. After the add operation, the bundles 
+ will contain more than one certificate.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.certificate_add_file_to_bundleRequest"/>
+		<output message="tns:Management.KeyCertificate.certificate_add_file_to_bundleResponse"/>
+	</operation>
+	<operation name="certificate_delete_from_bundle">
+	<documentation>
+ Deletes certificates, identified by their subject's X509 data, from the certificate bundles.
+ If the last certificate has been deleted from the bundle, the certificate file will 
+ automatically be deleted.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.certificate_delete_from_bundleRequest"/>
+		<output message="tns:Management.KeyCertificate.certificate_delete_from_bundleResponse"/>
+	</operation>
+	<operation name="certificate_generate">
+	<documentation>
+ Generates the specified certificates.  This assumes that each of the associated keys,
+ having the same identification as each certificate, has already been created.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.certificate_generateRequest"/>
+		<output message="tns:Management.KeyCertificate.certificate_generateResponse"/>
+	</operation>
+	<operation name="certificate_import_from_pem">
+	<documentation>
+ Imports/installs the specified certificates from the given PEM-formatted data.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.certificate_import_from_pemRequest"/>
+		<output message="tns:Management.KeyCertificate.certificate_import_from_pemResponse"/>
+	</operation>
+	<operation name="certificate_import_from_file">
+	<documentation>
+ Imports/installs the specified certificates from the given files.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.certificate_import_from_fileRequest"/>
+		<output message="tns:Management.KeyCertificate.certificate_import_from_fileResponse"/>
+	</operation>
+	<operation name="certificate_export_to_pem">
+	<documentation>
+ Exports the specified certificates to PEM-formatted data.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.certificate_export_to_pemRequest"/>
+		<output message="tns:Management.KeyCertificate.certificate_export_to_pemResponse"/>
+	</operation>
+	<operation name="certificate_export_to_file">
+	<documentation>
+ Exports the specified certificates to the given files.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.certificate_export_to_fileRequest"/>
+		<output message="tns:Management.KeyCertificate.certificate_export_to_fileResponse"/>
+	</operation>
+	<operation name="certificate_delete">
+	<documentation>
+ Deletes/uninstalls the specified certificates.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.certificate_deleteRequest"/>
+		<output message="tns:Management.KeyCertificate.certificate_deleteResponse"/>
+	</operation>
+	<operation name="certificate_check_validity">
+	<documentation>
+ Gets the validity of the specified certificates.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.certificate_check_validityRequest"/>
+		<output message="tns:Management.KeyCertificate.certificate_check_validityResponse"/>
+	</operation>
+	<operation name="certificate_bind">
+	<documentation>
+ Binds/associates the specified keys and certificates.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.certificate_bindRequest"/>
+		<output message="tns:Management.KeyCertificate.certificate_bindResponse"/>
+	</operation>
+	<operation name="get_certificate_request_list">
+	<documentation>
+ Gets the list of all CSRs and their information.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.get_certificate_request_listRequest"/>
+		<output message="tns:Management.KeyCertificate.get_certificate_request_listResponse"/>
+	</operation>
+	<operation name="certificate_request_generate">
+	<documentation>
+ Generates the specified certificate signing requests.  This assumes that each of the 
+ associated keys, having the same identification as each certificate request, has 
+ already been created.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.certificate_request_generateRequest"/>
+		<output message="tns:Management.KeyCertificate.certificate_request_generateResponse"/>
+	</operation>
+	<operation name="certificate_request_import_from_pem">
+	<documentation>
+ Imports/installs the specified certificate requests from the given PEM-formatted data.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.certificate_request_import_from_pemRequest"/>
+		<output message="tns:Management.KeyCertificate.certificate_request_import_from_pemResponse"/>
+	</operation>
+	<operation name="certificate_request_import_from_file">
+	<documentation>
+ Imports/installs the specified certificate requests from the given files.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.certificate_request_import_from_fileRequest"/>
+		<output message="tns:Management.KeyCertificate.certificate_request_import_from_fileResponse"/>
+	</operation>
+	<operation name="certificate_request_export_to_pem">
+	<documentation>
+ Exports the specified certificate requests to PEM-formatted data.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.certificate_request_export_to_pemRequest"/>
+		<output message="tns:Management.KeyCertificate.certificate_request_export_to_pemResponse"/>
+	</operation>
+	<operation name="certificate_request_export_to_file">
+	<documentation>
+ Exports the specified certificate requests to the given files.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.certificate_request_export_to_fileRequest"/>
+		<output message="tns:Management.KeyCertificate.certificate_request_export_to_fileResponse"/>
+	</operation>
+	<operation name="certificate_request_delete">
+	<documentation>
+ Deletes the specified CSRs.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.certificate_request_deleteRequest"/>
+		<output message="tns:Management.KeyCertificate.certificate_request_deleteResponse"/>
+	</operation>
+	<operation name="pkcs12_import_from_file">
+	<documentation>
+ Imports/installs the specified pkcs12 (Public Key
+ Cryptography Standard #12) information from the given
+ files. This includes keys and certificates, and each file
+ is optionally password-encrypted.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.pkcs12_import_from_fileRequest"/>
+		<output message="tns:Management.KeyCertificate.pkcs12_import_from_fileResponse"/>
+	</operation>
+	<operation name="export_all_to_archive_file">
+	<documentation>
+ Exports all currently installed keys and certificates into the specified archive file.
+ The archive file is a .tgz file that will contain all keys and certificates.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.export_all_to_archive_fileRequest"/>
+		<output message="tns:Management.KeyCertificate.export_all_to_archive_fileResponse"/>
+	</operation>
+	<operation name="import_all_from_archive_file">
+	<documentation>
+ Imports/installs all keys and certificates from the specified archive file.
+ The archive file should be a .tgz file that contains all keys and certificates.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.import_all_from_archive_fileRequest"/>
+		<output message="tns:Management.KeyCertificate.import_all_from_archive_fileResponse"/>
+	</operation>
+	<operation name="export_all_to_archive_stream">
+	<documentation>
+ Exports all currently installed keys and certificates into the returned archive stream.
+ The returned archive stream is basically the contents of a .tgz file that contains 
+ all keys and certificates.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.export_all_to_archive_streamRequest"/>
+		<output message="tns:Management.KeyCertificate.export_all_to_archive_streamResponse"/>
+	</operation>
+	<operation name="import_all_from_archive_stream">
+	<documentation>
+ Imports/installs all keys and certificates from the incoming archive stream.
+ The archive stream should be the contents of a .tgz file that contains all 
+ keys and certificates.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.import_all_from_archive_streamRequest"/>
+		<output message="tns:Management.KeyCertificate.import_all_from_archive_streamResponse"/>
+	</operation>
+	<operation name="export_to_archive_file">
+	<documentation>
+ Exports the specified keys and certificates into the specified archive file.
+ The archive file is a .tgz file that will contain only the specified keys and 
+ certificates that have been exported.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.export_to_archive_fileRequest"/>
+		<output message="tns:Management.KeyCertificate.export_to_archive_fileResponse"/>
+	</operation>
+	<operation name="import_from_archive_file">
+	<documentation>
+ Imports/installs the specified keys and certificates from the specified archive file.
+ The archive file should be a .tgz file that may contain more keys and certificates 
+ than what will be imported/installed.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.import_from_archive_fileRequest"/>
+		<output message="tns:Management.KeyCertificate.import_from_archive_fileResponse"/>
+	</operation>
+	<operation name="export_to_archive_stream">
+	<documentation>
+ Exports the specified keys and certificates into the returned archive stream.
+ The returned archive stream is basically the contents of a .tgz file that contains 
+ the exported keys and certificates.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.export_to_archive_streamRequest"/>
+		<output message="tns:Management.KeyCertificate.export_to_archive_streamResponse"/>
+	</operation>
+	<operation name="import_from_archive_stream">
+	<documentation>
+ Imports/installs the specified keys and certificates from the incoming archive stream.
+ The archive stream should be the contents of a .tgz file that may contain more keys 
+ and certificates than what will be imported/installed.
+ 
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.import_from_archive_streamRequest"/>
+		<output message="tns:Management.KeyCertificate.import_from_archive_streamResponse"/>
+	</operation>
+	<operation name="get_valid_key_sizes">
+	<documentation>
+ Gets a list of valid key sizes for specified key types.
+
+ The valid key sizes are bit-lengths of keys that are
+ supported by the system.  For example, 1024 and 2048 mean
+ 128-byte and 256-byte RSA key sizes.  These sizes are used
+ when generating or importing a key.
+
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.get_valid_key_sizesRequest"/>
+		<output message="tns:Management.KeyCertificate.get_valid_key_sizesResponse"/>
+	</operation>
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<input message="tns:Management.KeyCertificate.get_versionRequest"/>
+		<output message="tns:Management.KeyCertificate.get_versionResponse"/>
+	</operation>
+</portType>
+
+<!-- binding -->
+
+<binding name="Management.KeyCertificateBinding" type="tns:Management.KeyCertificatePortType">
+	<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+	<operation name="is_fips_available">
+	<documentation>
+ Checks to see if the device supports FIPS security.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_key_list">
+	<documentation>
+ Gets the list of all installed keys and their information.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="key_generate">
+	<documentation>
+ Generates the specified keys.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="key_import_from_pem">
+	<documentation>
+ Imports/installs the specified keys from the given PEM-formatted data.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="key_import_from_file">
+	<documentation>
+ Imports/installs the specified keys from the given files.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="key_export_to_pem">
+	<documentation>
+ Exports the specified keys to PEM-formatted data.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="key_export_to_file">
+	<documentation>
+ Exports the specified keys to the given files.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="key_delete">
+	<documentation>
+ Deletes/uninstalls the specified keys.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="key_to_fips">
+	<documentation>
+ Converts the specified keys to FIPS-enabled keys.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_certificate_list">
+	<documentation>
+ Gets the list of all installed certificates and their information.  If there's 
+ a certificate bundle, only the first certificate in the bundle is returned, and
+ and is_bundle flag will be set to true for the correponding bundle file name.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_certificate_bundle">
+	<documentation>
+ Gets the list of all certificates bundled in the certificate files as 
+ specified by the file_names.  Each file_name will contain multiple certficates.
+ Note: only call this method when the results of get_certificate_list indicate
+ that there are multiple certificates bundled in a particular file.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_certificate_subject_alternative_name_bundle">
+	<documentation>
+ Gets the list of all certificate subject alternative names bundled in the certificate files as
+ specified by the file_names.  Each file_name will contain multiple certficate subject alternative
+ names.
+ Note: only call this method when the results of get_certificate_list indicate
+ that there are multiple certificats bundled in a particular file.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="certificate_add_pem_to_bundle">
+	<documentation>
+ Adds certificates identified by "pem_data" to the certificate bundles, which are presumed
+ to exist already. Each of the original certificate bundle can theoretically be a normal
+ certificate, i.e. a certificate bundle of one. After the add operation, the bundles will
+ contain more than one certificate.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="certificate_add_file_to_bundle">
+	<documentation>
+ Adds certificates identified by "certificate_files" to the certificate bundles, which are 
+ presumed to exist already. Each of the original certificate bundle can theoretically be a 
+ normal certificate, i.e. a certificate bundle of one. After the add operation, the bundles 
+ will contain more than one certificate.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="certificate_delete_from_bundle">
+	<documentation>
+ Deletes certificates, identified by their subject's X509 data, from the certificate bundles.
+ If the last certificate has been deleted from the bundle, the certificate file will 
+ automatically be deleted.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="certificate_generate">
+	<documentation>
+ Generates the specified certificates.  This assumes that each of the associated keys,
+ having the same identification as each certificate, has already been created.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="certificate_import_from_pem">
+	<documentation>
+ Imports/installs the specified certificates from the given PEM-formatted data.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="certificate_import_from_file">
+	<documentation>
+ Imports/installs the specified certificates from the given files.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="certificate_export_to_pem">
+	<documentation>
+ Exports the specified certificates to PEM-formatted data.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="certificate_export_to_file">
+	<documentation>
+ Exports the specified certificates to the given files.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="certificate_delete">
+	<documentation>
+ Deletes/uninstalls the specified certificates.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="certificate_check_validity">
+	<documentation>
+ Gets the validity of the specified certificates.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="certificate_bind">
+	<documentation>
+ Binds/associates the specified keys and certificates.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_certificate_request_list">
+	<documentation>
+ Gets the list of all CSRs and their information.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="certificate_request_generate">
+	<documentation>
+ Generates the specified certificate signing requests.  This assumes that each of the 
+ associated keys, having the same identification as each certificate request, has 
+ already been created.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="certificate_request_import_from_pem">
+	<documentation>
+ Imports/installs the specified certificate requests from the given PEM-formatted data.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="certificate_request_import_from_file">
+	<documentation>
+ Imports/installs the specified certificate requests from the given files.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="certificate_request_export_to_pem">
+	<documentation>
+ Exports the specified certificate requests to PEM-formatted data.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="certificate_request_export_to_file">
+	<documentation>
+ Exports the specified certificate requests to the given files.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="certificate_request_delete">
+	<documentation>
+ Deletes the specified CSRs.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="pkcs12_import_from_file">
+	<documentation>
+ Imports/installs the specified pkcs12 (Public Key
+ Cryptography Standard #12) information from the given
+ files. This includes keys and certificates, and each file
+ is optionally password-encrypted.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="export_all_to_archive_file">
+	<documentation>
+ Exports all currently installed keys and certificates into the specified archive file.
+ The archive file is a .tgz file that will contain all keys and certificates.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="import_all_from_archive_file">
+	<documentation>
+ Imports/installs all keys and certificates from the specified archive file.
+ The archive file should be a .tgz file that contains all keys and certificates.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="export_all_to_archive_stream">
+	<documentation>
+ Exports all currently installed keys and certificates into the returned archive stream.
+ The returned archive stream is basically the contents of a .tgz file that contains 
+ all keys and certificates.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="import_all_from_archive_stream">
+	<documentation>
+ Imports/installs all keys and certificates from the incoming archive stream.
+ The archive stream should be the contents of a .tgz file that contains all 
+ keys and certificates.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="export_to_archive_file">
+	<documentation>
+ Exports the specified keys and certificates into the specified archive file.
+ The archive file is a .tgz file that will contain only the specified keys and 
+ certificates that have been exported.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="import_from_archive_file">
+	<documentation>
+ Imports/installs the specified keys and certificates from the specified archive file.
+ The archive file should be a .tgz file that may contain more keys and certificates 
+ than what will be imported/installed.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="export_to_archive_stream">
+	<documentation>
+ Exports the specified keys and certificates into the returned archive stream.
+ The returned archive stream is basically the contents of a .tgz file that contains 
+ the exported keys and certificates.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="import_from_archive_stream">
+	<documentation>
+ Imports/installs the specified keys and certificates from the incoming archive stream.
+ The archive stream should be the contents of a .tgz file that may contain more keys 
+ and certificates than what will be imported/installed.
+ 
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_valid_key_sizes">
+	<documentation>
+ Gets a list of valid key sizes for specified key types.
+
+ The valid key sizes are bit-lengths of keys that are
+ supported by the system.  For example, 1024 and 2048 mean
+ 128-byte and 256-byte RSA key sizes.  These sizes are used
+ when generating or importing a key.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+
+	<operation name="get_version">
+	<documentation>
+ Gets the version information for this interface.
+
+        	</documentation>
+		<soap:operation soapAction="urn:iControl:Management/KeyCertificate"/>
+		<input>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</input>
+		<output>
+			<soap:body
+				use="encoded"
+				namespace="urn:iControl:Management/KeyCertificate"
+				encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+		</output>
+	</operation>
+</binding>
+
+<!-- service -->
+
+<service name="Management.KeyCertificate">
+	<documentation>
+ The KeyCertificate interface exposes methods that enable you to manage keys, certificates,
+ and certificate requests.  All methods in this interface are atomic operations, such that 
+ each operation involves creating a session context with the key/certificate management 
+ library, performing the required action, and cleaning up and/or destroying the session 
+ context when completed.  Therefore, all operations are stateless.
+
+ Note that all operations on keys, certificates, and certificate requests are performed in 
+ the directory location containing keys, certs, csr's... as structured for Apache, which is 
+ currently /config/ssl.  For archiving operations, you have the option of exporting
+ or importing archives to/from other locations.  If the location is not specified, the default
+ location of /config/ssl will be used.
+
+ This interface does not support transactions.
+
+        	</documentation>
+	<port name="Management.KeyCertificatePort" binding="tns:Management.KeyCertificateBinding">
+		<soap:address location="https://url_to_service"/>
+	</port>
+</service>
+</definitions>
