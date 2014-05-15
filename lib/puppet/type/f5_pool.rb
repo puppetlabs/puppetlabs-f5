@@ -81,10 +81,6 @@ Puppet::Type.newtype(:f5_pool) do
     end
   end
 
-  newparam(:membership) do
-    defaultto :inclusive
-  end
-
   newproperty(:minimum_active_member) do
     desc "The minimum active member counts for the specified pools."
 
