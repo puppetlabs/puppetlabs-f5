@@ -1,3 +1,10 @@
+##2014-05-14 - Release 0.9.0
+###Summary
+
+This module has been almost completely rewritten internally to use Savon
+for SOAP calls.  There have been significant changes to every single provider.
+
+
 0.3.1 2012-02-14 Nan Liu <nan@puppetlabs.com>
 * f5_external_class supports refresh of external data.
 * Fix bug with f5_virtualserver profile_persistence attribute.
