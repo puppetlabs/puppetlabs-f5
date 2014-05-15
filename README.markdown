@@ -22,6 +22,9 @@ new REST based module written from scratch.  We have recently overhauled this
 module to work with Puppet 3+ and modern versions of Ruby, but the new module
 will be substantially different.
 
+As a result of the new planned development this module has been only lightly
+tested and we welcome bug reports on any issues you find with it.
+
 ##Module Description
 
 This module uses SOAP to manage F5 devices running 11.0+.  It consists of
