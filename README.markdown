@@ -762,6 +762,9 @@ The UDP idle timeouts of the specified SNAT translation addresses.
 
 ###f5_snmpconfiguration
 
+WARNING:  The backend API for snmpconfiguration is extremely brittle and any
+mistaken input can easily crash the SOAP handler.
+
 ####name
 
 The name to show via SNMP.
