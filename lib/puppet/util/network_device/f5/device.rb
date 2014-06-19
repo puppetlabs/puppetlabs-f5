@@ -28,6 +28,8 @@ class Puppet::Util::NetworkDevice::F5::Device
       'Management.SNMPConfiguration',
       'Management.UserManagement',
       'Networking.RouteTableV2',
+      'Networking.SelfIPV2',
+      'Networking.VLAN',
       'System.ConfigSync',
       'System.Inet',
       'System.Session',
