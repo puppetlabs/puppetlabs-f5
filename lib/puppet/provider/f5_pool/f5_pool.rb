@@ -97,7 +97,7 @@ Puppet::Type.type(:f5_pool).provide(:f5_pool, :parent => Puppet::Provider::F5) d
     end
 
     # When provisioning a new pool we won't have members.
-    if current_members =! [nil]
+    if current_members != [nil]
       (current_members - members).each do |node|
         Puppet.debug "Puppet::Provider::F5_Pool: removing member #{node}"
         message = { pool_names: { items: resource[:name] }, members: { items: { items: {address: network_address(node), port: network_port(node)}}} }
