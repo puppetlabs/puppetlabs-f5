@@ -115,7 +115,7 @@ Puppet::Type.newtype(:f5_pool) do
     munge do |value|
       # Make sure monitor_templates is converted to an array to aid with
       # matching
-      value["monitor_templates"] = value["monitor_templates"].to_a
+      value["monitor_templates"] = Array(value["monitor_templates"])
       value
     end
 

@@ -47,7 +47,7 @@ Puppet::Type.newtype(:f5_snat) do
           raise Puppet::Error, "Puppet::Type::F5_Snat: does not support vlan key #{k}" unless k =~ /^(state|vlans)$/
 
           # ensure vlan value is an array
-          value[k] = value[k].to_a if k == 'vlan'
+          value[k] = Array(value[k]) if k == 'vlan'
         end
 
         raise Puppet::Error, "Puppet::Type::F5_Snat: vlan missing key." unless value.size == 2
