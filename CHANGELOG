@@ -1,3 +1,9 @@
+##2014-07-15 - Release 0.5.2
+###Summary
+
+Released with a changed metadata.json to allow the module to be upgraded or
+uninstalled.
+
 ##2014-05-16 - Release 0.5.1
 ###Summary
 
