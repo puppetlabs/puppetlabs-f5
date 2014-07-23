@@ -153,7 +153,7 @@ Puppet::Type.newtype(:f5_virtualserver) do
           raise Puppet::Error, "Puppet::Type::F5_VirtualServer: vlan does not support key #{k}" unless k =~ /^(state|vlans)$/
 
           # ensure vlans value is an array
-          value[k] = value[k].to_a if k == 'vlans'
+          value[k] = Array(value[k]) if k == 'vlans'
         end
 
         raise Puppet::Error, "Puppet::Type::F5_VirtualServer: vlan missing key." unless value.size == 2
