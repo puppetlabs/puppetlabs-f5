@@ -40,8 +40,4 @@ Puppet::Type.newtype(:f5_node) do
     newvalues(/^STATE_(DISABLED|ENABLED)$/)
   end
 
-  validate do
-    fail ArgumentError, "ERROR:  Addresses is read-only." if self[:addresses]
-  end
-
 end
