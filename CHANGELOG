@@ -1,3 +1,13 @@
+##2014-07-24 - Release 0.6.0
+###Summary
+
+This release fixes a couple of minor bugs, makes sure addresses is able to
+be managed within nodes, and adds two new providers to manage vlans and self
+ip.
+
+Big thanks to Drew Blessing for his work on those!
+
+
 ##2014-07-15 - Release 0.5.2
 ###Summary
 
