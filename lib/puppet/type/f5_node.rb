@@ -27,13 +27,6 @@ Puppet::Type.newtype(:f5_node) do
     desc "The IP addresses of the specified node addresses."
   end
 
-  # Current iControl gem get_monitor_association is broken:
-  # /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/wsdl/xmlSchema/simpleType.rb:66:in `check_restriction': {urn:iControl}LocalLB.AddressType: cannot accept '' (XSD::ValueSpaceError)
-
-  # newproperty(:monitor_association) do
-  #   desc "The monitor instance information for the specified node addresses."
-  # end
-
   newproperty(:ratio) do
     desc "The ratios for the specified node addresses."
 
@@ -46,4 +39,9 @@ Puppet::Type.newtype(:f5_node) do
 
     newvalues(/^STATE_(DISABLED|ENABLED)$/)
   end
+
+  validate do
+    fail ArgumentError, "ERROR:  Addresses is read-only." if self[:addresses]
+  end
+
 end
