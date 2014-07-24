@@ -23,7 +23,7 @@ Puppet::Type.newtype(:f5_node) do
     newvalues(/^\d+$/)
   end
 
-  newparam(:addresses) do
+  newproperty(:addresses) do
     desc "The IP addresses of the specified node addresses."
   end
 
