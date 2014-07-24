@@ -37,9 +37,15 @@ Puppet::Type.type(:f5_node).provide(:f5_node, :parent => Puppet::Provider::F5) d
       message = { nodes: { item: resource[:name] }, arg => { item: resource[method.to_sym] }}
       transport[wsdl].call("set_#{method}".to_sym, message: message)
     end
-  end 
+  end
 
-  def session_enabled_state 
+  # No = method for this, as we can't set them.
+  def addresses
+    message = { nodes: { item: resource[:name]}}
+    transport[wsdl].get(:get_address, message)
+  end
+
+  def session_enabled_state
     message = { nodes: { item: resource[:name]}}
     value = transport[wsdl].call(:get_session_status, message: message).body[:get_session_status_response][:return][:item]
 
