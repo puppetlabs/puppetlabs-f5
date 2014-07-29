@@ -8,7 +8,10 @@ Puppet::Type.newtype(:f5_node) do
   newparam(:name, :namevar=>true) do
     desc "The node name. v9.0 API uses IP addresses, v11.0 API uses names."
 
-    newvalues(/^[[:alpha:][:digit:]\/]+$/)
+    validate do |value|
+      fail ArgumentError, "#{name} must be a String" unless value.is_a?(String)
+      fail ArgumentError, "#{name} must match the pattern /Partition/name" unless value =~ /^\/\w+\/(\w|\d|\.)+$/
+    end
   end
 
   newproperty(:connection_limit) do
