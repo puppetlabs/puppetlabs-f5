@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-f5",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "author": "Puppet Labs",
   "summary": "F5 module",
   "license": "Apache 2.0",

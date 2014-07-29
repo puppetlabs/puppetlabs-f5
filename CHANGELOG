@@ -1,3 +1,8 @@
+##2014-07-29 - Release 0.6.1
+###Summary
+
+This release fixes the validation for f5_node{} to allow _'s in the name.
+
 ##2014-07-24 - Release 0.6.0
 ###Summary
 
