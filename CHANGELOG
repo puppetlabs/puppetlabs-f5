@@ -1,3 +1,7 @@
+##2014-07-29 - Release 0.6.2
+###Summary
+
+This release improves the error handling for f5_virtualserver{}.
 ##2014-07-29 - Release 0.6.1
 ###Summary
 
