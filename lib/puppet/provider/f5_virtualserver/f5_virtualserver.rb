@@ -111,9 +111,12 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
   def clone_pool
     pool = {}
     message = { virtual_servers: { item: resource[:name] }}
-    transport[wsdl].call(:get_clone_pool, message: message).body[:get_clone_pool_response][:return][:item].each do |p|
-      if p.is_a?(Hash)
-        pool[p[:pool_name]] = p[:type]
+    response = transport[wsdl].get(:get_clone_pool, message)
+    if response
+      response.each do |p|
+        if p.is_a?(Hash)
+          pool[p[:pool_name]] = p[:type]
+        end
       end
     end
     pool
@@ -147,9 +150,12 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
   def persistence_profile
     profiles = {}
     message = { virtual_servers: { item: resource[:name] }}
-    transport[wsdl].call(:get_persistence_profile, message: message).body[:get_persistence_profile_response][:return][:item].each do |p|
-      if p.is_a?(Hash)
-        profiles[p[:profile_name]] = p[:default_profile]
+    response = transport[wsdl].get(:get_persistence_profile, message)
+    if response
+      response.each do |p|
+        if p.is_a?(Hash)
+          profiles[p[:profile_name]] = p[:default_profile]
+        end
       end
     end
     profiles
@@ -226,9 +232,9 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
   def rule
     # Because rule changes are not atomic, we are ignoring priority.
     message = { virtual_servers: { item: resource[:name] }}
-    response = transport[wsdl].call(:get_rule, message: message)
-    if response.body[:get_rule_response][:return][:item][:item]
-      response.body[:get_rule_response][:return][:item][:item].collect do |rule|
+    response = transport[wsdl].get(:get_rule, message)
+    if response
+      response.collect do |rule|
         rule[:rule_name]
       end
     end
@@ -336,8 +342,19 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
 
   def vlan
     message = { virtual_servers: { item: resource[:name] }}
-    val = transport[wsdl].call(:get_vlan, message: message).body[:get_vlan_response][:return][:item]
-    { 'state' => val[:state], 'vlans' => val[:vlans][:item] }
+    val = transport[wsdl].get(:get_vlan, message)
+    if val
+      hash = Hash.new
+      hash['state'] = val[:state] if val[:state]
+      if val[:vlans]
+        hash['vlans'] = val[:vlans][:item] if val[:vlans][:item]
+      else
+        hash['vlans'] = []
+      end
+      hash
+    else
+      nil
+    end
   end
 
   def vlan=(value)
@@ -392,9 +409,9 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
   end
 
   def exists?
-    response = transport[wsdl].call(:get_list)
-    if response.body[:get_list_response][:return][:item]
-      response.body[:get_list_response][:return][:item].include?(resource[:name])
+    response = transport[wsdl].get(:get_list)
+    if response
+      response.include?(resource[:name])
     end
   end
 end
