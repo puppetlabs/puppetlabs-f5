@@ -85,8 +85,8 @@ Puppet::Type.type(:f5_certificate).provide(:f5_certificate, :parent => Puppet::P
   end
 
   def create
-    content= @resource.should(:content)
     @property_hash[:ensure] = :present
+    self.content= @resource.should(:content)
   end
 
   def destroy
