@@ -16,6 +16,7 @@ class Puppet::Util::NetworkDevice::F5::Device
       'LocalLB.NodeAddressV2',
       'LocalLB.ProfileClientSSL',
       'LocalLB.ProfilePersistence',
+      'LocalLB.ProfileServerSSL',
       'LocalLB.Pool',
       'LocalLB.PoolMember',
       'LocalLB.Rule',
