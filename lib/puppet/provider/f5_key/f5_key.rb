@@ -70,7 +70,7 @@ Puppet::Type.type(:f5_key).provide(:f5_key, :parent => Puppet::Provider::F5) do
       message = { mode: resource[:mode], key_ids: { item: self.name }}
       transport[wsdl].call(:key_delete, message: message)
       transport[wsdl].call(:certificate_delete, message: message)
-      message = { mode: resource[:mode], key_ids: { item: self.name }, pem_data: { item: resource[:real_contentlib/puppet/type/f5_key.rb
+      message = { mode: resource[:mode], key_ids: { item: self.name }, pem_data: { item: resource[:real_content] }, overwrite: true }
       transport[wsdl].call(:key_import_from_pem, message: message)
       transport[wsdl].call(:certificate_import_from_pem, message: message)
     else
