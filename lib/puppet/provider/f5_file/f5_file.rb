@@ -1,13 +1,13 @@
 require 'puppet/provider/f5'
 
 Puppet::Type.type(:f5_file).provide(:f5_file, :parent => Puppet::Provider::F5) do
-  @doc = 'Manages f5 String classes (datagroups)'
+  @doc = 'Manages arbitrary files'
 
   confine :feature => :posix
   defaultfor :feature => :posix
 
   def self.wsdl
-    'LocalLB.Class'
+    'System.ConfigSync'
   end
 
   def wsdl
