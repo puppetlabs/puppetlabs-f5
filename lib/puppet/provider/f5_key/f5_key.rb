@@ -81,7 +81,7 @@ Puppet::Type.type(:f5_key).provide(:f5_key, :parent => Puppet::Provider::F5) do
 
   def create
     @property_hash[:ensure] = :present
-    content= @resource.should(:content)
+    self.content= @resource.should(:content)
   end
 
   def destroy
