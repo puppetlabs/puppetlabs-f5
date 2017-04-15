@@ -372,6 +372,11 @@ Puppet::Type.type(:f5_virtualserver).provide(:f5_virtualserver, :parent => Puppe
     vs_wildmask  = resource[:wildmask]
     vs_resources = { :type => resource[:type], :default_pool_name => resource[:default_pool_name] }
     vs_profiles  = []
+    
+    resource[:profile].each do |k, v|
+      vs_profiles << { :profile_name    => k,
+                       :profile_context => v }
+    end
 
     message = { definitions: { item: [vs_definition]}, wildmasks: { item: [vs_wildmask] }, resources: { item: [vs_resources] }, profiles: { item: [vs_profiles] }}
     transport[wsdl].call(:create, message: message)
