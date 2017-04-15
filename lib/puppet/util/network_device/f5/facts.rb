@@ -59,7 +59,7 @@ class Puppet::Util::NetworkDevice::F5::Facts
             'os_machine'       => 'hardwaremodel',
             'uptime'           => 'uptime_seconds',
     }
-    @facts = Hash[@facts.map {|k, v| [map[k] || k, v] }]\
+    @facts = Hash[@facts.map {|k, v| [(map[k] || k).to_s, v] }]\
 
     if @facts['fqdn'] then
       fqdn = @facts['fqdn'].split('.', 2)
